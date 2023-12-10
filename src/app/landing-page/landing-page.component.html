@@ -1,0 +1,115 @@
+<div class="main">
+<!--  <header class="header">-->
+<!--    <ul class="menu" #menu>-->
+<!--      <li class="menu__item">-->
+<!--        <a class="menu__link">Home</a>-->
+<!--      </li>-->
+<!--      <li class="menu__item">-->
+<!--        <a class="menu__link">About Us</a>-->
+<!--      </li>-->
+<!--      <li class="menu__item">-->
+<!--        <a class="menu__link">How it Works</a>-->
+<!--      </li>-->
+<!--      <li class="menu__item">-->
+<!--        <a class="menu__link">Benefits</a>-->
+<!--      </li>-->
+<!--      <li class="menu__item">-->
+<!--        <a class="menu__link">Testimonials</a>-->
+<!--      </li>-->
+<!--    </ul>-->
+<!--    <ul class="menu menu-right" #menuSecond>-->
+<!--      <li class="menu__item">-->
+<!--        <a class="menu__link">Blog</a>-->
+<!--      </li>-->
+<!--      <li class="menu__item">-->
+<!--        <a class="menu__link">FAQ</a>-->
+<!--      </li>-->
+<!--    </ul>-->
+<!--  </header>-->
+  <section class="first-section">
+    <div class="info">
+      <h1 class="heading-1">
+        Simți zgomotul aglomerației și ritmul alert al orașului sufocându-ți pasiunile?
+      </h1>
+      <p class="paragraph">
+        A venit momentul să contempli o schimbare într-o direcție nouă și inspirațională - viața la țară.
+        În mijlocul naturii deschise și a păcii line,
+        oportunitățile de a te dezvolta și a-ți trăi visurile prind viață în culori vii.
+      </p>
+      <a class="btn btn--start">HAI IN SAT !!!</a>
+    </div>
+    <div class="visuals">
+      <div class="image-container">
+        <img style="height: 100%; opacity: 50%"
+          #imageFirst
+          src="assets/trafic.jpg"
+          alt=""
+        />
+      </div>
+      <div class="image-container">
+        <img style="height: 100%"
+          #imageSecond
+          src="assets/oras.jpg"
+          alt=""
+        />
+      </div>
+    </div>
+  </section>
+  <section class="second-section" #secondSection>
+    <div class="box"></div>
+    <h4 class="heading-4" id="about">Despre noi</h4>
+    <h1 class="heading-1" id="buy">Noi iti putem oferi casa mult visata la sat</h1>
+    <div class="info-1">
+      <div class="info-1__text">
+        <span class="quote">
+          "
+        </span>
+        <h2 class="heading-3">
+          Oltenia de sub munte
+        </h2>
+        <p class="paragraph">
+          Hai în sat! Îți vine în ajutor și îți prezintă una dintre cele mai frumoase și spectaculoase zone
+          ale țării noaste, aceasta fiind Oltenia de sub munte. Imaginează-ți să-ți începi diminețile cu
+          sunetul liniștii, să-ți savurezi cafeaua privind asupra unui peisaj de vis și să-ți petreci serile
+          sub cerul înstelat. Viața la țară nu înseamnă doar a te retrage, ci a-ți redescoperi conexiunea cu
+          natura și a explora potențialul neexploatat al fiecărei zile.
+          Pentru a vă introduce mai bine în această lume de poveste, în Oltenia de sub munte, vă invit să vă
+          delectați cu o mică lectură în care sunt prezentate câteva dintre zonele noastre cele mai de preț.
+        </p>
+        <a class="btn--learn" (click)="goToInfoPage()">Afla mai multe</a>
+      </div>
+      <div class="info-1__visual">
+        <img style="height: 100%" src="assets/munte1.jpeg" alt="">
+      </div>
+    </div>
+
+  </section>
+
+  <section class="third-section" #thirdSection>
+    <div class="box"></div>
+    <div class="info-1">
+      <div class="info-1__text">
+        <h2 class="heading-3">
+          Te-am convins?
+        </h2>
+        <p-button class="button1" (onClick)="goToFormPage()">FORMULAR</p-button>
+        <p class="paragraph">
+          Tot ce trebuie sa faci este sa ne spui ce iti doresti,
+          cum arata si unde se pozitioneaza casa visurilor tale,
+          iar noi vom veni cu cel putin 3 variante din care sa alegi.
+        </p>
+        <p class="paragraph">
+          Daca inca nu esti hotarat, te invitam sa vezi zona!
+          Te poti caza in zona la localnici, poti manca ceva bun
+          traditional si poti merge intr-o drumetie organizata
+          de noi. Nu vei mai vrea sa pleci acasa!
+        </p>
+        <p-button class="button2">HAI IN SAT</p-button>
+      </div>
+      <div class="info-1__visual">
+        <img style="height: 100%" src="assets/munte3.jpeg" alt="">
+      </div>
+    </div>
+
+  </section>
+</div>

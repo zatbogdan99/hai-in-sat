@@ -1,0 +1,79 @@
+<div class="parent-container">
+
+  <h1 style="text-align: center" id="first-text1">Configureaza-ti casa perfecta pentru tine!</h1>
+  <h2 style="text-align: center; max-width: 60rem" id="first-text2">
+    Tot ce trebuie sa faci este sa ne spui cum arata si unde ai vrea sa se afle casa visurilor tale, iar noi
+    iti vom oferi cele mai aproape 3 variante de nevoile tale.
+  </h2>
+
+  <div style="padding-top: 5rem; display: flex; flex-direction: column; align-items: center">
+<!--    <form [formGroup]="formGroup">-->
+    <span style="margin-bottom: 2rem; width: 30rem" class="p-float-label">
+      <input style="padding: 10px; width: 100%" type="text" pInputText id="name">
+      <label htmlFor="name">Nume</label>
+    </span>
+    <span style="margin-bottom: 2rem; width: 30rem" class="p-float-label">
+      <input style="padding: 10px; width: 100%" type="text" pInputText id="surname">
+      <label htmlFor="surname">Prenume</label>
+    </span>
+    <span style="margin-bottom: 2rem; width: 30rem" class="p-float-label">
+      <input style="padding: 10px; width: 100%" type="text" pInputText id="phoneNumber">
+      <label htmlFor="phoneNumber">Numar de telefon</label>
+    </span>
+    <span style="margin-bottom: 2rem; width: 30rem" class="p-float-label">
+      <input style="padding: 10px; width: 100%" type="text" pInputText id="mail">
+      <label htmlFor="mail">Adresa de e-mail</label>
+    </span>
+
+    <h2>La ce apropiere de un centru urban(Km)</h2>
+    <div class="container">
+      <div class="element">
+        <input style="margin-bottom: 20px;" type="text" [(ngModel)]="ariaRangeValues[0]" pInputText class="w-full"/>
+      </div>
+      <div class="element">
+        <p-slider [step]="20" [min]="0" [max]="500000" [(ngModel)]="ariaRangeValues" [range]="true"></p-slider>
+      </div>
+      <div class="element" style="padding-left: 5rem">
+        <input style="margin-bottom: 20px;" type="text" [(ngModel)]="ariaRangeValues[1]" pInputText class="w-full"/>
+      </div>
+    </div>
+
+    <h2>Pret(€)</h2>
+    <div class="container">
+      <div class="element">
+        <input style="margin-bottom: 20px;" type="text" [(ngModel)]="priceRangeValues[0]" pInputText class="w-full"/>
+      </div>
+      <div class="element">
+        <p-slider [step]="20" [min]="0" [max]="500000" [(ngModel)]="priceRangeValues" [range]="true"></p-slider>
+      </div>
+      <div class="element" style="padding-left: 5rem">
+        <input style="margin-bottom: 20px;" type="text" [(ngModel)]="priceRangeValues[1]" pInputText class="w-full"/>
+      </div>
+    </div>
+    <span style="margin-bottom: 2rem; width: 50rem">
+      <div class="container">
+        <div style="padding-right: 1rem">
+          <p-chip class="chipClass" label="Lângă o apă:"></p-chip>
+        </div>
+        <div style="padding-right: 3rem">
+          <p-toggleButton [(ngModel)]="river" onLabel="DA" offLabel="NU"></p-toggleButton>
+        </div>
+
+        <div style="padding-right: 1rem">
+          <p-chip class="chipClass" label="Cu vecini/fara vecini:"></p-chip>
+        </div>
+        <div style="padding-right: 3rem">
+          <p-toggleButton [(ngModel)]="neighbor" onLabel="DA" offLabel="NU"></p-toggleButton>
+        </div>
+      </div>
+    </span>
+    <span class="p-float-label" style="margin-bottom: 2rem">
+      <textarea rows="5" cols="120" pInputTextarea formControlName="text" id="mentions"></textarea>
+      <label htmlFor="mentions">Alte mentiuni</label>
+    </span>
+    <span style="margin-bottom: 2rem;">
+      <button pButton pRipple label="HAI IN SAT" class="p-button-success" (click)="sendRequest()"></button>
+    </span>
+  </div>
+
+</div>

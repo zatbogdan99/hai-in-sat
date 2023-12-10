@@ -1,0 +1,80 @@
+.title {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 50px;
+  opacity: 0;
+}
+
+.bucharestText {
+  display: grid;
+  place-content: center;
+  height: 100vh;
+}
+
+h1 {
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  font-family: 'Bebas Neue';
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+  line-height: 5.9rem;
+}
+
+.parent-container {
+  display: grid;
+  justify-content: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*.withBackground {*/
+/*  background-image: url("src/assets/fundal-copaci.jpg");*/
+/*  width: 100%;*/
+/*  height: 60rem;*/
+/*}*/
+
+/*h1 {*/
+/*  font-family: "Ink Free";*/
+/*  margin-bottom: 20px;*/
+/*  color: #333; !* Title text color *!*/
+/*  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); !* Text shadow for a subtle effect *!*/
+/*  padding: 10px 20px; !* Add some padding for better readability *!*/
+/*  border-radius: 10px; !* Rounded corners for the title *!*/
+/*}*/
+
+
+/*.description {*/
+/*  font-size: 18px;*/
+/*  color: #666;*/
+/*  margin-top: 10px;*/
+
+/*}*/
+/*.emphasis {*/
+/*  font-size: 30px;*/
+/*  font-style: italic;*/
+/*  margin-top: 20px;*/
+
+/*}*/
+
+/*.text-reveal-container {*/
+/*  overflow: hidden;*/
+/*}*/
+
+/*.text-reveal-text {*/
+/*  opacity: 0;*/
+/*}*/
