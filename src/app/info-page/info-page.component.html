@@ -1,7 +1,7 @@
-<div class="container">
+<div class="container1">
   <div class="reveal">
     <h1 style="text-align: center; padding-bottom: 2rem" id="title1">Orașul Horezu</h1>
-      <p-galleria [value]="horezuImages" [autoPlay]="true" [circular]="true" [numVisible]="5"  [containerStyle]="{ 'max-width': '640px', 'max-height': '480px' }">
+      <p-galleria class="galeria-style" [value]="horezuImages" [autoPlay]="true" [circular]="true" [numVisible]="5" [containerStyle]="{ 'max-width': '80rem', 'max-height': '40rem' }">
         <ng-template pTemplate="item" let-item>
           <img [src]="item.itemImageSrc"/>
         </ng-template>
@@ -12,121 +12,142 @@
         </ng-template>
       </p-galleria>
   </div>
+</div>
+
+<div class="container2">
   <div class="reveal p-card-custom">
     <p-card>
-      <p class="m-0">
+      <p class="m-0 text-style">
         Horezu, situat în apropierea punctului de mijloc dintre Râmnicu Vâlcea și Târgu Jiu, a fost binecuvântat cu o moștenire etnografică și folclorică impresionantă. Însăși numele orașului, Horezu, își trage originile din trecutul său pitoresc, de la ciuhurez, o pasăre asemănătoare bufniței, care populează pădurile înconjurătoare. Acest loc fermecător este adesea numit "capitala" ceramicii românești, iar motivele pentru această distincție sunt cât se poate de clare.
+      </p>
+    </p-card>
+  </div>
+</div>
+
+<div class="container3">
+  <div class="reveal p-card-custom">
+    <p-card>
+      <p class="m-0 text-style">
         Călătorind în trecutul său îndepărtat, descoperim că istoria dezvoltării așezărilor din Horezu este strâns legată de traseele de transhumanță, de drumurile bătute de haiduci în vremuri străvechi și de celebrul drum al sării. Acest drum ancestral începea la Ocnele Mari, trecea prin Pietrarii de Jos și continua prin Horezu, apoi către Slatioara și, în cele din urmă, ajungea la Cernesti. Aceste elemente au contribuit la formarea și dezvoltarea comunității Horezu, întărindu-i statutul ca un centru vital pentru tradițiile etnografice și pentru arta ceramică populară din România.
+      </p>
+    </p-card>
+  </div>
+</div>
+
+<div class="container2">
+  <div class="reveal p-card-custom">
+    <p-card>
+      <p class="m-0 text-style">
         Orașul este un adevărat tezaur al tradițiilor autentice și un loc în care arta ceramică prinde viață, purtând în ea amintiri și povești străvechi, și continuând să inspire generațiile viitoare.
       </p>
     </p-card>
   </div>
 </div>
 
-<div class="container">
-  <div class="reveal">
-    <h1 style="text-align: center; padding-bottom: 2rem" id="title2">Satul Costești</h1>
-    <p-galleria [value]="costestiImages" [autoPlay]="true" [circular]="true" [numVisible]="5"  [containerStyle]="{ 'max-width': '640px', 'max-height': '480px' }">
-      <ng-template pTemplate="item" let-item>
-        <img [src]="item.itemImageSrc"/>
-      </ng-template>
-      <ng-template pTemplate="thumbnail" let-item>
-        <div class="grid grid-nogutter justify-content-center">
-          <img [src]="item.thumbnailImageSrc" />
-        </div>
-      </ng-template>
-    </p-galleria>
-  </div>
-  <div class="reveal p-card-custom">
-    <p-card>
-      <p class="m-0">
-        Costești, o comună binecuvântată de soarele blând al Carpaților, găzduiește în sânul său o colecție de trovanți, pietre cioplite de mâna timpului în forme uimitoare, de la creaturi misterioase până la obiecte cu forme imposibil de reprodus. Acești trovanți, alcătuind o adevărată galerie de artă a naturii, constituie nucleul atracției Muzeului Trovanților.
-        Când pășești în acest sanctuar al pietrelor, ești însoțit de liniștea și misterul vremurilor îndepărtate. Piatra vie, prin sculptura fără egal a vântului și a apei, îți dezvăluie povestea lor tainică, o poveste pe care muzeul o păstrează cu grijă pentru generațiile viitoare.
-        În Muzeul Trovanților din Costești, vei descoperi și o colecție impresionantă de artefacte arheologice și exponate ce ilustrează viața tradițională din această regiune. Aceste obiecte, atent păstrate și expuse cu mândrie, dezvăluie amprenta strămoșilor noștri și bogăția patrimoniului cultural vâlcean.
-        Așadar, Costești din Vâlcea nu este doar un simplu sat, ci o perlă a istoriei și a artei naturii, un loc în care Muzeul Trovanților strălucește ca o comoară a trecutului, prezentând lumii frumusețea și misterul pietrelor sculptate de mâna timpului.
-      </p>
-    </p-card>
-  </div>
-</div>
+<!--<div class="container">-->
+<!--  <div class="reveal">-->
+<!--    <h1 style="text-align: center; padding-bottom: 2rem" id="title2">Satul Costești</h1>-->
+<!--    <p-galleria [value]="costestiImages" [autoPlay]="true" [circular]="true" [numVisible]="5"  [containerStyle]="{ 'max-width': '640px', 'max-height': '480px' }">-->
+<!--      <ng-template pTemplate="item" let-item>-->
+<!--        <img [src]="item.itemImageSrc"/>-->
+<!--      </ng-template>-->
+<!--      <ng-template pTemplate="thumbnail" let-item>-->
+<!--        <div class="grid grid-nogutter justify-content-center">-->
+<!--          <img [src]="item.thumbnailImageSrc" />-->
+<!--        </div>-->
+<!--      </ng-template>-->
+<!--    </p-galleria>-->
+<!--  </div>-->
+<!--  <div class="reveal p-card-custom">-->
+<!--    <p-card>-->
+<!--      <p class="m-0">-->
+<!--        Costești, o comună binecuvântată de soarele blând al Carpaților, găzduiește în sânul său o colecție de trovanți, pietre cioplite de mâna timpului în forme uimitoare, de la creaturi misterioase până la obiecte cu forme imposibil de reprodus. Acești trovanți, alcătuind o adevărată galerie de artă a naturii, constituie nucleul atracției Muzeului Trovanților.-->
+<!--        Când pășești în acest sanctuar al pietrelor, ești însoțit de liniștea și misterul vremurilor îndepărtate. Piatra vie, prin sculptura fără egal a vântului și a apei, îți dezvăluie povestea lor tainică, o poveste pe care muzeul o păstrează cu grijă pentru generațiile viitoare.-->
+<!--        În Muzeul Trovanților din Costești, vei descoperi și o colecție impresionantă de artefacte arheologice și exponate ce ilustrează viața tradițională din această regiune. Aceste obiecte, atent păstrate și expuse cu mândrie, dezvăluie amprenta strămoșilor noștri și bogăția patrimoniului cultural vâlcean.-->
+<!--        Așadar, Costești din Vâlcea nu este doar un simplu sat, ci o perlă a istoriei și a artei naturii, un loc în care Muzeul Trovanților strălucește ca o comoară a trecutului, prezentând lumii frumusețea și misterul pietrelor sculptate de mâna timpului.-->
+<!--      </p>-->
+<!--    </p-card>-->
+<!--  </div>-->
+<!--</div>-->
 
-<div class="container">
-  <div class="reveal">
-    <h1 style="text-align: center; padding-bottom: 2rem" id="title3">Satul Slătioara</h1>
-    <img src="assets/satul-slatioara.jpg" alt="">
-  </div>
-  <div class="reveal p-card-custom">
-    <p-card>
-      <p class="m-0">
-        În inima Vâlcii se ascunde un colț de rai numit Slătioara. Acest sătuc idilic, înconjurat de munți acoperiți de păduri dese și râuri limpezi ce șuieră în adierea vântului, este o comoară ascunsă a României.
-        În centrul sătucului se înalță cu mândrie Biserica Potecașilor, o bijuterie arhitecturală cu o istorie bogată și adânc înrădăcinată în tradiția locului. Cu turla sa elegantă și frescele pictate cu măiestrie, biserica emană o atmosferă de liniște și smerenie. Picturile vechi, ce îmbracă pereții interiori, înfățișează scene din viața lui Isus și a sfinților, aducând la viață credința și spiritualitatea comunității locale.
-        În jurul bisericii, peisajul rural se desfășoară într-o paletă variată de culori. Casele tradiționale din lemn se întind pe ulițele liniștite, iar grădinile pline de flori adaugă un farmec aparte acestui loc. În timpul primăverii și al verii, Slătioara se transformă într-o explozie de culoare, iar parfumul florilor înmiresmează aerul.î
-        Slătioara din Vâlcea nu este doar un loc geografic, ci și un loc al inimilor călduroase și o comunitate ce împărtășește tradiții și valori. Biserica Potecașilor, cu trecutul său venerabil și frumusețea sa sublimă, este punctul de convergență al acestui mic colț de paradis, unde trecutul și prezentul se împletesc într-o armonie perfectă.
-      </p>
-    </p-card>
-  </div>
-</div>
+<!--<div class="container">-->
+<!--  <div class="reveal">-->
+<!--    <h1 style="text-align: center; padding-bottom: 2rem" id="title3">Satul Slătioara</h1>-->
+<!--    <img src="assets/satul-slatioara.jpg" alt="">-->
+<!--  </div>-->
+<!--  <div class="reveal p-card-custom">-->
+<!--    <p-card>-->
+<!--      <p class="m-0">-->
+<!--        În inima Vâlcii se ascunde un colț de rai numit Slătioara. Acest sătuc idilic, înconjurat de munți acoperiți de păduri dese și râuri limpezi ce șuieră în adierea vântului, este o comoară ascunsă a României.-->
+<!--        În centrul sătucului se înalță cu mândrie Biserica Potecașilor, o bijuterie arhitecturală cu o istorie bogată și adânc înrădăcinată în tradiția locului. Cu turla sa elegantă și frescele pictate cu măiestrie, biserica emană o atmosferă de liniște și smerenie. Picturile vechi, ce îmbracă pereții interiori, înfățișează scene din viața lui Isus și a sfinților, aducând la viață credința și spiritualitatea comunității locale.-->
+<!--        În jurul bisericii, peisajul rural se desfășoară într-o paletă variată de culori. Casele tradiționale din lemn se întind pe ulițele liniștite, iar grădinile pline de flori adaugă un farmec aparte acestui loc. În timpul primăverii și al verii, Slătioara se transformă într-o explozie de culoare, iar parfumul florilor înmiresmează aerul.î-->
+<!--        Slătioara din Vâlcea nu este doar un loc geografic, ci și un loc al inimilor călduroase și o comunitate ce împărtășește tradiții și valori. Biserica Potecașilor, cu trecutul său venerabil și frumusețea sa sublimă, este punctul de convergență al acestui mic colț de paradis, unde trecutul și prezentul se împletesc într-o armonie perfectă.-->
+<!--      </p>-->
+<!--    </p-card>-->
+<!--  </div>-->
+<!--</div>-->
 
-<div class="container">
-  <div class="reveal">
-    <h1 style="text-align: center; padding-bottom: 2rem" id="title4">Satul Polovragi</h1>
-    <img src="assets/satul-polovragi.jpg" alt="">
-  </div>
-  <div class="reveal p-card-custom">
-    <p-card>
-      <p class="m-0">
-        Polovragi, o bijuterie istorică a județului Târgul Jiu, strălucește ca o comoară păstrată în sânul muntelui. Cu o istorie străveche dovedită de numeroase cercetări arheologice, această locație adânc încărcată de trecut își deschide porțile către trecutul său fascinant.
-        În adâncurile timpului, în secolele II - I î.Hr., Polovragi găzduia o așezare dacică unică, cu două nivele diferite. Unul dintre ele, precum o cetate de refugiu, se înălța mândru pe Platoul Padeșului și al Crucii lui Ursache, străjuit de misterul istoriei, în timp ce celălalt nivel se ascundea în adâncurile zonei cunoscute ca "Gura Pietrei," respirând aerul unei comunități civile înfloritoare. Aici, istoria se întrepătrundea cu natura într-un dans veșnic. Dar ceea ce încântă ochiul și inima călătorului în căutarea istoriei este Peștera Polovragi. Aflată în partea de nord-est a Gorjului, această peșteră, cu o lungime impresionantă de aproximativ 11.000 de metri, ascunde povestea timpurilor antice în galeriile sale întunecate. O galerie orizontală, cu mici ramificații laterale, dezvăluie secretele sale cu măreție.
-        În urmă cu aproape un secol, temerarii speologi care au explorat această peșteră au dat peste dovezi uluitoare ale prezenței daco-geților în întunericul său. Dar ce a captivat inima cercetătorilor au fost urmele lăsate de picioare umane încălțate, semne de viață străveche în urmă cu aproape 2.000 de ani. Aceste urme ne dezvăluie cum strămoșii acestei regiuni foloseau peștera, și probabil, cum venerau locurile sacre.
-        Polovragi, cu istoria sa înclăcită și peștera sa misterioasă, reprezintă o fereastră în timp care ne permite să contemplăm și să onorăm strămoșii noștri și istoria acestui loc. Este un altar al trecutului și o mărturie a perenității vieții umane în inima naturii.
-      </p>
-    </p-card>
-  </div>
-</div>
+<!--<div class="container">-->
+<!--  <div class="reveal">-->
+<!--    <h1 style="text-align: center; padding-bottom: 2rem" id="title4">Satul Polovragi</h1>-->
+<!--    <img src="assets/satul-polovragi.jpg" alt="">-->
+<!--  </div>-->
+<!--  <div class="reveal p-card-custom">-->
+<!--    <p-card>-->
+<!--      <p class="m-0">-->
+<!--        Polovragi, o bijuterie istorică a județului Târgul Jiu, strălucește ca o comoară păstrată în sânul muntelui. Cu o istorie străveche dovedită de numeroase cercetări arheologice, această locație adânc încărcată de trecut își deschide porțile către trecutul său fascinant.-->
+<!--        În adâncurile timpului, în secolele II - I î.Hr., Polovragi găzduia o așezare dacică unică, cu două nivele diferite. Unul dintre ele, precum o cetate de refugiu, se înălța mândru pe Platoul Padeșului și al Crucii lui Ursache, străjuit de misterul istoriei, în timp ce celălalt nivel se ascundea în adâncurile zonei cunoscute ca "Gura Pietrei," respirând aerul unei comunități civile înfloritoare. Aici, istoria se întrepătrundea cu natura într-un dans veșnic. Dar ceea ce încântă ochiul și inima călătorului în căutarea istoriei este Peștera Polovragi. Aflată în partea de nord-est a Gorjului, această peșteră, cu o lungime impresionantă de aproximativ 11.000 de metri, ascunde povestea timpurilor antice în galeriile sale întunecate. O galerie orizontală, cu mici ramificații laterale, dezvăluie secretele sale cu măreție.-->
+<!--        În urmă cu aproape un secol, temerarii speologi care au explorat această peșteră au dat peste dovezi uluitoare ale prezenței daco-geților în întunericul său. Dar ce a captivat inima cercetătorilor au fost urmele lăsate de picioare umane încălțate, semne de viață străveche în urmă cu aproape 2.000 de ani. Aceste urme ne dezvăluie cum strămoșii acestei regiuni foloseau peștera, și probabil, cum venerau locurile sacre.-->
+<!--        Polovragi, cu istoria sa înclăcită și peștera sa misterioasă, reprezintă o fereastră în timp care ne permite să contemplăm și să onorăm strămoșii noștri și istoria acestui loc. Este un altar al trecutului și o mărturie a perenității vieții umane în inima naturii.-->
+<!--      </p>-->
+<!--    </p-card>-->
+<!--  </div>-->
+<!--</div>-->
 
-<div class="container">
-  <div class="reveal">
-    <h1 style="text-align: center; padding-bottom: 2rem" id="title5">Satul Baia de Fier</h1>
-    <img src="assets/baia-de-fier.jpg" alt="">
-  </div>
-  <div class="reveal p-card-custom">
-    <p-card>
-      <p class="m-0">
-        Numele său, Baia de Fier, evocă vremuri îndepărtate, când minereul de fier era prelucrat în adâncituri pământești, folosindu-se apa canalizată pentru a purifica acest dar al naturii. În inima acestor adâncituri, se găsea inestimabila mină de grafit, unică în România, care a contribuit la faima acestui loc.
-        Dar istoria acestui loc nu se oprește aici, ci se întinde în negura timpurilor pierdute. Cercetătorii au dezvăluit secrete ale trecutului ancestral al Baiei de Fier, dezvăluind un tezaur de dovezi paleolitice. Unelte cioplite în piatră și oase, specifice epocii de mijloc a paleoliticului, au fost descoperite aici, martori tăcuți ai evoluției umane în această regiune.
-        Însă nu doar trecutul uman se dezvăluie aici, ci și cel al creaturilor care au pășit pe aceste meleaguri cu milenii în urmă. Fosile de animale nordice, precum mamutul, rinocerul siberian, hiena pesterilor și capra Ibex, aduc lumina asupra unei lumi străvechi, în care oamenii împărțeau teritoriul cu creaturi sălbatice impresionante.
-        Baia de Fier este nu doar o comoară arheologică, ci și un loc binecuvântat de natură. În această "Oltenie de sub munte," se pot găsi chei fermecătoare și peșteri misterioase, iar satele din apropiere păstrează cu sfințenie tradițiile românești. Mănăstirile și biserici vechi îmbină arhitectura și istoria, transformând acest loc într-un adevărat monument al patrimoniului național.
-      </p>
-    </p-card>
-  </div>
-</div>
+<!--<div class="container">-->
+<!--  <div class="reveal">-->
+<!--    <h1 style="text-align: center; padding-bottom: 2rem" id="title5">Satul Baia de Fier</h1>-->
+<!--    <img src="assets/baia-de-fier.jpg" alt="">-->
+<!--  </div>-->
+<!--  <div class="reveal p-card-custom">-->
+<!--    <p-card>-->
+<!--      <p class="m-0">-->
+<!--        Numele său, Baia de Fier, evocă vremuri îndepărtate, când minereul de fier era prelucrat în adâncituri pământești, folosindu-se apa canalizată pentru a purifica acest dar al naturii. În inima acestor adâncituri, se găsea inestimabila mină de grafit, unică în România, care a contribuit la faima acestui loc.-->
+<!--        Dar istoria acestui loc nu se oprește aici, ci se întinde în negura timpurilor pierdute. Cercetătorii au dezvăluit secrete ale trecutului ancestral al Baiei de Fier, dezvăluind un tezaur de dovezi paleolitice. Unelte cioplite în piatră și oase, specifice epocii de mijloc a paleoliticului, au fost descoperite aici, martori tăcuți ai evoluției umane în această regiune.-->
+<!--        Însă nu doar trecutul uman se dezvăluie aici, ci și cel al creaturilor care au pășit pe aceste meleaguri cu milenii în urmă. Fosile de animale nordice, precum mamutul, rinocerul siberian, hiena pesterilor și capra Ibex, aduc lumina asupra unei lumi străvechi, în care oamenii împărțeau teritoriul cu creaturi sălbatice impresionante.-->
+<!--        Baia de Fier este nu doar o comoară arheologică, ci și un loc binecuvântat de natură. În această "Oltenie de sub munte," se pot găsi chei fermecătoare și peșteri misterioase, iar satele din apropiere păstrează cu sfințenie tradițiile românești. Mănăstirile și biserici vechi îmbină arhitectura și istoria, transformând acest loc într-un adevărat monument al patrimoniului național.-->
+<!--      </p>-->
+<!--    </p-card>-->
+<!--  </div>-->
+<!--</div>-->
 
-<div class="container">
-  <div class="reveal">
-    <h1 style="text-align: center; padding-bottom: 2rem" id="title6">Satul Vaideeni</h1>
-    <img src="assets/vaideeni.png" alt="">
-  </div>
-  <div class="reveal p-card-custom">
-    <p-card>
-      <p class="m-0">
-        Într-un colț pitoresc al Vâlcii, se ascunde cu mândrie satul Vaideeni, o perlă străveche cu o istorie fascinantă ce își dezvăluie tainele încă din secolul al XVI-lea. Pe atunci, el purta denumirea enigmatică de "Vai de Ei", un nume ce părea să strige disperarea unei comunități ce își găsise refugiul aici.
-        Această comunitate s-a născut din străvechea tradiție a transhumanței, o odisee de miile de kilometri pe cărări montane, străjuite de ciobani dăruiți păstoritului și conectați cu natura. Aici, în Vaideeni, s-au așezat mai multe familii de oieri venite din Ardeal, în special din pitoresca Mărginime a Sibiului. Drumul lor a fost unul marcat de presiuni religioase și catolicizări forțate, care i-au determinat să-și caute adăpostul în acest colț de paradis.
-        Astfel, satul Vaideeni este mai mult decât un simplu punct pe harta geografică a României - este un sanctuar al tradițiilor, al înfruntării cu vremurile și al poveștilor ce se împletesc cu natura. Transhumanța devine o simfonie ancestrală care răsuna în inimile locuitorilor, iar istoria lor, întemeiată pe credință și perseverență, reprezintă o comoară vie, prețuită și iubită din generație în generație. Vaideeni rămâne astfel un loc în care trecutul și prezentul se întâlnesc sub cerul senin al Vâlcii.
-      </p>
-    </p-card>
-  </div>
-</div>
+<!--<div class="container">-->
+<!--  <div class="reveal">-->
+<!--    <h1 style="text-align: center; padding-bottom: 2rem" id="title6">Satul Vaideeni</h1>-->
+<!--    <img src="assets/vaideeni.png" alt="">-->
+<!--  </div>-->
+<!--  <div class="reveal p-card-custom">-->
+<!--    <p-card>-->
+<!--      <p class="m-0">-->
+<!--        Într-un colț pitoresc al Vâlcii, se ascunde cu mândrie satul Vaideeni, o perlă străveche cu o istorie fascinantă ce își dezvăluie tainele încă din secolul al XVI-lea. Pe atunci, el purta denumirea enigmatică de "Vai de Ei", un nume ce părea să strige disperarea unei comunități ce își găsise refugiul aici.-->
+<!--        Această comunitate s-a născut din străvechea tradiție a transhumanței, o odisee de miile de kilometri pe cărări montane, străjuite de ciobani dăruiți păstoritului și conectați cu natura. Aici, în Vaideeni, s-au așezat mai multe familii de oieri venite din Ardeal, în special din pitoresca Mărginime a Sibiului. Drumul lor a fost unul marcat de presiuni religioase și catolicizări forțate, care i-au determinat să-și caute adăpostul în acest colț de paradis.-->
+<!--        Astfel, satul Vaideeni este mai mult decât un simplu punct pe harta geografică a României - este un sanctuar al tradițiilor, al înfruntării cu vremurile și al poveștilor ce se împletesc cu natura. Transhumanța devine o simfonie ancestrală care răsuna în inimile locuitorilor, iar istoria lor, întemeiată pe credință și perseverență, reprezintă o comoară vie, prețuită și iubită din generație în generație. Vaideeni rămâne astfel un loc în care trecutul și prezentul se întâlnesc sub cerul senin al Vâlcii.-->
+<!--      </p>-->
+<!--    </p-card>-->
+<!--  </div>-->
+<!--</div>-->
 
-<div class="container">
-  <div class="reveal">
-    <h1 style="text-align: center; padding-bottom: 2rem" id="title6">Satul Bărbătești</h1>
-    <img src="assets/vaideeni.png" alt="">
-  </div>
-  <div class="reveal p-card-custom">
-    <p-card>
-      <p class="m-0">
-        Acest colț binecuvântat al României, străbătut de râurile limpezi și împădurite, păstrează tradițiile și istoria cu sfințenie. Cu oameni harnici și ospitalieri, Bărbăteștiul este un loc în care timpul pare să se fi oprit pentru a lăsa frumusețea naturii și a tradițiilor să strălucească în toată splendoarea sa.
-        Unul dintre comorile ce definesc această localitate este Schitul Pătrunsa, un adevărat simbol de spiritualitate și liniște. Schitul, situat în mijlocul pădurii, se înalță ca o comoară a credinței și meditației. Aici, pelerinii și credincioșii se adună în căutarea păcii interioare și a armoniei cu natura. Picturile murale care împodobesc biserica schitului spun povești de credință și smerenie, amintindu-ne de rădăcinile noastre religioase și de înțelepciunea celor care au trăit și au slujit aici de-a lungul secolelor.
-      </p>
-    </p-card>
-  </div>
-</div>
+<!--<div class="container">-->
+<!--  <div class="reveal">-->
+<!--    <h1 style="text-align: center; padding-bottom: 2rem" id="title6">Satul Bărbătești</h1>-->
+<!--    <img src="assets/vaideeni.png" alt="">-->
+<!--  </div>-->
+<!--  <div class="reveal p-card-custom">-->
+<!--    <p-card>-->
+<!--      <p class="m-0">-->
+<!--        Acest colț binecuvântat al României, străbătut de râurile limpezi și împădurite, păstrează tradițiile și istoria cu sfințenie. Cu oameni harnici și ospitalieri, Bărbăteștiul este un loc în care timpul pare să se fi oprit pentru a lăsa frumusețea naturii și a tradițiilor să strălucească în toată splendoarea sa.-->
+<!--        Unul dintre comorile ce definesc această localitate este Schitul Pătrunsa, un adevărat simbol de spiritualitate și liniște. Schitul, situat în mijlocul pădurii, se înalță ca o comoară a credinței și meditației. Aici, pelerinii și credincioșii se adună în căutarea păcii interioare și a armoniei cu natura. Picturile murale care împodobesc biserica schitului spun povești de credință și smerenie, amintindu-ne de rădăcinile noastre religioase și de înțelepciunea celor care au trăit și au slujit aici de-a lungul secolelor.-->
+<!--      </p>-->
+<!--    </p-card>-->
+<!--  </div>-->
+<!--</div>-->

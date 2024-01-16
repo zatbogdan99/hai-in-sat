@@ -44,6 +44,14 @@ export class AppComponent implements OnInit{
     this.router.navigateByUrl("/contact-us");
   }
 
+  private goToUnderTheMountain() {
+    this.router.navigateByUrl("/under-the-mountain");
+  }
+
+  private goToSeeTheArea() {
+    this.router.navigateByUrl("/see-the-area");
+  }
+
   ngOnInit() {
 
     this.items = [
@@ -56,15 +64,17 @@ export class AppComponent implements OnInit{
       {
         label: 'Oltenia de sub munte',
         icon: 'pi pi-fw pi-sun',
-        command: () => this.goToInfoPage()
+        command: () => this.goToUnderTheMountain()
       },
       {
         label: 'Satul lunii',
-        icon: 'pi pi-fw pi-home'
+        icon: 'pi pi-fw pi-home',
+        command: () => this.goToInfoPage()
       },
       {
         label: 'Haide sa vezi zona!',
-        icon: 'pi pi-fw pi-eye'
+        icon: 'pi pi-fw pi-eye',
+        command: () => this.goToSeeTheArea()
       },
       {
         label: 'Case',

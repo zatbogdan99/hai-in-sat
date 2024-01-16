@@ -242,11 +242,19 @@ export class LandingPageComponent {
     });
   }
 
-  goToFormPage() {
-    this.router.navigateByUrl("/form-page");
+  goToHomeFormPage() {
+    this.router.navigateByUrl("/home-form-page");
   }
 
   goToInfoPage() {
     this.router.navigateByUrl("/info-page");
+  }
+
+  goToUnderTheMountain() {
+    this.router.navigateByUrl("/under-the-mountain");
+  }
+
+  goToSeeTheArea() {
+    this.router.navigateByUrl("/see-the-area");
   }
 }

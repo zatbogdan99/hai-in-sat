@@ -1,0 +1,28 @@
+.hai-in-sat {
+  display: inline-block;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #717171;
+  background: #fff;
+  font-weight: 500;
+  border-radius: 3.125rem;
+  border: 2px solid #c2c2c2;
+  padding: 0.625rem 1.875rem;
+  margin-top: 2.188rem;
+  max-height: 2.5rem;
+}
+
+div section div a:hover {
+  border: 0.125rem solid #005baa;
+  color: #005baa;
+}
+
+.hai-in-sat-position {
+  grid-row: 3 / -1;
+  grid-column: 1 / -1;
+  max-width: 12rem;
+}
+
+.show-more-btn {
+  max-width: 15rem;
+}

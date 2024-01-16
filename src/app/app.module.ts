@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -27,6 +27,15 @@ import { TerrainFormPageComponent } from './terrain-form-page/terrain-form-page.
 import {GalleriaModule} from "primeng/galleria";
 import {PhotoService} from "./service/photo-service";
 import { ContactUsComponent } from './contact-us/contact-us.component';
+import { UnderTheMountainComponent } from './under-the-mountain/under-the-mountain.component';
+import { SeeTheAreaComponent } from './see-the-area/see-the-area.component';
+import {DataViewModule} from "primeng/dataview";
+import {ImageModule} from "primeng/image";
+import {RatingModule} from "primeng/rating";
+// import function to register Swiper custom elements
+import { register } from 'swiper/element/bundle';
+// register Swiper custom elements
+register();
 
 @NgModule({
   declarations: [
@@ -37,7 +46,9 @@ import { ContactUsComponent } from './contact-us/contact-us.component';
     AboutUsComponent,
     InfoPageComponent,
     TerrainFormPageComponent,
-    ContactUsComponent
+    ContactUsComponent,
+    UnderTheMountainComponent,
+    SeeTheAreaComponent
   ],
   imports: [
     BrowserModule,
@@ -57,9 +68,13 @@ import { ContactUsComponent } from './contact-us/contact-us.component';
     RippleModule,
     MessagesModule,
     CardModule,
-    GalleriaModule
+    GalleriaModule,
+    DataViewModule,
+    ImageModule,
+    RatingModule
   ],
   providers: [PhotoService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }

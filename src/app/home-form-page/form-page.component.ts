@@ -15,8 +15,8 @@ import {PhotoService} from "../service/photo-service";
 export class FormPageComponent implements OnInit, AfterViewInit{
   formGroup!: FormGroup;
   sliderValue: number = 0;
-  ariaRangeValues: number[] = [0, 500000];
-  priceRangeValues: number[] = [0, 50000];
+  ariaRangeValues: number[] = [0, 500];
+  priceRangeValues: number[] = [0, 500000];
   river: boolean = false;
   neighbor: boolean = false;
 
@@ -24,7 +24,7 @@ export class FormPageComponent implements OnInit, AfterViewInit{
   }
 
   ngOnInit(): void {
-    this.ariaRangeValues = [0, 500000];
+    this.ariaRangeValues = [0, 500];
     this.priceRangeValues = [0, 500000];
   }
 

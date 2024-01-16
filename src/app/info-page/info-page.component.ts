@@ -1,8 +1,9 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {gsap, Power2} from "gsap";
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import SplitType from "split-type";
 import {PhotoService} from "../service/photo-service";
+import {TextDataModel} from "../dto/text-data.model";
 
 @Component({
   selector: 'app-info-page',
@@ -18,6 +19,7 @@ export class InfoPageComponent implements OnInit, AfterViewInit{
   vaideeniImages: any[] | undefined;
   barbatestiImages: any[] | undefined;
 
+  // @Input textData: TextDataModel = new TextDataModel();
 
   constructor(private photoService: PhotoService) {
   }
