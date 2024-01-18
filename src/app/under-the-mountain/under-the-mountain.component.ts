@@ -14,7 +14,7 @@ export class UnderTheMountainComponent {
   maxNum: number = 7;
   data: DataDto[] = [];
 
-  constructor() {
+  constructor(private router: Router) {
     let dataDto = new DataDto(
       1,
       "Horezu",
@@ -78,13 +78,13 @@ export class UnderTheMountainComponent {
   }
 
   showMore() {
-
+    this.router.navigateByUrl("/info-page");
   }
 
   playForward() {
     let tl = gsap.timeline({
       defaults: {
-        duration: 0.7,
+        duration: 0.4,
         ease: "sine.out"
       },
       onComplete: () => {
@@ -114,7 +114,7 @@ export class UnderTheMountainComponent {
         {
           clipPath: `polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)`
         },
-        "<0.4"
+        "<0.2"
       )
       .fromTo(
         "#card-info-desc",
@@ -135,7 +135,7 @@ export class UnderTheMountainComponent {
   playReverse() {
     let tl = gsap.timeline({
       defaults: {
-        duration: 0.7,
+        duration: 0.4,
         ease: "sine.in"
       },
       onComplete: () => {

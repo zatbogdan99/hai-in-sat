@@ -1,7 +1,11 @@
+<p-toast></p-toast>
 <div class="container">
   <p-menubar [model]="items">
     <ng-template pTemplate="start">
       <img style="padding-left: 4rem" src="assets/logo.png" alt="Logo" height="80" class="mr-2" (click)="goToLandingPage()"/>
+    </ng-template>
+    <ng-template pTemplate="end">
+      <fa-icon style="padding-right: 20rem" [icon]="faTiktok"></fa-icon>
     </ng-template>
   </p-menubar>
   <router-outlet></router-outlet>

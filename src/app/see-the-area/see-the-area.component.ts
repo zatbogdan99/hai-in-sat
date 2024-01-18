@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import {AreaDto} from "../dto/area.dto";
 import Swiper from "swiper";
+import 'swiper/css';
 
 @Component({
   selector: 'app-see-the-area',
@@ -25,6 +25,20 @@ export class SeeTheAreaComponent {
       pagination: {
         el: ".swiper-pagination",
         clickable: true
+      },
+      breakpoints: {
+        640: {
+          slidesPerView: 2
+        },
+        768: {
+          slidesPerView: 1
+        },
+        1024: {
+          slidesPerView: 2
+        },
+        1560: {
+          slidesPerView: 3
+        }
       }
     });
   }

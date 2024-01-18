@@ -1,10 +1,8 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
-import {LabelType, Options} from "ngx-slider-v2";
 import {gsap} from "gsap";
 import SplitType from "split-type";
 import {MessageService} from "primeng/api";
-import {PhotoService} from "../service/photo-service";
 
 @Component({
   selector: 'app-form-page',

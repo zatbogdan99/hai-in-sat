@@ -4,6 +4,7 @@ import {MenuItem, MessageService} from "primeng/api";
 import {BackgroundImageService} from "./background-image.service";
 import { gsap } from 'gsap';
 import {Router} from "@angular/router";
+import { faTiktok } from '@fortawesome/free-brands-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,7 @@ import {Router} from "@angular/router";
 export class AppComponent implements OnInit{
   title = 'hai-in-sat';
   items: MenuItem[] | undefined;
-
+  faTiktok = faTiktok;
 
   constructor(private router: Router) {
 
@@ -95,9 +96,6 @@ export class AppComponent implements OnInit{
       },
       {
         icon: 'pi pi-fw pi-facebook'
-      },
-      {
-        icon: 'fa-brands fa-tiktok'
       }
     ];
 

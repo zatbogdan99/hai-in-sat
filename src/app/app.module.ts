@@ -14,12 +14,12 @@ import {InputTextareaModule} from "primeng/inputtextarea";
 import {InputTextModule} from "primeng/inputtext";
 import {SliderModule} from "primeng/slider";
 import {PanelModule} from "primeng/panel";
-import { NgxSliderModule } from 'ngx-slider-v2';
 import {ToggleButtonModule} from "primeng/togglebutton";
 import {ChipModule} from "primeng/chip";
 import {RippleModule} from "primeng/ripple";
 import { MessagesModule } from 'primeng/messages';
 import {MessageService} from "primeng/api";
+import { ToastModule } from 'primeng/toast';
 import { AboutUsComponent } from './about-us/about-us.component';
 import {CardModule} from "primeng/card";
 import { InfoPageComponent } from './info-page/info-page.component';
@@ -32,9 +32,9 @@ import { SeeTheAreaComponent } from './see-the-area/see-the-area.component';
 import {DataViewModule} from "primeng/dataview";
 import {ImageModule} from "primeng/image";
 import {RatingModule} from "primeng/rating";
-// import function to register Swiper custom elements
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { register } from 'swiper/element/bundle';
-// register Swiper custom elements
 register();
 
 @NgModule({
@@ -62,7 +62,6 @@ register();
     InputTextModule,
     SliderModule,
     PanelModule,
-    NgxSliderModule,
     ToggleButtonModule,
     ChipModule,
     RippleModule,
@@ -71,9 +70,12 @@ register();
     GalleriaModule,
     DataViewModule,
     ImageModule,
-    RatingModule
+    RatingModule,
+    FontAwesomeModule,
+    ToastModule,
+    BrowserAnimationsModule
   ],
-  providers: [PhotoService],
+  providers: [PhotoService, MessageService],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
