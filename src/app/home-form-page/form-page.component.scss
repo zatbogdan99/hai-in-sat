@@ -38,3 +38,13 @@ h1 {
 .chipClass {
   font-size: 1.3rem;
 }
+
+.bg {
+  position: fixed;
+  top: 4rem;
+  left: 3rem;
+  z-index: -1;
+  width: 800px;
+  height: 800px;
+  opacity: 0.3;
+}

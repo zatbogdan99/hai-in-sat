@@ -35,6 +35,8 @@ import {RatingModule} from "primeng/rating";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { register } from 'swiper/element/bundle';
+import {DataService} from "./service/data-service";
+import {CommonModule} from "@angular/common";
 register();
 
 @NgModule({
@@ -73,9 +75,13 @@ register();
     RatingModule,
     FontAwesomeModule,
     ToastModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    CommonModule
   ],
-  providers: [PhotoService, MessageService],
+  providers: [
+    PhotoService,
+    MessageService,
+    DataService],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import Swiper from "swiper";
-import 'swiper/css';
+// import 'swiper/css';
 
 @Component({
   selector: 'app-see-the-area',

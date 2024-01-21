@@ -1,8 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { MenubarModule } from 'primeng/menubar';
 import {MenuItem, MessageService} from "primeng/api";
-import {BackgroundImageService} from "./background-image.service";
-import { gsap } from 'gsap';
 import {Router} from "@angular/router";
 import { faTiktok } from '@fortawesome/free-brands-svg-icons';
 

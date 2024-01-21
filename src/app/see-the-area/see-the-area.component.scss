@@ -9,9 +9,8 @@ main {
   position: relative;
   margin: 0 auto;
   width: calc(min(90rem, 90%));
-  min-height: 100vh;
   column-gap: 3rem;
-  padding-block: min(20vh, 3rem);
+  padding-block: min(10vh, 1.5rem);
 }
 
 main > div span {
@@ -52,6 +51,7 @@ main > div p {
 .swiper {
   width: 100%;
   padding-top: 3.125rem;
+  padding-left: 5rem;
 }
 
 .swiper-slide {
@@ -59,7 +59,7 @@ main > div p {
   height: 28.125rem;
   display: flex;
   flex-direction: column;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: self-start;
 }
 

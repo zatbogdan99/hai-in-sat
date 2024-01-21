@@ -37,11 +37,11 @@ section {
   box-shadow: rgba(255, 255, 255, 0.1) 0 1px 1px 0 inset,
       rgba(50, 50, 93, 0.25) 0px 50px 100px -20px
       rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
-  margin-left: 15rem;
-  margin-right: 15rem;
-  margin-top: 10rem;
-  margin-bottom: 20rem;
-  height: 30rem;
+  margin-left: 10rem;
+  margin-right: 10rem;
+  margin-top: 7rem;
+  margin-bottom: 15rem;
+  height: 35rem;
   //width: 90rem;
 }
 
@@ -49,8 +49,9 @@ section {
   display: grid;
   grid-template-rows: repeat(3, 1fr);
   //padding: 3em 3em;
-  padding-left: 1rem;
+  padding-left: 3rem;
   padding-right: 1rem;
+  padding-top: 5rem;
   width: 50rem;
   //height: 20rem;
 }
@@ -63,7 +64,7 @@ section {
 }
 
 .card-info p {
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: bold;
   align-self: start;
   line-height: 22px;
@@ -102,14 +103,15 @@ section {
 }
 
 .card-photo {
-  width: 430px;
+  width: 500px;
   position: relative;
   //background-color: ;
   object-fit: cover;
   overflow: hidden;
   padding-right: 1rem;
-  padding-top: 1rem;
+  padding-top: 2rem;
   padding-bottom: 1rem;
+  margin-left: 7rem;
 }
 
 .card-photo img {
