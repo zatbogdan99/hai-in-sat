@@ -11,7 +11,7 @@ export class TerrainFormPageComponent implements OnInit{
   formGroup!: FormGroup;
   sliderValue: number = 0;
   ariaRangeValues: number[] = [0, 50000];
-  priceRangeValues: number[] = [0, 50000];
+  priceRangeValues: number[] = [0, 200000];
   river: boolean = false;
   mountain: boolean = false;
   isolated: boolean = false;
@@ -21,7 +21,7 @@ export class TerrainFormPageComponent implements OnInit{
 
   ngOnInit(): void {
     this.ariaRangeValues = [0, 50000];
-    this.priceRangeValues = [0, 50000];
+    this.priceRangeValues = [0, 200000];
   }
 
   sendRequest() {

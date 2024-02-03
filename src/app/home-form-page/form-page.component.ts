@@ -13,8 +13,8 @@ import {MessageService} from "primeng/api";
 export class FormPageComponent implements OnInit, AfterViewInit{
   formGroup!: FormGroup;
   sliderValue: number = 0;
-  ariaRangeValues: number[] = [0, 500];
-  priceRangeValues: number[] = [0, 500000];
+  ariaRangeValues: number[] = [0, 30];
+  priceRangeValues: number[] = [0, 200000];
   river: boolean = false;
   neighbor: boolean = false;
 
@@ -22,8 +22,8 @@ export class FormPageComponent implements OnInit, AfterViewInit{
   }
 
   ngOnInit(): void {
-    this.ariaRangeValues = [0, 500];
-    this.priceRangeValues = [0, 500000];
+    this.ariaRangeValues = [0, 30];
+    this.priceRangeValues = [0, 200000];
   }
 
   ngAfterViewInit() {
