@@ -37,6 +37,10 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {DataService} from "./service/data-service";
 import {CommonModule} from "@angular/common";
 import { register } from 'swiper/element/bundle';
+import {VgCoreModule} from "@videogular/ngx-videogular/core";
+import {VgControlsModule} from "@videogular/ngx-videogular/controls";
+import {VgOverlayPlayModule} from "@videogular/ngx-videogular/overlay-play";
+import {VgBufferingModule} from "@videogular/ngx-videogular/buffering";
 register();
 
 @NgModule({
@@ -76,7 +80,11 @@ register();
     FontAwesomeModule,
     ToastModule,
     BrowserAnimationsModule,
-    CommonModule
+    CommonModule,
+    VgCoreModule,
+    VgControlsModule,
+    VgOverlayPlayModule,
+    VgBufferingModule
   ],
   providers: [
     PhotoService,

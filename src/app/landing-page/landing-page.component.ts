@@ -10,6 +10,9 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {MenuItem} from "primeng/api";
 import {Router} from "@angular/router";
+import { faTiktok } from '@fortawesome/free-brands-svg-icons';
+import { faSquareFacebook } from "@fortawesome/free-brands-svg-icons";
+import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -26,6 +29,11 @@ export class LandingPageComponent {
   @ViewChild('imageSecond', { static: true }) imageSecond!: ElementRef<HTMLDivElement>;
 
   items: MenuItem[] | undefined;
+
+  faTiktok = faTiktok;
+  faSquareFacebook = faSquareFacebook;
+  faInstagram = faInstagram;
+
 
   constructor(@Inject(DOCUMENT) private document: Document, private router: Router) {}
 
@@ -256,5 +264,17 @@ export class LandingPageComponent {
 
   goToSeeTheArea() {
     this.router.navigateByUrl("/see-the-area");
+  }
+
+  goToTikTokPage() {
+
+  }
+
+  goToFacebookPage() {
+
+  }
+
+  goToInstagramPage() {
+
   }
 }

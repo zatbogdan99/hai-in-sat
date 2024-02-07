@@ -15,7 +15,7 @@
 			"prefix": "app",
 			"architect": {
 				"build": {
-					"builder": "@angular-builders/custom-webpack:browser",
+					"builder": "@angular-devkit/build-angular:browser",
 					"options": {
 						"outputPath": "dist/hai-in-sat",
 						"index": "src/index.html",
@@ -29,15 +29,13 @@
 							"src/assets"
 						],
 						"styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/@videogular/ngx-videogular/fonts/videogular.css"
 //              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
 //              "node_modules/primeng/resources/primeng.min.css",
 //              "node_modules/primeicons/primeicons.css"
             ],
-						"scripts": [],
-            "customWebpackConfig": {
-              "path": "./extra-webpack.config.js"
-            }
+						"scripts": []
           },
 					"configurations": {
 						"production": {
@@ -67,7 +65,7 @@
 					"defaultConfiguration": "production"
 				},
 				"serve": {
-					"builder": "@angular-builders/custom-webpack:dev-server",
+					"builder": "@angular-devkit/build-angular:dev-server",
 					"configurations": {
 						"production": {
 							"browserTarget": "hai-in-sat:build:production"
@@ -79,13 +77,13 @@
 					"defaultConfiguration": "development"
 				},
 				"extract-i18n": {
-					"builder": "@angular-builders/custom-webpack:extract-i18n",
+					"builder": "@angular-devkit/build-angular:extract-i18n",
 					"options": {
 						"browserTarget": "hai-in-sat:build"
 					}
 				},
 				"test": {
-					"builder": "@angular-builders/custom-webpack:karma",
+					"builder": "@angular-devkit/build-angular:karma",
 					"options": {
 						"polyfills": [
 							"zone.js",

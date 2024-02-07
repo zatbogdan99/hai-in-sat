@@ -6,6 +6,7 @@ import {PhotoService} from "../service/photo-service";
 import {TextDataModel} from "../dto/text-data.model";
 import {DataDto} from "../dto/data.dto";
 import {DataService} from "../service/data-service";
+import {VgApiService} from "@videogular/ngx-videogular/core";
 
 @Component({
   selector: 'app-info-page',
@@ -24,6 +25,9 @@ export class InfoPageComponent implements OnInit, AfterViewInit{
   data: DataDto[] = [];
 
   villageId: number = 0;
+
+  preload: string = 'auto';
+  api: VgApiService = new VgApiService;
 
   constructor(private photoService: PhotoService, private service: DataService) {
     this.service.village$.subscribe(value => {
@@ -146,5 +150,16 @@ export class InfoPageComponent implements OnInit, AfterViewInit{
 
   isHorezu() {
     return this.villageId === 0;
+  }
+
+  onPlayerReady(source: VgApiService) {
+    this.api = source;
+    this.api.getDefaultMedia().subscriptions.loadedMetadata.subscribe(
+      this.autoplay.bind(this)
+    )
+  }
+
+  autoplay() {
+    this.api.play();
   }
 }

@@ -90,12 +90,18 @@
     <div class="info-1">
       <div class="info-1__text">
         <h2 class="heading-3">
-          Te-am convins?
+          Cu noi visul tau devine realitate!
         </h2>
+        <div class="contact">
+          <fa-icon (click)="goToTikTokPage()" class="fa-2x" style="padding-left: 2rem" [icon]="faTiktok"></fa-icon>
+          <fa-icon (click)="goToFacebookPage()" class="fa-2x" style="padding-left: 3rem" [icon]="faSquareFacebook"></fa-icon>
+          <fa-icon (click)="goToInstagramPage()" class="fa-2x" style="padding-left: 3rem" [icon]="faInstagram"></fa-icon>
+        </div>
         <p class="paragraph">
           Tot ce trebuie sa faci este sa ne spui ce iti doresti,
           cum arata si unde se pozitioneaza casa ta intr-o zonă superbă,
           iar noi vom veni cu cel putin 3 variante din care sa alegi.
+          <br><br><br>
           <a class="hai-in-sat" style="max-height: 10rem" (click)="goToHomeFormPage()">FORMULAR</a>
         </p>
         <p class="paragraph">
@@ -103,6 +109,7 @@
           Te poti caza in zona la localnici, poti manca ceva bun
           traditional si poti merge intr-o drumetie organizata
           de noi. Nu vei mai vrea sa pleci acasa!
+          <br><br><br>
           <a class="hai-in-sat" style="max-height: 10rem" (click)="goToSeeTheArea()">HAI IN SAT</a>
         </p>
       </div>

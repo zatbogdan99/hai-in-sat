@@ -13,17 +13,48 @@
         </p>
       </p-card>
     </div>
-      <p-galleria class="galeria-style" [value]="horezuImages" [autoPlay]="true" [circular]="true" [numVisible]="5" [showThumbnails]="false"
-                  [showItemNavigators]="true" [containerStyle]="{ 'max-width': '40rem', 'max-height': '45rem' }">
-        <ng-template pTemplate="item" let-item>
-          <img [src]="item.itemImageSrc"/>
-        </ng-template>
-        <ng-template pTemplate="thumbnail" let-item>
-          <div class="grid grid-nogutter justify-content-center">
-            <img [src]="item.thumbnailImageSrc" />
-          </div>
-        </ng-template>
-      </p-galleria>
+<!--      <p-galleria class="galeria-style" [value]="horezuImages" [autoPlay]="true" [circular]="true" [numVisible]="5" [showThumbnails]="false"-->
+<!--                  [showItemNavigators]="true" [containerStyle]="{ 'max-width': '40rem', 'max-height': '45rem' }">-->
+<!--        <ng-template pTemplate="item" let-item>-->
+<!--          <img [src]="item.itemImageSrc"/>-->
+<!--        </ng-template>-->
+<!--        <ng-template pTemplate="thumbnail" let-item>-->
+<!--          <div class="grid grid-nogutter justify-content-center">-->
+<!--            <img [src]="item.thumbnailImageSrc" />-->
+<!--          </div>-->
+<!--        </ng-template>-->
+<!--      </p-galleria>-->
+<div style="max-width: 45rem; max-height: 32.5rem; padding-left: 3rem">
+    <vg-player (onPlayerReady)="onPlayerReady($event)">
+      <vg-overlay-play></vg-overlay-play>
+      <vg-buffering></vg-buffering>
+      <vg-scrub-bar>
+        <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+        <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+      </vg-scrub-bar>
+      <vg-controls>
+        <vg-play-pause></vg-play-pause>
+        <vg-playback-button></vg-playback-button>
+        <vg-time-display></vg-time-display>
+        <vg-scrub-bar style="pointer-events: none"></vg-scrub-bar>
+        <vg-time-display property="left"></vg-time-display>
+        <vg-time-display property="total"></vg-time-display>
+        <vg-track-selector></vg-track-selector>
+        <vg-mute></vg-mute>
+        <vg-volume></vg-volume>
+        <vg-fullscreen></vg-fullscreen>
+      </vg-controls>
+      <video [vgMedia]="$any(media)"
+        #media id="singleVideo"
+        preload="auto"
+        src="assets/cat_-_65438%20(1080p).mp4"
+        crossorigin>
+      </video>
+    </vg-player>
+</div>
+
+
+
   </div>
 </div>
 
