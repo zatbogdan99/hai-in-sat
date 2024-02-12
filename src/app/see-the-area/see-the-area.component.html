@@ -9,201 +9,46 @@
   <img style="width: 300px; height: 300px; margin-right: 20rem" alt="Card" src="assets/slogan.png" />
 </div>
 
+<div style="display: flex; padding-left: 14rem; padding-top: 3rem">
+  <p-card *ngIf="isRentValid()" [style]="{ width: '600px' }">
+    <ng-template pTemplate="header">
+      <div style="display: flex">
+        <img style="width: 200px; height: 200px; margin-left: 7rem" alt="Card" src="assets/slogan.png" />
+        <h1 style="padding-top: 5rem; padding-left: 5rem">Închiriază</h1>
+      </div>
+    </ng-template>
+    <p style="font-size: 24px; text-align: center">
+      Case care pot fi ale tale printr-un simplu click <br><br>
+    </p>
+    <ng-template pTemplate="footer">
+      <div style="text-align: center">
+        <p-button label="HAI IN SAT" icon="pi pi-check" (onClick)="changeToRent()"></p-button>
+      </div>
+    </ng-template>
+  </p-card>
 
+<!--  <img style="width: 400px; height: 400px; margin-right: 10rem; margin-left: 10rem; margin-top: 4rem;" alt="Card" src="assets/slogan.png" />-->
 
-<main>
-  <div>
-    <span>Hai in sat</span>
-    <h1>Nea Vasile</h1>
-    <hr>
-    <p style="max-width: 40rem">În satul Slătioara se află casa lui Nea Vasile. Cu o gospodărie mare plina de gaini si porci
-      va primeste cu bratele deschise sa vizitati zona olteniei de sub munte</p>
+  <div style="padding-left: 10rem">
+    <p-card *ngIf="isRentValid()" [style]="{ width: '600px'}">
+      <ng-template pTemplate="header">
+        <div style="display: flex">
+          <h1 style="padding-top: 5rem; padding-left: 5rem">Cumpără</h1>
+          <img style="width: 200px; height: 200px; margin-left: 7rem" alt="Card" src="assets/slogan.png" />
+        </div>
+      </ng-template>
+      <p style="font-size: 24px; text-align: center">
+        Case in care ai putea sa locuiesti pentru a te bucura de aceasta zona
+      </p>
+      <ng-template pTemplate="footer">
+        <div style="text-align: center">
+          <p-button label="HAI IN SAT" icon="pi pi-check" (onClick)="changeToRent()"></p-button>
+        </div>
+      </ng-template>
+    </p-card>
   </div>
 
-  <div class="swiper">
-    <div class="swiper-wrapper">
-      <div class="swiper-slide swiper-slide-one">
-        <div>
-<!--          <h2>Nea Vasile</h2>-->
-<!--          <p>În satul Slătioara se află casa lui Nea Vasile. Cu o gospodărie mare plina de gaini si porci-->
-<!--          va primeste cu bratele deschise sa vizitati zona olteniei de sub munte</p>-->
-<!--          <a href="" target="_blank">Mai multe</a>-->
-        </div>
-      </div>
-
-      <div class="swiper-slide swiper-slide-two">
-        <div>
-<!--          <h2>Nea Vasile</h2>-->
-<!--          <p>În satul Slătioara se află casa lui Nea Vasile. Cu o gospodărie mare plina de gaini si porci-->
-<!--            va primeste cu bratele deschise sa vizitati zona olteniei de sub munte</p>-->
-<!--          <a href="" target="_blank">Mai multe</a>-->
-        </div>
-      </div>
-
-      <div class="swiper-slide swiper-slide-three">
-        <div>
-<!--          <h2>Nea Vasile</h2>-->
-<!--          <p>În satul Slătioara se află casa lui Nea Vasile. Cu o gospodărie mare plina de gaini si porci-->
-<!--            va primeste cu bratele deschise sa vizitati zona olteniei de sub munte</p>-->
-<!--          <a href="" target="_blank">Mai multe</a>-->
-        </div>
-      </div>
-
-<!--      <div class="swiper-slide swiper-slide-four">-->
-<!--        <div>-->
-<!--          <h2>Nea Vasile</h2>-->
-<!--          <p>În satul Slătioara se află casa lui Nea Vasile. Cu o gospodărie mare plina de gaini si porci-->
-<!--            va primeste cu bratele deschise sa vizitati zona olteniei de sub munte</p>-->
-<!--          <a href="" target="_blank">Mai multe</a>-->
-<!--        </div>-->
-<!--      </div>-->
-
-<!--      <div class="swiper-slide swiper-slide-five">-->
-<!--        <div>-->
-<!--          <h2>Nea Vasile</h2>-->
-<!--          <p>În satul Slătioara se află casa lui Nea Vasile. Cu o gospodărie mare plina de gaini si porci-->
-<!--            va primeste cu bratele deschise sa vizitati zona olteniei de sub munte</p>-->
-<!--          <a href="" target="_blank">Mai multe</a>-->
-<!--        </div>-->
-<!--      </div>-->
-
-      <!-- Add Pagination -->
-<!--      <div class="swiper-pagination"></div>-->
-      <!-- Add Navigation -->
-<!--      <div class="swiper-button-prev"></div>-->
-<!--      <div class="swiper-button-next"></div>-->
-    </div>
-  </div>
-</main>
+</div>
 
 
-<main>
-  <div>
-    <span>Hai in sat</span>
-    <h1>Nea Ion</h1>
-    <hr>
-    <p style="max-width: 40rem">În satul Slătioara se află casa lui Nea Ion. Cu o gospodărie mare plina de gaini si porci
-      va primeste cu bratele deschise sa vizitati zona olteniei de sub munte</p>
-  </div>
-
-  <div class="swiper">
-    <div class="swiper-wrapper">
-      <div class="swiper-slide swiper-slide-one">
-        <div>
-<!--          <h2>Nea Vasile</h2>-->
-<!--          <p>În satul Slătioara se află casa lui Nea Vasile. Cu o gospodărie mare plina de gaini si porci-->
-<!--            va primeste cu bratele deschise sa vizitati zona olteniei de sub munte</p>-->
-<!--          <a href="" target="_blank">Mai multe</a>-->
-        </div>
-      </div>
-
-      <div class="swiper-slide swiper-slide-two">
-        <div>
-<!--          <h2>Nea Vasile</h2>-->
-<!--          <p>În satul Slătioara se află casa lui Nea Vasile. Cu o gospodărie mare plina de gaini si porci-->
-<!--            va primeste cu bratele deschise sa vizitati zona olteniei de sub munte</p>-->
-<!--          <a href="" target="_blank">Mai multe</a>-->
-        </div>
-      </div>
-
-      <div class="swiper-slide swiper-slide-three">
-        <div>
-<!--          <h2>Nea Vasile</h2>-->
-<!--          <p>În satul Slătioara se află casa lui Nea Vasile. Cu o gospodărie mare plina de gaini si porci-->
-<!--            va primeste cu bratele deschise sa vizitati zona olteniei de sub munte</p>-->
-<!--          <a href="" target="_blank">Mai multe</a>-->
-        </div>
-      </div>
-
-      <!--      <div class="swiper-slide swiper-slide-four">-->
-      <!--        <div>-->
-      <!--          <h2>Nea Vasile</h2>-->
-      <!--          <p>În satul Slătioara se află casa lui Nea Vasile. Cu o gospodărie mare plina de gaini si porci-->
-      <!--            va primeste cu bratele deschise sa vizitati zona olteniei de sub munte</p>-->
-      <!--          <a href="" target="_blank">Mai multe</a>-->
-      <!--        </div>-->
-      <!--      </div>-->
-
-      <!--      <div class="swiper-slide swiper-slide-five">-->
-      <!--        <div>-->
-      <!--          <h2>Nea Vasile</h2>-->
-      <!--          <p>În satul Slătioara se află casa lui Nea Vasile. Cu o gospodărie mare plina de gaini si porci-->
-      <!--            va primeste cu bratele deschise sa vizitati zona olteniei de sub munte</p>-->
-      <!--          <a href="" target="_blank">Mai multe</a>-->
-      <!--        </div>-->
-      <!--      </div>-->
-
-      <!-- Add Pagination -->
-      <!--      <div class="swiper-pagination"></div>-->
-      <!-- Add Navigation -->
-      <!--      <div class="swiper-button-prev"></div>-->
-      <!--      <div class="swiper-button-next"></div>-->
-    </div>
-  </div>
-</main>
-
-
-<main>
-  <div>
-    <span>Hai in sat</span>
-    <h1>Gheorghe</h1>
-    <hr>
-    <p style="max-width: 40rem">În satul Slătioara se află casa lui Gheorghe. Cu o gospodărie mare plina de gaini si porci
-      va primeste cu bratele deschise sa vizitati zona olteniei de sub munte</p>
-  </div>
-
-  <div class="swiper">
-    <div class="swiper-wrapper">
-      <div class="swiper-slide swiper-slide-one">
-        <div>
-          <!--          <h2>Nea Vasile</h2>-->
-          <!--          <p>În satul Slătioara se află casa lui Nea Vasile. Cu o gospodărie mare plina de gaini si porci-->
-          <!--            va primeste cu bratele deschise sa vizitati zona olteniei de sub munte</p>-->
-          <!--          <a href="" target="_blank">Mai multe</a>-->
-        </div>
-      </div>
-
-      <div class="swiper-slide swiper-slide-two">
-        <div>
-          <!--          <h2>Nea Vasile</h2>-->
-          <!--          <p>În satul Slătioara se află casa lui Nea Vasile. Cu o gospodărie mare plina de gaini si porci-->
-          <!--            va primeste cu bratele deschise sa vizitati zona olteniei de sub munte</p>-->
-          <!--          <a href="" target="_blank">Mai multe</a>-->
-        </div>
-      </div>
-
-      <div class="swiper-slide swiper-slide-three">
-        <div>
-          <!--          <h2>Nea Vasile</h2>-->
-          <!--          <p>În satul Slătioara se află casa lui Nea Vasile. Cu o gospodărie mare plina de gaini si porci-->
-          <!--            va primeste cu bratele deschise sa vizitati zona olteniei de sub munte</p>-->
-          <!--          <a href="" target="_blank">Mai multe</a>-->
-        </div>
-      </div>
-
-      <!--      <div class="swiper-slide swiper-slide-four">-->
-      <!--        <div>-->
-      <!--          <h2>Nea Vasile</h2>-->
-      <!--          <p>În satul Slătioara se află casa lui Nea Vasile. Cu o gospodărie mare plina de gaini si porci-->
-      <!--            va primeste cu bratele deschise sa vizitati zona olteniei de sub munte</p>-->
-      <!--          <a href="" target="_blank">Mai multe</a>-->
-      <!--        </div>-->
-      <!--      </div>-->
-
-      <!--      <div class="swiper-slide swiper-slide-five">-->
-      <!--        <div>-->
-      <!--          <h2>Nea Vasile</h2>-->
-      <!--          <p>În satul Slătioara se află casa lui Nea Vasile. Cu o gospodărie mare plina de gaini si porci-->
-      <!--            va primeste cu bratele deschise sa vizitati zona olteniei de sub munte</p>-->
-      <!--          <a href="" target="_blank">Mai multe</a>-->
-      <!--        </div>-->
-      <!--      </div>-->
-
-      <!-- Add Pagination -->
-      <!--      <div class="swiper-pagination"></div>-->
-      <!-- Add Navigation -->
-      <!--      <div class="swiper-button-prev"></div>-->
-      <!--      <div class="swiper-button-next"></div>-->
-    </div>
-  </div>
-</main>
+<app-see-the-area-rent *ngIf="isRentSelected()"></app-see-the-area-rent>

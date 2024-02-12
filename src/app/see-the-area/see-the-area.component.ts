@@ -1,48 +1,31 @@
-import { Component } from '@angular/core';
-import Swiper from "swiper";
-// import 'swiper/css';
-// import 'swiper/css/navigation';
-// import 'swiper/css/pagination';
+import {AfterViewInit, Component} from '@angular/core';
 
 @Component({
   selector: 'app-see-the-area',
   templateUrl: './see-the-area.component.html',
   styleUrls: ['./see-the-area.component.scss']
 })
-export class SeeTheAreaComponent {
+export class SeeTheAreaComponent{
+
+  rent: number = -1;
 
   constructor() {
-    let swiper = new Swiper(".swiper", {
-      effect: "coverflow",
-      grabCursor: true,
-      centeredSlides: true,
-      coverflowEffect: {
-        rotate: 0,
-        stretch: 0,
-        depth: 100,
-        modifier: 3,
-        slideShadows: true
-      },
-      loop: true,
-      pagination: {
-        el: ".swiper-pagination",
-        clickable: true
-      },
-      breakpoints: {
-        640: {
-          slidesPerView: 2
-        },
-        768: {
-          slidesPerView: 1
-        },
-        1024: {
-          slidesPerView: 2
-        },
-        1560: {
-          slidesPerView: 3
-        }
-      }
-    });
+
   }
 
+  isRentSelected() {
+    return this.rent === 1;
+  }
+
+  isBuySelected() {
+    return this.rent === 0;
+  }
+
+  changeToRent() {
+    this.rent = 1;
+  }
+
+  isRentValid() {
+    return this.rent === -1;
+  }
 }
