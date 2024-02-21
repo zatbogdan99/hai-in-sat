@@ -5,8 +5,9 @@
       <hr>
       <p>Echipa noastră poate fi ghidul dvs. în această călătorie de transformare. Suntem aici să vă prezentăm oportunitățile incredibile <br> pe care viața la țară le oferă. Alegeți să faceți pasul și să explorați ce înseamnă cu adevărat să trăiești.</p>
     </div>
+    <p-button *ngIf="rent!==-1" label="Înapoi" icon="pi pi-arrow-left" size="large" (onClick)="onBack()"></p-button>
   </main>
-  <img style="width: 300px; height: 300px; margin-right: 20rem" alt="Card" src="assets/slogan.png" />
+  <img *ngIf="rent===-1" style="width: 300px; height: 300px; margin-right: 20rem" alt="Card" src="assets/slogan.png" />
 </div>
 
 <div style="display: flex; padding-left: 14rem; padding-top: 3rem">
@@ -42,7 +43,7 @@
       </p>
       <ng-template pTemplate="footer">
         <div style="text-align: center">
-          <p-button label="HAI IN SAT" icon="pi pi-check" (onClick)="changeToRent()"></p-button>
+          <p-button label="HAI IN SAT" icon="pi pi-check" (onClick)="changeToBuy()"></p-button>
         </div>
       </ng-template>
     </p-card>
@@ -52,3 +53,5 @@
 
 
 <app-see-the-area-rent *ngIf="isRentSelected()"></app-see-the-area-rent>
+
+<app-see-the-area-buy *ngIf="isBuySelected()"></app-see-the-area-buy>

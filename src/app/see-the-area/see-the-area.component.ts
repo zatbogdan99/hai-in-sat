@@ -28,4 +28,12 @@ export class SeeTheAreaComponent{
   isRentValid() {
     return this.rent === -1;
   }
+
+  onBack() {
+    this.rent = -1;
+  }
+
+  changeToBuy() {
+    this.rent = 0;
+  }
 }
