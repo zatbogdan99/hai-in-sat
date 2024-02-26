@@ -3,29 +3,6 @@
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 @import 'swiper/css/bundle';
-//@import 'swiper/swiper-bundle.min.css';
-
-/*.char {*/
-/*  transform: translateY(115px);*/
-/*  transition: transform .5s;*/
-/*}*/
-
-/*body {*/
-/*background-image: url('/assets/oras.jpg');*/
-/*background-size: cover;*/
-/*background-repeat: no-repeat;*/
-/*background-position: center;*/
-/*transition: background-image 0.5s ease;*/
-/*margin: 0;*/
-/*}*/
-
-
-//*,
-//*::before,
-//*::after {
-//  margin: 0;
-//  padding: 0;
-//}
 
 .despreNoiStyle {
   padding-left: 5rem;
@@ -148,4 +125,24 @@ img {
     font-family: cursive;
     font-size: 30px;
   }
+}
+
+.swiper-slide-one {
+  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./assets/casa.jpg) no-repeat 50% 50%/cover;
+}
+
+.swiper-slide-two {
+  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./assets/munte1.jpeg) no-repeat 50% 50%/cover;
+}
+
+.swiper-slide-three {
+  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./assets/munte2.jpeg) no-repeat 50% 50%/cover;
+}
+
+.swiper-slide-four {
+  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./assets/munte3.jpeg) no-repeat 50% 50%/cover;
+}
+
+.swiper-slide-five {
+  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./assets/oras.jpg) no-repeat 50% 50%/cover;
 }

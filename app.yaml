@@ -1,0 +1,14 @@
+runtime: nodejs18
+
+instance_class: F2
+
+env_variables:
+  BUCKET_NAME: "hai-in-sat-bucket"
+
+handlers:
+  - url: /
+    static_files: dist/hai-in-sat/index.html
+    upload: dist/hai-in-sat/index.html
+
+  - url: /
+    static_dir: dist/hai-in-sat

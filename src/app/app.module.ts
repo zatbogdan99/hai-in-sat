@@ -41,6 +41,8 @@ import {VgCoreModule} from "@videogular/ngx-videogular/core";
 import {VgControlsModule} from "@videogular/ngx-videogular/controls";
 import {VgOverlayPlayModule} from "@videogular/ngx-videogular/overlay-play";
 import {VgBufferingModule} from "@videogular/ngx-videogular/buffering";
+import { SeeTheAreaRentComponent } from './see-the-area-rent/see-the-area-rent.component';
+import { SeeTheAreaBuyComponent } from './see-the-area-buy/see-the-area-buy.component';
 register();
 
 @NgModule({
@@ -54,7 +56,9 @@ register();
     TerrainFormPageComponent,
     ContactUsComponent,
     UnderTheMountainComponent,
-    SeeTheAreaComponent
+    SeeTheAreaComponent,
+    SeeTheAreaRentComponent,
+    SeeTheAreaBuyComponent
   ],
   imports: [
     BrowserModule,
