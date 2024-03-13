@@ -127,6 +127,32 @@ img {
   }
 }
 
+@media only screen and (min-width: 200px) and (max-width: 767px)  {
+  .info {
+    position: absolute;
+    z-index: 20;
+    top: 20%;
+    display: inline;
+    grid-row-gap: 20px;
+    margin-left: 20px;
+
+    h1.heading-1 {
+      font-size: 50px;
+      font-weight: 600;
+      padding-top: 12rem;
+    }
+
+    p.paragraph {
+      font-size: 2rem;
+    }
+
+    a.btn--start {
+      font-family: cursive;
+      font-size: 15rem;
+    }
+  }
+}
+
 .swiper-slide-one {
   background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./assets/casa.jpg) no-repeat 50% 50%/cover;
 }

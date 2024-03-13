@@ -25,10 +25,9 @@ h1 {
 }
 
 .container {
-  display: flex; /* Use Flexbox */
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically (optional) */
-  //height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .element {
@@ -47,4 +46,83 @@ h1 {
   width: 800px;
   height: 800px;
   opacity: 0.3;
+}
+
+.h1-style {
+  text-align: center;
+}
+
+.h2-style {
+  text-align: center;
+  max-width: 60rem;
+}
+
+.div-style {
+  padding-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.name-style {
+  padding: 10px;
+  //width: 100%;
+}
+
+.surname-style {
+  margin-bottom: 2rem;
+  width: 30rem;
+}
+
+.span-style {
+  margin-bottom: 2rem;
+  width: 50rem;
+}
+
+//mobile
+@media only screen and (max-width: 415px) {
+  .small-screen {
+    display: block;
+  }
+  .large-screen {
+    display: none;
+  }
+  .h1-style {
+    text-align: center;
+    font-size: 1.5rem;
+  }
+  .h2-style {
+    text-align: center;
+    max-width: 60rem;
+  }
+  .div-style {
+    padding-top: 5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .container {
+    display: inline;
+    justify-content: center;
+    align-items: center;
+  }
+  .bg {
+    position: fixed;
+    top: 4rem;
+    left: 3rem;
+    z-index: -1;
+    width: 400px;
+    height: 400px;
+    opacity: 0.3;
+  }
+}
+
+//desktop
+@media only screen and (min-width: 415px) {
+  .small-screen {
+    display: none;
+  }
+  .large-screen {
+    display: block;
+  }
 }

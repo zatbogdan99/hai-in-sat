@@ -3,6 +3,8 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {gsap} from "gsap";
 import SplitType from "split-type";
 import {MessageService} from "primeng/api";
+import {HomeFormServiceService} from "../service/home-form-service/home-form-service.service";
+import {HomeFormDto} from "../dto/home-form.dto";
 
 @Component({
   selector: 'app-form-page',
@@ -18,7 +20,8 @@ export class FormPageComponent implements OnInit, AfterViewInit{
   river: boolean = false;
   neighbor: boolean = false;
 
-  constructor(private messageService: MessageService) {
+  constructor(private messageService: MessageService,
+              private homeFormService: HomeFormServiceService) {
   }
 
   ngOnInit(): void {
@@ -40,6 +43,16 @@ export class FormPageComponent implements OnInit, AfterViewInit{
   }
 
   sendRequest() {
-    this.messageService.add({severity:'success', summary:'HAI IN SAT', detail:'Formularul a fost trimis cu succes'});
+    const formData: HomeFormDto = new HomeFormDto();
+    this.messageService.add({severity:'success', summary:'HAI IN SAT', detail:'Am apasat'});
+    this.homeFormService.sendHomeEmails(formData).subscribe({
+      next: (response) => {
+        this.messageService.add({severity:'success', summary:'HAI IN SAT', detail:'Formularul a fost trimis cu succes'});
+      },
+      error: (error) => {
+        console.error('There was an error!', error);
+      }
+    })
+
   }
 }

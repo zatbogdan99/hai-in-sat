@@ -43,6 +43,7 @@ import {VgOverlayPlayModule} from "@videogular/ngx-videogular/overlay-play";
 import {VgBufferingModule} from "@videogular/ngx-videogular/buffering";
 import { SeeTheAreaRentComponent } from './see-the-area-rent/see-the-area-rent.component';
 import { SeeTheAreaBuyComponent } from './see-the-area-buy/see-the-area-buy.component';
+import {HttpClientModule} from "@angular/common/http";
 register();
 
 @NgModule({
@@ -88,7 +89,8 @@ register();
     VgCoreModule,
     VgControlsModule,
     VgOverlayPlayModule,
-    VgBufferingModule
+    VgBufferingModule,
+    HttpClientModule
   ],
   providers: [
     PhotoService,
