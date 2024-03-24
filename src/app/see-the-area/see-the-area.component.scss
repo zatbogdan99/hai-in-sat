@@ -120,3 +120,23 @@ main > div p {
   }
 }
 
+//mobile
+@media only screen and (max-width: 415px) {
+  .small-screen {
+    display: block;
+  }
+  .large-screen {
+    display: none;
+  }
+}
+
+//desktop
+@media only screen and (min-width: 415px) {
+  .small-screen {
+    display: none;
+  }
+  .large-screen {
+    display: block;
+  }
+}
+
