@@ -12,6 +12,22 @@
   max-height: 2.5rem;
 }
 
+.hai-in-sat-mobile {
+  display: inline-block;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #717171;
+  background: #fff;
+  font-weight: 500;
+  border-radius: 3.125rem;
+  border: 2px solid #c2c2c2;
+  padding: 0.625rem 1.875rem;
+  margin-top: 2.188rem;
+  margin-bottom: 2rem;
+  margin-left: 6rem;
+  max-height: 2.5rem;
+}
+
 div section div a:hover {
   border: 0.125rem solid #005baa;
   color: #005baa;
@@ -21,6 +37,11 @@ div section div a:hover {
   grid-row: 3 / -1;
   grid-column: 1 / -1;
   max-width: 12rem;
+}
+
+.mobile-hai-in-sat-position {
+  max-width: 12rem;
+  text-align: center;
 }
 
 .show-more-btn {
@@ -396,5 +417,25 @@ div section div a:hover {
     padding: 0.625rem 1.875rem;
     margin-top: 2.188rem;
     max-height: 2.5rem;
+  }
+}
+
+//mobile
+@media only screen and (max-width: 415px) {
+  .small-screen {
+    display: block;
+  }
+  .large-screen {
+    display: none;
+  }
+}
+
+//desktop
+@media only screen and (min-width: 415px) {
+  .small-screen {
+    display: none;
+  }
+  .large-screen {
+    display: block;
   }
 }

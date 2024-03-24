@@ -1,3 +1,4 @@
+<div class="large-screen">
 <div class="main">
   <section class="first-section">
     <div class="info">
@@ -92,4 +93,95 @@
     </div>
 
   </section>
+</div>
+</div>
+
+
+
+
+<div class="small-screen">
+  <div>
+    <section>
+      <div>
+        <h1 style="text-align: center">
+          Este momentul unei schimbări în viața ta?
+        </h1>
+        <h1 style="text-align: center">Te apasă stresul produs de orașul supraaglomerat?</h1>
+        <div class="image-container">
+          <img class="imageFirst"
+               #imageFirst
+               src="assets/trafic.jpg"
+               alt=""
+          />
+        </div>
+        <h1 style="text-align: center">Ești sincer cu tine?</h1>
+        <p>
+          Dacă răspunzi cu "Da" la aceste întrebări, noi îți oferim soluția.
+        </p>
+        <a (click)="goToHomeFormPage()" class="btn hai-in-sat-mobile mobile-hai-in-sat-position">HAI IN SAT !!!</a>
+      </div>
+    </section>
+
+
+    <section #secondSection>
+      <div class="box"></div>
+      <h4 class="heading-4">Despre noi</h4>
+      <h1 class="heading-1">Noi iti putem oferi casa mult visata la sat</h1>
+      <div>
+        <img style="height: 100%" src="assets/casa_taraneasca.jpg" alt="">
+      </div>
+      <div class="info-1">
+        <div class="info-1__text">
+          <h2 class="heading-3">
+            E momentul sa faci pasul! <br> Noi îți suntem alături!
+          </h2>
+          <p class="paragraph">
+            Hai în sat! Îți vine în ajutor și îți prezintă una dintre cele mai frumoase și spectaculoase zone
+            ale țării noaste, aceasta fiind Oltenia de sub munte. Imaginează-ți să-ți începi diminețile cu
+            sunetul liniștii, să-ți savurezi cafeaua privind asupra unui peisaj de vis și să-ți petreci serile
+            sub cerul înstelat. Viața la țară nu înseamnă doar a te retrage, ci a-ți redescoperi conexiunea cu
+            natura și a explora potențialul neexploatat al fiecărei zile.
+            Pentru a vă introduce mai bine în această lume de poveste, în Oltenia de sub munte, vă invit să vă
+            delectați cu o mică lectură în care sunt prezentate câteva dintre zonele noastre cele mai de preț.
+          </p>
+          <a class="btn--learn hai-in-sat-mobile show-more-btn" (click)="goToUnderTheMountain()">Află mai multe</a>
+        </div>
+      </div>
+
+    </section>
+
+    <section #thirdSection>
+      <div></div>
+      <div>
+        <div>
+          <h2>
+            Cu noi visul tau devine realitate!
+          </h2>
+          <div>
+            <fa-icon (click)="goToTikTokPage()" class="fa-2x" style="padding-left: 4rem" [icon]="faTiktok"></fa-icon>
+            <fa-icon (click)="goToFacebookPage()" class="fa-2x" style="padding-left: 5rem" [icon]="faSquareFacebook"></fa-icon>
+            <fa-icon (click)="goToInstagramPage()" class="fa-2x" style="padding-left: 5rem" [icon]="faInstagram"></fa-icon>
+          </div>
+          <p>
+            Tot ce trebuie să faci este să ne spui ce iți dorești,
+            completând formularul atașat, iar noi venim cu 3 variante care să satisfacă total sau parțial dorințele tale.
+            <br><br><br>
+          </p>
+          <a class="hai-in-sat-mobile" style="max-height: 10rem" (click)="goToHomeFormPage()">FORMULAR</a>
+          <p>
+            Dacă încă nu ești hotărât, te invităm să vezi zona!
+            Te poți caza în zona la localnici, poți mânca ceva bun
+            tradițional și poți merge într-o drumeție organizată
+            de noi. Nu vei mai vrea să pleci acasă!
+            <br><br><br>
+            <a style="max-height: 10rem" (click)="goToSeeTheArea()">HAI IN SAT</a>
+          </p>
+        </div>
+        <div>
+          <img style="height: 100%" src="assets/munte3.jpeg" alt="">
+        </div>
+      </div>
+
+    </section>
+  </div>
 </div>
