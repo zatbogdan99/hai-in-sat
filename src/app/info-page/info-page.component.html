@@ -80,5 +80,79 @@
 </div>
 
 <div class="small-screen">
+  <div class="container1">
+    <div class="reveal">
+      <div style="max-width: 23rem; max-height: 20rem; padding-bottom: 1rem">
+        <vg-player (onPlayerReady)="onPlayerReady($event)">
+          <vg-overlay-play></vg-overlay-play>
+          <vg-buffering></vg-buffering>
+          <vg-scrub-bar>
+            <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+            <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+          </vg-scrub-bar>
+          <vg-controls>
+            <vg-play-pause></vg-play-pause>
+            <vg-playback-button></vg-playback-button>
+            <vg-time-display></vg-time-display>
+            <vg-scrub-bar style="pointer-events: none"></vg-scrub-bar>
+            <vg-time-display property="left"></vg-time-display>
+            <vg-time-display property="total"></vg-time-display>
+            <vg-track-selector></vg-track-selector>
+            <vg-mute></vg-mute>
+            <vg-volume></vg-volume>
+            <vg-fullscreen></vg-fullscreen>
+          </vg-controls>
+          <video [vgMedia]="$any(media)"
+                 #media id="singleVideoMobile"
+                 preload="auto"
+                 src="assets/cat_-_65438%20(1080p).mp4"
+                 crossorigin>
+          </video>
+        </vg-player>
+      </div>
+      <div class="reveal p-card-custom">
+        <p-card [style]="{ width: '23rem'}">
+          <ng-template pTemplate="header">
+            <div style="display: inline-block">
+              <img style="width: 20rem; height: 20rem; padding-left: 2rem" alt="Card" src="assets/slogan.png" />
+              <h5 class="title">{{data[villageId].title}}</h5>
+            </div>
+          </ng-template>
+          <p class="m-0 text-style">
+            {{data[villageId].desc}}
+          </p>
+        </p-card>
+      </div>
+    </div>
+  </div>
 
+  <div class="container2">
+    <div style="padding-top: 1rem" class="reveal p-card-custom">
+      <p-card>
+        <p class="m-0 text-style">
+          Horezu, situat în apropierea punctului de mijloc dintre Râmnicu Vâlcea și Târgu Jiu, a fost binecuvântat cu o moștenire etnografică și folclorică impresionantă. Însăși numele orașului, Horezu, își trage originile din trecutul său pitoresc, de la ciuhurez, o pasăre asemănătoare bufniței, care populează pădurile înconjurătoare. Acest loc fermecător este adesea numit "capitala" ceramicii românești, iar motivele pentru această distincție sunt cât se poate de clare.
+        </p>
+      </p-card>
+    </div>
+  </div>
+
+  <div class="container2">
+    <div style="padding-top: 1rem" class="reveal p-card-custom">
+      <p-card>
+        <p class="m-0 text-style">
+          Călătorind în trecutul său îndepărtat, descoperim că istoria dezvoltării așezărilor din Horezu este strâns legată de traseele de transhumanță, de drumurile bătute de haiduci în vremuri străvechi și de celebrul drum al sării. Acest drum ancestral începea la Ocnele Mari, trecea prin Pietrarii de Jos și continua prin Horezu, apoi către Slatioara și, în cele din urmă, ajungea la Cernesti. Aceste elemente au contribuit la formarea și dezvoltarea comunității Horezu, întărindu-i statutul ca un centru vital pentru tradițiile etnografice și pentru arta ceramică populară din România.
+        </p>
+      </p-card>
+    </div>
+  </div>
+
+  <div class="container2">
+    <div style="padding-top: 3rem" class="reveal p-card-custom">
+      <p-card>
+        <p class="m-0 text-style">
+          Orașul este un adevărat tezaur al tradițiilor autentice și un loc în care arta ceramică prinde viață, purtând în ea amintiri și povești străvechi, și continuând să inspire generațiile viitoare.
+        </p>
+      </p-card>
+    </div>
+  </div>
 </div>
