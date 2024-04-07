@@ -4,14 +4,6 @@
   box-sizing: border-box;
 }
 
-//body {
-//  min-height: 100vh;
-//  background-color: #ecfaec;
-//  display: grid;
-//  place-items: center;
-//  font-family: "poppins", sans-serif;
-//}
-
 a {
   text-decoration: none;
   color: inherit;
@@ -160,15 +152,6 @@ section {
   transition: transform 0.3s ease-out;
 }
 
-//.card-photo .mask {
-//  position: absolute;
-//  top: 0;
-//  height: 100%;
-//  width: 50%;
-//  z-index: 5;
-//  background-color: white;
-//}
-
 
 #mask-1 {
   left: 0;
@@ -180,3 +163,22 @@ section {
   transform: translateY(100%);
 }
 
+//mobile
+@media only screen and (max-width: 415px) {
+  .small-screen {
+    display: block;
+  }
+  .large-screen {
+    display: none;
+  }
+}
+
+//desktop
+@media only screen and (min-width: 415px) {
+  .small-screen {
+    display: none;
+  }
+  .large-screen {
+    display: block;
+  }
+}

@@ -175,3 +175,114 @@
      width: 0;
    }
  }
+
+
+//mobile
+@media only screen and (max-width: 415px) {
+  .small-screen {
+    display: block;
+  }
+  .large-screen {
+    display: none;
+  }
+}
+
+//desktop
+@media only screen and (min-width: 415px) {
+  .small-screen {
+    display: none;
+  }
+  .large-screen {
+    display: block;
+  }
+}
+
+
+//generat
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%; /* Responsive font size */
+}
+
+body {
+  font-family: 'Garamond', serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.logo {
+  width: 22rem;
+  height: 22rem;
+}
+
+.menu-icon {
+  /* Add styles for the hamburger icon here */
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 1rem;
+  text-align: center; /* Center the text for mobile */
+}
+
+.image-container {
+  /* Style your image here */
+}
+
+.introduction,
+.main-text,
+.additional-info {
+  margin-bottom: 1rem;
+}
+
+.cta-button {
+  padding: 1rem 2rem;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.footer {
+  padding: 1rem;
+  text-align: center;
+}
+
+.social-links {
+  /* Add styles for social media icons */
+}
+
+/* Media Query for tablets and desktop */
+@media (min-width: 768px) {
+  /* Adjust layout for larger screens */
+  .container {
+    flex-direction: row;
+  }
+
+  .header,
+  .main-content,
+  .footer {
+    flex: 1;
+  }
+
+  /* More styles for larger screens */
+}

@@ -172,3 +172,18 @@ img {
 .swiper-slide-five {
   background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./assets/oras.jpg) no-repeat 50% 50%/cover;
 }
+
+
+//mobile
+@media only screen and (max-width: 415px) {
+  .small-screen {
+    display: block;
+  }
+  .large-screen {
+    display: none;
+  }
+
+  .despreNoiStyle {
+    padding-left: 0;
+  }
+}

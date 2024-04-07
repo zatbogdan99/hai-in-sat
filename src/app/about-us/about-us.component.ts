@@ -1,5 +1,8 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {gsap} from "gsap";
+import { faTiktok } from '@fortawesome/free-brands-svg-icons';
+import { faSquareFacebook } from "@fortawesome/free-brands-svg-icons";
+import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 
 @Component({
   selector: 'app-about-us',
@@ -7,6 +10,11 @@ import {gsap} from "gsap";
   styleUrls: ['./about-us.component.scss']
 })
 export class AboutUsComponent implements OnInit, AfterViewInit{
+
+  faTiktok = faTiktok;
+  faSquareFacebook = faSquareFacebook;
+  faInstagram = faInstagram;
+
   ngOnInit() {
 
   }

@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {MenuItem, MessageService} from "primeng/api";
 import {Router} from "@angular/router";
 import { faTiktok } from '@fortawesome/free-brands-svg-icons';
+import { faFacebook } from '@fortawesome/free-brands-svg-icons';
+import { faInstagram } from '@fortawesome/free-brands-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +15,8 @@ export class AppComponent implements OnInit{
   title = 'hai-in-sat';
   items: MenuItem[] | undefined;
   faTiktok = faTiktok;
+  faFacebook = faFacebook;
+  faInstagram = faInstagram;
 
   constructor(private router: Router) {
 
@@ -87,12 +91,6 @@ export class AppComponent implements OnInit{
         label: 'Contacteaza-ne!',
         icon: 'pi pi-fw pi-phone',
         command: () => this.goToContactUsPage()
-      },
-      {
-        icon: 'pi pi-fw pi-instagram'
-      },
-      {
-        icon: 'pi pi-fw pi-facebook'
       }
     ];
 

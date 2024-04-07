@@ -1,12 +1,16 @@
 <p-toast></p-toast>
-<div class="container">
+<div>
   <p-menubar [model]="items">
     <ng-template pTemplate="start">
 <!--      TODO de facut dimensiune dinamica la poza-->
-      <img style="padding-left: 4rem" src="assets/logo.png" alt="Logo" height="80" class="mr-2" (click)="goToLandingPage()"/>
+      <img style="padding-left: 1rem; padding-right: 1rem" src="assets/logo.png" alt="Logo" height="80" class="mr-2" (click)="goToLandingPage()"/>
     </ng-template>
     <ng-template pTemplate="end">
-      <fa-icon style="padding-right: 20rem" [icon]="faTiktok"></fa-icon>
+      <div>
+        <fa-icon style="padding-left: 1rem; padding-right: 1rem" [icon]="faFacebook"></fa-icon>
+        <fa-icon style="padding-left: 1rem; padding-right: 1rem" [icon]="faInstagram"></fa-icon>
+        <fa-icon style="padding-left: 1rem; padding-right: 1rem" [icon]="faTiktok"></fa-icon>
+      </div>
     </ng-template>
   </p-menubar>
   <router-outlet></router-outlet>
