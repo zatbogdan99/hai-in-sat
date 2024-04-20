@@ -27,6 +27,15 @@ export class FormPageComponent implements OnInit, AfterViewInit{
   ngOnInit(): void {
     this.ariaRangeValues = [0, 30];
     this.priceRangeValues = [0, 200000];
+    this.formGroup = new FormGroup(
+      {
+        name: new FormControl(),
+        surname: new FormControl(),
+        phoneNumber: new FormControl(),
+        mail: new FormControl(),
+        mentions: new FormControl()
+      }
+    );
   }
 
   ngAfterViewInit() {
@@ -43,6 +52,7 @@ export class FormPageComponent implements OnInit, AfterViewInit{
   }
 
   sendRequest() {
+    console.log('form group: ', this.formGroup);
     const formData: HomeFormDto = new HomeFormDto();
     this.messageService.add({severity:'success', summary:'HAI IN SAT', detail:'Am apasat'});
     this.homeFormService.sendHomeEmails(formData).subscribe({

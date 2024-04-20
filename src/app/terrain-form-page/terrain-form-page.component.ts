@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormGroup} from "@angular/forms";
+import {FormControl, FormGroup} from "@angular/forms";
 import {MessageService} from "primeng/api";
 
 @Component({
@@ -22,9 +22,19 @@ export class TerrainFormPageComponent implements OnInit{
   ngOnInit(): void {
     this.ariaRangeValues = [0, 50000];
     this.priceRangeValues = [0, 200000];
+    this.formGroup = new FormGroup(
+      {
+        name: new FormControl(),
+        surname: new FormControl(),
+        phoneNumber: new FormControl(),
+        mail: new FormControl(),
+        mentions: new FormControl()
+      }
+    );
   }
 
   sendRequest() {
+    console.log('form group: ', this.formGroup);
     this.messageService.add({severity:'success', summary:'HAI IN SAT', detail:'Formularul a fost trimis cu succes'});
   }
 }

@@ -33,11 +33,12 @@
 
 <div class="small-screen">
   <div style="padding-top: 2rem">
-    <p-card [header]="data[currentNum].title">
+    <p-card>
       <ng-template pTemplate="header">
-        <img src="{{data[currentNum].photo}}">
+        <img id="mask-mobile" src="{{data[currentNum].photo}}">
+        <h1 style="padding-top: 2rem; text-align: center" id="card-info-title">{{data[currentNum].title}}</h1>
       </ng-template>
-      <p id="card-info-desc-mobile">{{data[currentNum].desc}}</p>
+      <p id="card-info-desc">{{data[currentNum].desc}}</p>
       <ng-template pTemplate="footer">
         <p-button label="Mai multe" icon="pi pi-book" (onClick)="showMore()"></p-button>
         <p-button label="Următorul" icon="pi pi-arrow-right" (onClick)="nextButton()" [style]="{ 'margin-left': '.5em' }"></p-button>

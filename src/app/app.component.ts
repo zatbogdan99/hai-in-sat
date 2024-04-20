@@ -74,7 +74,7 @@ export class AppComponent implements OnInit{
         command: () => this.goToInfoPage()
       },
       {
-        label: 'Haide sa vezi zona!',
+        label: 'Haide să vezi zona!',
         icon: 'pi pi-fw pi-eye',
         command: () => this.goToSeeTheArea()
       },
@@ -85,10 +85,11 @@ export class AppComponent implements OnInit{
       },
       {
         label: 'Terenuri',
+        icon: 'pi pi-fw pi-cloud',
         command: () => this.goToTerrainFormPage()
       },
       {
-        label: 'Contacteaza-ne!',
+        label: 'Contactează-ne!',
         icon: 'pi pi-fw pi-phone',
         command: () => this.goToContactUsPage()
       }

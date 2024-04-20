@@ -2,49 +2,49 @@
 <div class="large-screen">
   <div class="parent-container">
 
-    <h1 class="h1-style" id="first-text1">Configureaza-ti casa perfecta pentru tine!</h1>
+    <h1 class="h1-style" id="first-text1">Configurează-ți casa perfectă pentru tine!</h1>
 
     <div class="div-style">
-    <span style="margin-bottom: 2rem; width: 30rem" class="p-float-label">
-      <input class="name-style" type="text" pInputText id="name">
+    <span style="margin-bottom: 2rem; width: 30rem" class="p-float-label" [formGroup]="formGroup">
+      <input class="name-style" style="width: 100%" type="text" pInputText id="name" formControlName="name">
       <label htmlFor="name">Nume</label>
     </span>
-      <span class="p-float-label surname-style">
-      <input style="padding: 10px; width: 100%" type="text" pInputText id="surname">
+      <span class="p-float-label surname-style" [formGroup]="formGroup">
+      <input style="padding: 10px; width: 100%" type="text" pInputText id="surname" formControlName="surname">
       <label htmlFor="surname">Prenume</label>
     </span>
-      <span class="p-float-label surname-style">
-      <input style="padding: 10px; width: 100%" type="text" pInputText id="phoneNumber">
-      <label htmlFor="phoneNumber">Numar de telefon</label>
+      <span class="p-float-label surname-style" [formGroup]="formGroup">
+      <input style="padding: 10px; width: 100%" type="text" pInputText id="phoneNumber" formControlName="phoneNumber">
+      <label htmlFor="phoneNumber">Număr de telefon</label>
     </span>
-      <span class="p-float-label surname-style">
-      <input style="padding: 10px; width: 100%" type="text" pInputText id="mail">
-      <label htmlFor="mail">Adresa de e-mail</label>
+      <span class="p-float-label surname-style" [formGroup]="formGroup">
+      <input style="padding: 10px; width: 100%" type="text" pInputText id="mail" formControlName="mail">
+      <label htmlFor="mail">Adresă de e-mail</label>
     </span>
 
       <h2>La ce apropiere de un centru urban(Km)</h2>
       <div class="container">
         <div class="element">
-          <input style="margin-bottom: 20px;" type="text" [(ngModel)]="ariaRangeValues[0]" pInputText class="w-full"/>
+          <input style="margin-bottom: 20px;" type="number" [(ngModel)]="ariaRangeValues[0]" pInputText class="w-full"/>
         </div>
         <div class="element">
           <p-slider [step]="20" [min]="0" [max]="30" [(ngModel)]="ariaRangeValues" [range]="true"></p-slider>
         </div>
         <div class="element" style="padding-left: 5rem">
-          <input style="margin-bottom: 20px;" type="text" [(ngModel)]="ariaRangeValues[1]" pInputText class="w-full"/>
+          <input style="margin-bottom: 20px;" type="number" [(ngModel)]="ariaRangeValues[1]" pInputText class="w-full"/>
         </div>
       </div>
 
-      <h2>Pret(€)</h2>
+      <h2>Preț(€)</h2>
       <div class="container">
         <div class="element">
-          <input style="margin-bottom: 20px;" type="text" [(ngModel)]="priceRangeValues[0]" pInputText class="w-full"/>
+          <input style="margin-bottom: 20px;" type="number" [(ngModel)]="priceRangeValues[0]" pInputText class="w-full"/>
         </div>
         <div class="element">
           <p-slider [step]="20" [min]="0" [max]="200000" [(ngModel)]="priceRangeValues" [range]="true"></p-slider>
         </div>
         <div class="element" style="padding-left: 5rem">
-          <input style="margin-bottom: 20px;" type="text" [(ngModel)]="priceRangeValues[1]" pInputText class="w-full"/>
+          <input style="margin-bottom: 20px;" type="number" [(ngModel)]="priceRangeValues[1]" pInputText class="w-full"/>
         </div>
       </div>
       <span class="span-style">
@@ -57,16 +57,16 @@
         </div>
 
         <div style="padding-right: 1rem">
-          <p-chip class="chipClass" label="Cu vecini/fara vecini:"></p-chip>
+          <p-chip class="chipClass" label="Cu vecini/fară vecini:"></p-chip>
         </div>
         <div style="padding-right: 3rem">
           <p-toggleButton [(ngModel)]="neighbor" onLabel="DA" offLabel="NU"></p-toggleButton>
         </div>
       </div>
     </span>
-      <span class="p-float-label" style="margin-bottom: 2rem">
-      <textarea rows="5" cols="120" pInputTextarea formControlName="text" id="mentions"></textarea>
-      <label htmlFor="mentions">Alte mentiuni</label>
+      <span class="p-float-label" style="margin-bottom: 2rem" [formGroup]="formGroup">
+      <textarea rows="5" cols="120" pInputTextarea id="mentions" formControlName="mentions"></textarea>
+      <label htmlFor="mentions">Alte mențiuni</label>
     </span>
       <span style="margin-bottom: 2rem;">
       <button pButton pRipple label="HAI IN SAT" class="p-button-success" (click)="sendRequest()"></button>
@@ -81,60 +81,72 @@
 <div class="small-screen">
   <div>
 
-    <h1 class="h1-style" id="first-text1-mobile">Configureaza-ti casa perfecta pentru tine!</h1>
+    <h1 class="h1-style" id="first-text1-mobile">Configurează-ți casa perfectă pentru tine!</h1>
 
     <div class="div-style">
-    <span style="margin-bottom: 2rem" class="p-float-label">
-      <input type="text" pInputText id="name-mobile">
+    <span style="margin-bottom: 2rem" class="p-float-label" [formGroup]="formGroup">
+      <input type="text" pInputText id="name-mobile" formControlName="name">
       <label htmlFor="name">Nume</label>
     </span>
-      <span style="margin-bottom: 2rem" class="p-float-label">
-      <input type="text" pInputText id="surname-mobile">
+      <span style="margin-bottom: 2rem" class="p-float-label" [formGroup]="formGroup">
+      <input type="text" pInputText id="surname-mobile" formControlName="surname">
       <label htmlFor="surname">Prenume</label>
     </span>
-      <span style="margin-bottom: 2rem" class="p-float-label">
-      <input pInputText id="phoneNumberMobile">
-      <label htmlFor="phoneNumber">Numar de telefon</label>
+      <span style="margin-bottom: 2rem" class="p-float-label" [formGroup]="formGroup">
+      <input pInputText id="phoneNumberMobile" formControlName="phoneNumber">
+      <label htmlFor="phoneNumber">Număr de telefon</label>
     </span>
-      <span style="margin-bottom: 2rem" class="p-float-label">
-      <input pInputText id="mail-mobile">
-      <label htmlFor="mail">Adresa de e-mail</label>
+      <span style="margin-bottom: 2rem" class="p-float-label" [formGroup]="formGroup">
+      <input pInputText id="mail-mobile" formControlName="mail">
+      <label htmlFor="mail">Adresă de e-mail</label>
     </span>
 
       <h2 style="text-align: center">La ce apropiere de un centru urban(Km)</h2>
       <div>
         <div style="margin-bottom: 1rem">
-          <input type="text" [(ngModel)]="ariaRangeValues[0]" pInputText class="w-full"/>
+          <div style="padding-right: 1rem; display: inline">
+            <p-chip label="Min:"></p-chip>
+          </div>
+          <input type="tel" style="width: 11rem" [(ngModel)]="ariaRangeValues[0]" pInputText class="w-full"/>
         </div>
         <div>
-          <input type="text" [(ngModel)]="ariaRangeValues[1]" pInputText class="w-full"/>
+          <div style="padding-right: 1rem; display: inline">
+            <p-chip label="Max:"></p-chip>
+          </div>
+          <input type="tel" style="width: 10.6rem" [(ngModel)]="ariaRangeValues[1]" pInputText class="w-full"/>
         </div>
       </div>
 
       <h2>Pret(€)</h2>
       <div>
         <div style="margin-bottom: 1rem">
-          <input type="text" [(ngModel)]="priceRangeValues[0]" pInputText class="w-full"/>
+          <div style="padding-right: 1rem; display: inline">
+            <p-chip label="Min:"></p-chip>
+          </div>
+          <input type="tel" style="width: 11rem" [(ngModel)]="priceRangeValues[0]" pInputText class="w-full"/>
         </div>
         <div>
-          <input type="text" [(ngModel)]="priceRangeValues[1]" pInputText class="w-full"/>
+          <div style="padding-right: 1rem; display: inline">
+            <p-chip label="Max:"></p-chip>
+          </div>
+          <input type="tel" style="width: 10.6rem" [(ngModel)]="priceRangeValues[1]" pInputText class="w-full"/>
         </div>
       </div>
       <span>
       <div class="container">
         <div style="padding-bottom: 1rem; padding-top: 1rem;">
           <p-chip label="Lângă o apă:"></p-chip>
-          <p-toggleButton style="padding-left: 1rem" [(ngModel)]="river" onLabel="DA" offLabel="NU"></p-toggleButton>
+          <p-toggleButton style="padding-left: 4.5rem" [(ngModel)]="river" onLabel="DA" offLabel="NU"></p-toggleButton>
         </div>
         <div style="padding-bottom: 2rem">
-          <p-chip class="chipClass" label="Cu vecini/fara vecini:"></p-chip>
+          <p-chip class="chipClass" label="Cu vecini/fără vecini:"></p-chip>
           <p-toggleButton style="padding-left: 1rem" [(ngModel)]="neighbor" onLabel="DA" offLabel="NU"></p-toggleButton>
         </div>
       </div>
     </span>
-      <span class="p-float-label">
-      <textarea style="width: 20rem" rows="5" pInputTextarea formControlName="text" id="mentions_mobile"></textarea>
-      <label htmlFor="mentions">Alte mentiuni</label>
+      <span class="p-float-label" [formGroup]="formGroup">
+      <textarea style="width: 20rem" rows="5" pInputTextarea formControlName="mentions" id="mentions_mobile"></textarea>
+      <label htmlFor="mentions">Alte mențiuni</label>
     </span>
       <span>
         <button pButton pRipple label="HAI IN SAT" class="p-button-success" (click)="sendRequest()"></button>
