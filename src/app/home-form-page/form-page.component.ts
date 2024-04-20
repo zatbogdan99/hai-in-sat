@@ -54,6 +54,13 @@ export class FormPageComponent implements OnInit, AfterViewInit{
   sendRequest() {
     console.log('form group: ', this.formGroup);
     const formData: HomeFormDto = new HomeFormDto();
+    formData.name = this.formGroup.get("name")?.value;
+    formData.surname = this.formGroup.get("surname")?.value;
+    formData.phone = this.formGroup.get("phoneNumber")?.value;
+    formData.mail = this.formGroup.get("mail")?.value;
+    formData.mentions = this.formGroup.get("mentions")?.value;
+    formData.nearRiver = this.river;
+    formData.withNeighbours = this.neighbor;
     this.messageService.add({severity:'success', summary:'HAI IN SAT', detail:'Am apasat'});
     this.homeFormService.sendHomeEmails(formData).subscribe({
       next: (response) => {
