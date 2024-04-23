@@ -8,14 +8,14 @@
     </div>
     <p-button *ngIf="rent!==-1" label="Înapoi" icon="pi pi-arrow-left" size="large" (onClick)="onBack()"></p-button>
   </main>
-  <img *ngIf="rent===-1" style="width: 300px; height: 300px; margin-right: 20rem" alt="Card" src="assets/slogan.png" />
+  <img *ngIf="rent===-1" style="width: 300px; height: 300px; margin-right: 20rem" alt="Card" src="assets/logo.png" />
 </div>
 
 <div style="display: flex; padding-left: 14rem; padding-top: 3rem">
   <p-card *ngIf="isRentValid()" [style]="{ width: '600px' }">
     <ng-template pTemplate="header">
       <div style="display: flex">
-        <img style="width: 200px; height: 200px; margin-left: 7rem" alt="Card" src="assets/slogan.png" />
+        <img style="width: 200px; height: 200px; margin-left: 7rem" alt="Card" src="assets/logo.png" />
         <h1 style="padding-top: 5rem; padding-left: 5rem">Închiriază</h1>
       </div>
     </ng-template>
@@ -34,7 +34,7 @@
       <ng-template pTemplate="header">
         <div style="display: flex">
           <h1 style="padding-top: 5rem; padding-left: 5rem">Cumpără</h1>
-          <img style="width: 200px; height: 200px; margin-left: 7rem" alt="Card" src="assets/slogan.png" />
+          <img style="width: 200px; height: 200px; margin-left: 7rem" alt="Card" src="assets/logo.png" />
         </div>
       </ng-template>
       <p style="font-size: 24px; text-align: center">
@@ -73,9 +73,9 @@
   <div style="display: inline;">
     <p-card *ngIf="isRentValid()" [style]="{ width: '23rem'}">
       <ng-template pTemplate="header">
-        <div style="display: flex">
-          <img style="width: 12rem; height: 12rem;" alt="Card" src="assets/slogan.png" />
-          <h1 style="padding-top: 5rem; padding-left: 1rem">Închiriază</h1>
+        <div style="display: flex; align-items: center">
+          <img style="width: 8rem; height: 8rem; margin-left: 1rem" alt="Card" src="assets/logo.png" />
+          <h1 style="padding-left: 2rem">Închiriază</h1>
         </div>
       </ng-template>
       <p style="font-size: 24px; text-align: center">
@@ -91,9 +91,9 @@
     <div style="padding-top: 3rem">
       <p-card *ngIf="isRentValid()" [style]="{ width: '23rem'}">
         <ng-template pTemplate="header">
-          <div style="display: flex">
-            <h1 style="padding-top: 5rem; padding-left: 3rem">Cumpără</h1>
-            <img style="width: 12rem; height: 12rem;" alt="Card" src="assets/slogan.png" />
+          <div style="display: flex; align-items: center">
+            <h1 style="padding-left: 3rem">Cumpără</h1>
+            <img style="width: 8rem; height: 8rem; margin-left: 1rem" alt="Card" src="assets/logo.png" />
           </div>
         </ng-template>
         <p style="font-size: 24px; text-align: center">
