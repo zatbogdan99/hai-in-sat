@@ -7,7 +7,7 @@ import {HomeFormDto} from "../../dto/home-form.dto";
 })
 export class HomeFormServiceService {
 
-  private homeFormUrl = 'https://hai-in-sat-api.lm.r.appspot.com/home-form';
+  private homeFormUrl = 'http://localhost:8080/home-form';
 
   constructor(private http: HttpClient) { }
 

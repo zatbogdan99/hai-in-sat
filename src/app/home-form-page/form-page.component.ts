@@ -61,6 +61,8 @@ export class FormPageComponent implements OnInit, AfterViewInit{
     formData.mentions = this.formGroup.get("mentions")?.value;
     formData.nearRiver = this.river;
     formData.withNeighbours = this.neighbor;
+    formData.price = 'între ' + this.priceRangeValues[0] + 'și' + this.priceRangeValues[1];
+    formData.distance = 'între ' + this.ariaRangeValues[0] + 'și' + this.ariaRangeValues[1];
     this.messageService.add({severity:'success', summary:'HAI IN SAT', detail:'Am apasat'});
     this.homeFormService.sendHomeEmails(formData).subscribe({
       next: (response) => {
