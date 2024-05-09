@@ -44,6 +44,8 @@ import {VgBufferingModule} from "@videogular/ngx-videogular/buffering";
 import { SeeTheAreaRentComponent } from './see-the-area-rent/see-the-area-rent.component';
 import { SeeTheAreaBuyComponent } from './see-the-area-buy/see-the-area-buy.component';
 import {HttpClientModule} from "@angular/common/http";
+import {ProgressSpinnerModule} from "primeng/progressspinner";
+import {CalendarModule} from "primeng/calendar";
 register();
 
 @NgModule({
@@ -61,37 +63,39 @@ register();
     SeeTheAreaRentComponent,
     SeeTheAreaBuyComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    ButtonModule,
-    MenubarModule,
-    ScrollTopModule,
-    ReactiveFormsModule,
-    FormsModule,
-    InputTextareaModule,
-    InputTextModule,
-    SliderModule,
-    PanelModule,
-    ToggleButtonModule,
-    ChipModule,
-    RippleModule,
-    MessagesModule,
-    CardModule,
-    GalleriaModule,
-    DataViewModule,
-    ImageModule,
-    RatingModule,
-    FontAwesomeModule,
-    ToastModule,
-    BrowserAnimationsModule,
-    CommonModule,
-    VgCoreModule,
-    VgControlsModule,
-    VgOverlayPlayModule,
-    VgBufferingModule,
-    HttpClientModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        ButtonModule,
+        MenubarModule,
+        ScrollTopModule,
+        ReactiveFormsModule,
+        FormsModule,
+        InputTextareaModule,
+        InputTextModule,
+        SliderModule,
+        PanelModule,
+        ToggleButtonModule,
+        ChipModule,
+        RippleModule,
+        MessagesModule,
+        CardModule,
+        GalleriaModule,
+        DataViewModule,
+        ImageModule,
+        RatingModule,
+        FontAwesomeModule,
+        ToastModule,
+        BrowserAnimationsModule,
+        CommonModule,
+        VgCoreModule,
+        VgControlsModule,
+        VgOverlayPlayModule,
+        VgBufferingModule,
+        HttpClientModule,
+        ProgressSpinnerModule,
+        CalendarModule
+    ],
   providers: [
     PhotoService,
     MessageService,

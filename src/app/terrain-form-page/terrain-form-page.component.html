@@ -1,3 +1,6 @@
+<div *ngIf="loadingService.loading$ | async" class="spinner-container">
+  <p-progressSpinner></p-progressSpinner>
+</div>
 <div class="large-screen">
   <div class="parent-container">
 
@@ -74,20 +77,20 @@
     </h2>
 
     <div class="mobile-div-style">
-    <span style="margin-bottom: 2rem" class="p-float-label">
-      <input type="text" pInputText id="name-mobile">
+    <span style="margin-bottom: 2rem" class="p-float-label" [formGroup]="formGroup">
+      <input type="text" pInputText id="name-mobile" formControlName="name">
       <label htmlFor="name-mobile">Nume</label>
     </span>
-      <span style="margin-bottom: 2rem" class="p-float-label">
-      <input type="text" pInputText id="surname-mobile">
+      <span style="margin-bottom: 2rem" class="p-float-label" [formGroup]="formGroup">
+      <input type="text" pInputText id="surname-mobile" formControlName="surname">
       <label htmlFor="surname">Prenume</label>
     </span>
-      <span style="margin-bottom: 2rem" class="p-float-label">
-      <input pInputText id="phoneNumberMobile">
+      <span style="margin-bottom: 2rem" class="p-float-label" [formGroup]="formGroup">
+      <input pInputText id="phoneNumberMobile" formControlName="phoneNumber">
       <label htmlFor="phoneNumber">Număr de telefon</label>
     </span>
-      <span style="margin-bottom: 2rem" class="p-float-label">
-      <input pInputText id="mail-mobile">
+      <span style="margin-bottom: 2rem" class="p-float-label" [formGroup]="formGroup">
+      <input pInputText id="mail-mobile" formControlName="mail">
       <label htmlFor="mail">Adresă de e-mail</label>
     </span>
 
@@ -97,13 +100,13 @@
           <div style="padding-right: 1rem; display: inline">
             <p-chip label="Min:"></p-chip>
           </div>
-          <input type="text" style="width: 11rem" [(ngModel)]="ariaRangeValues[0]" pInputText/>
+          <input type="tel" style="width: 11rem" [(ngModel)]="ariaRangeValues[0]" pInputText/>
         </div>
         <div style="display: flex">
           <div style="padding-right: 1rem; display: inline">
             <p-chip label="Max:"></p-chip>
           </div>
-          <input type="text" style="width: 10.6rem" [(ngModel)]="ariaRangeValues[1]" pInputText/>
+          <input type="tel" style="width: 10.6rem" [(ngModel)]="ariaRangeValues[1]" pInputText/>
         </div>
       </div>
 
@@ -113,17 +116,17 @@
           <div style="padding-right: 1rem; display: inline">
             <p-chip label="Min:"></p-chip>
           </div>
-          <input type="text" style="width: 11rem" [(ngModel)]="priceRangeValues[0]" pInputText class="w-full"/>
+          <input type="tel" style="width: 11rem" [(ngModel)]="priceRangeValues[0]" pInputText class="w-full"/>
         </div>
         <div style="margin-bottom: 1rem; display: flex">
           <div style="padding-right: 1rem; display: inline">
             <p-chip label="Max:"></p-chip>
           </div>
-          <input type="text" style="width: 10.6rem" [(ngModel)]="priceRangeValues[1]" pInputText class="w-full"/>
+          <input type="tel" style="width: 10.6rem" [(ngModel)]="priceRangeValues[1]" pInputText class="w-full"/>
         </div>
       </div>
-      <span class="p-float-label" style="margin-bottom: 2rem">
-        <textarea style="width: 15.6rem" rows="5" pInputTextarea id="mentions_mobile"></textarea>
+      <span class="p-float-label" style="margin-bottom: 2rem" [formGroup]="formGroup">
+        <textarea style="width: 15.6rem" rows="5" pInputTextarea id="mentions_mobile" formControlName="mentions"></textarea>
         <label htmlFor="mentions">Alte mențiuni</label>
       </span>
       <span>

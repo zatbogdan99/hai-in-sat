@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {HomeFormDto} from "../../dto/home-form.dto";
+import {TerrainFormDto} from "../../dto/terrain-form.dto";
 
 @Injectable({
   providedIn: 'root'
 })
-export class HomeFormServiceService {
+export class TerrainFormServiceService {
 
-  private homeFormUrl = 'https://hai-in-sat-api.lm.r.appspot.com/home-form';
+  private terrainFormUrl = 'https://hai-in-sat-api.lm.r.appspot.com/terrain-form';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
-  sendHomeEmails(formData: HomeFormDto) {
+  sendTerrainEmails(formData: TerrainFormDto) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -20,6 +21,6 @@ export class HomeFormServiceService {
         'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'
       })
     };
-    return this.http.post(this.homeFormUrl, formData, httpOptions);
+    return this.http.post(this.terrainFormUrl, formData, httpOptions);
   }
 }

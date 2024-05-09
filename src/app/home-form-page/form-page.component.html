@@ -1,4 +1,7 @@
 <p-toast></p-toast>
+<div *ngIf="loadingService.loading$ | async" class="spinner-container">
+  <p-progressSpinner></p-progressSpinner>
+</div>
 <div class="large-screen">
   <div class="parent-container">
 
@@ -57,7 +60,7 @@
         </div>
 
         <div style="padding-right: 1rem">
-          <p-chip class="chipClass" label="Cu vecini/fară vecini:"></p-chip>
+          <p-chip class="chipClass" label="Cu vecini:"></p-chip>
         </div>
         <div style="padding-right: 3rem">
           <p-toggleButton [(ngModel)]="neighbor" onLabel="DA" offLabel="NU"></p-toggleButton>
@@ -139,8 +142,8 @@
           <p-toggleButton style="padding-left: 4.5rem" [(ngModel)]="river" onLabel="DA" offLabel="NU"></p-toggleButton>
         </div>
         <div style="padding-bottom: 2rem">
-          <p-chip class="chipClass" label="Cu vecini/fără vecini:"></p-chip>
-          <p-toggleButton style="padding-left: 1rem" [(ngModel)]="neighbor" onLabel="DA" offLabel="NU"></p-toggleButton>
+          <p-chip class="chipClass" label="Cu vecini:"></p-chip>
+          <p-toggleButton style="padding-left: 6.2rem" [(ngModel)]="neighbor" onLabel="DA" offLabel="NU"></p-toggleButton>
         </div>
       </div>
     </span>

@@ -5,6 +5,7 @@ import SplitType from "split-type";
 import {MessageService} from "primeng/api";
 import {HomeFormServiceService} from "../service/home-form-service/home-form-service.service";
 import {HomeFormDto} from "../dto/home-form.dto";
+import {LoadingService} from "../service/loading-service/loading-service.service";
 
 @Component({
   selector: 'app-form-page',
@@ -21,7 +22,8 @@ export class FormPageComponent implements OnInit, AfterViewInit{
   neighbor: boolean = false;
 
   constructor(private messageService: MessageService,
-              private homeFormService: HomeFormServiceService) {
+              private homeFormService: HomeFormServiceService,
+              public loadingService: LoadingService) {
   }
 
   ngOnInit(): void {
@@ -52,7 +54,6 @@ export class FormPageComponent implements OnInit, AfterViewInit{
   }
 
   sendRequest() {
-    console.log('form group: ', this.formGroup);
     const formData: HomeFormDto = new HomeFormDto();
     formData.name = this.formGroup.get("name")?.value;
     formData.surname = this.formGroup.get("surname")?.value;
@@ -61,12 +62,13 @@ export class FormPageComponent implements OnInit, AfterViewInit{
     formData.mentions = this.formGroup.get("mentions")?.value;
     formData.nearRiver = this.river;
     formData.withNeighbours = this.neighbor;
-    formData.price = 'între ' + this.priceRangeValues[0] + 'și' + this.priceRangeValues[1];
-    formData.distance = 'între ' + this.ariaRangeValues[0] + 'și' + this.ariaRangeValues[1];
-    this.messageService.add({severity:'success', summary:'HAI IN SAT', detail:'Am apasat'});
+    formData.price = 'între ' + this.priceRangeValues[0] + '€ și ' + this.priceRangeValues[1] + '€';
+    formData.distance = 'între ' + this.ariaRangeValues[0] + 'km și ' + this.ariaRangeValues[1] + 'km';
+    this.loadingService.loadingOn();
     this.homeFormService.sendHomeEmails(formData).subscribe({
       next: (response) => {
         this.messageService.add({severity:'success', summary:'HAI IN SAT', detail:'Formularul a fost trimis cu succes'});
+        this.loadingService.loadingOff();
       },
       error: (error) => {
         console.error('There was an error!', error);

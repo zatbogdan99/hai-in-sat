@@ -1,6 +1,7 @@
 {
   "/home-form": {
     "target": "https://hai-in-sat-api.lm.r.appspot.com",
+    "target1": "http://localhost:8080",
     "secure": false,
     "changeOrigin": true,
     "pathRewrite": {"^/home-form" : ""}
