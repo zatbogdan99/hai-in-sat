@@ -26,8 +26,12 @@ export class UnderTheMountainComponent {
       "Orașul este un adevărat tezaur al tradițiilor autentice și un loc în care arta ceramică prinde viață, purtând în ea amintiri și povești străvechi, și continuând să inspire generațiile viitoare. În anul 2012, ceramica de Horezu a fost inclusă în prestigioasa Listă Reprezentativă a Patrimoniului Cultural Imaterial al Umanității UNESCO, marcând oficial recunoașterea valorii artistice și tradiționale a acestui meșteșug. Această distincție a avut un impact semnificativ asupra promovării și conservării patrimoniului cultural al ceramicii horezene, consolidând în același timp sprijinul acordat comunității locale angajate în păstrarea acestei tradiții meșteșugărești.",
       "Mănăstirea Hurezi este un complex monastic reprezentativ pentru arhitectura brâncovenească, inclus în Patrimoniul Mondial UNESCO. Construită în perioada 1690-1693, la inițiativa domnitorului Constantin Brâncoveanu, mănăstirea este cunoscută pentru frumoasa sa biserică cu hramul \"Adormirea Maicii Domnului\".\n" +
       "Arhitectura mănăstirii Hurezi se remarcă prin detaliile sculptate în piatră, icoanele murale impresionante și frescele vii care ilustrează scene biblice și motive tradiționale românești. Curtea interioară este înconjurată de clădiri anexe, precum chiliile, turnul clopotniță și casa domnească, oferind o atmosferă de liniște și spiritualitate.\n",
-      "assets/horezu1.jpeg",
-      []
+      "assets/horezu1.jpg",
+      ['assets/horezu1.jpg',
+        'assets/horezu2.jpg',
+        'assets/horezu3.jpg',
+        'assets/horezu4.jpg',
+        'assets/horezu1.jpg']
     );
     this.data.push(dataDto);
 
@@ -44,7 +48,7 @@ export class UnderTheMountainComponent {
       "\n" +
       "\n" +
       "Polovragi, cu istoria sa înclăcită și peștera sa misterioasă, reprezintă o fereastră în timp care ne permite să contemplăm și să onorăm strămoșii noștri și istoria acestui loc. Este un altar al trecutului și o mărturie a perenității vieții umane în inima naturii.\n",
-      "assets/satul-polovragi.jpg",
+      "assets/polovragi1.jpg",
       []
     );
     this.data.push(dataDto);
@@ -56,7 +60,7 @@ export class UnderTheMountainComponent {
       "Baia de Fier este nu doar o comoară arheologică, ci și un loc binecuvântat de natură. În această \"Oltenie de sub munte,\" se pot găsi chei fermecătoare și peșteri misterioase, iar satele din apropiere păstrează cu sfințenie tradițiile românești.",
       "Mănăstirile și biserici vechi îmbină arhitectura și istoria, transformând acest loc într-un adevărat monument al patrimoniului național.",
       "descriere baia 3",
-      "assets/baia-de-fier.jpg",
+      "assets/baia1.jpg",
       []
     );
     this.data.push(dataDto);
@@ -69,7 +73,7 @@ export class UnderTheMountainComponent {
       "Casele din Vaideeni prezintă unele elemente arhitecturale similare cu cele din Ardeal, ceea ce conferă localității un farmec aparte. Aceste case sunt adesea construite din lemn și piatră, având acoperișuri înclinate și ferestre mari, încadrate de ornamente și decorațiuni tradiționale.\n" +
       "Arhitectura caselor din Vaideeni reflectă tradițiile și cultura locului, iar unele dintre ele păstrează elemente specifice stilului sătesc românesc, precum porticele largi și balcoanele decorate. Casele sunt integrate armonios în peisajul montan, iar atmosfera rurală și autentică atrage turiști în căutare de experiențe autentice și de liniște.\n",
       "Astfel, satul Vaideeni este mai mult decât un simplu punct pe harta geografică a României - este un sanctuar al tradițiilor, al înfruntării cu vremurile și al poveștilor ce se împletesc cu natura. Transhumanța devine o simfonie ancestrală care răsuna în inimile locuitorilor, iar istoria lor, întemeiată pe credință și perseverență, reprezintă o comoară vie, prețuită și iubită din generație în generație. Vaideeni rămâne astfel un loc în care trecutul și prezentul se întâlnesc sub cerul senin al Vâlcii.",
-      "assets/vaideeni.png",
+      "assets/vaideeni1.jpg",
       []
     );
     this.data.push(dataDto);
@@ -81,7 +85,7 @@ export class UnderTheMountainComponent {
       "În centrul sătucului se înalță cu mândrie Biserica Potecașilor, o bijuterie arhitecturală cu o istorie bogată și adânc înrădăcinată în tradiția locului. Cu turla sa elegantă și frescele pictate cu măiestrie, biserica emană o atmosferă de liniște și smerenie. Picturile vechi, ce îmbracă pereții interiori, înfățișează scene din viața lui Isus și a sfinților, aducând la viață credința și spiritualitatea comunității locale.",
       "În jurul bisericii, peisajul rural se desfășoară într-o paletă variată de culori. Casele tradiționale din lemn se întind pe ulițele liniștite, iar grădinile pline de flori adaugă un farmec aparte acestui loc. În timpul primăverii și al verii, Slătioara se transformă într-o explozie de culoare, iar parfumul florilor înmiresmează aerul.",
       "Slătioara din Vâlcea nu este doar un loc geografic, ci și un loc al inimilor călduroase și o comunitate ce împărtășește tradiții și valori. Biserica Potecașilor, cu trecutul său venerabil și frumusețea sa sublimă, este punctul de convergență al acestui mic colț de paradis, unde trecutul și prezentul se împletesc într-o armonie perfectă.",
-      "assets/satul-slatioara.jpg",
+      "assets/slatioara1.jpg",
       []
     );
     this.data.push(dataDto);
@@ -93,7 +97,7 @@ export class UnderTheMountainComponent {
       "În acest sanctuar al pietrelor, liniștea și misterul vremurilor îndepărtate îi însoțesc pe cei ce pășesc printre trovanți, oferindu-le o experiență unică și memorabilă. În plus, muzeul adăpostește o colecție impresionantă de artefacte arheologice și exponate ce ilustrează viața tradițională din regiune, completând astfel povestea bogată a patrimoniului cultural vâlcean.",
       "În împrejurimile comunei Costești se găsesc și alte atracții naturale deosebite, cum ar fi Cheile Bistriței și Peștera Bistrița, care încântă privirile cu peisaje pitorești și formațiuni carstice spectaculoase. Aceste locuri sunt ideale pentru iubitorii de natură și aventură, oferind ocazia de a explora frumusețea sălbatică a Carpaților și de a descoperi misterele ascunse ale regiunii.",
       "În concluzie, Costești este o destinație fascinantă și diversificată, care îmbină armonios frumusețea naturală cu patrimoniul cultural și spiritual al zonei. O vizită în această comună este o călătorie în trecut și în prezent, ce oferă o experiență autentică și memorabilă pentru toți cei ce îi trec pragul.",
-      "assets/costesti1.jpeg",
+      "assets/costesti1.jpg",
       []
     );
     this.data.push(dataDto);
@@ -105,7 +109,7 @@ export class UnderTheMountainComponent {
       "Unul dintre comorile ce definesc această localitate este Schitul Pătrunsa, un adevărat simbol de spiritualitate și liniște. Schitul, situat în mijlocul pădurii, se înalță ca o comoară a credinței și meditației. Aici, pelerinii și credincioșii se adună în căutarea păcii interioare și a armoniei cu natura. Picturile murale care împodobesc biserica schitului spun povești de credință și smerenie, amintindu-ne de rădăcinile noastre religioase și de înțelepciunea celor care au trăit și au slujit aici de-a lungul secolelor.",
       "În fiecare an are loc festivitatea \"Brâul de Aur\" ce promite o atmosferă plină de viață și bucurie, unde cântecele și dansurile vibrante vor fi la ele acasă. Programată pentru 8 septembrie, această sărbătoare adună ansambluri de muzică populară care celebrează cu mândrie portul tradițional românesc.",
       "Un moment așteptat cu nerăbdare de către localnici și vizitatori este impresionanta paradă a portului popular. În cadrul acestei parade, reprezentanți din diverse comune ale județului Vâlcea vor defila cu mândrie în costumele lor tradiționale, aducând în prim-plan bogata lor istorie și tradiție. Participanții vor avea ocazia să admire aceste minunate creații în timp ce defilează în căruțe, urmând un traseu ce leagă Căminul Cultural Bodești de stadionul din Bărbătești, locul central al festivalului.",
-      "assets/trafic.jpg",
+      "assets/barbatesti1.JPEG",
       []
     );
     this.data.push(dataDto);

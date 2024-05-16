@@ -2,151 +2,186 @@ import {Injectable} from "@angular/core";
 
 @Injectable()
 export class PhotoService {
-  getHorezuData() {
+  private static getHorezuData() {
     return [
       {
-        itemImageSrc: 'assets/horezu1.jpeg',
-        thumbnailImageSrc: 'assets/horezu1thumb.jpeg',
+        itemImageSrc: 'assets/horezu1.jpg',
         alt: 'Horezu',
         title: 'Horezu 1'
       },
       {
-        itemImageSrc: 'assets/horezu2.jpeg',
-        thumbnailImageSrc: 'assets/horezu2thumb.jpeg',
+        itemImageSrc: 'assets/horezu2.jpg',
         alt: 'Horezu',
         title: 'Horezu 2'
       },
       {
-        itemImageSrc: 'assets/horezu3.jpeg',
-        thumbnailImageSrc: 'assets/horezu3thumb.jpeg',
+        itemImageSrc: 'assets/horezu3.jpg',
         alt: 'Horezu',
         title: 'Horezu 3'
       },
       {
-        itemImageSrc: 'assets/horezu4.jpeg',
-        thumbnailImageSrc: 'assets/horezu4thumb.jpeg',
+        itemImageSrc: 'assets/horezu4.jpg',
         alt: 'Horezu',
         title: 'Horezu 4'
       },
       {
-        itemImageSrc: 'assets/horezu5.jpeg',
-        thumbnailImageSrc: 'assets/horezu5thumb.jpeg',
+        itemImageSrc: 'assets/horezu5.jpg',
         alt: 'Horezu',
         title: 'Horezu 5'
-      },
-      {
-        itemImageSrc: 'assets/horezu6.jpeg',
-        thumbnailImageSrc: 'assets/horezu6thumb.jpeg',
-        alt: 'Horezu',
-        title: 'Horezu 6'
-      },
-      {
-        itemImageSrc: 'assets/horezu7.jpeg',
-        thumbnailImageSrc: 'assets/horezu7thumb.jpeg',
-        alt: 'Horezu',
-        title: 'Horezu 7'
       },
     ];
   }
 
-  private getCostestiData() {
+  private static getCostestiData() {
     return [
       {
-        itemImageSrc: 'assets/costesti1.jpeg',
-        thumbnailImageSrc: 'assets/costesti1thumb.jpeg',
+        itemImageSrc: 'assets/costesti1.jpg',
         alt: 'Costesti',
         title: 'Costesti 1'
       },
       {
-        itemImageSrc: 'assets/costesti2.jpeg',
-        thumbnailImageSrc: 'assets/costesti2thumb.jpeg',
+        itemImageSrc: 'assets/costesti2.jpg',
         alt: 'Costesti',
         title: 'Costesti 2'
       },
       {
-        itemImageSrc: 'assets/costesti3.jpeg',
-        thumbnailImageSrc: 'assets/costesti3thumb.jpeg',
+        itemImageSrc: 'assets/costesti3.jpg',
         alt: 'Costesti',
         title: 'Costesti 3'
       },
       {
-        itemImageSrc: 'assets/costesti4.jpeg',
-        thumbnailImageSrc: 'assets/costesti4thumb.jpeg',
+        itemImageSrc: 'assets/costesti4.jpg',
         alt: 'Costesti',
         title: 'Costesti 4'
       },
       {
-        itemImageSrc: 'assets/costesti5.jpeg',
-        thumbnailImageSrc: 'assets/costesti5thumb.jpeg',
+        itemImageSrc: 'assets/costesti5.jpg',
         alt: 'Costesti',
         title: 'Costesti 5'
       },
       {
-        itemImageSrc: 'assets/costesti6.jpeg',
-        thumbnailImageSrc: 'assets/costesti6thumb.jpeg',
+        itemImageSrc: 'assets/costesti6.jpg',
         alt: 'Costesti',
         title: 'Costesti 6'
-      },
-      {
-        itemImageSrc: 'assets/costesti7.jpeg',
-        thumbnailImageSrc: 'assets/costesti7humb.jpeg',
-        alt: 'Costesti',
-        title: 'Costesti 7'
-      },
-      {
-        itemImageSrc: 'assets/costesti8.jpeg',
-        thumbnailImageSrc: 'assets/costesti8thumb.jpeg',
-        alt: 'Costesti',
-        title: 'Costesti 8'
       },
     ];
   }
 
-  private getSlatioaraData() {
-    return undefined;
+  private static getSlatioaraData() {
+    return [
+      {
+        itemImageSrc: 'assets/slatioara1.jpg',
+        alt: 'Slatioara',
+        title: 'Slatioara 1'
+      }
+    ];
   }
 
-  private getPolovragiData() {
-    return undefined;
+  private static getPolovragiData() {
+    return [
+      {
+        itemImageSrc: 'assets/polovragi1.jpg',
+        alt: 'Polovragi',
+        title: 'Polovragi 1'
+      },
+      {
+        itemImageSrc: 'assets/polovragi2.jpg',
+        alt: 'Polovragi',
+        title: 'Polovragi 2'
+      }
+    ];
   }
 
-  private getBaiaData() {
-    return undefined;
+  private static getBaiaData() {
+    return [
+      {
+        itemImageSrc: 'assets/baia1.jpg',
+        alt: 'Baia',
+        title: 'Baia 1'
+      },
+      {
+        itemImageSrc: 'assets/baia2.jpg',
+        alt: 'Baia',
+        title: 'Baia 2'
+      },
+      {
+        itemImageSrc: 'assets/baia3.jpg',
+        alt: 'Baia',
+        title: 'Baia 3'
+      },
+      {
+        itemImageSrc: 'assets/baia4.jpg',
+        alt: 'Baia',
+        title: 'Baia 4'
+      }
+    ];
   }
 
-  private getVaideeniData() {
-    return undefined;
+  private static getVaideeniData() {
+    return [
+      {
+        itemImageSrc: 'assets/vaideeni1.jpg',
+        alt: 'Vaideeni',
+        title: 'Vaideeni 1'
+      },
+      {
+        itemImageSrc: 'assets/vaideeni2.jpg',
+        alt: 'Vaideeni',
+        title: 'Vaideeni 2'
+      },
+      {
+        itemImageSrc: 'assets/vaideeni3.jpg',
+        alt: 'Vaideeni',
+        title: 'Vaideeni 3'
+      }
+    ];
   }
 
-  private getBatbatestiData() {
-    return undefined;
+  private static getBatbatestiData() {
+    return [
+      {
+        itemImageSrc: 'assets/barbatesti1.JPEG',
+        alt: 'Barbatesti',
+        title: 'Barbatesti 1'
+      },
+      {
+        itemImageSrc: 'assets/barbatesti2.JPEG',
+        alt: 'Barbatesti',
+        title: 'Barbatesti 2'
+      },
+      {
+        itemImageSrc: 'assets/barbatesti3.JPEG',
+        alt: 'Barbatesti',
+        title: 'Barbatesti 3'
+      }
+    ];
   }
 
   getHorezuImages() {
-    return Promise.resolve(this.getHorezuData());
+    return Promise.resolve(PhotoService.getHorezuData());
   }
 
   getCostestiImages() {
-    return Promise.resolve(this.getCostestiData());
+    return Promise.resolve(PhotoService.getCostestiData());
   }
 
   getSlatioaraImages() {
-    return Promise.resolve(this.getSlatioaraData());
+    return Promise.resolve(PhotoService.getSlatioaraData());
   }
 
   getPolovragiImages() {
-    return Promise.resolve(this.getPolovragiData());
+    return Promise.resolve(PhotoService.getPolovragiData());
   }
 
   getBaiaImages() {
-    return Promise.resolve(this.getBaiaData());
+    return Promise.resolve(PhotoService.getBaiaData());
   }
 
   getVaideeniImages() {
-    return Promise.resolve(this.getVaideeniData());
+    return Promise.resolve(PhotoService.getVaideeniData());
   }
 
   getBarbatestiImages() {
-    return Promise.resolve(this.getBatbatestiData());
+    return Promise.resolve(PhotoService.getBatbatestiData());
   }
 }
