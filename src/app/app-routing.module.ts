@@ -8,6 +8,7 @@ import {TerrainFormPageComponent} from "./terrain-form-page/terrain-form-page.co
 import {ContactUsComponent} from "./contact-us/contact-us.component";
 import {UnderTheMountainComponent} from "./under-the-mountain/under-the-mountain.component";
 import {SeeTheAreaComponent} from "./see-the-area/see-the-area.component";
+import {VillageOfTheMonthComponent} from "./village-of-the-month/village-of-the-month.component";
 
 const routes: Routes = [
   {path: 'home-form-page', component: FormPageComponent},
@@ -17,6 +18,7 @@ const routes: Routes = [
   {path: 'contact-us', component: ContactUsComponent},
   {path: 'under-the-mountain', component: UnderTheMountainComponent},
   {path: 'see-the-area', component:SeeTheAreaComponent},
+  {path: 'village-of-the-month', component:VillageOfTheMonthComponent},
   {path: '**', component: LandingPageComponent}
 ];
 

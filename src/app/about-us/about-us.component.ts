@@ -63,4 +63,10 @@ export class AboutUsComponent implements OnInit, AfterViewInit{
       ease: Expo.easeInOut
     });
   }
+
+  getText() {
+    return 'Noi nu facem din asta o afacere. Ne bucurăm pentru fiecare casă care își \ngăsește un suflet curat. ' +
+      'Noi nu îți percepem comision înainte. După ce tu, suflet frumos \nți-ai ales casa pereche, ' +
+      'poți să donezipentru ca alte suflete curate, asemănătoare ție, \nsă se bucure cum te bucuri tu.'
+  }
 }

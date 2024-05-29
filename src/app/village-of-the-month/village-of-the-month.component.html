@@ -1,0 +1,211 @@
+<div class="large-screen">
+  <div class="container1">
+    <div class="reveal">
+      <div style="padding-top: 4.5rem" class="reveal p-card-custom">
+        <p-card [style]="{ width: '40rem', height: '24rem' }">
+          <ng-template style="display: flex" pTemplate="header">
+            <div style="display: flex">
+              <h5 class="title">{{data[villageId].title}}</h5>
+            </div>
+          </ng-template>
+          <p class="m-0 text-style">
+            {{data[villageId].desc}}
+          </p>
+        </p-card>
+      </div>
+      <div style="max-width: 45rem; max-height: 32.5rem; padding-left: 3rem">
+        <vg-player (onPlayerReady)="onPlayerReady($event)">
+          <vg-overlay-play></vg-overlay-play>
+          <vg-buffering></vg-buffering>
+          <vg-scrub-bar>
+            <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+            <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+          </vg-scrub-bar>
+          <vg-controls>
+            <vg-play-pause></vg-play-pause>
+            <vg-playback-button></vg-playback-button>
+            <vg-time-display></vg-time-display>
+            <vg-scrub-bar style="pointer-events: none"></vg-scrub-bar>
+            <vg-time-display property="left"></vg-time-display>
+            <vg-time-display property="total"></vg-time-display>
+            <vg-track-selector></vg-track-selector>
+            <vg-mute></vg-mute>
+            <vg-volume></vg-volume>
+            <vg-fullscreen></vg-fullscreen>
+          </vg-controls>
+          <video [vgMedia]="$any(media1)"
+                 #media1 id="firstVideoDesktop"
+                 preload="auto"
+                 [src]="satulRapa1"
+                 crossorigin>
+          </video>
+        </vg-player>
+
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="p-card-custom" style="padding-left: 25rem; padding-top: 2rem">
+      <p-card [style]="{ width: '60rem' }">
+        <p class="m-0 text-style">
+          Străbătând pădurea cu speranța de a găsi ciuperci și lăsându-mă purtat de liniștea și pacea oferită de aceasta, m-am trezit la un moment dat în spatele unei case. Acolo am avut surpriza să văd doi bătrâni, un tataie care își ascuțea coasa și o mamaie care întorcea fânul.
+          <br><br>- Mamaie, îmi dai voie să trec prin curtea matale să-mi văd de drum?
+          <br>- Da, maică, treci.
+          <br>- Acum, dacă mi-ai spune și unde mă aflu, că nu mi se pare cunoscută zona…
+          <br>- Ești în satul Râpa, mamă, de la Recea.
+          <br>- Dar dumneata câți ani ai, dacă nu te superi?
+          <br>- 80 am!
+          <br>- Și tataie?
+          <br>- Tataie are 90… ce să facem și noi… cu munca, că așa e la țară, n-ai timp să stai deloc! Dacă nu facem noi, atunci nu face nimeni…
+          <br><br>După ce am vorbit cu mamaia și i-am urat sănătate și spor, mi-am văzut de drum privind la un loc din care parcă n-ai mai pleca, unde omul e simplu și muncește pentru liniștea sufletului.
+          <br><br>Așa am ajuns eu, dragii mei, să aflu de existența acestui loc binecuvântat de Dumnezeu, și mai departe să am șansa să îl împărtășesc cu voi. Deși acesta nu e un sat, ci mai degrabă o stradă, oamenii așa-l știu, deoarece aici și-au petrecut veacurile și tot aici doresc să rămână, fiindcă, așa cum am mai zis, "Veșnicia s-a născut la sat" (Lucian Blaga).
+          <br><br>
+          Bucuraț-vă, dragii mei, de pozele și videoclipurile puse de mine și vă aștept data viitoare să descoperim împreună alte locuri splendide.
+          <br>Multă sănătate!
+        </p>
+      </p-card>
+    </div>
+  </div>
+
+<div class="container1">
+  <div class="reveal">
+    <div class="reveal p-card-custom">
+      <p-card [style]="{ width: '40rem', height: '32.5rem' }">
+        <h5 style="font-size: 3rem; font-family: 'Comic Sans MS'; text-align: center">
+          Prima lecție <br> de spiritualitate
+        </h5>
+      </p-card>
+    </div>
+    <div style="max-width: 45rem; max-height: 32.5rem; padding-left: 3rem">
+      <vg-player (onPlayerReady)="onPlayerReady($event)">
+        <vg-overlay-play></vg-overlay-play>
+        <vg-buffering></vg-buffering>
+        <vg-scrub-bar>
+          <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+          <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+        </vg-scrub-bar>
+        <vg-controls>
+          <vg-play-pause></vg-play-pause>
+          <vg-playback-button></vg-playback-button>
+          <vg-time-display></vg-time-display>
+          <vg-scrub-bar style="pointer-events: none"></vg-scrub-bar>
+          <vg-time-display property="left"></vg-time-display>
+          <vg-time-display property="total"></vg-time-display>
+          <vg-track-selector></vg-track-selector>
+          <vg-mute></vg-mute>
+          <vg-volume></vg-volume>
+          <vg-fullscreen></vg-fullscreen>
+        </vg-controls>
+        <video [vgMedia]="$any(media2)"
+               #media2 id="secondVideoDesktop"
+               preload="auto"
+               [src]="satulRapa2"
+               crossorigin>
+        </video>
+      </vg-player>
+
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+
+
+
+<div class="small-screen">
+  <div class="container1">
+    <div class="reveal">
+      <div style="max-width: 23rem; max-height: 20rem; padding-bottom: 1rem">
+        <vg-player (onPlayerReady)="onPlayerReady($event)">
+          <vg-overlay-play></vg-overlay-play>
+          <vg-buffering></vg-buffering>
+          <vg-scrub-bar>
+            <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+            <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+          </vg-scrub-bar>
+          <vg-controls>
+            <vg-play-pause></vg-play-pause>
+            <vg-playback-button></vg-playback-button>
+            <vg-time-display></vg-time-display>
+            <vg-scrub-bar style="pointer-events: none"></vg-scrub-bar>
+            <vg-mute></vg-mute>
+            <vg-fullscreen></vg-fullscreen>
+          </vg-controls>
+          <video [vgMedia]="$any(media1)"
+                 #media1 id="firstVideoMobile"
+                 preload="auto"
+                 [src]="satulRapa1"
+                 crossorigin>
+          </video>
+        </vg-player>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container2">
+    <div style="padding-top: 3rem" class="reveal p-card-custom">
+      <p-card>
+        <p class="m-0 text-style">
+          Străbătând pădurea cu speranța de a găsi ciuperci și lăsându-mă purtat de liniștea și pacea oferită de aceasta, m-am trezit la un moment dat în spatele unei case. Acolo am avut surpriza să văd doi bătrâni, un tataie care își ascuțea coasa și o mamaie care întorcea fânul.
+          <br><br>- Mamaie, îmi dai voie să trec prin curtea matale să-mi văd de drum?
+          <br>- Da, maică, treci.
+          <br>- Acum, dacă mi-ai spune și unde mă aflu, că nu mi se pare cunoscută zona…
+          <br>- Ești în satul Râpa, mamă, de la Recea.
+          <br>- Dar dumneata câți ani ai, dacă nu te superi?
+          <br>- 80 am!
+          <br>- Și tataie?
+          <br>- Tataie are 90… ce să facem și noi… cu munca, că așa e la țară, n-ai timp să stai deloc! Dacă nu facem noi, atunci nu face nimeni…
+          <br><br>După ce am vorbit cu mamaia și i-am urat sănătate și spor, mi-am văzut de drum privind la un loc din care parcă n-ai mai pleca, unde omul e simplu și muncește pentru liniștea sufletului.
+          <br><br>Așa am ajuns eu, dragii mei, să aflu de existența acestui loc binecuvântat de Dumnezeu, și mai departe să am șansa să îl împărtășesc cu voi. Deși acesta nu e un sat, ci mai degrabă o stradă, oamenii așa-l știu, deoarece aici și-au petrecut veacurile și tot aici doresc să rămână, fiindcă, așa cum am mai zis, "Veșnicia s-a născut la sat" (Lucian Blaga).
+          <br><br>
+          Bucuraț-vă, dragii mei, de pozele și videoclipurile puse de mine și vă aștept data viitoare să descoperim împreună alte locuri splendide.
+          <br>Multă sănătate!
+        </p>
+      </p-card>
+    </div>
+  </div>
+
+  <div class="container2">
+    <div style="padding-top: 1rem" class="reveal p-card-custom">
+      <p-card>
+        <p class="m-0 text-style">
+          Prima lectie de spiritualitate
+        </p>
+      </p-card>
+    </div>
+  </div>
+
+  <div class="container1">
+    <div class="reveal">
+      <div style="max-width: 23rem; max-height: 20rem; padding-bottom: 1rem">
+        <vg-player (onPlayerReady)="onPlayerReady($event)">
+          <vg-overlay-play></vg-overlay-play>
+          <vg-buffering></vg-buffering>
+          <vg-scrub-bar>
+            <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+            <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+          </vg-scrub-bar>
+          <vg-controls>
+            <vg-play-pause></vg-play-pause>
+            <vg-playback-button></vg-playback-button>
+            <vg-time-display></vg-time-display>
+            <vg-scrub-bar style="pointer-events: none"></vg-scrub-bar>
+            <vg-mute></vg-mute>
+            <vg-fullscreen></vg-fullscreen>
+          </vg-controls>
+          <video [vgMedia]="$any(media2)"
+                 #media2 id="secondVideoMobile"
+                 preload="auto"
+                 [src]="satulRapa2"
+                 crossorigin>
+          </video>
+        </vg-player>
+      </div>
+    </div>
+  </div>
+
+</div>

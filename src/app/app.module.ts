@@ -35,7 +35,7 @@ import {RatingModule} from "primeng/rating";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {DataService} from "./service/data-service";
-import {CommonModule} from "@angular/common";
+import {CommonModule, NgOptimizedImage} from "@angular/common";
 import { register } from 'swiper/element/bundle';
 import {VgCoreModule} from "@videogular/ngx-videogular/core";
 import {VgControlsModule} from "@videogular/ngx-videogular/controls";
@@ -46,6 +46,8 @@ import { SeeTheAreaBuyComponent } from './see-the-area-buy/see-the-area-buy.comp
 import {HttpClientModule} from "@angular/common/http";
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {CalendarModule} from "primeng/calendar";
+import { VillageOfTheMonthComponent } from './village-of-the-month/village-of-the-month.component';
+import {DialogModule} from "primeng/dialog";
 register();
 
 @NgModule({
@@ -61,7 +63,8 @@ register();
     UnderTheMountainComponent,
     SeeTheAreaComponent,
     SeeTheAreaRentComponent,
-    SeeTheAreaBuyComponent
+    SeeTheAreaBuyComponent,
+    VillageOfTheMonthComponent
   ],
     imports: [
         BrowserModule,
@@ -94,12 +97,37 @@ register();
         VgBufferingModule,
         HttpClientModule,
         ProgressSpinnerModule,
-        CalendarModule
+        CalendarModule,
+        DialogModule
     ],
   providers: [
     PhotoService,
     MessageService,
-    DataService],
+    DataService,
+    ButtonModule,
+    MenubarModule,
+    ScrollTopModule,
+    ReactiveFormsModule,
+    FormsModule,
+    InputTextareaModule,
+    InputTextModule,
+    SliderModule,
+    PanelModule,
+    ToggleButtonModule,
+    ChipModule,
+    RippleModule,
+    MessagesModule,
+    CardModule,
+    GalleriaModule,
+    DataViewModule,
+    ImageModule,
+    RatingModule,
+    FontAwesomeModule,
+    ToastModule,
+    ProgressSpinnerModule,
+    CalendarModule,
+    NgOptimizedImage
+    ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

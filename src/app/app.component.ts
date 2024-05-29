@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import { faTiktok } from '@fortawesome/free-brands-svg-icons';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
 import { faInstagram } from '@fortawesome/free-brands-svg-icons';
+import { faSquareFacebook } from "@fortawesome/free-brands-svg-icons";
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,13 @@ export class AppComponent implements OnInit{
   faTiktok = faTiktok;
   faFacebook = faFacebook;
   faInstagram = faInstagram;
+  faSquareFacebook = faSquareFacebook;
+
+  visible: boolean = false;
+
+  showDialog() {
+    this.visible = true;
+  }
 
   constructor(private router: Router) {
 
@@ -28,6 +36,10 @@ export class AppComponent implements OnInit{
 
   goToInfoPage() {
     this.router.navigateByUrl("/info-page");
+  }
+
+  goToVillageOfTheMonth() {
+    this.router.navigateByUrl("/village-of-the-month");
   }
 
   goToLandingPage() {
@@ -71,7 +83,7 @@ export class AppComponent implements OnInit{
       {
         label: 'Satul lunii',
         icon: 'pi pi-fw pi-home',
-        command: () => this.goToInfoPage()
+        command: () => this.goToVillageOfTheMonth()
       },
       {
         label: 'Haide să vezi zona!',
@@ -100,6 +112,17 @@ export class AppComponent implements OnInit{
     //   duration: 0.5,
     //   ease: 'power2.inOut'
     // });
+  }
+
+  goToTikTokPage() {
+
+  }
+
+  goToFacebookPage() {
+
+  }
+
+  goToInstagramPage() {
 
   }
 }

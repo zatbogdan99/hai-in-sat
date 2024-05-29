@@ -2,7 +2,17 @@
   <section>
     <div class="card">
       <div class="card-info">
-        <h1 id="card-info-title">{{data[currentNum].title}}</h1>
+        <div style="display: flex">
+          <h1 id="card-info-title">{{data[currentNum].title}}</h1>
+          <a style="padding-left: 15rem; padding-bottom: 3rem">
+            <p (click)="nextButton()">Următorul</p>
+            <svg viewBox="0 0 20 10">
+              <line x1="0" y1="5" x2="20" y2="5"></line>
+              <line x1="15" y1="0" x2="20" y2="5"></line>
+              <line x1="15" y1="10" x2="20" y2="5"></line>
+            </svg>
+          </a>
+        </div>
         <p id="card-info-desc">{{data[currentNum].desc}}</p>
         <a>
           <p (click)="showMore()">Mai multe</p>
@@ -16,14 +26,6 @@
 
       <div class="card-photo">
           <div id="mask" class="mask">
-            <a>
-              <p (click)="nextButton()">Următorul</p>
-              <svg viewBox="0 0 20 10">
-                <line x1="0" y1="5" x2="20" y2="5"></line>
-                <line x1="15" y1="0" x2="20" y2="5"></line>
-                <line x1="15" y1="10" x2="20" y2="5"></line>
-              </svg>
-            </a>
             <img src="{{data[currentNum].photo}}">
           </div>
       </div>
@@ -35,7 +37,7 @@
   <div style="padding-top: 2rem">
     <p-card>
       <ng-template pTemplate="header">
-        <img id="mask-mobile" src="{{data[currentNum].photo}}">
+        <img id="mask-mobile" src="{{data[currentNum].photo}}" alt="Poza de prezentare">
         <h1 style="padding-top: 2rem; text-align: center" id="card-info-title">{{data[currentNum].title}}</h1>
       </ng-template>
       <p id="card-info-desc">{{data[currentNum].desc}}</p>

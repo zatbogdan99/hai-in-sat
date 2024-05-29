@@ -14,7 +14,7 @@
 }
 
 .left-container {
-  background-color: black;
+  background-color: #f5f3eb;
   height: 100%;
   width: 30%;
   color: white;
@@ -76,22 +76,21 @@
   top: 75vh;
 }
 
-.extra-text p {
+.extra-text pre {
   font-size: 1.3rem;
-  font-family: "Garamond";
+  font-family: sans-serif;
 }
 
 .story h1 {
-  font-size: 6rem;
+  font-size: 3rem;
   margin-bottom: 2rem;
-  font-family: "Garamond";
+  font-family: "Comic Sans MS";
 }
 
 .story p {
   margin-left: 0.5rem;
   font-size: 1.2rem;
   padding-right: 20rem;
-  font-family: "Garamond";
 }
 
 .story p:nth-child(3) {

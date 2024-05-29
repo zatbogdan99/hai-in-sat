@@ -1,7 +1,7 @@
 .hai-in-sat {
   display: inline-block;
   text-decoration: none;
-  text-transform: uppercase;
+  //text-transform: uppercase;
   color: #717171;
   background: #fff;
   font-weight: 500;
@@ -49,6 +49,7 @@ div section div a:hover {
 }
 
 .first-section {
+  font-family: "Comic Sans MS";
   border-right: 1px solid #f0f0f0;
   border-left: 1px solid #f0f0f0;
   grid-column: center-start / center-end;
@@ -59,6 +60,7 @@ div section div a:hover {
 }
 
 .second-section {
+  font-family: sans-serif;
   padding: 0 20px;
   border-right: 1px solid #f0f0f0;
   border-left: 1px solid #f0f0f0;
@@ -85,17 +87,18 @@ div section div a:hover {
     justify-self: center;
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    color: #a8a8a8;
+    color: #8ca18c;
     font-size: 15px;
   }
 
   .heading-1 {
+    font-family: "Comic Sans MS";
     grid-row: 2 / 3;
     grid-column: 3 / 7;
     justify-self: center;
     font-size: 40px;
     font-weight: 500;
-    width: 45rem;
+    width: 50rem;
   }
 
   .info-1 {
@@ -124,11 +127,12 @@ div section div a:hover {
         grid-column: 1 / -1;
         font-size: 36px;
         font-weight: 500;
+        font-family: "Comic Sans MS";
       }
 
       p.paragraph {
         font-weight: 400;
-        font-size: 16px;
+        font-size: 18px;
         line-height: 1.7;
         grid-row: 3 / 4;
         width: 75%;
@@ -193,6 +197,7 @@ div section div a:hover {
         grid-column: 1 / -1;
         font-size: 36px;
         font-weight: 500;
+        font-family: "Comic Sans MS";
       }
 
       .button1 {
@@ -207,7 +212,7 @@ div section div a:hover {
 
       p.paragraph {
         font-weight: 400;
-        font-size: 16px;
+        font-size: 18px;
         line-height: 1.7;
         grid-row: 3 / 4;
         width: 90%;
