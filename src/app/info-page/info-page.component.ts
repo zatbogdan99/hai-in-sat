@@ -48,7 +48,7 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
 
     let dataDto = new DataDto(
       0, //satul lunii
-      "Satul Râpa",
+      "Râpa",
       "",
       "",
       null,
