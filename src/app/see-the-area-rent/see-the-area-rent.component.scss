@@ -21,7 +21,7 @@ main > div h1 {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   -moz-background-clip: text;
-  text-transform: capitalize;
+  //text-transform: capitalize;
   letter-spacing: 0.8px;
   font-family: "Open Sans", sans-serif;
   font-size: clamp(3.4375rem, 3.25rem + 0.75vw, 4rem);
@@ -32,7 +32,7 @@ main > div hr {
   display: block;
   background: #005baa;
   height: 0.25rem;
-  width: 6.25rem;
+  //width: 6.25rem;
   border: none;
   margin: 1.125rem 0 1.875rem 0;
 }

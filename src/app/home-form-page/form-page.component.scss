@@ -13,10 +13,10 @@
 
 h1 {
   font-size: 2.5rem;
-  text-transform: uppercase;
+  //text-transform: uppercase;
   font-family: 'Bebas Neue';
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
-  line-height: 5.9rem;
+  //line-height: 5.9rem;
 }
 
 .parent-container {
@@ -40,16 +40,37 @@ h1 {
 
 .bg {
   position: fixed;
-  top: 7rem;
-  left: 15rem;
+  top: 17rem;
+  left: 6rem;
   z-index: -1;
-  width: 30rem;
-  height: 30rem;
+  width: 15rem;
+  height: 15rem;
   opacity: 0.3;
 }
 
-.h1-style {
+.degrade {
+  background-color: #005baa;
+  background-image: linear-gradient(45deg, #005baa, #000000);
+  background-size: 100%;
+  background-repeat: repeat;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-background-clip: text;
+  //text-transform: capitalize;
+  letter-spacing: 0.8px;
+  font-family: "Open Sans", sans-serif;
+  font-size: clamp(2.4375rem, 2.25rem + 0.75vw, 2rem);
+  font-weight: 800;
   text-align: center;
+}
+
+.degrade-line {
+  display: block;
+  background: #005baa;
+  height: 0.25rem;
+  //width: 6.25rem;
+  border: none;
+  margin: 1.125rem 0 1.875rem 0;
 }
 
 .h2-style {

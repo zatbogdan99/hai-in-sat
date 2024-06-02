@@ -1,39 +1,22 @@
 <div class="large-screen">
 <div style="display: flex">
   <main>
+    <p-button *ngIf="rent!==-1" label="Înapoi" icon="pi pi-arrow-left" size="large" [raised]="true" severity="secondary" (onClick)="onBack()"></p-button>
     <div style="padding-left: 14rem">
       <h1 style="background-color: rgba(1, 21, 38, 0.90) !important; background-image: none">Haide să vezi zona</h1>
       <hr>
       <p>Echipa noastră poate fi ghidul dvs. în această călătorie de transformare. Suntem aici să vă prezentăm oportunitățile incredibile <br> pe care viața la țară le oferă. Alegeți să faceți pasul și să explorați ce înseamnă cu adevărat să trăiești.</p>
     </div>
-    <p-button *ngIf="rent!==-1" label="Înapoi" icon="pi pi-arrow-left" size="large" (onClick)="onBack()"></p-button>
   </main>
 </div>
 
 <div style="display: flex; padding-left: 14rem; padding-top: 3rem">
-  <p-card *ngIf="isRentValid()" [style]="{ width: '35rem' }">
-    <ng-template pTemplate="header">
-      <div style="display: flex">
-        <img style="width: 200px; height: 200px; margin-left: 7rem" alt="Card" src="assets/logo.png" />
-        <h1 style="padding-top: 5rem; padding-left: 5rem">Închiriază</h1>
-      </div>
-    </ng-template>
-    <p style="font-size: 24px; text-align: center">
-      Case în care ai putea să locuiești pentru a te bucura de această zonă<br><br>
-    </p>
-    <ng-template pTemplate="footer">
-      <div style="text-align: center">
-        <p-button label="HAI IN SAT" icon="pi pi-check" (onClick)="changeToRent()"></p-button>
-      </div>
-    </ng-template>
-  </p-card>
-
-  <div style="padding-left: 7rem">
+  <div style="padding-right: 7rem">
     <p-card *ngIf="isRentValid()" [style]="{ width: '35rem'}">
       <ng-template pTemplate="header">
         <div style="display: flex">
-          <h1 style="padding-top: 5rem; padding-left: 5rem">Cumpără</h1>
-          <img style="width: 200px; height: 200px; margin-left: 7rem" alt="Card" src="assets/logo.png" />
+          <h1 style="padding-top: 5rem; padding-left: 14rem;">Cumpără</h1>
+          <!--          <img style="width: 200px; height: 200px; margin-left: 7rem" alt="Card" src="assets/logo.png" />-->
         </div>
       </ng-template>
       <p style="font-size: 24px; text-align: center">
@@ -47,12 +30,29 @@
     </p-card>
   </div>
 
+  <p-card *ngIf="isRentValid()" [style]="{ width: '35rem' }">
+    <ng-template pTemplate="header">
+      <div style="display: flex">
+<!--        <img style="width: 200px; height: 200px; margin-left: 7rem" alt="Card" src="assets/logo.png" />-->
+        <h1 style="padding-top: 5rem; padding-left: 14rem">Închiriază</h1>
+      </div>
+    </ng-template>
+    <p style="font-size: 24px; text-align: center">
+      Case în care ai putea să locuiești pentru a te bucura de această zonă<br><br>
+    </p>
+    <ng-template pTemplate="footer">
+      <div style="text-align: center">
+        <p-button label="HAI IN SAT" icon="pi pi-check" (onClick)="changeToRent()"></p-button>
+      </div>
+    </ng-template>
+  </p-card>
+
 </div>
 
+  <app-see-the-area-buy *ngIf="isBuySelected()"></app-see-the-area-buy>
 
-<app-see-the-area-rent *ngIf="isRentSelected()"></app-see-the-area-rent>
+  <app-see-the-area-rent *ngIf="isRentSelected()"></app-see-the-area-rent>
 
-<app-see-the-area-buy *ngIf="isBuySelected()"></app-see-the-area-buy>
 
 </div>
 

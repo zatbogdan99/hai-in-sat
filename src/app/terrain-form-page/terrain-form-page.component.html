@@ -4,7 +4,8 @@
 <div class="large-screen">
   <div class="parent-container">
 
-    <h1 style="text-align: center" id="first-text1">Găsește-ți terenul pe placul tău!</h1>
+    <h1 class="degrade" style="text-align: center" id="first-text1">Găsește-ți terenul pe placul tău!</h1>
+    <hr class="degrade-line">
     <h2 style="text-align: center; max-width: 50rem" id="first-text2">
       Noi avem și altă ofertă pentru tine. Dacă nu îți dorești o casă în superba noastră zonă,
       îți putem oferi un teren unde poți să îți faci casa mult visată.
@@ -69,12 +70,13 @@
 
 <div class="small-screen">
 
-  <div>
-    <h1 class="align-center" id="first-text1-mobile">Găsește-ți terenul pe placul tău!</h1>
-    <h2 class="align-center" id="first-text2-mobile">
+  <div style="padding-bottom: 2rem">
+    <h1 style="font-size: 1.9rem" class="align-center degrade" id="first-text1-mobile">Găsește-ți terenul pe placul tău!</h1>
+    <hr>
+    <h5 class="align-center" style="font-size: 1.3rem;" id="first-text2-mobile">
       Dă-ne mai multe informații, iar noi
       îți vom oferi cele mai apropiate 3 variante de nevoile tale.
-    </h2>
+    </h5>
 
     <div class="mobile-div-style">
     <span style="margin-bottom: 2rem" class="p-float-label" [formGroup]="formGroup">
@@ -94,7 +96,7 @@
       <label htmlFor="mail">Adresă de e-mail</label>
     </span>
 
-      <h2 style="text-align: center">La ce apropiere de un centru urban(Km)</h2>
+      <h2 style="text-align:center; font-size: 1.3rem; padding-right: 4rem">La ce apropiere de un centru urban(Km)</h2>
       <div>
         <div style="margin-bottom: 1rem; display: flex">
           <div style="padding-right: 1rem; display: inline">
@@ -110,7 +112,7 @@
         </div>
       </div>
 
-      <h2>Preț(€)</h2>
+      <h2 style="font-size: 1.3rem; text-align: center; padding-right: 4rem">Preț(€)</h2>
       <div>
         <div style="margin-bottom: 1rem; display: flex">
           <div style="padding-right: 1rem; display: inline">
@@ -129,12 +131,12 @@
         <textarea style="width: 15.6rem" rows="5" pInputTextarea id="mentions_mobile" formControlName="mentions"></textarea>
         <label htmlFor="mentions">Alte mențiuni</label>
       </span>
-      <span>
+      <span style="padding-left: 3.5rem">
         <button pButton pRipple label="HAI IN SAT" class="p-button-success" (click)="sendRequest()"></button>
       </span>
     </div>
 
-    <img class="bg" alt="logo-background" src="assets/logo.png" />
+<!--    <img class="bg" alt="logo-background" src="assets/logo.png" />-->
   </div>
 
 </div>

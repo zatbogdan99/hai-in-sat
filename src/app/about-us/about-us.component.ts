@@ -71,9 +71,9 @@ export class AboutUsComponent implements OnInit, AfterViewInit{
   }
 
   getFirstText() {
-    return 'Ți-ai pus vreodată întrebarea dacă în România există și oameni serioși? \n ' +
-      'Noi suntem supărați că nu ne-am născut în Germania... \n ' +
+    return 'Ți-ai pus vreodată întrebarea dacă în România există și \n oameni serioși? ' +
+      'Noi suntem supărați că nu ne-am născut în \nGermania... ' +
       'Nu, nu suntem rigizi, suntem chiar simpatici! \n ' +
-      'Ești curios, nu ești curios? Nu contează, dacă ești inteligent și vrei să evadezi din matrice sigur ne vei contacta!'
+      'Ești curios, nu ești curios? Nu contează, dacă ești inteligent \n și vrei să evadezi din matrice sigur ne vei contacta!'
   }
 }

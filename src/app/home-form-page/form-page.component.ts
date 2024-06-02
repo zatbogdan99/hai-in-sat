@@ -45,12 +45,14 @@ export class FormPageComponent implements OnInit, AfterViewInit{
     const firstText1 = new SplitType('#first-text1');
     const firstText2 = new SplitType('#first-text2');
 
-    gsap.to('.char', {
-      y: 0,
-      stagger: 0.05,
-      delay: 0.2,
-      duration: .1
-    })
+    // gsap.set('.char', { y: 0 });
+
+    // gsap.to('.char', {
+    //   y: -100,
+    //   stagger: 0.05,
+    //   delay: 0.2,
+    //   duration: .1
+    // })
   }
 
   sendRequest() {

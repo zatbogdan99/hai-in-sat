@@ -3,7 +3,10 @@
     <div class="card">
       <div class="card-info">
         <div style="display: flex">
-          <h1 id="card-info-title" style="font-family: 'Comic Sans MS'">{{data[currentNum].title}}</h1>
+          <div>
+            <h1 class="degrade" id="card-info-title" style="font-family: 'Comic Sans MS'">{{data[currentNum].title}}</h1>
+            <hr class="degrade-line">
+          </div>
           <a style="padding-left: 15rem; padding-bottom: 3rem">
             <p (click)="nextButton()">Următorul</p>
             <svg viewBox="0 0 20 10">
