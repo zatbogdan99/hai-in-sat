@@ -48,6 +48,7 @@ import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {CalendarModule} from "primeng/calendar";
 import { VillageOfTheMonthComponent } from './village-of-the-month/village-of-the-month.component';
 import {DialogModule} from "primeng/dialog";
+import {CheckboxModule} from "primeng/checkbox";
 register();
 
 @NgModule({
@@ -98,7 +99,8 @@ register();
         HttpClientModule,
         ProgressSpinnerModule,
         CalendarModule,
-        DialogModule
+        DialogModule,
+        CheckboxModule
     ],
   providers: [
     PhotoService,

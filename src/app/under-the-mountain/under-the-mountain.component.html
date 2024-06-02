@@ -3,7 +3,7 @@
     <div class="card">
       <div class="card-info">
         <div style="display: flex">
-          <h1 id="card-info-title">{{data[currentNum].title}}</h1>
+          <h1 id="card-info-title" style="font-family: 'Comic Sans MS'">{{data[currentNum].title}}</h1>
           <a style="padding-left: 15rem; padding-bottom: 3rem">
             <p (click)="nextButton()">Următorul</p>
             <svg viewBox="0 0 20 10">
@@ -13,8 +13,8 @@
             </svg>
           </a>
         </div>
-        <p id="card-info-desc">{{data[currentNum].desc}}</p>
-        <a>
+        <p id="card-info-desc">{{getCardInfoDesc()}}</p>
+        <a style="padding-right: 40rem">
           <p (click)="showMore()">Mai multe</p>
           <svg viewBox="0 0 20 10">
             <line x1="0" y1="5" x2="20" y2="5"></line>

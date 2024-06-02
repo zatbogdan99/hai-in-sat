@@ -12,3 +12,42 @@
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
+
+.contact-info {
+  margin: 10px;
+  padding: 15px;
+}
+
+.contact-info h2 {
+  font-size: 24px;
+}
+
+.contact-info li {
+  font-size: 18px;
+}
+
+.images-style {
+  height: 1.5rem;
+  width: 1.5rem;
+  margin-right: 0.5rem
+}
+
+//mobile
+@media only screen and (max-width: 415px) {
+  .small-screen {
+    display: block;
+  }
+  .large-screen {
+    display: none;
+  }
+}
+
+//desktop
+@media only screen and (min-width: 415px) {
+  .small-screen {
+    display: none;
+  }
+  .large-screen {
+    display: block;
+  }
+}

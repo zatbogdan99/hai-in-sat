@@ -87,13 +87,13 @@
   font-family: "Comic Sans MS";
 }
 
-.story p {
+.story pre {
   margin-left: 0.5rem;
   font-size: 1.2rem;
   padding-right: 20rem;
 }
 
-.story p:nth-child(3) {
+.story pre:nth-child(3) {
   margin-top: 5rem;
   font-size: 1.6rem;
   font-weight: 600;

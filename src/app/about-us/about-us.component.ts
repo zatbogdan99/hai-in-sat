@@ -64,9 +64,16 @@ export class AboutUsComponent implements OnInit, AfterViewInit{
     });
   }
 
-  getText() {
+  getSecondText() {
     return 'Noi nu facem din asta o afacere. Ne bucurăm pentru fiecare casă care își \ngăsește un suflet curat. ' +
       'Noi nu îți percepem comision înainte. După ce tu, suflet frumos \nți-ai ales casa pereche, ' +
       'poți să donezipentru ca alte suflete curate, asemănătoare ție, \nsă se bucure cum te bucuri tu.'
+  }
+
+  getFirstText() {
+    return 'Ți-ai pus vreodată întrebarea dacă în România există și oameni serioși? \n ' +
+      'Noi suntem supărați că nu ne-am născut în Germania... \n ' +
+      'Nu, nu suntem rigizi, suntem chiar simpatici! \n ' +
+      'Ești curios, nu ești curios? Nu contează, dacă ești inteligent și vrei să evadezi din matrice sigur ne vei contacta!'
   }
 }

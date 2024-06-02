@@ -56,14 +56,14 @@
           <p-chip class="chipClass" label="Lângă o apă:"></p-chip>
         </div>
         <div style="padding-right: 3rem">
-          <p-toggleButton [(ngModel)]="river" onLabel="DA" offLabel="NU"></p-toggleButton>
+          <p-checkbox [(ngModel)]="river" [binary]="true" inputId="binary"></p-checkbox>
         </div>
 
         <div style="padding-right: 1rem">
           <p-chip class="chipClass" label="Cu vecini:"></p-chip>
         </div>
         <div style="padding-right: 3rem">
-          <p-toggleButton [(ngModel)]="neighbor" onLabel="DA" offLabel="NU"></p-toggleButton>
+          <p-checkbox [(ngModel)]="neighbor" [binary]="true" inputId="binary"></p-checkbox>
         </div>
       </div>
     </span>
@@ -139,11 +139,15 @@
       <div class="container">
         <div style="padding-bottom: 1rem; padding-top: 1rem;">
           <p-chip label="Lângă o apă:"></p-chip>
-          <p-toggleButton style="padding-left: 4.5rem" [(ngModel)]="river" onLabel="DA" offLabel="NU"></p-toggleButton>
+          <div style="padding-left: 4.5rem">
+            <p-checkbox [(ngModel)]="river" [binary]="true" inputId="binary"></p-checkbox>
+          </div>
         </div>
         <div style="padding-bottom: 2rem">
           <p-chip class="chipClass" label="Cu vecini:"></p-chip>
-          <p-toggleButton style="padding-left: 6.2rem" [(ngModel)]="neighbor" onLabel="DA" offLabel="NU"></p-toggleButton>
+          <div style="display: inline; padding-left: 6.2rem">
+            <p-checkbox [(ngModel)]="neighbor" [binary]="true" inputId="binary"></p-checkbox>
+          </div>
         </div>
       </div>
     </span>

@@ -223,4 +223,7 @@ export class UnderTheMountainComponent {
       );
   }
 
+  getCardInfoDesc() {
+    return this.data[this.currentNum].desc;
+  }
 }

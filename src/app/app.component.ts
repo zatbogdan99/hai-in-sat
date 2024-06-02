@@ -21,9 +21,26 @@ export class AppComponent implements OnInit{
   faSquareFacebook = faSquareFacebook;
 
   visible: boolean = false;
+  contact: boolean = false;
+  cookies: boolean = false;
+  termenii: boolean = false;
+  politica: boolean = false;
 
-  showDialog() {
-    this.visible = true;
+
+  showPolitica() {
+    this.politica = true;
+  }
+
+  showTermenii() {
+    this.termenii = true;
+  }
+
+  showCookies() {
+    this.cookies = true;
+  }
+
+  showContact() {
+    this.contact = true;
   }
 
   constructor(private router: Router) {
@@ -54,7 +71,7 @@ export class AppComponent implements OnInit{
     this.router.navigateByUrl("/terrain-form-page");
   }
 
-  private goToContactUsPage() {
+  goToContactUsPage() {
     this.router.navigateByUrl("/contact-us");
   }
 
@@ -99,12 +116,12 @@ export class AppComponent implements OnInit{
         label: 'Terenuri',
         icon: 'pi pi-fw pi-cloud',
         command: () => this.goToTerrainFormPage()
-      },
-      {
-        label: 'Contactează-ne!',
-        icon: 'pi pi-fw pi-phone',
-        command: () => this.goToContactUsPage()
       }
+      // {
+      //   label: 'Contactează-ne!',
+      //   icon: 'pi pi-fw pi-phone',
+      //   command: () => this.goToContactUsPage()
+      // }
     ];
 
     // gsap.to(document.body, {
