@@ -58,6 +58,12 @@
         <textarea rows="5" cols="80" pInputTextarea id="mentions" formControlName="mentions"></textarea>
         <label htmlFor="mentions">Alte mențiuni</label>
       </span>
+
+      <div style="display: flex">
+        <p-checkbox [(ngModel)]="accord" [binary]="true" inputId="binary"></p-checkbox>
+        <h3 style="padding-left: 1rem">Sunt de acord cu <a href="javascript:void(0)" (click)="openTermenii()">termenii si condițiile</a> și <a href="javascript:void(0)" (click)="openPolitica()">politica de confidențialitate</a> </h3>
+      </div>
+
       <span style="margin-bottom: 2rem">
         <button pButton pRipple label="HAI IN SAT" class="p-button-success" (click)="sendRequest()"></button>
       </span>

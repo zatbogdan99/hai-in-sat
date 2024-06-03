@@ -11,15 +11,16 @@ import {SeeTheAreaComponent} from "./see-the-area/see-the-area.component";
 import {VillageOfTheMonthComponent} from "./village-of-the-month/village-of-the-month.component";
 
 const routes: Routes = [
-  {path: 'home-form-page', component: FormPageComponent},
   {path: 'terrain-form-page', component: TerrainFormPageComponent},
+  {path: 'homes', component: FormPageComponent},
   {path: 'about-us', component: AboutUsComponent},
   {path: 'info-page', component: InfoPageComponent},
   {path: 'contact-us', component: ContactUsComponent},
   {path: 'under-the-mountain', component: UnderTheMountainComponent},
   {path: 'see-the-area', component:SeeTheAreaComponent},
   {path: 'village-of-the-month', component:VillageOfTheMonthComponent},
-  {path: '**', component: LandingPageComponent}
+  {path: '**', component: LandingPageComponent},
+  {path: '*', component: LandingPageComponent}
 ];
 
 @NgModule({
