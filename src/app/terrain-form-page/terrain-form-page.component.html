@@ -22,7 +22,7 @@
       </span>
       <span style="margin-bottom: 2rem; width: 30rem" class="p-float-label" [formGroup]="formGroup">
         <input style="padding: 10px; width: 100%" type="text" pInputText id="phoneNumber" formControlName="phoneNumber">
-        <label htmlFor="phoneNumber">Număr de telefon</label>
+        <label type="number" htmlFor="phoneNumber">Număr de telefon</label>
       </span>
       <span style="margin-bottom: 2rem; width: 30rem" class="p-float-label" [formGroup]="formGroup">
         <input style="padding: 10px; width: 100%" type="text" pInputText id="mail" formControlName="mail">
@@ -94,7 +94,7 @@
       <label htmlFor="surname">Prenume</label>
     </span>
       <span style="margin-bottom: 2rem" class="p-float-label" [formGroup]="formGroup">
-      <input pInputText id="phoneNumberMobile" formControlName="phoneNumber">
+      <input type="tel" pInputText id="phoneNumberMobile" formControlName="phoneNumber">
       <label htmlFor="phoneNumber">Număr de telefon</label>
     </span>
       <span style="margin-bottom: 2rem" class="p-float-label" [formGroup]="formGroup">
@@ -137,6 +137,12 @@
         <textarea style="width: 15.6rem" rows="5" pInputTextarea id="mentions_mobile" formControlName="mentions"></textarea>
         <label htmlFor="mentions">Alte mențiuni</label>
       </span>
+
+      <div style="display: flex">
+        <p-checkbox [(ngModel)]="accord" [binary]="true" inputId="binary"></p-checkbox>
+        <h3 style="padding-left: 1rem">Sunt de acord cu <a href="javascript:void(0)" (click)="openTermenii()">termenii si condițiile</a> și <a href="javascript:void(0)" (click)="openPolitica()">politica de confidențialitate</a> </h3>
+      </div>
+
       <span style="padding-left: 3.5rem">
         <button pButton pRipple label="HAI IN SAT" class="p-button-success" (click)="sendRequest()"></button>
       </span>

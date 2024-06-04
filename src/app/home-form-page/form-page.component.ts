@@ -1,11 +1,12 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {gsap} from "gsap";
 import SplitType from "split-type";
 import {MessageService} from "primeng/api";
 import {HomeFormServiceService} from "../service/home-form-service/home-form-service.service";
 import {HomeFormDto} from "../dto/home-form.dto";
 import {LoadingService} from "../service/loading-service/loading-service.service";
+import {FormStatesUtil} from "../utils/form-states-util";
 
 @Component({
   selector: 'app-form-page',
@@ -26,18 +27,19 @@ export class FormPageComponent implements OnInit, AfterViewInit{
 
   constructor(private messageService: MessageService,
               private homeFormService: HomeFormServiceService,
-              public loadingService: LoadingService) {
+              public loadingService: LoadingService,
+              private formBuilder: FormBuilder) {
   }
 
   ngOnInit(): void {
     this.ariaRangeValues = [0, 30];
     this.priceRangeValues = [0, 200000];
-    this.formGroup = new FormGroup(
+    this.formGroup = this.formBuilder.group(
       {
-        name: new FormControl(),
-        surname: new FormControl(),
-        phoneNumber: new FormControl(),
-        mail: new FormControl(),
+        name: ['', Validators.required],
+        surname: ['', Validators.required],
+        phoneNumber: ['', Validators.required],
+        mail: ['', Validators.required],
         mentions: new FormControl()
       }
     );
@@ -59,37 +61,52 @@ export class FormPageComponent implements OnInit, AfterViewInit{
   }
 
   sendRequest() {
-    if (this.accord) {
-      const formData: HomeFormDto = new HomeFormDto();
-      formData.name = this.formGroup.get("name")?.value;
-      formData.surname = this.formGroup.get("surname")?.value;
-      formData.phone = this.formGroup.get("phoneNumber")?.value;
-      formData.mail = this.formGroup.get("mail")?.value;
-      formData.mentions = this.formGroup.get("mentions")?.value;
-      formData.nearRiver = this.river;
-      formData.withNeighbours = this.neighbor;
-      formData.price = 'între ' + this.priceRangeValues[0] + '€ și ' + this.priceRangeValues[1] + '€';
-      formData.distance = 'între ' + this.ariaRangeValues[0] + 'km și ' + this.ariaRangeValues[1] + 'km';
-      this.loadingService.loadingOn();
-      this.homeFormService.sendHomeEmails(formData).subscribe({
-        next: (response) => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'HAI IN SAT',
-            detail: 'Formularul a fost trimis cu succes'
-          });
-          this.loadingService.loadingOff();
-        },
-        error: (error) => {
-          console.error('There was an error!', error);
-        }
-      })
+    if (this.formGroup.valid) {
+      if (this.accord) {
+        const formData: HomeFormDto = new HomeFormDto();
+        formData.name = this.formGroup.get("name")?.value;
+        formData.surname = this.formGroup.get("surname")?.value;
+        formData.phone = this.formGroup.get("phoneNumber")?.value;
+        formData.mail = this.formGroup.get("mail")?.value;
+        formData.mentions = this.formGroup.get("mentions")?.value;
+        formData.nearRiver = this.river;
+        formData.withNeighbours = this.neighbor;
+        formData.price = 'între ' + this.priceRangeValues[0] + '€ și ' + this.priceRangeValues[1] + '€';
+        formData.distance = 'între ' + this.ariaRangeValues[0] + 'km și ' + this.ariaRangeValues[1] + 'km';
+        this.loadingService.loadingOn();
+        this.homeFormService.sendHomeEmails(formData).subscribe({
+          next: (response) => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'HAI IN SAT',
+              detail: 'Formularul a fost trimis cu succes'
+            });
+            this.formGroup.reset();
+            this.river = false;
+            this.neighbor = false;
+            this.ariaRangeValues= [0, 30];
+            this.priceRangeValues = [0, 200000];
+            this.loadingService.loadingOff();
+          },
+          error: (error) => {
+            console.error('There was an error!', error);
+          }
+        })
+      } else {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'HAI IN SAT',
+          detail: 'Trebuie să acceptați termenii si condițiile și politica de confindețialitate!'
+        });
+      }
     } else {
       this.messageService.add({
-        severity: 'error',
+        severity: 'warn',
         summary: 'HAI IN SAT',
-        detail: 'Trebuie să acceptați termenii si condițiile și politica de confindețialitate!'
+        detail: 'Vă rugăm completați toate câmpurile obligatorii!'
       });
+      this.formGroup.markAllAsTouched();
+      FormStatesUtil.markAllAsDirty(this.formGroup);
     }
   }
 
