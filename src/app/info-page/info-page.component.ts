@@ -7,6 +7,7 @@ import {TextDataModel} from "../dto/text-data.model";
 import {DataDto} from "../dto/data.dto";
 import {DataService} from "../service/data-service";
 import {VgApiService} from "@videogular/ngx-videogular/core";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-info-page',
@@ -31,9 +32,12 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
 
   responsiveOptions: any[] | undefined;
 
-  constructor(private photoService: PhotoService, private service: DataService) {
+  constructor(private photoService: PhotoService, private service: DataService, private router: Router) {
     this.service.village$.subscribe(value => {
       this.villageId = value;
+      if (this.villageId == 0) {
+        this.router.navigateByUrl("/village-of-the-month");
+      }
     });
 
     this.photoService.getHorezuImages().then((images) => {

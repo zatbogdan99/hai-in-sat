@@ -5,6 +5,7 @@ import { faTiktok } from '@fortawesome/free-brands-svg-icons';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
 import { faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { faSquareFacebook } from "@fortawesome/free-brands-svg-icons";
+import {DataService} from "./service/data-service";
 
 @Component({
   selector: 'app-root',
@@ -43,7 +44,7 @@ export class AppComponent implements OnInit{
     this.contact = true;
   }
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private service: DataService) {
 
   }
 
@@ -60,7 +61,10 @@ export class AppComponent implements OnInit{
   }
 
   goToLandingPage() {
-    this.router.navigateByUrl("/landing-page");
+    // this.service.reload$.next(true);
+    this.router.navigateByUrl("/landing-page").then(() => {
+      window.location.reload();
+    });
   }
 
   goToHomeFormPage() {

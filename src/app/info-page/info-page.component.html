@@ -4,9 +4,11 @@
     <div class="reveal p-card-custom">
       <p-card [style]="{ width: '40rem', height: '32.5rem' }">
         <ng-template style="display: flex" pTemplate="header">
-          <div style="display: flex">
-            <img style="width: 20rem; height: 20rem; padding-left: 2rem" alt="Card" src="assets/logo.png" />
-            <h5 class="title">{{data[villageId].title}}</h5>
+          <div style="display: flex; padding-left: 11rem">
+            <div>
+              <h5 class="title degrade">{{data[villageId].title}}</h5>
+              <hr class="degrade-line">
+            </div>
           </div>
         </ng-template>
         <p class="m-0 text-style">

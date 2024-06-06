@@ -25,7 +25,35 @@
   margin-top: 2.188rem;
   margin-bottom: 2rem;
   margin-left: 6rem;
-  max-height: 2.5rem;
+  max-height: 3.2rem;
+  text-align: center;
+}
+
+.degrade {
+  background-color: #005baa;
+  background-image: linear-gradient(45deg, #005baa, #000000);
+  background-size: 100%;
+  background-repeat: repeat;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-background-clip: text;
+  //text-transform: capitalize;
+  letter-spacing: 0.8px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.7rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.degrade-line {
+  display: inline;
+  background: #005baa;
+  height: 0.25rem;
+  width: 20rem;
+  border: none;
+  margin: 1.125rem 0 1.875rem 0;
+  position: absolute;
+  top:18rem;
 }
 
 div section div a:hover {

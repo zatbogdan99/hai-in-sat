@@ -36,11 +36,15 @@
   left: 15vw;
   height: 50vh;
   width: 40vw;
-  background-image: url("./../../assets/laur.jpg");
   background-size: cover;
   -webkit-box-shadow: 7px 29px 49px 0px rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 7px 29px 49px 0px rgba(0, 0, 0, 0.5);
   box-shadow: 7px 29px 49px 0px rgba(0, 0, 0, 0.5);
+}
+
+.responsive-image {
+  width: 100%; /* se va adapta la lățimea containerului */
+  height: 100%; /* menține proporțiile imaginii */
 }
 
 .logo {
@@ -89,6 +93,7 @@
   height: 40%;
   left: 3vw;
   top: 75vh;
+  padding-top: 3rem;
 }
 
 .extra-text pre {

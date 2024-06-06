@@ -64,6 +64,16 @@ export class PhotoService {
         alt: 'Costesti',
         title: 'Costesti 6'
       },
+      {
+        itemImageSrc: 'assets/costesti7.avif',
+        alt: 'Costesti',
+        title: 'Costesti 7'
+      },
+      {
+        itemImageSrc: 'assets/costesti8.avif',
+        alt: 'Costesti',
+        title: 'Costesti 8'
+      },
     ];
   }
 
@@ -88,6 +98,16 @@ export class PhotoService {
         itemImageSrc: 'assets/polovragi2.avif',
         alt: 'Polovragi',
         title: 'Polovragi 2'
+      },
+      {
+        itemImageSrc: 'assets/polovragi3.avif',
+        alt: 'Polovragi',
+        title: 'Polovragi 3'
+      },
+      {
+        itemImageSrc: 'assets/polovragi4.avif',
+        alt: 'Polovragi',
+        title: 'Polovragi 4'
       }
     ];
   }
@@ -108,11 +128,6 @@ export class PhotoService {
         itemImageSrc: 'assets/baia3.avif',
         alt: 'Baia',
         title: 'Baia 3'
-      },
-      {
-        itemImageSrc: 'assets/baia4.avif',
-        alt: 'Baia',
-        title: 'Baia 4'
       }
     ];
   }
@@ -133,6 +148,11 @@ export class PhotoService {
         itemImageSrc: 'assets/vaideeni3.avif',
         alt: 'Vaideeni',
         title: 'Vaideeni 3'
+      },
+      {
+        itemImageSrc: 'assets/vaideeni4.avif',
+        alt: 'Vaideeni',
+        title: 'Vaideeni 4'
       }
     ];
   }

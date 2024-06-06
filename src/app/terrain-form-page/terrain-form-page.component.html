@@ -35,7 +35,7 @@
           <input style="margin-bottom: 20px;" type="text" [(ngModel)]="ariaRangeValues[0]" pInputText class="w-full"/>
         </div>
         <div class="element">
-          <p-slider [step]="20" [min]="0" [max]="50000" [(ngModel)]="ariaRangeValues" [range]="true"></p-slider>
+          <p-slider [step]="1" [min]="0" [max]="30" [(ngModel)]="ariaRangeValues" [range]="true"></p-slider>
         </div>
         <div class="element" style="padding-left: 5rem">
           <input style="margin-bottom: 20px;" type="text" [(ngModel)]="ariaRangeValues[1]" pInputText class="w-full"/>
@@ -48,7 +48,7 @@
           <input style="margin-bottom: 20px;" type="text" [(ngModel)]="priceRangeValues[0]" pInputText class="w-full"/>
         </div>
         <div class="element">
-          <p-slider [step]="20" [min]="0" [max]="200000" [(ngModel)]="priceRangeValues" [range]="true"></p-slider>
+          <p-slider [step]="1" [min]="0" [max]="200000" [(ngModel)]="priceRangeValues" [range]="true"></p-slider>
         </div>
         <div class="element" style="padding-left: 5rem">
           <input style="margin-bottom: 20px;" type="text" [(ngModel)]="priceRangeValues[1]" pInputText class="w-full"/>
@@ -73,6 +73,70 @@
 
   </div>
 </div>
+
+<p-dialog
+  header="Politica de confidențialitate"
+  [modal]="true"
+  [(visible)]="politica"
+  [style]="{ width: '50rem' }"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+  <p class="mb-5">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+  </p>
+  <p class="mb-5">
+    "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
+    ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur,
+    adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea
+    commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+  </p>
+  <p class="mb-5">
+    At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui
+    officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime
+    placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non
+    recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
+  </p>
+</p-dialog>
+<p-dialog
+  header="Termenii si condițiile"
+  [modal]="true"
+  [(visible)]="termenii"
+  [style]="{ width: '50rem' }"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+  <p class="mb-5">
+    Termenii și condițiile site-ului
+  </p>
+  <p class="mb-5">
+    Prin utilizarea site-ului www.hai-în-sat.ro, sunteți de acord cu termenii și condițiile prezentate pe această pagină. Accesul și utilizarea site-ului sunt supuse acestor termeni și condiții, precum și tuturor legilor și regulamentelor aplicabile. Prin accesarea și utilizarea site-ului, acceptați fără restricții acești termeni și condiții și recunoașteți că orice alte acorduri între dumneavoastră și terțe părți cu privire la utilizarea site-ului sunt înlocuite de prevederile acestui document. Dacă nu sunteți de acord cu acești termeni și condiții, vă rugăm să părăsiți platforma.
+    Prin continuarea utilizării serviciilor și produselor oferite de site-ul www.hai-în-sat.ro, confirmați că sunteți de acord cu termenii și condițiile de utilizare menționate mai jos.
+    Termeni
+    Conținutul acestui site (descrieri, caracteristici, imagini, prețuri, formă de prezentare etc.) nu poate fi reprodus sau utilizat fără acordul scris al proprietarului site-ului.
+    Termenii și condițiile prezentate respectă reglementările legislative în vigoare.
+    S.C. CORUXMAN IMPEX S.R.L., editor al ziarului Hai în sat! și al site-ului www.hai-în-sat.ro, își desfășoară activitatea în conformitate cu legislația română. În caz de utilizare frauduloasă a sistemului de achiziții online cu plata prin carduri bancare, Hai în sat! va întreprinde toate demersurile necesare cerute de autoritățile competente și va furniza datele solicitate de acestea.
+    Pe site-ul www.hai-în-sat.ro, utilizatorul este responsabil pentru toate activitățile care survin prin accesarea contului și parolei personale. S.C. CORUXMAN S.R.L. nu poate fi responsabilă pentru erorile apărute din neglijența utilizatorului în ceea ce privește securitatea și confidențialitatea contului și parolei sale.
+    Datele personale ale utilizatorului vor fi folosite de S.C. CORUXMAN S.R.L. doar în scopurile declarate ale acestui site. Informațiile din contul de înregistrare și datele din formularul de comandă vor fi utilizate pentru a trimite confirmările comenzilor, informări despre eventualele promoții etc. Datele cu caracter personal ale utilizatorilor vor fi folosite de S.C. CORUXMAN S.R.L. în scopuri de marketing (transmiterea materialelor publicitare) numai cu acordul utilizatorilor.
+    Datele personale pot fi transmise autorităților competente pentru verificarea tranzacțiilor comerciale sau altor autorități în drept să efectueze orice verificări justificate în baza legii, dacă acest lucru este solicitat conform legislației în vigoare.
+    Drepturile autorului
+  </p>
+  <p class="mb-5">
+    Toate drepturile rezervate. S.C. CORUXMAN IMPEX S.R.L. acordă permisiunea de a utiliza site-ul www.hai-în-sat.ro în următoarele condiții:
+    -	 Este interzisă copierea, modificarea, expunerea, reutilizarea, reproducerea, publicarea, autorizarea, acordarea de licență de utilizare, crearea de lucrări derivate din, transferul, vânzarea sau utilizarea conținutului publicat de S.C. CORUXMAN IMPEX S.R.L. pe acest site, materialele protejate prin legile naționale și internaționale de copyright, în alt mod decât cu acordul scris al S.C. CORUXMAN IMPEX S.R.L., precum și orice modalitate de exploatare a conținutului site-ului www.hai-în-sat.ro, cu excepția afișării pe ecranul unui computer personal și a imprimării sau descărcării, în scop personal și necomercial, a anumitor documente sau informații explicit desemnate în acest scop, cu condiția păstrării nemodificate a tuturor elementelor care fac referire la drepturile de proprietate intelectuală, alte drepturi de proprietate și condițiile de utilizare ale documentelor sau informațiilor respective.
+    -	 Este interzis să utilizați site-ul www.hai-în-sat.ro pentru a afișa sau transmite orice fel de material cu caracter amenințător, fals, înșelător, abuziv, de hărțuire, licențios, calomniator, vulgar, obscen, scandalos, instigator, pornografic sau profanator, sau orice alt fel de material care poate constitui sau încuraja un comportament ce ar putea da naștere unei infracțiuni, ar putea conduce la răspunderea civilă sau ar încălca în alt mod legea. S.C. CORUXMAN IMPEX S.R.L. va coopera cu oricare dintre autoritățile desemnate să aplice legea și se va conforma cu orice sentință judecătorească prin care se cere sau se ordonă societății S.C. CORUXMAN IMPEX S.R.L. să dezvăluie identitatea oricărei persoane care ar afișa sau transmite orice fel de informație sau material de acest fel pe sau prin intermediul site-ului www.hai-în-sat.ro.
+    -	 Este interzisă redistribuirea vreunei pagini din site prin framing, cu excepția existenței unui acord scris din partea S.C. CORUXMAN IMPEX S.R.L. cu privire la acceptul redistribuirii vreunei pagini.
+    -	 Este interzis să utilizați site-ul www.hai-în-sat.ro în scopuri de publicitate sau pentru orice fel de cerere/ofertă cu caracter comercial fără acordul S.C. CORUXMAN IMPEX S.R.L.
+  </p>
+  <p class="mb-5">
+    -	Preluarea de informații de către alte site-uri web poate fi făcută numai în acord cu termenii agreați și menționați în această pagină de către S.C. CORUXMAN IMPEX S.R.L., cu excepția unui acord, valabil și recunoscut de ambele părți, utilizator și S.C. CORUXMAN IMPEX S.R.L.
+    În mod obligatoriu, în aceste cazuri, trebuie citată sursa informației. Preluarea a mai mult decât cele prevăzute anterior se poate realiza doar în condițiile unui acord, financiar sau de altă natură, încheiat cu S.C. CORUXMAN IMPEX S.R.L.
+    Mediile offline se supun de asemenea termenilor agreați de către S.C. CORUXMAN IMPEX S.R.L. și în conformitate cu prevederile Legii drepturilor de autor din România.
+    -	 www.hai-în-sat.ro, logo-ul Hai în sat! și orice derivat al acestuia aprobat și validat de S.C. CORUXMAN IMPEX S.R.L. sunt proprietatea S.C. CORUXMAN IMPEX S.R.L., și nu pot fi utilizate fără acordul scris al S.C. CORUXMAN IMPEX S.R.L., indiferent de mediul în care se dorește utilizarea acestora.
+    Securitate
+    S.C. CORUXMAN IMPEX S.R.L. ia toate măsurile necesare pentru a proteja informațiile personale ale utilizatorilor săi. Atunci când completați datele personale pe site-ul nostru, acestea sunt protejate atât offline, cât și online. Toate informațiile despre utilizatori sunt tratate ca fiind confidențiale. Numai angajații ale căror sarcini specifice implică lucrul cu informații personale au acces la datele de identificare ale utilizatorilor. Serverele care găzduiesc aceste informații personale sunt localizate într-un loc securizat. Pentru detalii suplimentare despre datele pe care le prelucrăm, drepturile dumneavoastră și informații generale despre prelucrarea datelor cu caracter personal, vă rugăm să vizitați https://www.hai-în-sat.ro/politica-de-confidentialitate.
+    Actualizare
+    Termenii și Condițiile sunt revizuite ori de câte ori este necesar. Orice modificare va fi reflectată în tipul de informații pe care Hai în sat! le publică sau transmite. Vă recomandăm să verificați periodic aceste condiții pentru a fi la curent cu informațiile colectate, utilizate și transmise de Hai în sat!
+  </p>
+</p-dialog>
+
 
 <div class="small-screen">
 

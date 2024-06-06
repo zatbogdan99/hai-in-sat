@@ -6,6 +6,7 @@
         Este momentul unei schimbări în viața ta? Te apasă stresul produs de orașul supraaglomerat?
         Ești sincer cu tine?
       </h1>
+<!--      <hr class="degrade-line">-->
       <p class="paragraph">
         Dacă răspunzi cu "Da" la aceste întrebări, noi îți oferim soluția.
       </p>
@@ -15,7 +16,7 @@
       <div class="image-container">
         <img class="imageFirst"
           #imageFirst
-          src="assets/trafic.jpg"
+          src="assets/cluj.jpg"
           alt=""
         />
       </div>
@@ -54,7 +55,7 @@
         <a class="btn--learn hai-in-sat show-more-btn" (click)="goToUnderTheMountain()">Află mai multe</a>
       </div>
       <div class="info-1__visual">
-        <img style="height: 100%" src="assets/casa_taraneasca.jpg" alt="">
+        <img style="height: 100%" src="assets/casa_taraneasca.avif" alt="">
       </div>
     </div>
 
@@ -83,7 +84,7 @@
         </p>
       </div>
       <div class="info-1__visual">
-        <img style="height: 100%" src="assets/munte3.jpeg" alt="">
+        <img style="height: 100%" src="assets/munte3.avif" alt="">
       </div>
     </div>
 
@@ -98,7 +99,7 @@
   <div>
     <section>
       <div>
-        <h1 style="text-align: center">
+        <h1 class="degrade" style="text-align: center">
           Este momentul unei schimbări în viața ta?
         </h1>
         <h1 style="text-align: center">Te apasă stresul produs de orașul supraaglomerat?</h1>
@@ -113,15 +114,15 @@
         <p>
           Dacă răspunzi cu "Da" la aceste întrebări, noi îți oferim soluția.
         </p>
-        <a (click)="goToHomeFormPage()" class="btn hai-in-sat-mobile mobile-hai-in-sat-position">HAI IN SAT !!!</a>
+        <a (click)="goToHomeFormPage()" class="btn hai-in-sat-mobile mobile-hai-in-sat-position">HAI ÎN SAT !!!</a>
       </div>
     </section>
 
 
     <section #secondSection>
       <div class="box"></div>
-      <h4 class="heading-4">Despre noi</h4>
-      <h1 class="heading-1">Noi îți putem oferi casa mult visată la sat</h1>
+      <h4 style="opacity: 50%" class="heading-4">Despre noi</h4>
+      <h1 style="text-align: center" class="heading-1">Noi îți putem oferi casa mult visată la sat</h1>
       <div>
         <img style="max-height: 23rem; max-width: 23rem" src="assets/casa_taraneasca.jpg" alt="">
       </div>
@@ -164,7 +165,7 @@
             tradițional și poți merge într-o drumeție organizată
             de noi. Nu vei mai vrea să pleci acasă!
             <br><br><br>
-            <a class="hai-in-sat-mobile" style="max-height: 10rem" (click)="goToSeeTheArea()">HAI IN SAT</a>
+            <a class="hai-in-sat-mobile" style="max-height: 10rem" (click)="goToSeeTheArea()">HAI ÎN SAT</a>
           </p>
         </div>
       </div>

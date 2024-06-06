@@ -1,0 +1,8 @@
+[
+  {
+    "origin": ["https://www.hai-în-sat.ro", "https://www.xn--hai-n-sat-t5a.ro"],
+    "responseHeader": ["Content-Type", "Authorization", "X-Requested-With"],
+    "method": ["GET", "HEAD", "OPTIONS"],
+    "maxAgeSeconds": 3600
+  }
+]

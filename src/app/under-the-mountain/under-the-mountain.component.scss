@@ -23,17 +23,18 @@ section {
 
 .card {
   display: flex;
+  justify-content: space-between;
   grid-template-columns: 1fr 1fr;
   grid-auto-rows: auto;
   background-color: #ffffff;
   box-shadow: rgba(255, 255, 255, 0.1) 0 1px 1px 0 inset,
       rgba(50, 50, 93, 0.25) 0px 50px 100px -20px
       rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
-  margin-left: 10rem;
-  margin-right: 10rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
   margin-top: 7rem;
   margin-bottom: 15rem;
-  height: 35rem;
+  height: 40rem;
   //width: 90rem;
 }
 
@@ -132,12 +133,13 @@ section {
   //padding-right: 1rem;
   //padding-top: 2rem;
   //padding-bottom: 1rem;
-  margin-left: 7rem;
+  margin-left: 3rem;
 }
 
 .card-photo img {
   //display: block;
-  max-width: 100%;
+  width: 100%;
+  height: 100%;
   aspect-ratio: 1/1;
 }
 

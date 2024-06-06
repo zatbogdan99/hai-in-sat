@@ -3,13 +3,14 @@ import {
   ElementRef,
   OnInit,
   ViewChild,
-  Inject,
+  Inject, OnDestroy,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {MenuItem} from "primeng/api";
-import {Router} from "@angular/router";
+import {NavigationEnd, Router} from "@angular/router";
+import {DataService} from "../service/data-service";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,7 +19,7 @@ gsap.registerPlugin(ScrollTrigger);
   templateUrl: './landing-page.component.html',
   styleUrls: ['./landing-page.component.scss']
 })
-export class LandingPageComponent {
+export class LandingPageComponent implements OnInit, OnDestroy{
   @ViewChild('secondSection', { static: true }) secondSection!: ElementRef<HTMLDivElement>;
   // @ViewChild('menu', { static: true }) menu!: ElementRef<HTMLDivElement>;
   // @ViewChild('menuSecond', { static: true }) menuSecond!: ElementRef<HTMLDivElement>;
@@ -28,9 +29,17 @@ export class LandingPageComponent {
   items: MenuItem[] | undefined;
 
 
-  constructor(@Inject(DOCUMENT) private document: Document, private router: Router) {}
+  constructor(@Inject(DOCUMENT) private document: Document, private router: Router, private service: DataService) {
+  }
 
   ngOnInit() {
+    // this.service.reload$.subscribe(value => {
+    //   if (value) {
+    //     console.log('intru pe if');
+    //     this.service.reload$.next(false);
+    //     location.reload();
+    //   }
+    // });
     this.initialAnimations();
     this.initScrollAnimations();
     this.items = [
@@ -257,5 +266,9 @@ export class LandingPageComponent {
 
   goToSeeTheArea() {
     this.router.navigateByUrl("/see-the-area");
+  }
+
+  ngOnDestroy() {
+    gsap.killTweensOf("*");
   }
 }
