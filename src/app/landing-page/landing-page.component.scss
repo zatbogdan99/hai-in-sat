@@ -163,7 +163,7 @@ div section div a:hover {
         font-size: 18px;
         line-height: 1.7;
         grid-row: 3 / 4;
-        width: 75%;
+        width: 85%;
       }
     }
 
@@ -267,11 +267,13 @@ div section div a:hover {
 
 .imageFirst {
   height: 100%;
+  max-height: 35rem;
   opacity: 50%;
 }
 
 .imageSecond {
   height: 100%;
+  max-height: 40rem;
 }
 
 @media only screen and (min-width: 200px) and (max-width: 767px)  {

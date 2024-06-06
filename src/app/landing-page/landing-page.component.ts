@@ -253,7 +253,7 @@ export class LandingPageComponent implements OnInit, OnDestroy{
   }
 
   goToHomeFormPage() {
-    this.router.navigateByUrl("/home-form-page");
+    this.router.navigateByUrl("/homes");
   }
 
   goToInfoPage() {
@@ -261,6 +261,7 @@ export class LandingPageComponent implements OnInit, OnDestroy{
   }
 
   goToUnderTheMountain() {
+    console.log('am apasat');
     this.router.navigateByUrl("/under-the-mountain");
   }
 
