@@ -146,4 +146,8 @@ export class AppComponent implements OnInit{
   goToInstagramPage() {
 
   }
+
+  openLink(url: string): void {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
 }

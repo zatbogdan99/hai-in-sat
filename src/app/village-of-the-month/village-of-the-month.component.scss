@@ -81,7 +81,8 @@ img {
     font-size: 2.3rem;
     font-weight: 700;
     text-align: center;
-    padding-left: 4rem;
+    //padding-left: 4rem;
+    margin: 0;
   }
 
   .container2 {
@@ -142,11 +143,13 @@ img {
   .title {
     font-size: 5rem;
     font-weight: 700;
-    margin-bottom: 0.5rem;
+    //margin-bottom: 0.5rem;
     text-align: center;
-    padding-left: 14rem;
-    padding-top: 0.5rem;
+    //padding-left: 14rem;
+    padding-top: 6rem;
     font-family: "Comic Sans MS";
+    margin: 0;
+    align-items: center;
   }
 
   .container2 {

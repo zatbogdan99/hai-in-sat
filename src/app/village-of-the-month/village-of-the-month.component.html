@@ -1,10 +1,14 @@
+<div *ngIf="loadingService.loading$ | async" class="spinner-container">
+  <p-progressSpinner></p-progressSpinner>
+</div>
+
 <div class="large-screen">
   <div class="container1">
     <div class="reveal">
       <div style="padding-top: 4.5rem" class="reveal p-card-custom">
-        <p-card [style]="{ width: '40rem', height: '24rem' }">
-          <ng-template style="display: flex" pTemplate="header">
-            <div style="display: flex">
+        <p-card [style]="{ width: '35rem', height: '24rem' }">
+          <ng-template style="display: flex; justify-content: center; align-items: center; height: 100%" pTemplate="header">
+            <div style="flex-grow: 1">
               <h5 class="title">{{data[villageId].title}}</h5>
             </div>
           </ng-template>
@@ -13,7 +17,7 @@
           </p>
         </p-card>
       </div>
-      <div style="max-width: 45rem; max-height: 32.5rem; padding-left: 3rem">
+      <div style="max-width: 45rem; max-height: 32.5rem; min-width: 40rem; padding-left: 3rem">
         <vg-player (onPlayerReady)="onPlayerReady($event)">
           <vg-overlay-play></vg-overlay-play>
           <vg-buffering></vg-buffering>
@@ -45,8 +49,8 @@
     </div>
   </div>
 
-  <div>
-    <div class="p-card-custom" style="padding-left: 25rem; padding-top: 2rem">
+  <div style="display: flex; justify-content: center">
+    <div class="p-card-custom" style="padding-top: 2rem">
       <p-card [style]="{ width: '60rem' }">
         <p class="m-0 text-style">
           Într-o după amiază cu soarele agățat pe albastrul boltei, cutreieram pădurea virgină și plină de viață în cătutarea gustoaselor ciuperci.
@@ -70,16 +74,15 @@
     <div class="reveal p-card-custom">
       <p-card [style]="{ width: '40rem', height: '32.5rem' }">
         <h5 style="font-size: 3rem; font-family: 'Comic Sans MS'; text-align: center">
-          Prima lecție <br> de spiritualitate
+          Pastilă pentru suflet
         </h5>
-        <p style="text-align: center">
-          Aici textul care trebuie pus bla bla jkaksbas jk kja jka jkn anjkd and a
-          d ajkd bakj kan djkan dklan djkna dmkand jkbadj nakd makl dna dna na d
-          s ajbkdb jkasnk nadjan jka dh akjnd alk jkah kjand klan jkabd jkan klad m
+        <p style="text-align: center; font-size: 1.6rem">
+          Trăiește prezentul!<br>
+          Trecutul și viitorul n-au nicio relevanță!
         </p>
       </p-card>
     </div>
-    <div style="max-width: 45rem; max-height: 32.5rem; padding-left: 3rem">
+    <div style="max-width: 45rem; max-height: 32.5rem; min-width: 40rem; padding-left: 3rem">
       <vg-player (onPlayerReady)="onPlayerReady($event)">
         <vg-overlay-play></vg-overlay-play>
         <vg-buffering></vg-buffering>
@@ -171,12 +174,11 @@
   <div class="container2">
       <p-card>
         <h2 style="text-align: center" class="m-0">
-          Prima lectie de spiritualitate
+          Pastilă pentru suflet
         </h2>
         <p style="text-align: center">
-          Aici textul care trebuie pus bla bla jkaksbas jk kja jka jkn anjkd and a
-          d ajkd bakj kan djkan dklan djkna dmkand jkbadj nakd makl dna dna na d
-          s ajbkdb jkasnk nadjan jka dh akjnd alk jkah kjand klan jkabd jkan klad m
+          Trăiește prezentul!<br>
+          Trecutul și viitorul n-au nicio relevanță!
         </p>
       </p-card>
   </div>

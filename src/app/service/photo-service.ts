@@ -103,11 +103,6 @@ export class PhotoService {
         itemImageSrc: 'assets/polovragi3.avif',
         alt: 'Polovragi',
         title: 'Polovragi 3'
-      },
-      {
-        itemImageSrc: 'assets/polovragi4.avif',
-        alt: 'Polovragi',
-        title: 'Polovragi 4'
       }
     ];
   }

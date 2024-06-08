@@ -1,6 +1,6 @@
 [
   {
-    "origin": ["https://www.hai-în-sat.ro", "https://www.xn--hai-n-sat-t5a.ro"],
+    "origin": ["https://www.hai-în-sat.ro", "https://www.xn--hai-n-sat-t5a.ro", "http://www.xn--hai-n-sat-t5a.ro", "http://www.hai-în-sat.ro", "https://xn--hai-n-sat-t5a.ro", "http://xn--hai-n-sat-t5a.ro", ",http://localhost:4200"],
     "responseHeader": ["Content-Type", "Authorization", "X-Requested-With"],
     "method": ["GET", "HEAD", "OPTIONS"],
     "maxAgeSeconds": 3600

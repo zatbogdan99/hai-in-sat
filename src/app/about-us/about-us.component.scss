@@ -70,7 +70,7 @@
   height: 40%;
   width: 65%;
   left: 30vw;
-  top: 30vh;
+  top: 20vh;
 }
 
 .degrade {
@@ -96,8 +96,8 @@
   padding-top: 3rem;
 }
 
-.extra-text pre {
-  font-size: 1.6rem;
+.extra-text p {
+  font-size: 1.4rem;
   font-family: sans-serif;
 }
 
@@ -107,13 +107,14 @@
   font-family: "Comic Sans MS";
 }
 
-.story pre {
-  margin-left: 0.5rem;
-  font-size: 1.2rem;
-  padding-right: 20rem;
+.story p {
+  //margin-left: 0.5rem;
+  font-size: 1rem;
+  padding-right: 7rem;
+  max-width: 46rem;
 }
 
-.story pre:nth-child(3) {
+.story p:nth-child(3) {
   margin-top: 5rem;
   font-size: 1.6rem;
   //font-weight: 600;

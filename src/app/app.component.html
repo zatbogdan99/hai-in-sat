@@ -7,20 +7,20 @@
     </ng-template>
     <ng-template pTemplate="end">
       <div>
-        <fa-icon style="padding-left: 1rem; padding-right: 1rem" [icon]="faFacebook"></fa-icon>
-        <fa-icon style="padding-left: 1rem; padding-right: 1rem" [icon]="faInstagram"></fa-icon>
-        <fa-icon style="padding-left: 1rem; padding-right: 1rem" [icon]="faTiktok"></fa-icon>
+        <fa-icon (click)="openLink('https://www.facebook.com/profile.php?id=61560867297052&mibextid=LQQJ4d')" style="padding-left: 1rem; padding-right: 1rem; cursor: pointer" [icon]="faFacebook"></fa-icon>
+        <fa-icon style="padding-left: 1rem; padding-right: 1rem; cursor: pointer" [icon]="faInstagram" (click)="openLink('https://www.instagram.com/hai.in.sat?igsh=MXh5NmFqcXhjdThtYQ%3D%3D&utm_source=qr')"></fa-icon>
+        <fa-icon (click)="openLink('https://www.tiktok.com/@hai.in.sat?_t=8n1yemWQQMr&_r=1')" style="padding-left: 1rem; padding-right: 1rem; cursor: pointer" [icon]="faTiktok"></fa-icon>
       </div>
     </ng-template>
   </p-menubar>
   <router-outlet></router-outlet>
 
   <div class="large-screen">
-    <div style="padding-left: 34rem" class="card flex justify-content-center">
-      <div style="padding-left: 18rem; padding-bottom: 1rem" class="contact">
-        <fa-icon (click)="goToTikTokPage()" class="fa-2x" style="padding-left: 2rem" [icon]="faTiktok"></fa-icon>
-        <fa-icon (click)="goToFacebookPage()" class="fa-2x" style="padding-left: 3rem" [icon]="faSquareFacebook"></fa-icon>
-        <fa-icon (click)="goToInstagramPage()" class="fa-2x" style="padding-left: 3rem" [icon]="faInstagram"></fa-icon>
+    <div style="text-align: center" class="card flex justify-content-center">
+      <div style="text-align: center; padding-bottom: 1rem" class="contact">
+        <fa-icon (click)="openLink('https://www.tiktok.com/@hai.in.sat?_t=8n1yemWQQMr&_r=1')" class="fa-2x" style="padding-left: 2rem; cursor: pointer" [icon]="faTiktok"></fa-icon>
+        <fa-icon (click)="openLink('https://www.facebook.com/profile.php?id=61560867297052&mibextid=LQQJ4d')" class="fa-2x" style="padding-left: 3rem; cursor: pointer" [icon]="faSquareFacebook"></fa-icon>
+        <fa-icon (click)="openLink('https://www.instagram.com/hai.in.sat?igsh=MXh5NmFqcXhjdThtYQ%3D%3D&utm_source=qr')" class="fa-2x" style="padding-left: 3rem; cursor: pointer" [icon]="faInstagram"></fa-icon>
       </div>
       <div style="display: inline; padding-right: 2rem">
         <p-chip class="clickable" (click)="showPolitica()" label="Politica de confidențialitate" />
@@ -192,20 +192,24 @@
           </div>
           <div class="text" style="padding-top: 1rem; display: flex; align-items: center">
             <img src="assets/instagram.png" class="images-style">
-            <span style="font-size: 1.7rem">Instagram</span>
+            <span (click)="openLink('https://www.instagram.com/hai.in.sat?igsh=MXh5NmFqcXhjdThtYQ%3D%3D&utm_source=qr')" style="font-size: 1.7rem; cursor: pointer">Instagram</span>
           </div>
           <div class="text" style="display: flex; padding-top: 1.5rem; align-items: center">
             <img src="assets/facebook.png" class="images-style">
-            <span style="font-size: 1.7rem">Facebook</span>
+            <span (click)="openLink('https://www.facebook.com/profile.php?id=61560867297052&mibextid=LQQJ4d')" style="font-size: 1.7rem; cursor: pointer">Facebook</span>
           </div>
           <div id="tiktok_mobile" class="text" style="display: flex; padding-top: 1.5rem; align-items: center">
             <img src="assets/tiktok.png" class="images-style">
-            <span style="font-size: 1.7rem">Tiktok</span>
+            <span (click)="openLink('https://www.tiktok.com/@hai.in.sat?_t=8n1yemWQQMr&_r=1')" style="font-size: 1.7rem; cursor: pointer">Tiktok</span>
           </div>
           <div class="text" style="display: flex; padding-top: 1.5rem; align-items: center">
             <img src="assets/wapp.png" class="images-style">
-            <span style="font-size: 1.7rem">0728140650</span>
+            <span style="font-size: 1.7rem; cursor: pointer">0728140650</span>
             <img src="assets/phone.png" class="images-style" style="margin-left: 0.5rem">
+          </div>
+          <div class="text" style="display: flex; padding-top: 1.5rem; align-items: center">
+            <img src="assets/envelope-solid.svg" class="images-style">
+            <span>contact@hai-în-sat.ro</span>
           </div>
         </div>
       </p-dialog>
@@ -215,9 +219,9 @@
   <div class="small-screen">
     <div class="card flex justify-content-center">
       <div style="padding-left: 2rem" class="contact">
-        <fa-icon (click)="goToTikTokPage()" class="fa-2x" style="padding-left: 2rem" [icon]="faTiktok"></fa-icon>
-        <fa-icon (click)="goToFacebookPage()" class="fa-2x" style="padding-left: 3rem" [icon]="faSquareFacebook"></fa-icon>
-        <fa-icon (click)="goToInstagramPage()" class="fa-2x" style="padding-left: 3rem" [icon]="faInstagram"></fa-icon>
+        <fa-icon (click)="openLink('https://www.tiktok.com/@hai.in.sat?_t=8n1yemWQQMr&_r=1')" class="fa-2x" style="padding-left: 2rem" [icon]="faTiktok"></fa-icon>
+        <fa-icon (click)="openLink('https://www.facebook.com/profile.php?id=61560867297052&mibextid=LQQJ4d')" class="fa-2x" style="padding-left: 3rem" [icon]="faSquareFacebook"></fa-icon>
+        <fa-icon (click)="openLink('https://www.instagram.com/hai.in.sat?igsh=MXh5NmFqcXhjdThtYQ%3D%3D&utm_source=qr')" class="fa-2x" style="padding-left: 3rem" [icon]="faInstagram"></fa-icon>
       </div>
       <div style="padding-top: 1rem; text-align: center">
         <p-chip (click)="showPolitica()" label="Politica de confidențialitate" />

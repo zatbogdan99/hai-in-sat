@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import {DataDto} from "../dto/data.dto";
-import {VgApiService} from "@videogular/ngx-videogular/core";
+import {VgApiService, VgMediaDirective} from "@videogular/ngx-videogular/core";
 import {PhotoService} from "../service/photo-service";
 import {DataService} from "../service/data-service";
 import {gsap, Power2} from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import {LoadingService} from "../service/loading-service/loading-service.service";
 
 @Component({
   selector: 'app-village-of-the-month',
@@ -33,7 +34,9 @@ export class VillageOfTheMonthComponent {
   responsiveOptions: any[] | undefined;
 
 
-  constructor(private photoService: PhotoService, private service: DataService) {
+  constructor(private photoService: PhotoService,
+              private service: DataService,
+              public loadingService: LoadingService) {
     this.villageId = 0;
 
     this.photoService.getHorezuImages().then((images) => {
@@ -59,6 +62,7 @@ export class VillageOfTheMonthComponent {
   }
 
   ngOnInit(): void {
+    this.loadingService.loadingOn();
     gsap.registerPlugin(ScrollTrigger);
 
     let revealContainers = document.querySelectorAll(".reveal");
@@ -101,9 +105,19 @@ export class VillageOfTheMonthComponent {
 
   onPlayerReady(source: VgApiService) {
     this.api = source;
-    // this.api.getDefaultMedia().subscriptions.loadedMetadata.subscribe(
-    //   this.autoplay.bind(this)
-    // )
+
+    this.api.getDefaultMedia().subscriptions.loadedMetadata.subscribe(() => {
+      this.loadingService.loadingOff();
+    });
+
+    this.api.getDefaultMedia().subscriptions.error.subscribe(() => {
+      this.loadingService.loadingOff();
+      console.error('Error loading video');
+    });
+  }
+
+  checkBuffering(): void {
+
   }
 
   autoplay() {

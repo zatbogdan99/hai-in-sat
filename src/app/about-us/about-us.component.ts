@@ -67,7 +67,7 @@ export class AboutUsComponent implements OnInit, AfterViewInit{
   getSecondText() {
     return 'Noi nu facem din asta o afacere. Ne bucurăm pentru fiecare casă care își \ngăsește un suflet curat. ' +
       'Noi nu îți percepem comision înainte. După ce tu, suflet frumos \nți-ai ales casa pereche, ' +
-      'poți să donezipentru ca alte suflete curate, asemănătoare ție, \nsă se bucure cum te bucuri tu.'
+      'poți să impărtășești experiența ta pentru ca alte suflete curate, asemănătoare ție, \nsă se bucure cum te bucuri tu.'
   }
 
   getFirstText() {
