@@ -72,7 +72,7 @@ img {
 
 
 //mobile
-@media only screen and (max-width: 415px) {
+@media only screen and (max-width: 500px) {
   .small-screen {
     display: block;
   }
@@ -133,7 +133,7 @@ img {
 }
 
 //desktop
-@media only screen and (min-width: 415px) {
+@media only screen and (min-width: 500px) {
   .small-screen {
     display: none;
   }

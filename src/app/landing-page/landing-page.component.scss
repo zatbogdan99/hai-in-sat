@@ -8,6 +8,7 @@
   border: 2px solid #c2c2c2;
   padding: 0.625rem 1.875rem;
   margin-top: 2.188rem;
+  z-index: 100;
 }
 
 .hai-in-sat-mobile {
@@ -22,7 +23,7 @@
   padding: 0.625rem 1.875rem;
   margin-top: 2.188rem;
   margin-bottom: 2rem;
-  margin-left: 6rem;
+  margin-left: 7.5rem;
   max-height: 3.2rem;
   text-align: center;
 }
@@ -98,8 +99,8 @@ div section div a:hover {
   grid-template-rows: repeat(6, min-content);
   grid-gap: 20px;
   .box {
-    width: 600px;
-    height: 500px;
+    width: 40rem;
+    height: 35rem;
     background-color: #fff;
     position: absolute;
     right: -15%;
@@ -107,7 +108,7 @@ div section div a:hover {
   }
 
   .heading-4 {
-    margin-top: 10px;
+    margin-top: 0.7rem;
     grid-row: 1/2;
     grid-column: 1/-1;
     justify-self: center;
@@ -168,7 +169,7 @@ div section div a:hover {
     &__visual {
       grid-column: 5/-1;
       grid-row: 1/-1;
-      height: 500px;
+      height: 33rem;
       margin-right: 20px;
       overflow: hidden;
     }
@@ -189,8 +190,8 @@ div section div a:hover {
   grid-gap: 20px;
 
   .box {
-    width: 600px;
-    height: 500px;
+    width: 40rem;
+    height: 33rem;
     background-color: #fff;
     position: absolute;
     right: -15%;
@@ -387,7 +388,11 @@ div section div a:hover {
   }
 }
 
-
+@media only screen and (max-height: 750px) {
+  .third-section {
+    padding-top: 10rem;
+  }
+}
 
 @media only screen and (min-width: 200px) and (max-width: 767px)  {
 
@@ -460,7 +465,7 @@ div section div a:hover {
 }
 
 //mobile
-@media only screen and (max-width: 415px) {
+@media only screen and (max-width: 500px) {
   .small-screen {
     display: block;
   }
@@ -470,7 +475,7 @@ div section div a:hover {
 }
 
 //desktop
-@media only screen and (min-width: 415px) {
+@media only screen and (min-width: 500px) {
   .small-screen {
     display: none;
   }

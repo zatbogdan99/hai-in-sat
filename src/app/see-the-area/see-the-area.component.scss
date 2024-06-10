@@ -122,7 +122,7 @@ main > div p {
 }
 
 //mobile
-@media only screen and (max-width: 415px) {
+@media only screen and (max-width: 500px) {
   .small-screen {
     display: block;
   }
@@ -132,7 +132,7 @@ main > div p {
 }
 
 //desktop
-@media only screen and (min-width: 415px) {
+@media only screen and (min-width: 500px) {
   .small-screen {
     display: none;
   }

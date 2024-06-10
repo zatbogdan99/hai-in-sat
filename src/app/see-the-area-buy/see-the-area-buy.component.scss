@@ -28,7 +28,7 @@ main > div h1 {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   -moz-background-clip: text;
-  text-transform: capitalize;
+  //text-transform: capitalize;
   letter-spacing: 0.8px;
   font-family: "Open Sans", sans-serif;
   font-size: clamp(3.4375rem, 3.25rem + 0.75vw, 4rem);
@@ -64,23 +64,11 @@ main > div p {
 }
 
 .swiper-slide-one {
-  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./../../assets/casa.jpg) no-repeat 50% 50%/cover;
+  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./../../assets/teren_baia1_taiat.jpg) no-repeat 50% 50%/cover;
 }
 
 .swiper-slide-two {
-  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./../../assets/munte1.jpeg) no-repeat 50% 50%/cover;
-}
-
-.swiper-slide-three {
-  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./../../assets/munte2.jpeg) no-repeat 50% 50%/cover;
-}
-
-.swiper-slide-four {
-  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./../../assets/munte3.avif) no-repeat 50% 50%/cover;
-}
-
-.swiper-slide-five {
-  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./../../assets/bucuresti.avif) no-repeat 50% 50%/cover;
+  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./../../assets/teren_baia2.jpg) no-repeat 50% 50%/cover;
 }
 
 .swiper-pagination-bullet,

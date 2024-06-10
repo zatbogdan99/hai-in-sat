@@ -154,28 +154,32 @@ img {
 }
 
 .swiper-slide-one {
-  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./assets/casa.jpg) no-repeat 50% 50%/cover;
+  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./assets/hai_sa_vezi_zona1.jpg) no-repeat 50% 50%/cover;
 }
 
 .swiper-slide-two {
-  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./assets/munte1.jpeg) no-repeat 50% 50%/cover;
+  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./assets/hai-sa-vezi-zona2.jpg) no-repeat 50% 50%/cover;
 }
 
 .swiper-slide-three {
-  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./assets/munte2.jpeg) no-repeat 50% 50%/cover;
+  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./assets/hai-sa-vezi-zona3.jpg) no-repeat 50% 50%/cover;
 }
 
 .swiper-slide-four {
-  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./assets/munte3.avif) no-repeat 50% 50%/cover;
+  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./assets/hai-sa-vezi-zona-4.jpg) no-repeat 50% 50%/cover;
 }
 
 .swiper-slide-five {
-  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./assets/bucuresti.avif) no-repeat 50% 50%/cover;
+  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./assets/hai-sa-vezi-zona-5.jpg) no-repeat 50% 50%/cover;
+}
+
+.swiper-slide-six {
+  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./assets/hai-sa-vezi-zona-6.jpg) no-repeat 50% 50%/cover;
 }
 
 
 //mobile
-@media only screen and (max-width: 415px) {
+@media only screen and (max-width: 500px) {
   .small-screen {
     display: block;
   }
