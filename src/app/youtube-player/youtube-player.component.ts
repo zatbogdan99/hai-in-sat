@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, ViewChild} from '@angular/core';
 
 declare var YT: any;
 
@@ -11,12 +11,16 @@ export class YoutubePlayerComponent implements AfterViewInit{
   @ViewChild('player') playerElementRef: ElementRef | undefined;
   player: any;
 
+  @Input() videoId: string = 'CKiPdxYl0MA';
+  @Input() height: string = '60%';
+  @Input() width: string = '100%';
+
   ngAfterViewInit(): void {
     if (this.playerElementRef != undefined) {
       this.player = new YT.Player(this.playerElementRef.nativeElement, {
-        height: '390',
-        width: '640',
-        videoId: 'CKiPdxYl0MA',
+        height: this.height,
+        width: this.width,
+        videoId: this.videoId,
         events: {
           'onReady': this.onPlayerReady,
           'onStateChange': this.onPlayerStateChange
@@ -28,7 +32,7 @@ export class YoutubePlayerComponent implements AfterViewInit{
   }
 
   onPlayerReady(event: { target: { playVideo: () => void; }; }) {
-    event.target.playVideo();
+    // event.target.playVideo();
   }
 
   onPlayerStateChange(event: { data: any; }) {

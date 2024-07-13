@@ -4,6 +4,8 @@
 
 <div class="large-screen">
   <div class="container1">
+    <p-button *ngIf="villageId === 0" label="Satul lunii trecute" icon="pi pi-arrow-left" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(1)"></p-button>
+    <p-button *ngIf="villageId === 1" label="Satul lunii" icon="pi pi-arrow-right" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(0)"></p-button>
     <div class="reveal">
       <div style="padding-top: 4.5rem" class="reveal p-card-custom">
         <p-card [style]="{ width: '35rem', height: '24rem' }">
@@ -18,6 +20,7 @@
         </p-card>
       </div>
       <div style="max-width: 45rem; max-height: 32.5rem; min-width: 40rem; padding-left: 3rem">
+<!--        <app-youtube-player [videoId]="'rI43JSfG188'"></app-youtube-player>-->
         <vg-player (onPlayerReady)="onPlayerReady($event)">
           <vg-overlay-play></vg-overlay-play>
           <vg-buffering></vg-buffering>
@@ -40,7 +43,7 @@
           <video [vgMedia]="$any(media1)"
                  #media1 id="firstVideoDesktop"
                  preload="auto"
-                 [src]="satulRapa1"
+                 [src]="getSrcByVillageId()"
                  crossorigin>
           </video>
         </vg-player>
@@ -50,9 +53,12 @@
   </div>
 
   <div style="display: flex; justify-content: center">
-    <div class="p-card-custom" style="padding-top: 2rem">
+    <div class="p-card-custom" style="padding-top: 2rem; padding-bottom: 2rem">
       <p-card [style]="{ width: '60rem' }">
-        <p class="m-0 text-style">
+        <p *ngIf="villageId === 0" class="m-0 text-style">
+          Racovița, un sat al comunei Polovragi, un sat unde copiii dacilor se jucau de-a războiul, un sat unde energiile se contopesc și se armonizează cu Universul.
+        </p>
+        <p *ngIf="villageId === 1" class="m-0 text-style">
           Într-o după amiază cu soarele agățat pe albastrul boltei, cutreieram pădurea virgină și plină de viață în cătutarea gustoaselor ciuperci.
           Eram într-o lume verde cu simfonii vesele interpretate de păsările pădurii, iar mintea mea se afla într-o stare de pauză prelungită...
           <br><br>
@@ -83,6 +89,7 @@
       </p-card>
     </div>
     <div style="max-width: 45rem; max-height: 32.5rem; min-width: 40rem; padding-left: 3rem">
+<!--      <app-youtube-player [videoId]="'W10oX2mk_R8'"></app-youtube-player>-->
       <vg-player (onPlayerReady)="onPlayerReady($event)">
         <vg-overlay-play></vg-overlay-play>
         <vg-buffering></vg-buffering>
@@ -121,9 +128,14 @@
 
 
 <div class="small-screen">
-  <div class="container1">
+  <div style="padding-top: 1rem">
+    <p-button *ngIf="villageId === 0" label="Satul lunii trecute" icon="pi pi-arrow-left" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(1)"></p-button>
+    <p-button *ngIf="villageId === 1" label="Satul lunii" icon="pi pi-arrow-right" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(0)"></p-button>
+  </div>
+    <div class="container1">
     <div class="reveal">
       <div style="max-width: 23rem; max-height: 20rem; padding-bottom: 1rem">
+<!--        <app-youtube-player [videoId]="'rI43JSfG188'"></app-youtube-player>-->
         <vg-player (onPlayerReady)="onPlayerReady($event)">
           <vg-overlay-play></vg-overlay-play>
           <vg-buffering></vg-buffering>
@@ -142,7 +154,7 @@
           <video [vgMedia]="$any(media1)"
                  #media1 id="firstVideoMobile"
                  preload="auto"
-                 [src]="satulRapa1"
+                 [src]="getSrcByVillageId()"
                  crossorigin>
           </video>
         </vg-player>
@@ -154,7 +166,10 @@
   <div class="container2">
     <div style="padding-top: 3rem" class="reveal p-card-custom">
       <p-card>
-        <p class="m-0 text-style">
+        <p *ngIf="villageId === 0" class="m-0 text-style">
+          Racovița, un sat al comunei Polovragi, un sat unde copiii dacilor se jucau de-a războiul, un sat unde energiile se contopesc și se armonizează cu Universul.
+        </p>
+        <p *ngIf="villageId === 1" class="m-0 text-style">
           Într-o după amiază cu soarele agățat pe albastrul boltei, cutreieram pădurea virgină și plină de viață în cătutarea gustoaselor ciuperci.
           Eram într-o lume verde cu simfonii vesele interpretate de păsările pădurii, iar mintea mea se afla într-o stare de pauză prelungită...
           <br><br>
@@ -186,6 +201,7 @@
   <div class="container1">
     <div class="reveal">
       <div style="max-width: 23rem; max-height: 20rem; padding-bottom: 1rem">
+<!--        <app-youtube-player [videoId]="'W10oX2mk_R8'"></app-youtube-player>-->
         <vg-player (onPlayerReady)="onPlayerReady($event)">
           <vg-overlay-play></vg-overlay-play>
           <vg-buffering></vg-buffering>

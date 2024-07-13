@@ -23,10 +23,11 @@ export class VillageOfTheMonthComponent {
 
   satulRapa1 = 'https://storage.googleapis.com/hai-in-sat-assets/videos/satul_rapa1.mp4';
   satulRapa2 = 'https://storage.googleapis.com/hai-in-sat-assets/videos/satul_rapa2.mp4';
+  satulRacovita = 'https://storage.googleapis.com/hai-in-sat-assets/videos/satul_racovita.mp4';
 
   data: DataDto[] = [];
 
-  villageId: number = 0;
+  villageId: number = 1;
 
   preload: string = 'auto';
   api: VgApiService = new VgApiService;
@@ -49,7 +50,20 @@ export class VillageOfTheMonthComponent {
     this.photoService.getBarbatestiImages().then((images) => (this.barbatestiImages = images));
     this.photoService.getVaideeniImages().then((images) => (this.vaideeniImages = images));
 
-    let dataDto = new DataDto(
+    let dataDto;
+
+    dataDto = new DataDto(
+      1, //satul lunii
+      "Racovița",
+      "",
+      "",
+      null,
+      null,
+      ""
+    );
+    this.data.push(dataDto);
+
+    dataDto = new DataDto(
       0, //satul lunii
       "Râpa",
       "",
@@ -122,5 +136,17 @@ export class VillageOfTheMonthComponent {
 
   autoplay() {
     this.api.play();
+  }
+
+  changeVillage(villageId: number) {
+    this.villageId = villageId;
+  }
+
+  getSrcByVillageId() {
+    if (this.villageId === 1) {
+      return this.satulRacovita;
+    } else {
+      return this.satulRapa1;
+    }
   }
 }
