@@ -143,10 +143,18 @@ export class VillageOfTheMonthComponent {
   }
 
   getSrcByVillageId() {
-    if (this.villageId === 1) {
+    if (this.villageId === 0) {
       return this.satulRacovita;
     } else {
       return this.satulRapa1;
+    }
+  }
+
+  getYoutubeIdByVillage() {
+    if (this.villageId === 0) {
+      return '39ZT4sLPxs4';
+    } else {
+      return 'rI43JSfG188';
     }
   }
 }

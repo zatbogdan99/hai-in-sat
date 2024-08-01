@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, Input, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 
 declare var YT: any;
 
@@ -7,8 +7,9 @@ declare var YT: any;
   templateUrl: './youtube-player.component.html',
   styleUrls: ['./youtube-player.component.scss']
 })
-export class YoutubePlayerComponent implements AfterViewInit{
+export class YoutubePlayerComponent implements AfterViewInit, OnChanges{
   @ViewChild('player') playerElementRef: ElementRef | undefined;
+
   player: any;
 
   @Input() videoId: string = 'CKiPdxYl0MA';
@@ -16,6 +17,16 @@ export class YoutubePlayerComponent implements AfterViewInit{
   @Input() width: string = '100%';
 
   ngAfterViewInit(): void {
+    this.initPlayer();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['videoId'] && !changes['videoId'].isFirstChange()) {
+      this.updateVideo(changes['videoId'].currentValue);
+    }
+  }
+
+  initPlayer(): void {
     if (this.playerElementRef != undefined) {
       this.player = new YT.Player(this.playerElementRef.nativeElement, {
         height: this.height,
@@ -28,6 +39,14 @@ export class YoutubePlayerComponent implements AfterViewInit{
       });
     } else {
       console.error('Eroare la initializarea playerului de youtube');
+    }
+  }
+
+  updateVideo(newVideoId: string): void {
+    if (this.player && this.player.loadVideoById) {
+      this.player.loadVideoById(newVideoId);
+    } else {
+      this.initPlayer();
     }
   }
 

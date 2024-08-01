@@ -132,39 +132,16 @@
     <p-button *ngIf="villageId === 0" label="Satul lunii trecute" icon="pi pi-arrow-left" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(1)"></p-button>
     <p-button *ngIf="villageId === 1" label="Satul lunii" icon="pi pi-arrow-right" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(0)"></p-button>
   </div>
-    <div class="container1">
-    <div class="reveal">
-      <div style="max-width: 23rem; max-height: 20rem; padding-bottom: 1rem">
-<!--        <app-youtube-player [videoId]="'rI43JSfG188'"></app-youtube-player>-->
-        <vg-player (onPlayerReady)="onPlayerReady($event)">
-          <vg-overlay-play></vg-overlay-play>
-          <vg-buffering></vg-buffering>
-          <vg-scrub-bar>
-            <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
-            <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
-          </vg-scrub-bar>
-          <vg-controls>
-            <vg-play-pause></vg-play-pause>
-            <vg-playback-button></vg-playback-button>
-            <vg-time-display></vg-time-display>
-            <vg-scrub-bar style="pointer-events: none"></vg-scrub-bar>
-            <vg-mute></vg-mute>
-            <vg-fullscreen></vg-fullscreen>
-          </vg-controls>
-          <video [vgMedia]="$any(media1)"
-                 #media1 id="firstVideoMobile"
-                 preload="auto"
-                 [src]="getSrcByVillageId()"
-                 crossorigin>
-          </video>
-        </vg-player>
+
+      <div style="display: flex; justify-content: center; align-items: center; height: 25vh">
+        <div style="width: 90%">
+          <app-youtube-player [videoId]="getYoutubeIdByVillage()"></app-youtube-player>
+        </div>
       </div>
-    </div>
-  </div>
 
 
   <div class="container2">
-    <div style="padding-top: 3rem" class="reveal p-card-custom">
+    <div class="reveal p-card-custom">
       <p-card>
         <p *ngIf="villageId === 0" class="m-0 text-style">
           Racovița, un sat al comunei Polovragi, un sat unde copiii dacilor se jucau de-a războiul, un sat unde energiile se contopesc și se armonizează cu Universul.
@@ -198,34 +175,10 @@
       </p-card>
   </div>
 
-  <div class="container1">
-    <div class="reveal">
-      <div style="max-width: 23rem; max-height: 20rem; padding-bottom: 1rem">
-<!--        <app-youtube-player [videoId]="'W10oX2mk_R8'"></app-youtube-player>-->
-        <vg-player (onPlayerReady)="onPlayerReady($event)">
-          <vg-overlay-play></vg-overlay-play>
-          <vg-buffering></vg-buffering>
-          <vg-scrub-bar>
-            <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
-            <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
-          </vg-scrub-bar>
-          <vg-controls>
-            <vg-play-pause></vg-play-pause>
-            <vg-playback-button></vg-playback-button>
-            <vg-time-display></vg-time-display>
-            <vg-scrub-bar style="pointer-events: none"></vg-scrub-bar>
-            <vg-mute></vg-mute>
-            <vg-fullscreen></vg-fullscreen>
-          </vg-controls>
-          <video [vgMedia]="$any(media2)"
-                 #media2 id="secondVideoMobile"
-                 preload="auto"
-                 [src]="satulRapa2"
-                 crossorigin>
-          </video>
-        </vg-player>
+        <div style="display: flex; justify-content: center; align-items: center; height: 25vh">
+          <div style="width: 90%">
+            <app-youtube-player [videoId]="'W10oX2mk_R8'"></app-youtube-player>
+          </div>
       </div>
-    </div>
-  </div>
 
 </div>
