@@ -44,7 +44,7 @@ export class YoutubePlayerComponent implements AfterViewInit, OnChanges{
 
   updateVideo(newVideoId: string): void {
     if (this.player && this.player.loadVideoById) {
-      this.player.loadVideoById(newVideoId);
+      this.player.cueVideoById(newVideoId);
     } else {
       this.initPlayer();
     }

@@ -19,16 +19,16 @@ export class PhotoService {
         alt: 'Horezu',
         title: 'Horezu 3'
       },
-      {
-        itemImageSrc: 'assets/horezu4.avif',
-        alt: 'Horezu',
-        title: 'Horezu 4'
-      },
-      {
-        itemImageSrc: 'assets/horezu5.avif',
-        alt: 'Horezu',
-        title: 'Horezu 5'
-      },
+      // {
+      //   itemImageSrc: 'assets/horezu4.avif',
+      //   alt: 'Horezu',
+      //   title: 'Horezu 4'
+      // },
+      // {
+      //   itemImageSrc: 'assets/horezu5.avif',
+      //   alt: 'Horezu',
+      //   title: 'Horezu 5'
+      // },
     ];
   }
 
@@ -49,31 +49,31 @@ export class PhotoService {
         alt: 'Costesti',
         title: 'Costesti 3'
       },
-      {
-        itemImageSrc: 'assets/costesti4.avif',
-        alt: 'Costesti',
-        title: 'Costesti 4'
-      },
-      {
-        itemImageSrc: 'assets/costesti5.avif',
-        alt: 'Costesti',
-        title: 'Costesti 5'
-      },
-      {
-        itemImageSrc: 'assets/costesti6.avif',
-        alt: 'Costesti',
-        title: 'Costesti 6'
-      },
-      {
-        itemImageSrc: 'assets/costesti7.avif',
-        alt: 'Costesti',
-        title: 'Costesti 7'
-      },
-      {
-        itemImageSrc: 'assets/costesti8.avif',
-        alt: 'Costesti',
-        title: 'Costesti 8'
-      },
+      // {
+      //   itemImageSrc: 'assets/costesti4 - old.avif',
+      //   alt: 'Costesti',
+      //   title: 'Costesti 4'
+      // },
+      // {
+      //   itemImageSrc: 'assets/costesti5 - old.avif',
+      //   alt: 'Costesti',
+      //   title: 'Costesti 5'
+      // },
+      // {
+      //   itemImageSrc: 'assets/costesti6 - old.avif',
+      //   alt: 'Costesti',
+      //   title: 'Costesti 6'
+      // },
+      // {
+      //   itemImageSrc: 'assets/costesti7 - old.avif',
+      //   alt: 'Costesti',
+      //   title: 'Costesti 7'
+      // },
+      // {
+      //   itemImageSrc: 'assets/costesti8.avif',
+      //   alt: 'Costesti',
+      //   title: 'Costesti 8'
+      // },
     ];
   }
 
@@ -144,11 +144,11 @@ export class PhotoService {
         alt: 'Vaideeni',
         title: 'Vaideeni 3'
       },
-      {
-        itemImageSrc: 'assets/vaideeni4.avif',
-        alt: 'Vaideeni',
-        title: 'Vaideeni 4'
-      }
+      // {
+      //   itemImageSrc: 'assets/vaideeni4.avif',
+      //   alt: 'Vaideeni',
+      //   title: 'Vaideeni 4'
+      // }
     ];
   }
 

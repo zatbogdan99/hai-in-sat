@@ -1,5 +1,7 @@
 import {AfterViewInit, Component} from '@angular/core';
 import Swiper, { Pagination } from 'swiper';
+import {PhotoService} from "../service/photo-service";
+import {BehaviorSubject} from "rxjs";
 
 @Component({
   selector: 'app-see-the-area-buy',
@@ -7,6 +9,34 @@ import Swiper, { Pagination } from 'swiper';
   styleUrls: ['./see-the-area-buy.component.scss']
 })
 export class SeeTheAreaBuyComponent implements AfterViewInit{
+  displayGalleria: boolean;
+  images: any[] | undefined;
+
+  responsiveOptions: any[] = [
+    {
+      breakpoint: '1500px',
+      numVisible: 5
+    },
+    {
+      breakpoint: '1024px',
+      numVisible: 3
+    },
+    {
+      breakpoint: '768px',
+      numVisible: 2
+    },
+    {
+      breakpoint: '560px',
+      numVisible: 1
+    }
+  ];
+
+  constructor(private photoService: PhotoService) {
+    this.photoService.getHorezuImages().then((images) => {
+      this.images = images;
+    });
+    this.displayGalleria = false;
+  }
 
   ngAfterViewInit(): void {
     const swiper = new Swiper(".mySwiper", {

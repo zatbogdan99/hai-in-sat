@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, HostListener} from '@angular/core';
 import {DataDto} from "../dto/data.dto";
 import {VgApiService, VgMediaDirective} from "@videogular/ngx-videogular/core";
 import {PhotoService} from "../service/photo-service";
@@ -34,11 +34,14 @@ export class VillageOfTheMonthComponent {
 
   responsiveOptions: any[] | undefined;
 
+  isMobile: boolean | undefined;
+
 
   constructor(private photoService: PhotoService,
               private service: DataService,
               public loadingService: LoadingService) {
     this.villageId = 0;
+    this.checkScreenSize();
 
     this.photoService.getHorezuImages().then((images) => {
       this.horezuImages = images;
@@ -73,6 +76,15 @@ export class VillageOfTheMonthComponent {
       ""
     );
     this.data.push(dataDto);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.checkScreenSize();
+  }
+
+  private checkScreenSize() {
+    this.isMobile = window.innerWidth <= 500;
   }
 
   ngOnInit(): void {

@@ -97,7 +97,7 @@ export class AppComponent implements OnInit{
         command: () => this.goToAboutUs(),
       },
       {
-        label: 'Oltenia de sub munte',
+        label: 'Oltenia de sub Munte',
         icon: 'pi pi-fw pi-sun',
         command: () => this.goToUnderTheMountain()
       },

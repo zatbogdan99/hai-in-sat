@@ -1,4 +1,62 @@
 <main>
+  <div style="display: flex; flex-direction: column">
+    <div style="display: flex">
+      <div>
+        <span>Hai în sat</span>
+        <h1>Pensiune în Milostea</h1>
+        <hr>
+        <p style="max-width: 40rem">Pensiune cu 16 camere <br> Utilități: Gratar/Restaurant/Terasa/Sala de evenimente
+          <br>Afacere la cheie<br> Suprafață:</p>
+      </div>
+
+      <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide swiper-slide-one"></div>
+
+          <div class="swiper-slide swiper-slide-two"></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; padding-top: 2rem; align-items: center">
+      <div style="width: 100%; height: 100%; padding-right: 1rem">
+        <app-youtube-player [videoId]="'39ZT4sLPxs4'"></app-youtube-player>
+      </div>
+      <div style="width: 100%; height: 100%; padding-right: 1rem">
+        <app-youtube-player [videoId]="'39ZT4sLPxs4'"></app-youtube-player>
+      </div>
+      <div style="width: 100%; height: 100%">
+        <app-youtube-player [videoId]="'39ZT4sLPxs4'"></app-youtube-player>
+      </div>
+    </div>
+  </div>
+
+  <div class="card flex justify-content-center">
+    <p-button
+      icon="pi pi-external-link"
+      label="Show"
+      (onClick)="displayGalleria = true" />
+    <p-galleria
+      [value]="images"
+      [(visible)]="displayGalleria"
+      [responsiveOptions]="responsiveOptions"
+      [containerStyle]="{ 'max-width': '850px' }"
+      [numVisible]="7"
+      [circular]="true"
+      [fullScreen]="true"
+      [showItemNavigators]="true"
+      [showThumbnails]="false">
+      <ng-template pTemplate="item" let-item>
+        <img
+          [src]="item.itemImageSrc" [alt]="item.alt"
+          style="width: 100%; display: block;" />
+      </ng-template>
+    </p-galleria>
+  </div>
+
+</main>
+
+<main>
   <div>
     <span>Hai în sat</span>
     <h1>Teren în Baia de Fier</h1>
