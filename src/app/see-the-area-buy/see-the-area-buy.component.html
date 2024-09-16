@@ -6,55 +6,77 @@
         <h1>Pensiune în Milostea</h1>
         <hr>
         <p style="max-width: 40rem">Pensiune cu 16 camere <br> Utilități: Gratar/Restaurant/Terasa/Sala de evenimente
-          <br>Afacere la cheie<br> Suprafață:</p>
+          <br>Afacere la cheie<br></p>
       </div>
-
-      <div class="swiper mySwiper">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide swiper-slide-one"></div>
-
-          <div class="swiper-slide swiper-slide-two"></div>
+      <div class="large-screen">
+        <div style="width: 45rem">
+          <p-galleria id="galleriaSmall"
+            [value]="milosteaImages"
+            [responsiveOptions]="responsiveOptions"
+            [numVisible]="7"
+            [circular]="true"
+            [fullScreen]="false"
+            [showItemNavigators]="true"
+            [autoPlay]="true"
+            [showThumbnails]="false">
+            <ng-template pTemplate="item" let-item>
+              <img
+                [src]="item.itemImageSrc" [alt]="item.alt"
+                style="width: 100%; display: block;" />
+            </ng-template>
+          </p-galleria>
         </div>
       </div>
     </div>
 
-    <div style="display: flex; padding-top: 2rem; align-items: center">
-      <div style="width: 100%; height: 100%; padding-right: 1rem">
-        <app-youtube-player [videoId]="'39ZT4sLPxs4'"></app-youtube-player>
+    <div class="small-screen">
+      <div>
+        <p-galleria id="galleriaMobile"
+                    [value]="milosteaImages"
+                    [responsiveOptions]="responsiveOptions"
+                    [numVisible]="7"
+                    [circular]="true"
+                    [fullScreen]="false"
+                    [showItemNavigators]="true"
+                    [autoPlay]="true"
+                    [showThumbnails]="false">
+          <ng-template pTemplate="item" let-item>
+            <img
+              [src]="item.itemImageSrc" [alt]="item.alt"
+              style="width: 100%; display: block;" />
+          </ng-template>
+        </p-galleria>
       </div>
-      <div style="width: 100%; height: 100%; padding-right: 1rem">
-        <app-youtube-player [videoId]="'39ZT4sLPxs4'"></app-youtube-player>
+    </div>
+
+      <div class="large-screen" style="padding-right: 1rem; padding-top: 2rem; height: 30rem; width: 80rem">
+        <app-youtube-player [videoId]="'rhuyNfSvz0s'" [height]="'100%'"></app-youtube-player>
       </div>
-      <div style="width: 100%; height: 100%">
-        <app-youtube-player [videoId]="'39ZT4sLPxs4'"></app-youtube-player>
-      </div>
+
+    <div class="small-screen" style="padding-right: 1rem; padding-top: 2rem">
+      <app-youtube-player [videoId]="'rhuyNfSvz0s'" [height]="'100%'"></app-youtube-player>
     </div>
   </div>
 
-  <div class="card flex justify-content-center">
-    <p-button
-      icon="pi pi-external-link"
-      label="Show"
-      (onClick)="displayGalleria = true" />
-    <p-galleria
-      [value]="images"
-      [(visible)]="displayGalleria"
-      [responsiveOptions]="responsiveOptions"
-      [containerStyle]="{ 'max-width': '850px' }"
-      [numVisible]="7"
-      [circular]="true"
-      [fullScreen]="true"
-      [showItemNavigators]="true"
-      [showThumbnails]="false">
-      <ng-template pTemplate="item" let-item>
-        <img
-          [src]="item.itemImageSrc" [alt]="item.alt"
-          style="width: 100%; display: block;" />
-      </ng-template>
-    </p-galleria>
-  </div>
-
 </main>
+
+<div class="card flex justify-content-center">
+  <p-galleria id="galleriaFull"
+    [value]="images"
+    [(visible)]="displayGalleria"
+    [responsiveOptions]="responsiveOptions"
+    [numVisible]="7"
+    [circular]="true"
+    [fullScreen]="true"
+    [showItemNavigators]="true"
+    [showThumbnails]="false">
+    <ng-template pTemplate="item" let-item>
+      <img
+        [src]="item.itemImageSrc" [alt]="item.alt"
+        style="width: 100%; display: block;" />
+    </ng-template>
+  </p-galleria>
+</div>
 
 <main>
   <div>
@@ -67,9 +89,9 @@
 
   <div class="swiper mySwiper">
     <div class="swiper-wrapper">
-      <div class="swiper-slide swiper-slide-one"></div>
+      <div (click)="openGalleria(BuyEnum.BAIA)" class="swiper-slide swiper-slide-one"></div>
 
-      <div class="swiper-slide swiper-slide-two"></div>
+      <div (click)="openGalleria(BuyEnum.BAIA)" class="swiper-slide swiper-slide-two"></div>
     </div>
   </div>
 </main>
@@ -86,17 +108,17 @@
 
   <div class="swiper mySwiper">
     <div class="swiper-wrapper">
-      <div class="swiper-slide swiper-slide-polovragi1"></div>
+      <div (click)="openGalleria(BuyEnum.POLOVRAGI)" class="swiper-slide swiper-slide-polovragi1"></div>
 
-      <div class="swiper-slide swiper-slide-polovragi2"></div>
+      <div (click)="openGalleria(BuyEnum.POLOVRAGI)" class="swiper-slide swiper-slide-polovragi2"></div>
 
-      <div class="swiper-slide swiper-slide-polovragi3"></div>
+      <div (click)="openGalleria(BuyEnum.POLOVRAGI)" class="swiper-slide swiper-slide-polovragi3"></div>
 
-      <div class="swiper-slide swiper-slide-polovragi4"></div>
+      <div (click)="openGalleria(BuyEnum.POLOVRAGI)" class="swiper-slide swiper-slide-polovragi4"></div>
 
-      <div class="swiper-slide swiper-slide-polovragi5"></div>
+      <div (click)="openGalleria(BuyEnum.POLOVRAGI)" class="swiper-slide swiper-slide-polovragi5"></div>
 
-      <div class="swiper-slide swiper-slide-polovragi6"></div>
+      <div (click)="openGalleria(BuyEnum.POLOVRAGI)" class="swiper-slide swiper-slide-polovragi6"></div>
     </div>
   </div>
 </main>

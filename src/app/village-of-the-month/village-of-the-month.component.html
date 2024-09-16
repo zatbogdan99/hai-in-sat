@@ -4,8 +4,10 @@
 
 <div class="large-screen">
   <div class="container1">
-    <p-button *ngIf="villageId === 0" label="Satul lunii trecute" icon="pi pi-arrow-left" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(1)"></p-button>
-    <p-button *ngIf="villageId === 1" label="Satul lunii" icon="pi pi-arrow-right" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(0)"></p-button>
+    <p-button *ngIf="villageId === 0" label="Satul lunii iulie" icon="pi pi-arrow-left" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(1)"></p-button>
+    <p-button *ngIf="villageId === 1" label="Satul lunii" icon="pi pi-arrow-right" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(2)"></p-button>
+    <p-button *ngIf="villageId === 2" label="Satul lunii august" icon="pi pi-arrow-left" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(0)"></p-button>
+
     <div class="reveal">
       <div style="padding-top: 4.5rem" class="reveal p-card-custom">
         <p-card [style]="{ width: '35rem', height: '24rem' }">
@@ -47,6 +49,13 @@
           <br><br>
           I-am iubit din prima clipă, iar apoi i-am căutat... tataie căzuse la pat, mamaia era puternică.
           După un timp am revenit și am văzut doliu la poartă. M-am gândit “A murit tataie!”. Nu, mamaie murise și tataie era la pat, dar eu îi iubeam…
+        </p>
+        <p>
+          Satul Olari, situat în orașul Horezu, județul Vâlcea, este renumit datorită faptului că foarte mulți săteni practică meșteșugul olăritului. Arta tradițională a olăritului din satul Olari este recunoscută la nivel mondial, Horezu fiind capitala ceramicii românești.
+          În fiecare an, în prima săptămână din iunie, la Horezu se organizează târgul ceramicii populare, la care participă olari din toată țara. La acest târg sunt premiate cele mai frumoase creații din anul respectiv.
+          <br><br>Meșteșugarii olari participă în fiecare an la târguri internaționale de ceramică, fiind renumiți și recunoscuți pentru puritatea și complexitatea artei populare pe care o propun.
+          Satul Olari poate fi vizitat în orice perioadă a anului, unde puteți admira atât expozițiile meșteșugarilor populari, cât și peisajele pitorești din acest sat.
+          <br><br>Vă invităm cu drag în satul Olari!
         </p>
       </p-card>
     </div>
@@ -106,8 +115,9 @@
 
 <div class="small-screen">
   <div style="padding-top: 1rem">
-    <p-button *ngIf="villageId === 0" label="Satul lunii trecute" icon="pi pi-arrow-left" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(1)"></p-button>
-    <p-button *ngIf="villageId === 1" label="Satul lunii" icon="pi pi-arrow-right" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(0)"></p-button>
+    <p-button *ngIf="villageId === 0" label="Satul lunii iulie" icon="pi pi-arrow-left" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(1)"></p-button>
+    <p-button *ngIf="villageId === 1" label="Satul lunii" icon="pi pi-arrow-right" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(2)"></p-button>
+    <p-button *ngIf="villageId === 2" label="Satul lunii august" icon="pi pi-arrow-left" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(0)"></p-button>
   </div>
 
       <div style="display: flex; justify-content: center; align-items: center; height: 25vh">
@@ -135,6 +145,13 @@
           <br><br>
           I-am iubit din prima clipă, iar apoi i-am căutat... tataie căzuse la pat, mamaia era puternică.
           După un timp am revenit și am văzut doliu la poartă. M-am gândit “A murit tataie!”. Nu, mamaie murise și tataie era la pat, dar eu îi iubeam…
+        </p>
+        <p *ngIf="villageId === 2" class="m-0 text-style">
+          Satul Olari, situat în orașul Horezu, județul Vâlcea, este renumit datorită faptului că foarte mulți săteni practică meșteșugul olăritului. Arta tradițională a olăritului din satul Olari este recunoscută la nivel mondial, Horezu fiind capitala ceramicii românești.
+          În fiecare an, în prima săptămână din iunie, la Horezu se organizează târgul ceramicii populare, la care participă olari din toată țara. La acest târg sunt premiate cele mai frumoase creații din anul respectiv.
+          <br><br>Meșteșugarii olari participă în fiecare an la târguri internaționale de ceramică, fiind renumiți și recunoscuți pentru puritatea și complexitatea artei populare pe care o propun.
+          Satul Olari poate fi vizitat în orice perioadă a anului, unde puteți admira atât expozițiile meșteșugarilor populari, cât și peisajele pitorești din acest sat.
+          <br><br>Vă invităm cu drag în satul Olari!
         </p>
       </p-card>
     </div>

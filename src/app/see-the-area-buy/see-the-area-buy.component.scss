@@ -48,6 +48,29 @@ main > div p {
   line-height: 1.6;
 }
 
+img {
+  width: 100%;
+  max-height: 30rem;
+  object-fit: contain;
+  display: block;
+}
+
+.p-galleria img {
+  display: block;
+  max-width: 100%;
+  max-height: 30rem;
+  object-fit: contain;
+  margin: auto;
+}
+
+.p-galleria .p-galleria-item-nav {
+  color: #0f0f0f;
+}
+
+.p-galleria-indicators {
+  color: #0f0f0f;
+}
+
 .swiper {
   width: 100%;
   padding-top: 3.125rem;
@@ -74,28 +97,245 @@ main > div p {
 
 //Teren in polovragi
 .swiper-slide-polovragi1 {
-  background: url(./../../assets/teren_polovragi1.jpg) no-repeat 50% 50%/cover;
+  background: url(./../../assets/teren_polovragi1.avif) no-repeat 50% 50%/cover;
 }
 
 .swiper-slide-polovragi2 {
-  background: url(./../../assets/teren_polovragi2.jpg) no-repeat 50% 50%/cover;
+  background: url(./../../assets/teren_polovragi2.avif) no-repeat 50% 50%/cover;
 }
 
 .swiper-slide-polovragi3 {
-  background: url(./../../assets/teren_polovragi3.jpg) no-repeat 50% 50%/cover;
+  background: url(./../../assets/teren_polovragi3.avif) no-repeat 50% 50%/cover;
 }
 
 .swiper-slide-polovragi4 {
-  background: url(./../../assets/teren_polovragi4.jpg) no-repeat 50% 50%/cover;
+  background: url(./../../assets/teren_polovragi4.avif) no-repeat 50% 50%/cover;
 }
 
 .swiper-slide-polovragi5 {
-  background: url(./../../assets/teren_polovragi5.jpg) no-repeat 50% 50%/cover;
+  background: url(./../../assets/teren_polovragi5.avif) no-repeat 50% 50%/cover;
 }
 
 .swiper-slide-polovragi6 {
-  background: url(./../../assets/teren_polovragi6.jpg) no-repeat 50% 50%/cover;
+  background: url(./../../assets/teren_polovragi6.avif) no-repeat 50% 50%/cover;
 }
+
+//Milostea
+//.swiper-slide-milostea1 {
+//  background: url(./../../assets/pensiune1.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea2 {
+//  background: url(./../../assets/pensiune2.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea3 {
+//  background: url(./../../assets/pensiune3.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea4 {
+//  background: url(./../../assets/pensiune4.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea5 {
+//  background: url(./../../assets/pensiune5.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea6 {
+//  background: url(./../../assets/pensiune6.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea7 {
+//  background: url(./../../assets/pensiune7.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea8 {
+//  background: url(./../../assets/pensiune8.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea9 {
+//  background: url(./../../assets/pensiune9.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea10 {
+//  background: url(./../../assets/pensiune10.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea11 {
+//  background: url(./../../assets/pensiune11.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea12 {
+//  background: url(./../../assets/pensiune12.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea13 {
+//  background: url(./../../assets/pensiune13.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea14 {
+//  background: url(./../../assets/pensiune14.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea15 {
+//  background: url(./../../assets/pensiune15.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea16 {
+//  background: url(./../../assets/pensiune16.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea17 {
+//  background: url(./../../assets/pensiune17.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea18 {
+//  background: url(./../../assets/pensiune18.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea19 {
+//  background: url(./../../assets/pensiune19.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea20 {
+//  background: url(./../../assets/pensiune20.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea21 {
+//  background: url(./../../assets/pensiune21.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea22 {
+//  background: url(./../../assets/pensiune22.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea23 {
+//  background: url(./../../assets/pensiune23.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea24 {
+//  background: url(./../../assets/pensiune24.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea25 {
+//  background: url(./../../assets/pensiune25.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea26 {
+//  background: url(./../../assets/pensiune26.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea27 {
+//  background: url(./../../assets/pensiune27.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea28 {
+//  background: url(./../../assets/pensiune28.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea29 {
+//  background: url(./../../assets/pensiune29.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea30 {
+//  background: url(./../../assets/pensiune30.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea31 {
+//  background: url(./../../assets/pensiune31.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea32 {
+//  background: url(./../../assets/pensiune32.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea33 {
+//  background: url(./../../assets/pensiune33.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea34 {
+//  background: url(./../../assets/pensiune34.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea35 {
+//  background: url(./../../assets/pensiune35.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea36 {
+//  background: url(./../../assets/pensiune36.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea37 {
+//  background: url(./../../assets/pensiune37.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea38 {
+//  background: url(./../../assets/pensiune38.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea40 {
+//  background: url(./../../assets/pensiune40.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea41 {
+//  background: url(./../../assets/pensiune41.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea42 {
+//  background: url(./../../assets/pensiune42.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea43 {
+//  background: url(./../../assets/pensiune43.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea44 {
+//  background: url(./../../assets/pensiune44.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea45 {
+//  background: url(./../../assets/pensiune45.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea46 {
+//  background: url(./../../assets/pensiune46.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea47 {
+//  background: url(./../../assets/pensiune47.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea48 {
+//  background: url(./../../assets/pensiune48.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea49 {
+//  background: url(./../../assets/pensiune49.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea50 {
+//  background: url(./../../assets/pensiune50.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea51 {
+//  background: url(./../../assets/pensiune51.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea52 {
+//  background: url(./../../assets/pensiune52.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea53 {
+//  background: url(./../../assets/pensiune53.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea54 {
+//  background: url(./../../assets/pensiune54.avif) no-repeat 50% 50%/cover;
+//}
+//
+//.swiper-slide-milostea55 {
+//  background: url(./../../assets/pensiune55.avif) no-repeat 50% 50%/cover;
+//}
 
 .swiper-pagination-bullet,
 .swiper-pagination-bullet-active {
@@ -151,6 +391,26 @@ main > div p {
   .swiper {
     width: 85%;
 
+  }
+}
+
+//mobile
+@media only screen and (max-width: 500px) {
+  .small-screen {
+    display: block;
+  }
+  .large-screen {
+    display: none;
+  }
+}
+
+//desktop
+@media only screen and (min-width: 500px) {
+  .small-screen {
+    display: none;
+  }
+  .large-screen {
+    display: block;
   }
 }
 

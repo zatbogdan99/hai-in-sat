@@ -1,7 +1,7 @@
 import {AfterViewInit, Component} from '@angular/core';
-import Swiper, { Pagination } from 'swiper';
+import Swiper from 'swiper';
 import {PhotoService} from "../service/photo-service";
-import {BehaviorSubject} from "rxjs";
+import {BuyEnum} from "../dto/buy.enum";
 
 @Component({
   selector: 'app-see-the-area-buy',
@@ -11,6 +11,9 @@ import {BehaviorSubject} from "rxjs";
 export class SeeTheAreaBuyComponent implements AfterViewInit{
   displayGalleria: boolean;
   images: any[] | undefined;
+  terenBaiaImages: any[] | undefined;
+  terenPolovragiImages: any[] | undefined;
+  milosteaImages: any[] | undefined;
 
   responsiveOptions: any[] = [
     {
@@ -32,10 +35,16 @@ export class SeeTheAreaBuyComponent implements AfterViewInit{
   ];
 
   constructor(private photoService: PhotoService) {
-    this.photoService.getHorezuImages().then((images) => {
-      this.images = images;
+    this.photoService.getBaiaTeren().then((images) => {
+      this.terenBaiaImages = images;
+    });
+    this.photoService.getTerenPolovragi().then((images) => {
+      this.terenPolovragiImages = images;
     });
     this.displayGalleria = false;
+    this.photoService.getMilosteaPension().then((images) => {
+      this.milosteaImages = images;
+    })
   }
 
   ngAfterViewInit(): void {
@@ -70,5 +79,18 @@ export class SeeTheAreaBuyComponent implements AfterViewInit{
         }
       }
     });
+  }
+
+
+
+  protected readonly BuyEnum = BuyEnum;
+
+  openGalleria(type: BuyEnum) {
+    this.displayGalleria = true;
+    if (type === BuyEnum.BAIA) {
+      this.images = this.terenBaiaImages;
+    } else if (type === BuyEnum.POLOVRAGI) {
+      this.images = this.terenPolovragiImages;
+    }
   }
 }

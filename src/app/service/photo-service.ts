@@ -172,8 +172,337 @@ export class PhotoService {
     ];
   }
 
+  private static getBaiaTeren() {
+    return [
+      {
+        itemImageSrc: 'assets/teren_baia1.jpg',
+        alt: 'Teren Baia',
+        title: 'Teren Baia 1'
+      },
+      {
+        itemImageSrc: 'assets/teren_baia2.jpg',
+        alt: 'Teren Baia',
+        title: 'Teren Baia2 2'
+      }
+    ];
+  }
+
+  private static getMilosteaPensionData() {
+    return [
+      {
+        itemImageSrc: 'assets/pensiune1.avif',
+        alt: 'Pensiune Milostea',
+        title: 'Pensiune Milostea 1'
+      },
+      {
+        itemImageSrc: 'assets/pensiune2.avif',
+        alt: 'Pensiune Milostea',
+        title: 'Pensiune Milostea 2'
+      },
+      {
+        itemImageSrc: 'assets/pensiune3.avif',
+        alt: 'Pensiune Milostea',
+        title: 'Pensiune Milostea 3'
+      },
+      {
+        "itemImageSrc": "assets/pensiune4.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 4"
+      },
+      // {
+      //   "itemImageSrc": "assets/pensiune5.avif",
+      //   "alt": "Pensiune Milostea",
+      //   "title": "Pensiune Milostea 5"
+      // },
+      {
+        "itemImageSrc": "assets/pensiune6.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 6"
+      },
+      {
+        "itemImageSrc": "assets/pensiune7.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 7"
+      },
+      {
+        "itemImageSrc": "assets/pensiune8.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 8"
+      },
+      {
+        "itemImageSrc": "assets/pensiune9.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 9"
+      },
+      {
+        "itemImageSrc": "assets/pensiune10.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 10"
+      },
+      {
+        "itemImageSrc": "assets/pensiune11.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 11"
+      },
+      {
+        "itemImageSrc": "assets/pensiune12.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 12"
+      },
+      {
+        "itemImageSrc": "assets/pensiune13.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 13"
+      },
+      {
+        "itemImageSrc": "assets/pensiune14.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 14"
+      },
+      {
+        "itemImageSrc": "assets/pensiune15.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 15"
+      },
+      {
+        "itemImageSrc": "assets/pensiune16.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 16"
+      },
+      {
+        "itemImageSrc": "assets/pensiune17.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 17"
+      },
+      {
+        "itemImageSrc": "assets/pensiune18.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 18"
+      },
+      {
+        "itemImageSrc": "assets/pensiune19.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 19"
+      },
+      {
+        "itemImageSrc": "assets/pensiune20.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 20"
+      },
+      {
+        "itemImageSrc": "assets/pensiune21.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 21"
+      },
+      {
+        "itemImageSrc": "assets/pensiune22.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 22"
+      },
+      {
+        "itemImageSrc": "assets/pensiune23.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 23"
+      },
+      {
+        "itemImageSrc": "assets/pensiune24.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 24"
+      },
+      {
+        "itemImageSrc": "assets/pensiune25.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 25"
+      },
+      {
+        "itemImageSrc": "assets/pensiune26.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 26"
+      },
+      {
+        "itemImageSrc": "assets/pensiune27.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 27"
+      },
+      {
+        "itemImageSrc": "assets/pensiune28.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 28"
+      },
+      {
+        "itemImageSrc": "assets/pensiune29.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 29"
+      },
+      {
+        "itemImageSrc": "assets/pensiune30.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 30"
+      },
+      {
+        "itemImageSrc": "assets/pensiune31.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 31"
+      },
+      {
+        "itemImageSrc": "assets/pensiune32.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 32"
+      },
+      {
+        "itemImageSrc": "assets/pensiune33.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 33"
+      },
+      {
+        "itemImageSrc": "assets/pensiune34.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 34"
+      },
+      {
+        "itemImageSrc": "assets/pensiune35.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 35"
+      },
+      {
+        "itemImageSrc": "assets/pensiune36.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 36"
+      },
+      {
+        "itemImageSrc": "assets/pensiune37.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 37"
+      },
+      {
+        "itemImageSrc": "assets/pensiune38.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 38"
+      },
+      {
+        "itemImageSrc": "assets/pensiune40.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 40"
+      },
+      {
+        "itemImageSrc": "assets/pensiune41.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 41"
+      },
+      {
+        "itemImageSrc": "assets/pensiune42.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 42"
+      },
+      {
+        "itemImageSrc": "assets/pensiune43.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 43"
+      },
+      {
+        "itemImageSrc": "assets/pensiune44.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 44"
+      },
+      {
+        "itemImageSrc": "assets/pensiune45.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 45"
+      },
+      {
+        "itemImageSrc": "assets/pensiune46.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 46"
+      },
+      {
+        "itemImageSrc": "assets/pensiune47.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 47"
+      },
+      {
+        "itemImageSrc": "assets/pensiune48.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 48"
+      },
+      {
+        "itemImageSrc": "assets/pensiune49.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 49"
+      },
+      {
+        "itemImageSrc": "assets/pensiune50.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 50"
+      },
+      {
+        "itemImageSrc": "assets/pensiune51.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 51"
+      },
+      {
+        "itemImageSrc": "assets/pensiune52.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 52"
+      },
+      {
+        "itemImageSrc": "assets/pensiune53.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 53"
+      },
+      {
+        "itemImageSrc": "assets/pensiune54.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 54"
+      },
+      {
+        "itemImageSrc": "assets/pensiune55.avif",
+        "alt": "Pensiune Milostea",
+        "title": "Pensiune Milostea 55"
+      }
+
+    ];
+  }
+
+  private static getTerenPolovragi() {
+    return [
+      {
+        itemImageSrc: 'assets/teren_polovragi1.avif',
+        alt: 'Teren Polovragi',
+        title: 'Teren Polovragi 1'
+      },
+      {
+        itemImageSrc: 'assets/teren_polovragi2.avif',
+        alt: 'Teren Polovragi',
+        title: 'Teren Polovragi 2'
+      },
+      {
+        itemImageSrc: 'assets/teren_polovragi3.avif',
+        alt: 'Teren Polovragi',
+        title: 'Teren Polovragi 3'
+      },
+      {
+        itemImageSrc: 'assets/teren_polovragi4.avif',
+        alt: 'Teren Polovragi',
+        title: 'Teren Polovragi 4'
+      },
+      {
+        itemImageSrc: 'assets/teren_polovragi5.avif',
+        alt: 'Teren Polovragi',
+        title: 'Teren Polovragi 5'
+      }
+    ];
+  }
+
   getHorezuImages() {
     return Promise.resolve(PhotoService.getHorezuData());
+  }
+
+  getMilosteaPension() {
+    return Promise.resolve(PhotoService.getMilosteaPensionData());
+  }
+
+  getBaiaTeren() {
+    return Promise.resolve(PhotoService.getBaiaTeren());
   }
 
   getCostestiImages() {
@@ -198,5 +527,9 @@ export class PhotoService {
 
   getBarbatestiImages() {
     return Promise.resolve(PhotoService.getBatbatestiData());
+  }
+
+  getTerenPolovragi() {
+    return Promise.resolve(PhotoService.getTerenPolovragi());
   }
 }

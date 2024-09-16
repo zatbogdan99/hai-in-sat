@@ -27,7 +27,7 @@ export class VillageOfTheMonthComponent {
 
   data: DataDto[] = [];
 
-  villageId: number = 1;
+  villageId: number = 2;
 
   preload: string = 'auto';
   api: VgApiService = new VgApiService;
@@ -40,7 +40,6 @@ export class VillageOfTheMonthComponent {
   constructor(private photoService: PhotoService,
               private service: DataService,
               public loadingService: LoadingService) {
-    this.villageId = 0;
     this.checkScreenSize();
 
     this.photoService.getHorezuImages().then((images) => {
@@ -56,7 +55,7 @@ export class VillageOfTheMonthComponent {
     let dataDto;
 
     dataDto = new DataDto(
-      1, //satul lunii
+      1,
       "Racovița",
       "",
       "",
@@ -67,8 +66,19 @@ export class VillageOfTheMonthComponent {
     this.data.push(dataDto);
 
     dataDto = new DataDto(
-      0, //satul lunii
+      0,
       "Râpa",
+      "",
+      "",
+      null,
+      null,
+      ""
+    );
+    this.data.push(dataDto);
+
+    dataDto = new DataDto(
+      2, //satul lunii
+      "Olari",
       "",
       "",
       null,
@@ -154,6 +164,7 @@ export class VillageOfTheMonthComponent {
     this.villageId = villageId;
   }
 
+  //deprecated
   getSrcByVillageId() {
     if (this.villageId === 0) {
       return this.satulRacovita;
@@ -165,8 +176,10 @@ export class VillageOfTheMonthComponent {
   getYoutubeIdByVillage() {
     if (this.villageId === 0) {
       return '39ZT4sLPxs4';
-    } else {
+    } else if (this.villageId === 1) {
       return 'rI43JSfG188';
+    } else {
+      return 'Ly4Gp7sRKBE';
     }
   }
 }
