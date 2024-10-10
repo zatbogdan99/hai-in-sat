@@ -24,6 +24,7 @@ export class VillageOfTheMonthComponent {
   satulRapa1 = 'https://storage.googleapis.com/hai-in-sat-assets/videos/satul_rapa1.mp4';
   satulRapa2 = 'https://storage.googleapis.com/hai-in-sat-assets/videos/satul_rapa2.mp4';
   satulRacovita = 'https://storage.googleapis.com/hai-in-sat-assets/videos/satul_racovita.mp4';
+  lectieSpiritualitate = 'https://storage.googleapis.com/hai-in-sat-assets/videos/lectie%20spiritualitate.mov';
 
   data: DataDto[] = [];
 
