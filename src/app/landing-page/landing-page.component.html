@@ -97,77 +97,68 @@
 <div class="small-screen">
   <div>
     <section>
-      <div>
-        <h1 class="degrade" style="text-align: center">
-          Este momentul unei schimbări în viața ta?
+      <div class="heading-1">
+        <h1 class="degrade mobile-title" style="text-align: center">
+          Este momentul unei schimbări în viața ta?Te apasă stresul produs de orașul supraaglomerat?Ești sincer cu tine?
         </h1>
-        <h1 style="text-align: center">Te apasă stresul produs de orașul supraaglomerat?</h1>
-        <div class="image-container">
-          <img class="imageFirst" style="padding-left: 3rem; opacity: 100%"
-               #imageFirst
-               src="assets/bucuresti.avif"
-               alt=""
-          />
+        <div class="visuals">
+          <div class="image-container">
+            <img class="imageFirst"
+                 #imageFirst
+                 src="assets/cluj.jpg"
+                 alt=""
+            />
+          </div>
+          <div class="image-container">
+            <img class="imageSecond"
+                 #imageSecond
+                 src="assets/bucuresti.avif"
+                 alt=""
+            />
+          </div>
+          <div class="heading-1-mobile">
+            Dacă răspunzi cu "Da" la aceste întrebări, noi îți oferim soluția.
+          </div>
         </div>
-        <h1 style="text-align: center">Ești sincer cu tine?</h1>
-        <p>
-          Dacă răspunzi cu "Da" la aceste întrebări, noi îți oferim soluția.
-        </p>
-        <a (click)="goToHomeFormPage()" class="btn hai-in-sat-mobile mobile-hai-in-sat-position">HAI ÎN SAT!</a>
       </div>
     </section>
 
 
     <section #secondSection>
-      <div class="box"></div>
-      <h4 style="opacity: 50%" class="heading-4">Despre noi</h4>
-      <h1 style="text-align: center" class="heading-1">Noi îți putem oferi casa mult visată la sat</h1>
-      <div style="text-align: center">
-        <img style="max-height: 23rem; max-width: 23rem; display: block; margin: auto" src="assets/casa_taraneasca.avif" alt="">
-      </div>
       <div class="info-1">
         <div class="info-1__text">
-          <h2 class="heading-3">
+          <h2 class="degrade heading-3">
             E momentul să faci pasul! <br> Noi îți suntem alături!
           </h2>
-          <p class="paragraph">
-            Hai în sat! Îți vine în ajutor și îți prezintă una dintre cele mai frumoase și spectaculoase zone
-            ale țării noaste, aceasta fiind Oltenia de sub Munte. Imaginează-ți să-ți începi diminețile cu
-            sunetul liniștii, să-ți savurezi cafeaua privind peisaje de vis și să-ți petreci serile
-            sub cerul înstelat. Viața la țară nu înseamnă doar a te retrage, ci a-ți redescoperi conexiunea cu
-            natura și a explora potențialul neexploatat al fiecărei zile.
-            Pentru a vă introduce mai bine în această lume de poveste, în Oltenia de sub Munte, vă invit să vă
-            delectați cu o mică lectură în care sunt prezentate câteva dintre zonele noastre cele mai de preț.
-          </p>
-          <a class="btn--learn hai-in-sat-mobile show-more-btn" (click)="goToUnderTheMountain()">Află mai multe</a>
+          <div style="text-align: center">
+            <img style="max-height: 23rem; max-width: 23rem; display: block; margin: auto" src="assets/casa_taraneasca.avif" alt="">
+          </div>
+          <i class="fa-thin fa-face-laugh-wink"></i>
+          <h4 class="degrade" style="font-size: 1.2rem">
+            Cu noi visul tău devine realitate!
+          </h4>
         </div>
       </div>
 
     </section>
 
     <section #thirdSection>
-      <div></div>
-      <div>
-        <div>
-          <h2>
-            Cu noi visul tău devine realitate!
-          </h2>
-          <p>
+        <div class="visuals-mobile">
+          <div class="mobile-grid-1" style="width: 12rem">
             Tot ce trebuie să faci este să ne spui ce iți dorești,
             completând formularul atașat, iar noi venim cu 3 variante care să satisfacă total sau parțial dorințele tale.
-            <br><br><br>
-          </p>
-          <a class="hai-in-sat-mobile" style="max-height: 10rem" (click)="goToHomeFormPage()">Formular</a>
-          <p>
+          </div>
+          <div class="mobile-grid-2">
+            <a class="hai-in-sat-mobile" style="max-height: 10rem" (click)="goToHomeFormPage()">Formular</a>
+          </div>
+          <p class="mobile-grid-3">
             Dacă încă nu ești hotărât, te invităm să vezi zona!
             Te poți caza în zona la localnici, poți mânca ceva bun
             tradițional și poți merge într-o drumeție organizată
             de noi. Nu vei mai vrea să pleci acasă!
             <br><br><br>
-            <a class="hai-in-sat-mobile" style="max-height: 10rem" (click)="goToSeeTheArea()">HAI ÎN SAT</a>
           </p>
         </div>
-      </div>
 
     </section>
   </div>

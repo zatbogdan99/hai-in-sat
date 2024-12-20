@@ -23,7 +23,7 @@
   padding: 0.625rem 1.875rem;
   margin-top: 2.188rem;
   margin-bottom: 2rem;
-  margin-left: 7.5rem;
+  //margin-left: 7.5rem;
   max-height: 3.2rem;
   text-align: center;
 }
@@ -397,9 +397,14 @@ div section div a:hover {
 @media only screen and (min-width: 200px) and (max-width: 767px)  {
 
   .third-section {
-    display: flex;
     grid-column: center-start / center-end;
-    grid-row: 4 / 5;
+    padding: 0 20px;
+    border-right: 1px solid #f0f0f0;
+    border-left: 1px solid #f0f0f0;
+    grid-row: 3 / 4;
+    display: grid;
+    position: relative;
+    grid-gap: 20px;
 
     .info-1 {
       padding-bottom: 10rem;
@@ -482,4 +487,34 @@ div section div a:hover {
   .large-screen {
     display: block;
   }
+}
+
+
+.heading-1-mobile {
+  font-family: "Comic Sans MS";
+  grid-row: 4 / 6;
+  grid-column: 1 / 5;
+}
+
+.mobile-grid-1 {
+  grid-row: 1 / 3;
+  grid-column: 1 / 3;
+}
+
+.mobile-grid-2 {
+  grid-row: 1 / 3;
+  grid-column: 3 / 3;
+}
+
+.mobile-grid-3 {
+  grid-row: 3 / 3;
+  grid-column: 1 / 4;
+}
+
+.visuals-mobile {
+  grid-column: 3/-1;
+  grid-row: 1/-1;
+  display: grid;
+  padding: 30px;
+  align-items: center;
 }
