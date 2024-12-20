@@ -1,3 +1,6 @@
+<div *ngIf="loadingService.loading$ | async" class="spinner-container">
+  <p-progressSpinner></p-progressSpinner>
+</div>
 <main>
   <div style="display: flex; flex-direction: column">
     <div style="display: flex">
@@ -59,6 +62,63 @@
   </div>
 
 </main>
+
+
+<main>
+  <div style="display: flex; flex-direction: column">
+    <div style="display: flex">
+      <div>
+        <span>Hai în sat</span>
+        <h1>Pensiune în Milostea</h1>
+        <hr>
+        <p style="max-width: 40rem">Pensiune cu 16 camere <br> Utilități: Gratar/Restaurant/Terasa/Sala de evenimente
+          <br>Afacere la cheie<br></p>
+      </div>
+      <div class="large-screen">
+        <div style="width: 45rem">
+          <p-galleria id="galleriaSmall"
+                      [value]="milosteaImages"
+                      [responsiveOptions]="responsiveOptions"
+                      [numVisible]="7"
+                      [circular]="true"
+                      [fullScreen]="false"
+                      [showItemNavigators]="true"
+                      [autoPlay]="true"
+                      [showThumbnails]="false">
+            <ng-template pTemplate="item" let-item>
+              <img
+                [src]="item.itemImageSrc" [alt]="item.alt"
+                style="width: 100%; display: block;" />
+            </ng-template>
+          </p-galleria>
+        </div>
+      </div>
+    </div>
+
+    <div class="small-screen">
+      <div>
+        <p-galleria id="galleriaMobile"
+                    [value]="milosteaImages"
+                    [responsiveOptions]="responsiveOptions"
+                    [numVisible]="7"
+                    [circular]="true"
+                    [fullScreen]="false"
+                    [showItemNavigators]="true"
+                    [autoPlay]="true"
+                    [showThumbnails]="false">
+          <ng-template pTemplate="item" let-item>
+            <img
+              [src]="item.itemImageSrc" [alt]="item.alt"
+              style="width: 100%; display: block;" />
+          </ng-template>
+        </p-galleria>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+
 
 <div class="card flex justify-content-center">
   <p-galleria id="galleriaFull"

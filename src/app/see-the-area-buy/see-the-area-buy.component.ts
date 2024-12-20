@@ -2,6 +2,7 @@ import {AfterViewInit, Component} from '@angular/core';
 import Swiper from 'swiper';
 import {PhotoService} from "../service/photo-service";
 import {BuyEnum} from "../dto/buy.enum";
+import {LoadingService} from "../service/loading-service/loading-service.service";
 
 @Component({
   selector: 'app-see-the-area-buy',
@@ -34,7 +35,8 @@ export class SeeTheAreaBuyComponent implements AfterViewInit{
     }
   ];
 
-  constructor(private photoService: PhotoService) {
+  constructor(private photoService: PhotoService, public loadingService: LoadingService) {
+    this.loadingService.loadingOn();
     this.photoService.getBaiaTeren().then((images) => {
       this.terenBaiaImages = images;
     });
@@ -44,7 +46,7 @@ export class SeeTheAreaBuyComponent implements AfterViewInit{
     this.displayGalleria = false;
     this.photoService.getMilosteaPension().then((images) => {
       this.milosteaImages = images;
-    })
+    }).finally(() => this.loadingService.loadingOff())
   }
 
   ngAfterViewInit(): void {

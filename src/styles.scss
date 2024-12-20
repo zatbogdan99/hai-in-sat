@@ -87,12 +87,12 @@ img {
   }
 
   .image-container:nth-child(1) {
-    grid-column: 1 / 4;
+    grid-column: 2 / 8;
     grid-row: 1 / 4;
   }
   .image-container:nth-child(2) {
-    grid-column: 4 / 8;
-    grid-row: 1 / 5;
+    grid-column: 4 / 9;
+    grid-row: 2 / 5;
   }
 }
 
@@ -151,6 +151,11 @@ img {
       font-size: 15rem;
     }
   }
+}
+
+.mobile-title {
+  position: absolute;
+  z-index: 100;
 }
 
 .swiper-slide-one {
