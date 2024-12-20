@@ -22,45 +22,45 @@ export class AboutUsComponent implements OnInit, AfterViewInit{
   ngAfterViewInit(): void {
     gsap.from(".left-container", 2, {
       width: "0",
-      ease: Expo.easeInOut
+      ease: "Expo.easeInOut"
     });
     gsap.from(".right-container", 2, {
-      delay: 1.5,
+      delay: 1,
       width: "0",
       opacity: "0",
-      ease: Expo.easeInOut
+      ease: "Expo.easeInOut"
     });
     gsap.from(".center-container", 2, {
-      delay: 3,
+      delay: 2,
       width: "0",
       x: -20,
-      ease: Expo.easeInOut
+      ease: "Expo.easeInOut"
     });
     gsap.from(".logo", 2, {
-      delay: 1.5,
+      delay: 1,
       y: 20,
       opacity: 0,
-      ease: Expo.easeInOut
+      ease: "Expo.easeInOut"
     });
     gsap.from(".info", 2, {
-      delay: 1.5,
+      delay: 1,
       y: 50,
       opacity: 0,
       scale: 2.5,
-      ease: Expo.easeInOut
+      ease: "Expo.easeInOut"
     });
     gsap.from(".story", 2, {
+      delay: 2,
+      y: 20,
+      opacity: 0,
+      ease: "Expo.easeInOut"
+    });
+    gsap.from(".menu", 2, {
       delay: 2.5,
       y: 20,
       opacity: 0,
-      ease: Expo.easeInOut
-    });
-    gsap.from(".menu", 2, {
-      delay: 3.5,
-      y: 20,
-      opacity: 0,
       rotation: 90,
-      ease: Expo.easeInOut
+      ease: "Expo.easeInOut"
     });
   }
 
