@@ -13,10 +13,8 @@ import {Menubar} from "primeng/menubar";
 import {Toast} from "primeng/toast";
 
 @Component({
-  standalone: true,
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
   imports: [
     Dialog,
     Chip,
@@ -25,7 +23,7 @@ import {Toast} from "primeng/toast";
     Menubar,
     Toast
   ],
-  providers: [MessageService]
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
   title = 'hai-in-sat';

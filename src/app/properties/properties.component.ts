@@ -10,6 +10,7 @@ import {Dialog} from "primeng/dialog";
 import {InputSwitch} from "primeng/inputswitch";
 import {ProgressSpinner} from "primeng/progressspinner";
 import {Button} from "primeng/button";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-properties',
@@ -21,7 +22,8 @@ import {Button} from "primeng/button";
     Dialog,
     InputSwitch,
     ProgressSpinner,
-    Button
+    Button,
+    FormsModule
   ],
   styleUrls: ['./properties.component.scss']
 })

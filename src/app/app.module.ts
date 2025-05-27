@@ -2,6 +2,7 @@ import {CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import {ButtonModule} from "primeng/button";
 import {MenubarModule} from "primeng/menubar";
@@ -60,7 +61,6 @@ register();
 
 @NgModule({
   declarations: [
-
   ],
   imports: [
     BrowserModule,
@@ -101,20 +101,7 @@ register();
     SelectButtonModule,
     TagModule,
     CheckboxModule,
-    HomePageComponent,
-    LandingPageComponent,
-    AboutUsComponent,
-    FormPageComponent,
-    InfoPageComponent,
-    TerrainFormPageComponent,
-    ContactUsComponent,
-    UnderTheMountainComponent,
-    SeeTheAreaComponent,
-    SeeTheAreaRentComponent,
-    SeeTheAreaBuyComponent,
-    VillageOfTheMonthComponent,
-    PropertiesComponent,
-    PropertyDetailsComponent
+    AppComponent
   ],
   providers: [
     PhotoService,
@@ -144,6 +131,7 @@ register();
     CalendarModule,
     NgOptimizedImage
     ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

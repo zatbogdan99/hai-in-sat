@@ -13,6 +13,7 @@ import {VgControlsModule} from "@videogular/ngx-videogular/controls";
 import {VgBufferingModule} from "@videogular/ngx-videogular/buffering";
 import {VgOverlayPlayModule} from "@videogular/ngx-videogular/overlay-play";
 import {ProgressSpinner} from "primeng/progressspinner";
+import {AsyncPipe, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-village-of-the-month',
@@ -25,7 +26,9 @@ import {ProgressSpinner} from "primeng/progressspinner";
     VgBufferingModule,
     VgOverlayPlayModule,
     VgCoreModule,
-    ProgressSpinner
+    ProgressSpinner,
+    NgIf,
+    AsyncPipe
   ],
   styleUrls: ['./village-of-the-month.component.scss']
 })

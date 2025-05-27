@@ -11,6 +11,7 @@ import {Chip} from "primeng/chip";
 import {Dialog} from "primeng/dialog";
 import {Slider} from "primeng/slider";
 import {ProgressSpinner} from "primeng/progressspinner";
+import {AsyncPipe, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-terrain-form-page',
@@ -22,7 +23,9 @@ import {ProgressSpinner} from "primeng/progressspinner";
     FormsModule,
     Dialog,
     Slider,
-    ProgressSpinner
+    ProgressSpinner,
+    NgIf,
+    AsyncPipe
   ],
   styleUrls: ['./terrain-form-page.component.scss']
 })

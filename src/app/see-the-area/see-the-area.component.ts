@@ -3,6 +3,7 @@ import {SeeTheAreaBuyComponent} from "../see-the-area-buy/see-the-area-buy.compo
 import {SeeTheAreaRentComponent} from "../see-the-area-rent/see-the-area-rent.component";
 import {Button} from "primeng/button";
 import {Card} from "primeng/card";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-see-the-area',
@@ -11,7 +12,8 @@ import {Card} from "primeng/card";
     SeeTheAreaBuyComponent,
     SeeTheAreaRentComponent,
     Button,
-    Card
+    Card,
+    NgIf
   ],
   styleUrls: ['./see-the-area.component.scss']
 })

@@ -8,10 +8,16 @@ import {DataDto} from "../dto/data.dto";
 import {DataService} from "../service/data-service";
 import {VgApiService} from "@videogular/ngx-videogular/core";
 import {Router} from "@angular/router";
+import {Card} from "primeng/card";
+import {GalleriaModule} from "primeng/galleria";
 
 @Component({
   selector: 'app-info-page',
   templateUrl: './info-page.component.html',
+  imports: [
+    Card,
+    GalleriaModule
+  ],
   styleUrls: ['./info-page.component.scss']
 })
 export class InfoPageComponent implements OnInit, AfterViewInit {

@@ -2,10 +2,14 @@ import {AfterViewInit, Component, ElementRef, HostListener, OnInit} from '@angul
 import { gsap } from 'gsap';
 import SplitType from 'split-type'
 import {BackgroundImageService} from "../background-image.service";
+import {Button} from "primeng/button";
 
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
+  imports: [
+    Button
+  ],
   styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent implements OnInit, AfterViewInit{

@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {gsap} from "gsap";
 import SplitType from "split-type";
 import {MessageService} from "primeng/api";
@@ -7,11 +7,32 @@ import {HomeFormServiceService} from "../service/home-form-service/home-form-ser
 import {HomeFormDto} from "../dto/home-form.dto";
 import {LoadingService} from "../service/loading-service/loading-service.service";
 import {FormStatesUtil} from "../utils/form-states-util";
+import {Checkbox} from "primeng/checkbox";
+import {Chip} from "primeng/chip";
+import {InputText} from "primeng/inputtext";
+import {Dialog} from "primeng/dialog";
+import {ProgressSpinner} from "primeng/progressspinner";
+import {Toast} from "primeng/toast";
+import {Slider} from "primeng/slider";
+import {AsyncPipe, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-form-page',
   templateUrl: './form-page.component.html',
   styleUrls: ['./form-page.component.scss'],
+  imports: [
+    Checkbox,
+    ReactiveFormsModule,
+    Chip,
+    FormsModule,
+    InputText,
+    Dialog,
+    ProgressSpinner,
+    Toast,
+    Slider,
+    NgIf,
+    AsyncPipe
+  ],
   providers: [MessageService]
 })
 export class FormPageComponent implements OnInit, AfterViewInit{
