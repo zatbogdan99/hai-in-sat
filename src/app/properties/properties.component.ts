@@ -1,12 +1,28 @@
 import {AfterViewInit, Component} from '@angular/core';
-import Swiper from 'swiper';
+import { Swiper } from 'swiper';
 import {PhotoService} from "../service/photo-service";
 import {BuyEnum} from "../dto/buy.enum";
 import {LoadingService} from "../service/loading-service/loading-service.service";
+import {GalleriaModule} from "primeng/galleria";
+import {YoutubePlayerComponent} from "../youtube-player/youtube-player.component";
+import {Divider} from "primeng/divider";
+import {Dialog} from "primeng/dialog";
+import {InputSwitch} from "primeng/inputswitch";
+import {ProgressSpinner} from "primeng/progressspinner";
+import {Button} from "primeng/button";
 
 @Component({
   selector: 'app-properties',
   templateUrl: './properties.component.html',
+  imports: [
+    GalleriaModule,
+    YoutubePlayerComponent,
+    Divider,
+    Dialog,
+    InputSwitch,
+    ProgressSpinner,
+    Button
+  ],
   styleUrls: ['./properties.component.scss']
 })
 export class PropertiesComponent implements AfterViewInit{

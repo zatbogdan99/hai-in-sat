@@ -2,12 +2,6 @@
 	"$schema": "./node_modules/@angular/cli/lib/config/schema.json",
 	"version": 1,
 	"newProjectRoot": "projects",
-	"cli": {
-		"analytics": false,
-		"cache": {
-			"enabled": true
-		}
-	},
 	"projects": {
 		"hai-in-sat": {
 			"projectType": "application",
@@ -69,17 +63,17 @@
 					"defaultConfiguration": "production"
 				},
 				"serve": {
-					"builder": "@angular-devkit/build-angular:dev-server",
+     "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "your-app-name:build",
+            "buildTarget": "hai-in-sat:build",
             "proxyConfig": "proxy.conf.json"
           },
 					"configurations": {
 						"production": {
-							"browserTarget": "hai-in-sat:build:production"
+							"buildTarget": "hai-in-sat:build:production"
 						},
 						"development": {
-							"browserTarget": "hai-in-sat:build:development"
+							"buildTarget": "hai-in-sat:build:development"
 						}
 					},
 					"defaultConfiguration": "development"

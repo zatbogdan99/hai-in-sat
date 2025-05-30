@@ -1,19 +1,33 @@
 import {Component, OnInit} from '@angular/core';
 import {MenuItem, MessageService} from "primeng/api";
-import {Router} from "@angular/router";
+import {Router, RouterOutlet} from "@angular/router";
 import { faTiktok } from '@fortawesome/free-brands-svg-icons';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
 import { faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { faSquareFacebook } from "@fortawesome/free-brands-svg-icons";
 import {DataService} from "./service/data-service";
+import {Dialog} from "primeng/dialog";
+import {Chip} from "primeng/chip";
+import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+import {Menubar} from "primeng/menubar";
+import {Toast} from "primeng/toast";
 
 @Component({
+  standalone: true,
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  imports: [
+    Dialog,
+    Chip,
+    FaIconComponent,
+    RouterOutlet,
+    Menubar,
+    Toast
+  ],
   providers: [MessageService]
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   title = 'hai-in-sat';
   items: MenuItem[] | undefined;
   faTiktok = faTiktok;

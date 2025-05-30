@@ -4,10 +4,18 @@ import {gsap} from "gsap";
 import {DataDto} from "../dto/data.dto";
 import {DataService} from "../service/data-service";
 import { NgOptimizedImage } from '@angular/common'
+import {Button} from "primeng/button";
+import {Card} from "primeng/card";
+import {YoutubePlayerComponent} from "../youtube-player/youtube-player.component";
 
 @Component({
   selector: 'app-under-the-mountain',
   templateUrl: './under-the-mountain.component.html',
+  imports: [
+    Button,
+    Card,
+    YoutubePlayerComponent
+  ],
   styleUrls: ['./under-the-mountain.component.scss']
 })
 export class UnderTheMountainComponent {

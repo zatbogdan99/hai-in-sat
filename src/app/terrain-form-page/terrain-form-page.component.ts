@@ -1,15 +1,29 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MessageService} from "primeng/api";
 import {HomeFormDto} from "../dto/home-form.dto";
 import {TerrainFormServiceService} from "../service/terrain-form-service/terrain-form-service.service";
 import {TerrainFormDto} from "../dto/terrain-form.dto";
 import {LoadingService} from "../service/loading-service/loading-service.service";
 import {FormStatesUtil} from "../utils/form-states-util";
+import {Checkbox} from "primeng/checkbox";
+import {Chip} from "primeng/chip";
+import {Dialog} from "primeng/dialog";
+import {Slider} from "primeng/slider";
+import {ProgressSpinner} from "primeng/progressspinner";
 
 @Component({
   selector: 'app-terrain-form-page',
   templateUrl: './terrain-form-page.component.html',
+  imports: [
+    Checkbox,
+    Chip,
+    ReactiveFormsModule,
+    FormsModule,
+    Dialog,
+    Slider,
+    ProgressSpinner
+  ],
   styleUrls: ['./terrain-form-page.component.scss']
 })
 export class TerrainFormPageComponent implements OnInit{

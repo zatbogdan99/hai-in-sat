@@ -1,5 +1,5 @@
 import {AfterViewInit, Component} from '@angular/core';
-import Swiper, { Pagination } from 'swiper';
+import { Swiper } from 'swiper';
 
 @Component({
   selector: 'app-see-the-area-rent',

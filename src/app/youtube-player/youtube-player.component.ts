@@ -1,13 +1,14 @@
-import {AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild} from '@angular/core';
 
 declare var YT: any;
 
 @Component({
   selector: 'app-youtube-player',
   templateUrl: './youtube-player.component.html',
-  styleUrls: ['./youtube-player.component.scss']
+  styleUrls: ['./youtube-player.component.scss'],
+  standalone: true
 })
-export class YoutubePlayerComponent implements AfterViewInit, OnChanges{
+export class YoutubePlayerComponent implements AfterViewInit, OnChanges, OnDestroy {
   @ViewChild('player') playerElementRef: ElementRef | undefined;
 
   player: any;

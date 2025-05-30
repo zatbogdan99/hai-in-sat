@@ -2,7 +2,6 @@ import {CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import {ButtonModule} from "primeng/button";
 import {MenubarModule} from "primeng/menubar";
@@ -10,7 +9,6 @@ import {ScrollTopModule} from "primeng/scrolltop";
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { FormPageComponent } from './home-form-page/form-page.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {InputTextareaModule} from "primeng/inputtextarea";
 import {InputTextModule} from "primeng/inputtext";
 import {SliderModule} from "primeng/slider";
 import {PanelModule} from "primeng/panel";
@@ -49,7 +47,6 @@ import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {CalendarModule} from "primeng/calendar";
 import { VillageOfTheMonthComponent } from './village-of-the-month/village-of-the-month.component';
 import {DialogModule} from "primeng/dialog";
-import {CheckboxModule} from "primeng/checkbox";
 import {DividerModule} from "primeng/divider";
 import {DropdownModule} from "primeng/dropdown";
 import {SelectButtonModule} from "primeng/selectbutton";
@@ -57,15 +54,57 @@ import {TagModule} from "primeng/tag";
 import { YoutubePlayerComponent } from './youtube-player/youtube-player.component';
 import { PropertiesComponent } from './properties/properties.component';
 import { PropertyDetailsComponent } from './property-details/property-details.component';
+import {CheckboxModule} from "primeng/checkbox";
+
 register();
 
 @NgModule({
   declarations: [
-    AppComponent,
+
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    ButtonModule,
+    MenubarModule,
+    ScrollTopModule,
+    ReactiveFormsModule,
+    FormsModule,
+    InputTextModule,
+    SliderModule,
+    PanelModule,
+    ToggleButtonModule,
+    InputSwitchModule,
+    ChipModule,
+    RippleModule,
+    MessagesModule,
+    CardModule,
+    GalleriaModule,
+    DataViewModule,
+    ImageModule,
+    YoutubePlayerComponent,
+    RatingModule,
+    FontAwesomeModule,
+    ToastModule,
+    BrowserAnimationsModule,
+    CommonModule,
+    VgCoreModule,
+    VgControlsModule,
+    VgOverlayPlayModule,
+    VgBufferingModule,
+    HttpClientModule,
+    ProgressSpinnerModule,
+    CalendarModule,
+    DialogModule,
+    DividerModule,
+    DropdownModule,
+    SelectButtonModule,
+    TagModule,
+    CheckboxModule,
     HomePageComponent,
     LandingPageComponent,
-    FormPageComponent,
     AboutUsComponent,
+    FormPageComponent,
     InfoPageComponent,
     TerrainFormPageComponent,
     ContactUsComponent,
@@ -74,50 +113,9 @@ register();
     SeeTheAreaRentComponent,
     SeeTheAreaBuyComponent,
     VillageOfTheMonthComponent,
-    YoutubePlayerComponent,
     PropertiesComponent,
     PropertyDetailsComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        ButtonModule,
-        MenubarModule,
-        ScrollTopModule,
-        ReactiveFormsModule,
-        FormsModule,
-        InputTextareaModule,
-        InputTextModule,
-        SliderModule,
-        PanelModule,
-        ToggleButtonModule,
-        InputSwitchModule,
-        ChipModule,
-        RippleModule,
-        MessagesModule,
-        CardModule,
-        GalleriaModule,
-        DataViewModule,
-        ImageModule,
-        RatingModule,
-        FontAwesomeModule,
-        ToastModule,
-        BrowserAnimationsModule,
-        CommonModule,
-        VgCoreModule,
-        VgControlsModule,
-        VgOverlayPlayModule,
-        VgBufferingModule,
-        HttpClientModule,
-        ProgressSpinnerModule,
-        CalendarModule,
-        DialogModule,
-        CheckboxModule,
-        DividerModule,
-        DropdownModule,
-        SelectButtonModule,
-        TagModule
-    ],
   providers: [
     PhotoService,
     MessageService,
@@ -127,7 +125,6 @@ register();
     ScrollTopModule,
     ReactiveFormsModule,
     FormsModule,
-    InputTextareaModule,
     InputTextModule,
     SliderModule,
     PanelModule,
@@ -147,7 +144,6 @@ register();
     CalendarModule,
     NgOptimizedImage
     ],
-  bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }

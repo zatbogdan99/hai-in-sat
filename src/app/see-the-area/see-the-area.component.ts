@@ -1,8 +1,18 @@
 import {AfterViewInit, Component} from '@angular/core';
+import {SeeTheAreaBuyComponent} from "../see-the-area-buy/see-the-area-buy.component";
+import {SeeTheAreaRentComponent} from "../see-the-area-rent/see-the-area-rent.component";
+import {Button} from "primeng/button";
+import {Card} from "primeng/card";
 
 @Component({
   selector: 'app-see-the-area',
   templateUrl: './see-the-area.component.html',
+  imports: [
+    SeeTheAreaBuyComponent,
+    SeeTheAreaRentComponent,
+    Button,
+    Card
+  ],
   styleUrls: ['./see-the-area.component.scss']
 })
 export class SeeTheAreaComponent{

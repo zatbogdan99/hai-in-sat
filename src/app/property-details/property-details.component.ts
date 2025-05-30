@@ -3,10 +3,20 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PhotoService } from '../service/photo-service';
 import { BuyEnum } from '../dto/buy.enum';
 import { LoadingService } from '../service/loading-service/loading-service.service';
+import {YoutubePlayerComponent} from "../youtube-player/youtube-player.component";
+import {GalleriaModule} from "primeng/galleria";
+import {ProgressSpinner} from "primeng/progressspinner";
+import {Button} from "primeng/button";
 
 @Component({
   selector: 'app-property-details',
   templateUrl: './property-details.component.html',
+  imports: [
+    YoutubePlayerComponent,
+    GalleriaModule,
+    ProgressSpinner,
+    Button
+  ],
   styleUrls: ['./property-details.component.scss']
 })
 export class PropertyDetailsComponent implements OnInit {

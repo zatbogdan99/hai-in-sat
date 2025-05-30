@@ -1,15 +1,32 @@
 import {Component, HostListener} from '@angular/core';
 import {DataDto} from "../dto/data.dto";
-import {VgApiService, VgMediaDirective} from "@videogular/ngx-videogular/core";
+import {VgApiService, VgCoreModule, VgMediaDirective} from "@videogular/ngx-videogular/core";
 import {PhotoService} from "../service/photo-service";
 import {DataService} from "../service/data-service";
 import {gsap, Power2} from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import {LoadingService} from "../service/loading-service/loading-service.service";
+import {Card} from "primeng/card";
+import {YoutubePlayerComponent} from "../youtube-player/youtube-player.component";
+import {Button} from "primeng/button";
+import {VgControlsModule} from "@videogular/ngx-videogular/controls";
+import {VgBufferingModule} from "@videogular/ngx-videogular/buffering";
+import {VgOverlayPlayModule} from "@videogular/ngx-videogular/overlay-play";
+import {ProgressSpinner} from "primeng/progressspinner";
 
 @Component({
   selector: 'app-village-of-the-month',
   templateUrl: './village-of-the-month.component.html',
+  imports: [
+    Card,
+    YoutubePlayerComponent,
+    Button,
+    VgControlsModule,
+    VgBufferingModule,
+    VgOverlayPlayModule,
+    VgCoreModule,
+    ProgressSpinner
+  ],
   styleUrls: ['./village-of-the-month.component.scss']
 })
 export class VillageOfTheMonthComponent {

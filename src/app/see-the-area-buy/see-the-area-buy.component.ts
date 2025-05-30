@@ -1,12 +1,20 @@
 import {AfterViewInit, Component} from '@angular/core';
-import Swiper from 'swiper';
+import { Swiper } from 'swiper';
 import {PhotoService} from "../service/photo-service";
 import {BuyEnum} from "../dto/buy.enum";
 import {LoadingService} from "../service/loading-service/loading-service.service";
+import {GalleriaModule} from "primeng/galleria";
+import {YoutubePlayerComponent} from "../youtube-player/youtube-player.component";
+import {ProgressSpinner} from "primeng/progressspinner";
 
 @Component({
   selector: 'app-see-the-area-buy',
   templateUrl: './see-the-area-buy.component.html',
+  imports: [
+    GalleriaModule,
+    YoutubePlayerComponent,
+    ProgressSpinner
+  ],
   styleUrls: ['./see-the-area-buy.component.scss']
 })
 export class SeeTheAreaBuyComponent implements AfterViewInit{
