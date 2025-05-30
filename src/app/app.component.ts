@@ -87,6 +87,10 @@ export class AppComponent implements OnInit{
     this.router.navigateByUrl("/see-the-area");
   }
 
+  private goToProperties() {
+    this.router.navigateByUrl("/properties");
+  }
+
   ngOnInit() {
 
     this.items = [
@@ -107,17 +111,17 @@ export class AppComponent implements OnInit{
         command: () => this.goToVillageOfTheMonth()
       },
       {
-        label: 'Haide să vezi zona!',
+        label: 'Proprietăți',
         icon: 'pi pi-fw pi-eye',
-        command: () => this.goToSeeTheArea()
+        command: () => this.goToProperties()
       },
       {
-        label: 'Case',
+        label: 'Vreau o casă',
         icon: 'pi pi-fw pi-home',
         command: () => this.goToHomeFormPage()
       },
       {
-        label: 'Terenuri',
+        label: 'Vreau un teren',
         icon: 'pi pi-fw pi-cloud',
         command: () => this.goToTerrainFormPage()
       }

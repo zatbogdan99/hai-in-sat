@@ -1,0 +1,255 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+}
+
+// Custom styling for floating labels
+:host ::ng-deep .p-float-label {
+  display: block;
+  position: relative;
+
+  label {
+    position: absolute;
+    pointer-events: none;
+    top: 50%;
+    margin-top: -0.5rem;
+    transition-property: all;
+    transition-timing-function: ease;
+    line-height: 1;
+    left: 0.75rem;
+    color: #6c757d;
+    transition-duration: 0.2s;
+  }
+
+  input:focus ~ label,
+  input.p-filled ~ label,
+  textarea:focus ~ label,
+  textarea.p-filled ~ label {
+    top: -0.5rem;
+    font-size: 0.75rem;
+    background-color: #ffffff;
+    padding: 0 0.25rem;
+  }
+}
+
+main {
+  position: relative;
+  margin: 0 auto;
+  width: calc(min(90rem, 90%));
+  column-gap: 3rem;
+  padding-block: min(10vh, 1.5rem);
+}
+
+main > div span {
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-size: 1rem;
+  color: #717171;
+}
+
+main > div h1 {
+  background-color: #005baa;
+  background-image: linear-gradient(45deg, #005baa, #000000);
+  background-size: 100%;
+  background-repeat: repeat;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.8px;
+  font-family: "Open Sans", sans-serif;
+  font-size: clamp(3.4375rem, 3.25rem + 0.75vw, 4rem);
+  font-weight: 800;
+}
+
+main > div hr {
+  display: block;
+  background: #005baa;
+  height: 0.25rem;
+  width: 6.25rem;
+  border: none;
+  margin: 1.125rem 0 1.875rem 0;
+}
+
+main > div p {
+  line-height: 1.6;
+}
+
+img {
+  width: 100%;
+  max-height: 30rem;
+  object-fit: contain;
+  display: block;
+}
+
+.p-galleria img {
+  display: block;
+  max-width: 100%;
+  max-height: 30rem;
+  object-fit: contain;
+  margin: auto;
+}
+
+.p-galleria .p-galleria-item-nav {
+  color: #0f0f0f;
+}
+
+.p-galleria-indicators {
+  color: #0f0f0f;
+}
+
+.swiper {
+  width: 100%;
+  padding-top: 3.125rem;
+  padding-left: 5rem;
+}
+
+.swiper-slide {
+  width: 18.75rem;
+  height: 28.125rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: self-start;
+}
+
+//Teren in baia
+.swiper-slide-one {
+  background: url(./../../assets/teren_baia1_taiat.jpg) no-repeat 50% 50%/cover;
+}
+
+.swiper-slide-two {
+  background: url(./../../assets/teren_baia2.jpg) no-repeat 50% 50%/cover;
+}
+
+//Teren in polovragi
+.swiper-slide-polovragi1 {
+  background: url(./../../assets/teren_polovragi1.avif) no-repeat 50% 50%/cover;
+}
+
+.swiper-slide-polovragi2 {
+  background: url(./../../assets/teren_polovragi2.avif) no-repeat 50% 50%/cover;
+}
+
+.swiper-slide-polovragi3 {
+  background: url(./../../assets/teren_polovragi3.avif) no-repeat 50% 50%/cover;
+}
+
+.swiper-slide-polovragi4 {
+  background: url(./../../assets/teren_polovragi4.avif) no-repeat 50% 50%/cover;
+}
+
+.swiper-slide-polovragi5 {
+  background: url(./../../assets/teren_polovragi5.avif) no-repeat 50% 50%/cover;
+}
+
+.swiper-slide-polovragi6 {
+  background: url(./../../assets/teren_polovragi6.avif) no-repeat 50% 50%/cover;
+}
+
+.swiper-pagination-bullet,
+.swiper-pagination-bullet-active {
+  background-color: #fff;
+}
+
+.swiper-pagination {
+  bottom: 1.25rem !important;
+}
+
+.swiper-slide h2 {
+  font-family: "Open Sans", sans-serif;
+  color: #fff;
+  font-weight: 400;
+  font-size: 1.4rem;
+  line-height: 1.4;
+  margin-bottom: 0.625rem;
+  padding: 0 0 0 1.563rem;
+  text-transform: uppercase;
+}
+
+.swiper-slide p {
+  font-family: "Open Sans", sans-serif;
+  color: #dadada;
+  font-weight: 300;
+  padding: 0 1.563rem;
+  line-height: 1.6;
+  font-size: 0.75rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.swiper-slide a {
+  margin: 1.25rem 1.563rem 3.438rem 1.563rem;
+  padding: 0.438em 1.875rem;
+  font-size: 0.9rem;
+}
+
+.swiper-slide a:hover {
+  color: #005baa;
+}
+
+.spinner-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 1000;
+}
+
+.p-field {
+  margin-bottom: 1rem;
+}
+
+.p-field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+@media screen and (min-width: 48rem){
+  main {
+    display: flex;
+    align-items: center;
+  }
+}
+
+@media screen and (min-width: 93.75rem) {
+  .swiper {
+    width: 85%;
+  }
+}
+
+//mobile
+@media only screen and (max-width: 500px) {
+  .small-screen {
+    display: block;
+  }
+  .large-screen {
+    display: none;
+  }
+}
+
+//desktop
+@media only screen and (min-width: 500px) {
+  .small-screen {
+    display: none;
+  }
+  .large-screen {
+    display: block;
+  }
+}
+
+// Custom styles for the dialog
+:host ::ng-deep .centered-dialog-header {
+  .p-dialog-header {
+    justify-content: center;
+    text-align: center;
+  }
+}

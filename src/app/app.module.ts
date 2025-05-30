@@ -15,6 +15,7 @@ import {InputTextModule} from "primeng/inputtext";
 import {SliderModule} from "primeng/slider";
 import {PanelModule} from "primeng/panel";
 import {ToggleButtonModule} from "primeng/togglebutton";
+import {InputSwitchModule} from "primeng/inputswitch";
 import {ChipModule} from "primeng/chip";
 import {RippleModule} from "primeng/ripple";
 import { MessagesModule } from 'primeng/messages';
@@ -49,7 +50,13 @@ import {CalendarModule} from "primeng/calendar";
 import { VillageOfTheMonthComponent } from './village-of-the-month/village-of-the-month.component';
 import {DialogModule} from "primeng/dialog";
 import {CheckboxModule} from "primeng/checkbox";
+import {DividerModule} from "primeng/divider";
+import {DropdownModule} from "primeng/dropdown";
+import {SelectButtonModule} from "primeng/selectbutton";
+import {TagModule} from "primeng/tag";
 import { YoutubePlayerComponent } from './youtube-player/youtube-player.component';
+import { PropertiesComponent } from './properties/properties.component';
+import { PropertyDetailsComponent } from './property-details/property-details.component';
 register();
 
 @NgModule({
@@ -67,7 +74,9 @@ register();
     SeeTheAreaRentComponent,
     SeeTheAreaBuyComponent,
     VillageOfTheMonthComponent,
-    YoutubePlayerComponent
+    YoutubePlayerComponent,
+    PropertiesComponent,
+    PropertyDetailsComponent
   ],
     imports: [
         BrowserModule,
@@ -82,6 +91,7 @@ register();
         SliderModule,
         PanelModule,
         ToggleButtonModule,
+        InputSwitchModule,
         ChipModule,
         RippleModule,
         MessagesModule,
@@ -102,7 +112,11 @@ register();
         ProgressSpinnerModule,
         CalendarModule,
         DialogModule,
-        CheckboxModule
+        CheckboxModule,
+        DividerModule,
+        DropdownModule,
+        SelectButtonModule,
+        TagModule
     ],
   providers: [
     PhotoService,
@@ -118,6 +132,7 @@ register();
     SliderModule,
     PanelModule,
     ToggleButtonModule,
+    InputSwitchModule,
     ChipModule,
     RippleModule,
     MessagesModule,

@@ -1,0 +1,226 @@
+<div *ngIf="loadingService.loading$ | async" class="spinner-container">
+  <p-progressSpinner></p-progressSpinner>
+</div>
+<main>
+  <div style="display: flex; flex-direction: column">
+    <div style="display: flex; justify-content: center;">
+      <div style="display: flex; flex-direction: column; margin-right: 2rem; justify-content: center; align-items: center; flex: 1;">
+        <!-- Filter by property type -->
+        <div style="display: flex; align-items: center; margin-bottom: 1rem; justify-content: center;">
+          <span style="margin-right: 0.5rem;">Terenuri</span>
+          <p-inputSwitch [(ngModel)]="propertyType"></p-inputSwitch>
+          <span style="margin-left: 0.5rem;">Case</span>
+        </div>
+
+        <!-- Text and button below the filter -->
+        <div style="display: flex; flex-direction: column; align-items: center; margin-top: 1rem; justify-content: center;">
+          <p style="margin-bottom: 1rem; text-align: center;">Pentru doar 99 de lei pe an va puteti lista proprietatea pe site-ul nostru</p>
+          <p-button label="Aplică" (click)="showAddPropertyModal()"></p-button>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; flex: 1; text-align: center;">
+        <h1 style="text-align: center; width: 100%;">Case si terenuri de vanzare</h1>
+        <hr>
+        <p style="max-width: 40rem; text-align: center;">Echipa noastră poate fi ghidul dvs. în această călătorie de transformare. Suntem aici să vă prezentăm oportunitățile incredibile
+          pe care viața la țară le oferă. Alegeți să faceți pasul și să explorați ce înseamnă cu adevărat să trăiești.</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<p-dialog header="Echipa noastra va va ajuta cu tot ce aveti nevoie, doar lasati-ne cateva informatii si va vom contacta in cel mai scurt timp" [(visible)]="displayModal" [style]="{width: '50vw'}" [modal]="true" styleClass="centered-dialog-header">
+  <div style="display: flex; height: 100%;">
+    <!-- Left side with form fields -->
+    <div style="flex: 1; padding-right: 1rem;">
+      <span style="margin-bottom: 2rem; width: 100%" class="p-float-label">
+        <input style="padding: 10px; width: 100%" type="text" pInputText id="firstName" [(ngModel)]="firstName">
+        <label htmlFor="firstName">Nume</label>
+      </span>
+      <span style="margin-bottom: 2rem; width: 100%" class="p-float-label">
+        <input style="padding: 10px; width: 100%" type="text" pInputText id="lastName" [(ngModel)]="lastName">
+        <label htmlFor="lastName">Prenume</label>
+      </span>
+      <span style="margin-bottom: 2rem; width: 100%" class="p-float-label">
+        <input style="padding: 10px; width: 100%" type="email" pInputText id="email" [(ngModel)]="email">
+        <label htmlFor="email">E-mail</label>
+      </span>
+      <span style="margin-bottom: 2rem; width: 100%" class="p-float-label">
+        <textarea style="padding: 10px; width: 100%" rows="5" pInputTextarea id="propertyDescription" [(ngModel)]="propertyDescription"></textarea>
+        <label htmlFor="propertyDescription">Ce proprietate aveti de vanzare?</label>
+      </span>
+    </div>
+
+    <!-- Vertical divider -->
+    <p-divider layout="vertical" styleClass="mx-2">
+      <b>SAU</b>
+    </p-divider>
+
+    <!-- Right side with contact information -->
+    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center;">
+      <h3 style="text-align: center; width: 100%; margin-bottom: 1.5rem;">Ne puteti contacta prin urmatoarele</h3>
+      <div class="contact-info" style="padding-top: 0.5rem;">
+        <div class="text" style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+          <img style="cursor: pointer; width: 1.5rem; height: 1.5rem; margin-right: 0.5rem;" src="assets/instagram.png">
+          <span style="cursor: pointer">Instagram</span>
+        </div>
+        <div class="text" style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+          <img style="cursor: pointer; width: 1.5rem; height: 1.5rem; margin-right: 0.5rem;" src="assets/facebook.png">
+          <span style="cursor: pointer">Facebook</span>
+        </div>
+        <div class="text" style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+          <img style="cursor: pointer; width: 1.5rem; height: 1.5rem; margin-right: 0.5rem;" src="assets/tiktok.png">
+          <span style="cursor: pointer">Tiktok</span>
+        </div>
+        <div class="text" style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+          <img style="width: 1.5rem; height: 1.5rem; margin-right: 0.5rem;" src="assets/wapp.png">
+          <span>0728140650</span>
+        </div>
+        <div class="text" style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+          <img style="width: 1.5rem; height: 1.5rem; margin-right: 0.5rem;" src="assets/envelope-solid.svg">
+          <span>contact&#64;hai-în-sat.ro</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div style="display: flex; justify-content: flex-start;">
+      <p-button icon="pi pi-check" label="Salvează" (click)="saveProperty()"></p-button>
+      <p-button icon="pi pi-times" label="Înapoi" (click)="hideModal()" styleClass="p-button-text"></p-button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+
+<!-- Houses Section -->
+<div *ngIf="propertyType">
+  <main>
+    <div style="display: flex; flex-direction: column">
+      <div style="display: flex">
+        <div>
+          <span>Hai în sat</span>
+          <h1>Pensiune în Milostea</h1>
+          <hr>
+          <p style="max-width: 40rem">Pensiune cu 16 camere <br> Utilități: Gratar/Restaurant/Terasa/Sala de evenimente
+            <br>Afacere la cheie<br></p>
+        </div>
+        <div class="large-screen">
+          <div style="width: 45rem">
+            <p-galleria id="galleriaSmall"
+              [value]="milosteaImages"
+              [responsiveOptions]="responsiveOptions"
+              [numVisible]="7"
+              [circular]="true"
+              [fullScreen]="false"
+              [showItemNavigators]="true"
+              [autoPlay]="true"
+              [showThumbnails]="false">
+              <ng-template pTemplate="item" let-item>
+                <img
+                  [src]="item.itemImageSrc" [alt]="item.alt"
+                  style="width: 100%; display: block;" />
+              </ng-template>
+            </p-galleria>
+          </div>
+        </div>
+      </div>
+
+      <div class="small-screen">
+        <div>
+          <p-galleria id="galleriaMobile"
+                      [value]="milosteaImages"
+                      [responsiveOptions]="responsiveOptions"
+                      [numVisible]="7"
+                      [circular]="true"
+                      [fullScreen]="false"
+                      [showItemNavigators]="true"
+                      [autoPlay]="true"
+                      [showThumbnails]="false">
+            <ng-template pTemplate="item" let-item>
+              <img
+                [src]="item.itemImageSrc" [alt]="item.alt"
+                style="width: 100%; display: block;" />
+            </ng-template>
+          </p-galleria>
+        </div>
+      </div>
+
+      <div class="large-screen" style="padding-right: 1rem; padding-top: 2rem; height: 30rem; width: 80rem">
+        <app-youtube-player [videoId]="'rhuyNfSvz0s'" [height]="'100%'"></app-youtube-player>
+      </div>
+
+      <div class="small-screen" style="padding-right: 1rem; padding-top: 2rem">
+        <app-youtube-player [videoId]="'rhuyNfSvz0s'" [height]="'100%'"></app-youtube-player>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Lands Section -->
+<div *ngIf="!propertyType">
+  <main>
+    <div>
+      <span>Hai în sat</span>
+      <h1>Teren în Baia de Fier</h1>
+      <hr>
+      <p style="max-width: 40rem">Teren la drum asfaltat <br> Utilități la 200 de metri
+        <br> Suprafață intravilan: 1948 mp<br> Suprafață extravilan: 5840 mp</p>
+    </div>
+
+    <div class="swiper mySwiper swiper-baia">
+      <div class="swiper-wrapper">
+        <div (click)="openGalleria(BuyEnum.BAIA)" class="swiper-slide swiper-slide-one"></div>
+
+        <div (click)="openGalleria(BuyEnum.BAIA)" class="swiper-slide swiper-slide-two"></div>
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </main>
+
+  <main>
+    <div>
+      <span>Hai în sat</span>
+      <h1>Teren în Polovragi</h1>
+      <hr>
+      <p style="max-width: 40rem">Teren cu utilități
+        <br> Suprafață: 8000 mp<br>
+        Situat într-o zonă pitorească
+    </div>
+
+    <div class="swiper mySwiper swiper-polovragi">
+      <div class="swiper-wrapper">
+        <div (click)="openGalleria(BuyEnum.POLOVRAGI)" class="swiper-slide swiper-slide-polovragi1"></div>
+
+        <div (click)="openGalleria(BuyEnum.POLOVRAGI)" class="swiper-slide swiper-slide-polovragi2"></div>
+
+        <div (click)="openGalleria(BuyEnum.POLOVRAGI)" class="swiper-slide swiper-slide-polovragi3"></div>
+
+        <div (click)="openGalleria(BuyEnum.POLOVRAGI)" class="swiper-slide swiper-slide-polovragi4"></div>
+
+        <div (click)="openGalleria(BuyEnum.POLOVRAGI)" class="swiper-slide swiper-slide-polovragi5"></div>
+
+        <div (click)="openGalleria(BuyEnum.POLOVRAGI)" class="swiper-slide swiper-slide-polovragi6"></div>
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </main>
+</div>
+
+<div class="card flex justify-content-center">
+  <p-galleria id="galleriaFull"
+    [value]="images"
+    [(visible)]="displayGalleria"
+    [responsiveOptions]="responsiveOptions"
+    [numVisible]="7"
+    [circular]="true"
+    [fullScreen]="true"
+    [showItemNavigators]="true"
+    [showThumbnails]="false">
+    <ng-template pTemplate="item" let-item>
+      <img
+        [src]="item.itemImageSrc" [alt]="item.alt"
+        style="width: 100%; display: block;" />
+    </ng-template>
+  </p-galleria>
+</div>
