@@ -1,8 +1,7 @@
 import {Component, HostListener} from '@angular/core';
 import {DataDto} from "../dto/data.dto";
-import {VgApiService, VgCoreModule, VgMediaDirective} from "@videogular/ngx-videogular/core";
+import {VgApiService, VgCoreModule} from "@videogular/ngx-videogular/core";
 import {PhotoService} from "../service/photo-service";
-import {DataService} from "../service/data-service";
 import {gsap, Power2} from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import {LoadingService} from "../service/loading-service/loading-service.service";
@@ -41,9 +40,6 @@ export class VillageOfTheMonthComponent {
   vaideeniImages: any[] | undefined;
   barbatestiImages: any[] | undefined;
 
-  satulRapa1 = 'https://storage.googleapis.com/hai-in-sat-assets/videos/satul_rapa1.mp4';
-  satulRapa2 = 'https://storage.googleapis.com/hai-in-sat-assets/videos/satul_rapa2.mp4';
-  satulRacovita = 'https://storage.googleapis.com/hai-in-sat-assets/videos/satul_racovita.mp4';
   lectieSpiritualitate = 'https://storage.googleapis.com/hai-in-sat-assets/videos/lectie%20spiritualitate.mov';
 
   data: DataDto[] = [];
@@ -59,7 +55,6 @@ export class VillageOfTheMonthComponent {
 
 
   constructor(private photoService: PhotoService,
-              private service: DataService,
               public loadingService: LoadingService) {
     this.checkScreenSize();
 
@@ -173,25 +168,12 @@ export class VillageOfTheMonthComponent {
     });
   }
 
-  checkBuffering(): void {
-
-  }
-
   autoplay() {
     this.api.play();
   }
 
   changeVillage(villageId: number) {
     this.villageId = villageId;
-  }
-
-  //deprecated
-  getSrcByVillageId() {
-    if (this.villageId === 0) {
-      return this.satulRacovita;
-    } else {
-      return this.satulRapa1;
-    }
   }
 
   getYoutubeIdByVillage() {

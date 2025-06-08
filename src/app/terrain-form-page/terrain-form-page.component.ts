@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MessageService} from "primeng/api";
-import {HomeFormDto} from "../dto/home-form.dto";
 import {TerrainFormServiceService} from "../service/terrain-form-service/terrain-form-service.service";
 import {TerrainFormDto} from "../dto/terrain-form.dto";
 import {LoadingService} from "../service/loading-service/loading-service.service";
@@ -16,6 +15,7 @@ import {InputText} from "primeng/inputtext";
 import {Textarea} from "primeng/textarea";
 import {ButtonDirective} from "primeng/button";
 import {Ripple} from "primeng/ripple";
+import {FloatLabel} from "primeng/floatlabel";
 
 @Component({
   selector: 'app-terrain-form-page',
@@ -33,13 +33,13 @@ import {Ripple} from "primeng/ripple";
     InputText,
     Textarea,
     ButtonDirective,
-    Ripple
+    Ripple,
+    FloatLabel
   ],
   styleUrls: ['./terrain-form-page.component.scss']
 })
 export class TerrainFormPageComponent implements OnInit{
   formGroup!: FormGroup;
-  sliderValue: number = 0;
   ariaRangeValues: number[] = [0, 30];
   priceRangeValues: number[] = [0, 200000];
   river: boolean = false;

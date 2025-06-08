@@ -1,7 +1,6 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {gsap} from "gsap";
-import SplitType from "split-type";
 import {MessageService} from "primeng/api";
 import {HomeFormServiceService} from "../service/home-form-service/home-form-service.service";
 import {HomeFormDto} from "../dto/home-form.dto";
@@ -10,7 +9,6 @@ import {FormStatesUtil} from "../utils/form-states-util";
 import {Checkbox} from "primeng/checkbox";
 import {Chip} from "primeng/chip";
 import {InputText} from "primeng/inputtext";
-import {Dialog} from "primeng/dialog";
 import {ProgressSpinner} from "primeng/progressspinner";
 import {Toast} from "primeng/toast";
 import {Slider} from "primeng/slider";
@@ -18,6 +16,7 @@ import {AsyncPipe, NgIf} from "@angular/common";
 import {Textarea} from "primeng/textarea";
 import {ButtonDirective} from "primeng/button";
 import {Ripple} from "primeng/ripple";
+import {FloatLabel} from "primeng/floatlabel";
 
 @Component({
   selector: 'app-form-page',
@@ -29,7 +28,6 @@ import {Ripple} from "primeng/ripple";
     Chip,
     FormsModule,
     InputText,
-    Dialog,
     ProgressSpinner,
     Toast,
     Slider,
@@ -37,13 +35,13 @@ import {Ripple} from "primeng/ripple";
     AsyncPipe,
     Textarea,
     ButtonDirective,
-    Ripple
+    Ripple,
+    FloatLabel
   ],
   providers: [MessageService]
 })
 export class FormPageComponent implements OnInit, AfterViewInit{
   formGroup!: FormGroup;
-  sliderValue: number = 0;
   ariaRangeValues: number[] = [0, 30];
   priceRangeValues: number[] = [0, 200000];
   river: boolean = false;
@@ -73,18 +71,7 @@ export class FormPageComponent implements OnInit, AfterViewInit{
   }
 
   ngAfterViewInit() {
-
-    const firstText1 = new SplitType('#first-text1');
-    const firstText2 = new SplitType('#first-text2');
-
-    // gsap.set('.char', { y: 0 });
-
-    // gsap.to('.char', {
-    //   y: -100,
-    //   stagger: 0.05,
-    //   delay: 0.2,
-    //   duration: .1
-    // })
+    // Implementation not needed
   }
 
   sendRequest() {

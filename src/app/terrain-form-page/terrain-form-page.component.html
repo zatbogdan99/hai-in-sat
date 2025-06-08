@@ -12,22 +12,22 @@
     </h2>
 
     <div style="padding-top: 5rem; display: flex; flex-direction: column; align-items: center">
-      <span style="margin-bottom: 2rem; width: 30rem" class="p-float-label" [formGroup]="formGroup">
+      <p-float-label style="margin-bottom: 2rem; width: 30rem" [formGroup]="formGroup">
         <input style="padding: 10px; width: 100%" type="text" pInputText id="name" formControlName="name">
-        <label htmlFor="name">Nume</label>
-      </span>
-      <span style="margin-bottom: 2rem; width: 30rem" class="p-float-label" [formGroup]="formGroup">
+        <label for="name">Nume</label>
+      </p-float-label>
+      <p-float-label style="margin-bottom: 2rem; width: 30rem" [formGroup]="formGroup">
         <input style="padding: 10px; width: 100%" type="text" pInputText id="surname" formControlName="surname">
-        <label htmlFor="surname">Prenume</label>
-      </span>
-      <span style="margin-bottom: 2rem; width: 30rem" class="p-float-label" [formGroup]="formGroup">
+        <label for="surname">Prenume</label>
+      </p-float-label>
+      <p-float-label style="margin-bottom: 2rem; width: 30rem" [formGroup]="formGroup">
         <input style="padding: 10px; width: 100%" type="text" pInputText id="phoneNumber" formControlName="phoneNumber">
-        <label type="number" htmlFor="phoneNumber">Număr de telefon</label>
-      </span>
-      <span style="margin-bottom: 2rem; width: 30rem" class="p-float-label" [formGroup]="formGroup">
+        <label for="phoneNumber">Număr de telefon</label>
+      </p-float-label>
+      <p-float-label style="margin-bottom: 2rem; width: 30rem" [formGroup]="formGroup">
         <input style="padding: 10px; width: 100%" type="text" pInputText id="mail" formControlName="mail">
-        <label htmlFor="mail">Adresă de e-mail</label>
-      </span>
+        <label for="mail">Adresă de e-mail</label>
+      </p-float-label>
 
       <h2>Suprafață(Km)</h2>
       <div class="container">
@@ -54,10 +54,11 @@
           <input style="margin-bottom: 20px;" type="text" [(ngModel)]="priceRangeValues[1]" pInputText/>
         </div>
       </div>
-      <span class="p-float-label" style="margin-bottom: 2rem" [formGroup]="formGroup">
+
+      <p-float-label style="margin-bottom: 2rem" [formGroup]="formGroup">
         <textarea rows="5" cols="80" pInputTextarea id="mentions" formControlName="mentions"></textarea>
-        <label htmlFor="mentions">Alte mențiuni</label>
-      </span>
+        <label for="mentions">Alte mențiuni</label>
+      </p-float-label>
 
       <div style="display: flex">
         <p-checkbox [(ngModel)]="accord" [binary]="true" inputId="binary"></p-checkbox>

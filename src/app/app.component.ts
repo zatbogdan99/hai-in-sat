@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {MenuItem, MessageService} from "primeng/api";
+import {MenuItem, MessageService, PrimeTemplate} from "primeng/api";
 import {Router, RouterOutlet} from "@angular/router";
 import { faTiktok } from '@fortawesome/free-brands-svg-icons';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
@@ -21,7 +21,8 @@ import {Toast} from "primeng/toast";
     FaIconComponent,
     RouterOutlet,
     Menubar,
-    Toast
+    Toast,
+    PrimeTemplate
   ],
   styleUrls: ['./app.component.scss']
 })
