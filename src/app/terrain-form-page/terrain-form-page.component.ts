@@ -12,6 +12,10 @@ import {Dialog} from "primeng/dialog";
 import {Slider} from "primeng/slider";
 import {ProgressSpinner} from "primeng/progressspinner";
 import {AsyncPipe, NgIf} from "@angular/common";
+import {InputText} from "primeng/inputtext";
+import {Textarea} from "primeng/textarea";
+import {ButtonDirective} from "primeng/button";
+import {Ripple} from "primeng/ripple";
 
 @Component({
   selector: 'app-terrain-form-page',
@@ -25,7 +29,11 @@ import {AsyncPipe, NgIf} from "@angular/common";
     Slider,
     ProgressSpinner,
     NgIf,
-    AsyncPipe
+    AsyncPipe,
+    InputText,
+    Textarea,
+    ButtonDirective,
+    Ripple
   ],
   styleUrls: ['./terrain-form-page.component.scss']
 })

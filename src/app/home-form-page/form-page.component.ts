@@ -15,6 +15,9 @@ import {ProgressSpinner} from "primeng/progressspinner";
 import {Toast} from "primeng/toast";
 import {Slider} from "primeng/slider";
 import {AsyncPipe, NgIf} from "@angular/common";
+import {Textarea} from "primeng/textarea";
+import {ButtonDirective} from "primeng/button";
+import {Ripple} from "primeng/ripple";
 
 @Component({
   selector: 'app-form-page',
@@ -31,7 +34,10 @@ import {AsyncPipe, NgIf} from "@angular/common";
     Toast,
     Slider,
     NgIf,
-    AsyncPipe
+    AsyncPipe,
+    Textarea,
+    ButtonDirective,
+    Ripple
   ],
   providers: [MessageService]
 })
