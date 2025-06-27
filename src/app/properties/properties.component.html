@@ -93,121 +93,57 @@
 </p-dialog>
 
 
-<!-- Houses Section -->
-<div *ngIf="propertyType">
-  <main>
-    <div style="display: flex; flex-direction: column">
-      <div style="display: flex">
-        <div>
-          <span>Hai în sat</span>
-          <h1>Pensiune în Milostea</h1>
-          <hr>
-          <p style="max-width: 40rem">Pensiune cu 16 camere <br> Utilități: Gratar/Restaurant/Terasa/Sala de evenimente
-            <br>Afacere la cheie<br></p>
-        </div>
-        <div class="large-screen">
-          <div style="width: 45rem">
-            <p-galleria id="galleriaSmall"
-              [value]="milosteaImages"
-              [responsiveOptions]="responsiveOptions"
-              [numVisible]="7"
-              [circular]="true"
-              [fullScreen]="false"
-              [showItemNavigators]="true"
-              [autoPlay]="true"
-              [showThumbnails]="false">
-              <ng-template pTemplate="item" let-item>
-                <img
-                  [src]="item.itemImageSrc" [alt]="item.alt"
-                  style="width: 100%; display: block;" />
-              </ng-template>
-            </p-galleria>
+<!-- Properties DataView Section -->
+<div class="card" style="max-width: 1200px; margin: 0 auto;">
+  <p-dataView #dv [value]="getFilteredProperties()" [layout]="layout">
+    <ng-template pTemplate="header">
+      <div class="flex justify-content-end">
+        <p-selectbutton [(ngModel)]="layout" [options]="options" [allowEmpty]="false">
+          <ng-template let-item pTemplate="item">
+            <i class="pi" [ngClass]="{ 'pi-bars': item.value === 'list', 'pi-table': item.value === 'grid' }"></i>
+          </ng-template>
+        </p-selectbutton>
+      </div>
+    </ng-template>
+
+    <ng-template #list let-items>
+      <div style="max-width: 900px; margin: 0 auto;">
+        <div *ngFor="let property of items; let first = first">
+          <div class="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4" [ngClass]="{ 'border-t border-surface-200 dark:border-surface-700': !first }">
+            <img class="shadow-2 block mx-auto border-round" [src]="property.thumbnail" [alt]="property.name" style="width: 150px; height: 150px; object-fit: cover;" />
+            <div class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
+              <div class="flex flex-column align-items-center sm:align-items-start gap-3">
+                <div class="text-2xl font-bold text-900">{{ property.name }}</div>
+                <div class="text-700" style="max-height: 80px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">{{ property.description }}</div>
+              </div>
+              <div class="flex flex-column align-items-center gap-3 sm:align-items-end">
+                <p-button label="Vezi" (click)="viewPropertyDetails(property)"></p-button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+    </ng-template>
 
-      <div class="small-screen">
-        <div>
-          <p-galleria id="galleriaMobile"
-                      [value]="milosteaImages"
-                      [responsiveOptions]="responsiveOptions"
-                      [numVisible]="7"
-                      [circular]="true"
-                      [fullScreen]="false"
-                      [showItemNavigators]="true"
-                      [autoPlay]="true"
-                      [showThumbnails]="false">
-            <ng-template pTemplate="item" let-item>
-              <img
-                [src]="item.itemImageSrc" [alt]="item.alt"
-                style="width: 100%; display: block;" />
-            </ng-template>
-          </p-galleria>
+    <ng-template #grid let-items>
+      <div class="grid grid-cols-12 gap-4" style="display: flex; flex-wrap: wrap; justify-content: center;">
+        <div *ngFor="let property of items" class="col-span-12 sm:col-span-6 lg:col-span-4 xl:col-span-3 p-2" style="min-width: 280px; max-width: 300px;">
+          <div class="p-4 border-1 surface-border surface-card border-round" style="height: 350px; display: flex; flex-direction: column;">
+            <div class="flex flex-column align-items-center gap-3 py-5" style="flex: 1;">
+              <img class="w-9 shadow-2 border-round" [src]="property.thumbnail" [alt]="property.name" style="height: 150px; object-fit: cover;" />
+              <div class="text-2xl font-bold">{{ property.name }}</div>
+              <div class="text-700 text-center" style="flex: 1; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">{{ property.description }}</div>
+              <p-button label="Vezi" (click)="viewPropertyDetails(property)"></p-button>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div class="large-screen" style="padding-right: 1rem; padding-top: 2rem; height: 30rem; width: 80rem">
-        <app-youtube-player [videoId]="'rhuyNfSvz0s'" [height]="'100%'"></app-youtube-player>
-      </div>
-
-      <div class="small-screen" style="padding-right: 1rem; padding-top: 2rem">
-        <app-youtube-player [videoId]="'rhuyNfSvz0s'" [height]="'100%'"></app-youtube-player>
-      </div>
-    </div>
-  </main>
+    </ng-template>
+  </p-dataView>
 </div>
 
-<!-- Lands Section -->
-<div *ngIf="!propertyType">
-  <main>
-    <div>
-      <span>Hai în sat</span>
-      <h1>Teren în Baia de Fier</h1>
-      <hr>
-      <p style="max-width: 40rem">Teren la drum asfaltat <br> Utilități la 200 de metri
-        <br> Suprafață intravilan: 1948 mp<br> Suprafață extravilan: 5840 mp</p>
-    </div>
 
-    <div class="swiper mySwiper swiper-baia">
-      <div class="swiper-wrapper">
-        <div (click)="openGalleria(BuyEnum.BAIA)" class="swiper-slide swiper-slide-one"></div>
-
-        <div (click)="openGalleria(BuyEnum.BAIA)" class="swiper-slide swiper-slide-two"></div>
-      </div>
-      <div class="swiper-pagination"></div>
-    </div>
-  </main>
-
-  <main>
-    <div>
-      <span>Hai în sat</span>
-      <h1>Teren în Polovragi</h1>
-      <hr>
-      <p style="max-width: 40rem">Teren cu utilități
-        <br> Suprafață: 8000 mp<br>
-        Situat într-o zonă pitorească
-    </div>
-
-    <div class="swiper mySwiper swiper-polovragi">
-      <div class="swiper-wrapper">
-        <div (click)="openGalleria(BuyEnum.POLOVRAGI)" class="swiper-slide swiper-slide-polovragi1"></div>
-
-        <div (click)="openGalleria(BuyEnum.POLOVRAGI)" class="swiper-slide swiper-slide-polovragi2"></div>
-
-        <div (click)="openGalleria(BuyEnum.POLOVRAGI)" class="swiper-slide swiper-slide-polovragi3"></div>
-
-        <div (click)="openGalleria(BuyEnum.POLOVRAGI)" class="swiper-slide swiper-slide-polovragi4"></div>
-
-        <div (click)="openGalleria(BuyEnum.POLOVRAGI)" class="swiper-slide swiper-slide-polovragi5"></div>
-
-        <div (click)="openGalleria(BuyEnum.POLOVRAGI)" class="swiper-slide swiper-slide-polovragi6"></div>
-      </div>
-      <div class="swiper-pagination"></div>
-    </div>
-  </main>
-</div>
-
-<div class="card flex justify-content-center">
+<div class="card flex justify-content-center" style="max-width: 1200px; margin: 0 auto;">
   <p-galleria id="galleriaFull"
     [value]="images"
     [(visible)]="displayGalleria"
