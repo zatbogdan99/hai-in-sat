@@ -5,191 +5,6 @@
   font-family: "Open Sans", sans-serif;
 }
 
-// Custom styling for floating labels
-:host ::ng-deep .p-float-label {
-  display: block;
-  position: relative;
-
-  label {
-    position: absolute;
-    pointer-events: none;
-    top: 50%;
-    margin-top: -0.5rem;
-    transition-property: all;
-    transition-timing-function: ease;
-    line-height: 1;
-    left: 0.75rem;
-    color: #6c757d;
-    transition-duration: 0.2s;
-  }
-
-  input:focus ~ label,
-  input.p-filled ~ label,
-  textarea:focus ~ label,
-  textarea.p-filled ~ label {
-    top: -0.5rem;
-    font-size: 0.75rem;
-    background-color: #ffffff;
-    padding: 0 0.25rem;
-  }
-}
-
-main {
-  position: relative;
-  margin: 0 auto;
-  width: calc(min(90rem, 90%));
-  column-gap: 3rem;
-  padding-block: min(10vh, 1.5rem);
-}
-
-main > div span {
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  font-size: 1rem;
-  color: #717171;
-}
-
-main > div h1 {
-  background-color: #005baa;
-  background-image: linear-gradient(45deg, #005baa, #000000);
-  background-size: 100%;
-  background-repeat: repeat;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: 0.8px;
-  font-family: "Open Sans", sans-serif;
-  font-size: clamp(3.4375rem, 3.25rem + 0.75vw, 4rem);
-  font-weight: 800;
-}
-
-main > div hr {
-  display: block;
-  background: #005baa;
-  height: 0.25rem;
-  width: 6.25rem;
-  border: none;
-  margin: 1.125rem 0 1.875rem 0;
-}
-
-main > div p {
-  line-height: 1.6;
-}
-
-img {
-  width: 100%;
-  max-height: 30rem;
-  object-fit: contain;
-  display: block;
-}
-
-.p-galleria img {
-  display: block;
-  max-width: 100%;
-  max-height: 30rem;
-  object-fit: contain;
-  margin: auto;
-}
-
-.p-galleria .p-galleria-item-nav {
-  color: #0f0f0f;
-}
-
-.p-galleria-indicators {
-  color: #0f0f0f;
-}
-
-.swiper {
-  width: 100%;
-  padding-top: 3.125rem;
-  padding-left: 5rem;
-}
-
-.swiper-slide {
-  width: 18.75rem;
-  height: 28.125rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: self-start;
-}
-
-//Teren in baia
-.swiper-slide-one {
-  background: url(./../../assets/teren_baia1_taiat.jpg) no-repeat 50% 50%/cover;
-}
-
-.swiper-slide-two {
-  background: url(./../../assets/teren_baia2.jpg) no-repeat 50% 50%/cover;
-}
-
-//Teren in polovragi
-.swiper-slide-polovragi1 {
-  background: url(./../../assets/teren_polovragi1.avif) no-repeat 50% 50%/cover;
-}
-
-.swiper-slide-polovragi2 {
-  background: url(./../../assets/teren_polovragi2.avif) no-repeat 50% 50%/cover;
-}
-
-.swiper-slide-polovragi3 {
-  background: url(./../../assets/teren_polovragi3.avif) no-repeat 50% 50%/cover;
-}
-
-.swiper-slide-polovragi4 {
-  background: url(./../../assets/teren_polovragi4.avif) no-repeat 50% 50%/cover;
-}
-
-.swiper-slide-polovragi5 {
-  background: url(./../../assets/teren_polovragi5.avif) no-repeat 50% 50%/cover;
-}
-
-.swiper-slide-polovragi6 {
-  background: url(./../../assets/teren_polovragi6.avif) no-repeat 50% 50%/cover;
-}
-
-.swiper-pagination-bullet,
-.swiper-pagination-bullet-active {
-  background-color: #fff;
-}
-
-.swiper-pagination {
-  bottom: 1.25rem !important;
-}
-
-.swiper-slide h2 {
-  font-family: "Open Sans", sans-serif;
-  color: #fff;
-  font-weight: 400;
-  font-size: 1.4rem;
-  line-height: 1.4;
-  margin-bottom: 0.625rem;
-  padding: 0 0 0 1.563rem;
-  text-transform: uppercase;
-}
-
-.swiper-slide p {
-  font-family: "Open Sans", sans-serif;
-  color: #dadada;
-  font-weight: 300;
-  padding: 0 1.563rem;
-  line-height: 1.6;
-  font-size: 0.75rem;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.swiper-slide a {
-  margin: 1.25rem 1.563rem 3.438rem 1.563rem;
-  padding: 0.438em 1.875rem;
-  font-size: 0.9rem;
-}
-
-.swiper-slide a:hover {
-  color: #005baa;
-}
-
 .spinner-container {
   position: fixed;
   top: 0;
@@ -203,53 +18,230 @@ img {
   z-index: 1000;
 }
 
-.p-field {
-  margin-bottom: 1rem;
+/* Header Section */
+.property-header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.p-field label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: bold;
-}
+.property-filter {
+  flex: 1;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 
-@media screen and (min-width: 48rem){
-  main {
+  .property-toggle {
     display: flex;
     align-items: center;
+    gap: 0.75rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #555;
   }
-}
 
-@media screen and (min-width: 93.75rem) {
-  .swiper {
-    width: 85%;
-  }
-}
-
-//mobile
-@media only screen and (max-width: 500px) {
-  .small-screen {
-    display: block;
-  }
-  .large-screen {
-    display: none;
-  }
-}
-
-//desktop
-@media only screen and (min-width: 500px) {
-  .small-screen {
-    display: none;
-  }
-  .large-screen {
-    display: block;
-  }
-}
-
-// Custom styles for the dialog
-:host ::ng-deep .centered-dialog-header {
-  .p-dialog-header {
-    justify-content: center;
+  .property-subtext {
     text-align: center;
+    font-size: 0.95rem;
+    color: #444;
+  }
+
+  .cta-btn {
+    width: fit-content;
+  }
+}
+
+.property-header-text {
+  flex: 1;
+  min-width: 280px;
+  text-align: center;
+
+  h1 {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 800;
+    background: linear-gradient(45deg, #005baa, #000000);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  hr {
+    width: 80px;
+    height: 4px;
+    background-color: #005baa;
+    border: none;
+    margin: 1rem auto;
+  }
+
+  p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #444;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+/* LISTA */
+.property-data-view {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+
+  .dataView-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+  }
+
+  .property-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .property-list-item {
+      display: flex;
+      gap: 1rem;
+      border: 1px solid #e0e0e0;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      align-items: center;
+      background-color: #fff;
+
+      img {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 0.5rem;
+      }
+
+      .property-list-content {
+        flex: 1;
+
+        h2 {
+          font-size: 1.25rem;
+          margin-bottom: 0.5rem;
+          color: #1e1e1e;
+        }
+
+        p {
+          margin-bottom: 0.75rem;
+          color: #555;
+        }
+      }
+    }
+  }
+
+  .property-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+
+    .property-card {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      width: 280px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+
+      img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        border-radius: 0.5rem;
+        margin-bottom: 0.75rem;
+      }
+
+      h2 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        color: #1e1e1e;
+      }
+
+      p {
+        font-size: 0.95rem;
+        color: #666;
+        margin-bottom: 1rem;
+      }
+    }
+  }
+}
+
+/* Dialog styling */
+.property-dialog-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+
+  .property-dialog-left,
+  .property-dialog-right {
+    flex: 1 1 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .p-float-label {
+    width: 100%;
+  }
+
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+
+      img {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
+  }
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: flex-start;
+  gap: 1rem;
+  padding-top: 1rem;
+}
+
+/* Dialog header center */
+:host ::ng-deep .centered-dialog-header .p-dialog-header {
+  justify-content: center;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .property-header-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .property-dialog-content {
+    flex-direction: column;
+  }
+
+  .dialog-footer {
+    flex-direction: column;
+    align-items: stretch;
   }
 }

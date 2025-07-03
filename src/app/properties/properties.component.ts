@@ -14,21 +14,27 @@ import { DataViewModule } from "primeng/dataview";
 import { Router } from "@angular/router";
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { TagModule } from "primeng/tag";
+import {InputText} from "primeng/inputtext";
+import {Textarea} from "primeng/textarea";
+import {FloatLabel} from "primeng/floatlabel";
 
 @Component({
   selector: 'app-properties',
   templateUrl: './properties.component.html',
   imports: [
     GalleriaModule,
-    Divider,
-    Dialog,
     InputSwitch,
     ProgressSpinner,
     Button,
     FormsModule,
     DataViewModule,
     SelectButtonModule,
-    TagModule
+    TagModule,
+    Divider,
+    Dialog,
+    InputText,
+    Textarea,
+    FloatLabel
   ],
   styleUrls: ['./properties.component.scss']
 })

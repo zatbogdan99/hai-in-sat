@@ -1,83 +1,86 @@
 <div *ngIf="loadingService.loading$ | async" class="spinner-container">
   <p-progressSpinner></p-progressSpinner>
 </div>
-<main>
-  <div style="display: flex; flex-direction: column">
-    <div style="display: flex; justify-content: center;">
-      <div style="display: flex; flex-direction: column; margin-right: 2rem; justify-content: center; align-items: center; flex: 1;">
-        <!-- Filter by property type -->
-        <div style="display: flex; align-items: center; margin-bottom: 1rem; justify-content: center;">
-          <span style="margin-right: 0.5rem;">Terenuri</span>
-          <p-inputSwitch [(ngModel)]="propertyType"></p-inputSwitch>
-          <span style="margin-left: 0.5rem;">Case</span>
-        </div>
 
-        <!-- Text and button below the filter -->
-        <div style="display: flex; flex-direction: column; align-items: center; margin-top: 1rem; justify-content: center;">
-          <p style="margin-bottom: 1rem; text-align: center;">Pentru doar 99 de lei pe an va puteti lista proprietatea pe site-ul nostru</p>
-          <p-button label="Aplică" (click)="showAddPropertyModal()"></p-button>
-        </div>
-      </div>
-
-      <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; flex: 1; text-align: center;">
-        <h1 style="text-align: center; width: 100%;">Case si terenuri de vanzare</h1>
-        <hr>
-        <p style="max-width: 40rem; text-align: center;">Echipa noastră poate fi ghidul dvs. în această călătorie de transformare. Suntem aici să vă prezentăm oportunitățile incredibile
-          pe care viața la țară le oferă. Alegeți să faceți pasul și să explorați ce înseamnă cu adevărat să trăiești.</p>
-      </div>
+<main class="property-header-container">
+  <section class="property-filter">
+    <div class="property-toggle">
+      <span>Terenuri</span>
+      <p-inputSwitch [(ngModel)]="propertyType"></p-inputSwitch>
+      <span>Case</span>
     </div>
-  </div>
+    <p class="property-subtext">
+      Pentru doar <strong>99 de lei</strong> pe an vă puteți lista proprietatea pe site-ul nostru
+    </p>
+    <p-button label="Aplică" class="cta-btn" (click)="showAddPropertyModal()"></p-button>
+  </section>
+
+  <section class="property-header-text">
+    <h1>Case și terenuri de vânzare</h1>
+    <hr />
+    <p>
+      Echipa noastră poate fi ghidul dvs. în această călătorie de transformare. Suntem aici să vă prezentăm oportunitățile
+      incredibile pe care viața la țară le oferă. Alegeți să faceți pasul și să explorați ce înseamnă cu adevărat să trăiești.
+    </p>
+  </section>
 </main>
 
-<p-dialog header="Echipa noastra va va ajuta cu tot ce aveti nevoie, doar lasati-ne cateva informatii si va vom contacta in cel mai scurt timp" [(visible)]="displayModal" [style]="{width: '50vw'}" [modal]="true" styleClass="centered-dialog-header">
-  <div style="display: flex; height: 100%;">
-    <!-- Left side with form fields -->
-    <div style="flex: 1; padding-right: 1rem;">
-      <span style="margin-bottom: 2rem; width: 100%" class="p-float-label">
-        <input style="padding: 10px; width: 100%" type="text" pInputText id="firstName" [(ngModel)]="firstName">
-        <label htmlFor="firstName">Nume</label>
-      </span>
-      <span style="margin-bottom: 2rem; width: 100%" class="p-float-label">
-        <input style="padding: 10px; width: 100%" type="text" pInputText id="lastName" [(ngModel)]="lastName">
-        <label htmlFor="lastName">Prenume</label>
-      </span>
-      <span style="margin-bottom: 2rem; width: 100%" class="p-float-label">
-        <input style="padding: 10px; width: 100%" type="email" pInputText id="email" [(ngModel)]="email">
-        <label htmlFor="email">E-mail</label>
-      </span>
-      <span style="margin-bottom: 2rem; width: 100%" class="p-float-label">
-        <textarea style="padding: 10px; width: 100%" rows="5" pInputTextarea id="propertyDescription" [(ngModel)]="propertyDescription"></textarea>
-        <label htmlFor="propertyDescription">Ce proprietate aveti de vanzare?</label>
-      </span>
+<!-- DIALOGUL DE ADAUGARE PROPRIETATE -->
+<p-dialog
+  header="Echipa noastră vă va ajuta cu tot ce aveți nevoie. Lăsați-ne câteva informații și vă vom contacta în cel mai scurt timp"
+  [(visible)]="displayModal"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  styleClass="centered-dialog-header"
+>
+  <div class="property-dialog-content">
+    <!-- FORMULAR -->
+    <div class="property-dialog-left">
+      <p-float-label>
+        <input style="width: 100%" type="text" pInputText id="firstName" [(ngModel)]="firstName" />
+        <label for="firstName">Nume</label>
+      </p-float-label>
+
+      <p-float-label>
+        <input style="width: 100%" type="text" pInputText id="lastName" [(ngModel)]="lastName" />
+        <label for="lastName">Prenume</label>
+      </p-float-label>
+
+      <p-float-label>
+        <input style="width: 100%" type="email" pInputText id="email" [(ngModel)]="email" />
+        <label for="email">E-mail</label>
+      </p-float-label>
+
+      <p-float-label>
+        <textarea style="width: 100%" rows="4" pInputTextarea id="propertyDescription" [(ngModel)]="propertyDescription"></textarea>
+        <label for="propertyDescription">Ce proprietate aveți de vânzare?</label>
+      </p-float-label>
     </div>
 
-    <!-- Vertical divider -->
-    <p-divider layout="vertical" styleClass="mx-2">
-      <b>SAU</b>
-    </p-divider>
+    <!-- SAU + CONTACT -->
+    <p-divider layout="vertical">SAU</p-divider>
 
-    <!-- Right side with contact information -->
-    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center;">
-      <h3 style="text-align: center; width: 100%; margin-bottom: 1.5rem;">Ne puteti contacta prin urmatoarele</h3>
-      <div class="contact-info" style="padding-top: 0.5rem;">
-        <div class="text" style="display: flex; align-items: center; margin-bottom: 0.5rem;">
-          <img style="cursor: pointer; width: 1.5rem; height: 1.5rem; margin-right: 0.5rem;" src="assets/instagram.png">
-          <span style="cursor: pointer">Instagram</span>
+    <div class="property-dialog-right">
+      <h3>Ne puteți contacta prin:</h3>
+      <div class="contact-info">
+        <div class="contact-item">
+          <img src="assets/instagram.png" alt="Instagram" />
+          <span>Instagram</span>
         </div>
-        <div class="text" style="display: flex; align-items: center; margin-bottom: 0.5rem;">
-          <img style="cursor: pointer; width: 1.5rem; height: 1.5rem; margin-right: 0.5rem;" src="assets/facebook.png">
-          <span style="cursor: pointer">Facebook</span>
+        <div class="contact-item">
+          <img src="assets/facebook.png" alt="Facebook" />
+          <span>Facebook</span>
         </div>
-        <div class="text" style="display: flex; align-items: center; margin-bottom: 0.5rem;">
-          <img style="cursor: pointer; width: 1.5rem; height: 1.5rem; margin-right: 0.5rem;" src="assets/tiktok.png">
-          <span style="cursor: pointer">Tiktok</span>
+        <div class="contact-item">
+          <img src="assets/tiktok.png" alt="Tiktok" />
+          <span>Tiktok</span>
         </div>
-        <div class="text" style="display: flex; align-items: center; margin-bottom: 0.5rem;">
-          <img style="width: 1.5rem; height: 1.5rem; margin-right: 0.5rem;" src="assets/wapp.png">
+        <div class="contact-item">
+          <img src="assets/wapp.png" alt="WhatsApp" />
           <span>0728140650</span>
         </div>
-        <div class="text" style="display: flex; align-items: center; margin-bottom: 0.5rem;">
-          <img style="width: 1.5rem; height: 1.5rem; margin-right: 0.5rem;" src="assets/envelope-solid.svg">
+        <div class="contact-item">
+          <img src="assets/envelope-solid.svg" alt="Email" />
           <span>contact&#64;hai-în-sat.ro</span>
         </div>
       </div>
@@ -85,19 +88,18 @@
   </div>
 
   <ng-template pTemplate="footer">
-    <div style="display: flex; justify-content: flex-start;">
+    <div class="dialog-footer">
       <p-button icon="pi pi-check" label="Salvează" (click)="saveProperty()"></p-button>
       <p-button icon="pi pi-times" label="Înapoi" (click)="hideModal()" styleClass="p-button-text"></p-button>
     </div>
   </ng-template>
 </p-dialog>
 
-
-<!--Aici e problema-->
-<div class="card" style="max-width: 1200px; margin: 0 auto;">
+<!-- LISTA PROPRIETĂȚI -->
+<div class="card property-data-view">
   <p-dataView #dv [value]="getFilteredProperties()" [layout]="layout">
     <ng-template pTemplate="header">
-      <div class="flex justify-content-end">
+      <div class="dataView-header">
         <p-selectbutton [(ngModel)]="layout" [options]="options" [allowEmpty]="false">
           <ng-template let-item pTemplate="item">
             <i class="pi" [ngClass]="{ 'pi-bars': item.value === 'list', 'pi-table': item.value === 'grid' }"></i>
@@ -107,56 +109,27 @@
     </ng-template>
 
     <ng-template #list let-items>
-      <div style="max-width: 900px; margin: 0 auto;">
-        <div *ngFor="let property of items; let first = first">
-          <div class="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4" [ngClass]="{ 'border-t border-surface-200 dark:border-surface-700': !first }">
-            <img class="shadow-2 block mx-auto border-round" [src]="property.thumbnail" [alt]="property.name" style="width: 150px; height: 150px; object-fit: cover;" />
-            <div class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
-              <div class="flex flex-column align-items-center sm:align-items-start gap-3">
-                <div class="text-2xl font-bold text-900">{{ property.name }}</div>
-                <div class="text-700" style="max-height: 80px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">{{ property.description }}</div>
-              </div>
-              <div class="flex flex-column align-items-center gap-3 sm:align-items-end">
-                <p-button label="Vezi" (click)="viewPropertyDetails(property)"></p-button>
-              </div>
-            </div>
+      <div class="property-list">
+        <div *ngFor="let property of items; let first = first" class="property-list-item">
+          <img [src]="property.thumbnail" [alt]="property.name" />
+          <div class="property-list-content">
+            <h2>{{ property.name }}</h2>
+            <p>{{ property.description }}</p>
+            <p-button label="Vezi" (click)="viewPropertyDetails(property)"></p-button>
           </div>
         </div>
       </div>
     </ng-template>
 
     <ng-template #grid let-items>
-      <div class="grid grid-cols-12 gap-4" style="display: flex; flex-wrap: wrap; justify-content: center;">
-        <div *ngFor="let property of items" class="col-span-12 sm:col-span-6 lg:col-span-4 xl:col-span-3 p-2" style="min-width: 280px; max-width: 300px;">
-          <div class="p-4 border-1 surface-border surface-card border-round" style="height: 350px; display: flex; flex-direction: column;">
-            <div class="flex flex-column align-items-center gap-3 py-5" style="flex: 1;">
-              <img class="w-9 shadow-2 border-round" [src]="property.thumbnail" [alt]="property.name" style="height: 150px; object-fit: cover;" />
-              <div class="text-2xl font-bold">{{ property.name }}</div>
-              <div class="text-700 text-center" style="flex: 1; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">{{ property.description }}</div>
-              <p-button label="Vezi" (click)="viewPropertyDetails(property)"></p-button>
-            </div>
-          </div>
+      <div class="property-grid">
+        <div *ngFor="let property of items" class="property-card">
+          <img [src]="property.thumbnail" [alt]="property.name" />
+          <h2>{{ property.name }}</h2>
+          <p>{{ property.description }}</p>
+          <p-button label="Vezi" (click)="viewPropertyDetails(property)"></p-button>
         </div>
       </div>
     </ng-template>
   </p-dataView>
-</div>
-
-
-<div class="card flex justify-content-center" style="max-width: 1200px; margin: 0 auto;">
-  <p-galleria id="galleriaFull"
-    [value]="images"
-    [(visible)]="displayGalleria"
-    [responsiveOptions]="responsiveOptions"
-    [numVisible]="7"
-    [circular]="true"
-    [fullScreen]="true"
-    [showItemNavigators]="true"
-    [showThumbnails]="false">
-    <ng-template pTemplate="item" let-item>
-      <img
-        [src]="item.itemImageSrc" [alt]="item.alt"
-        style="width: 100%; display: block;" />
-    </ng-template>
-  </p-galleria>
 </div>
