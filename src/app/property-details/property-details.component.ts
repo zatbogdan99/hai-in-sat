@@ -172,15 +172,32 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
   goToSlide(index: number): void {
     const track = this.carouselTrack.nativeElement;
     const slides = track.querySelectorAll('.gsap-carousel-slide') as NodeListOf<HTMLElement>;
-    const direction = index > this.currentIndex ? 1 : -1;
 
     const currentSlide = slides[this.currentIndex];
     const nextSlide = slides[index];
-    if (!currentSlide || !nextSlide) return;
+    if (!currentSlide || !nextSlide || this.currentIndex === index) return;
 
-    const tl = gsap.timeline({ defaults: { duration: 0.5, ease: 'power2.inOut' } });
-    tl.to(currentSlide, { xPercent: -100 * direction, opacity: 0 });
-    tl.fromTo(nextSlide, { xPercent: 100 * direction, opacity: 0 }, { xPercent: 0, opacity: 1 }, '<');
+    const direction = index > this.currentIndex ? 1 : -1;
+
+    const tl = gsap.timeline({
+      defaults: { duration: 0.6, ease: 'power2.inOut' }
+    });
+
+    tl.to(currentSlide, {
+      xPercent: -100 * direction,
+      opacity: 0,
+      zIndex: 1,
+      pointerEvents: 'none',
+      onComplete: () => {
+        gsap.set(currentSlide, { clearProps: 'all' });
+      }
+    });
+
+    tl.to(nextSlide, {
+      xPercent: 0,
+      opacity: 1,
+      zIndex: 2
+    }, '<');
 
     this.currentIndex = index;
   }
