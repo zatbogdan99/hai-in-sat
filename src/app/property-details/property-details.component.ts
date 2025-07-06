@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, ElementRef, ViewChild, AfterViewChecked} from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PhotoService } from '../service/photo-service';
 import { BuyEnum } from '../dto/buy.enum';
@@ -22,7 +22,7 @@ import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
   ],
   styleUrls: ['./property-details.component.scss']
 })
-export class PropertyDetailsComponent implements OnInit, AfterViewChecked {
+export class PropertyDetailsComponent implements OnInit, AfterViewInit {
   @ViewChild('carouselTrack') carouselTrack!: ElementRef;
   propertyId: string = '';
   propertyType: BuyEnum = BuyEnum.MILOSTEA;
@@ -30,7 +30,6 @@ export class PropertyDetailsComponent implements OnInit, AfterViewChecked {
   propertyDescription: string = '';
   images: any[] = [];
   currentIndex: number = 0;
-  hasRendered = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -47,11 +46,8 @@ export class PropertyDetailsComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  ngAfterViewChecked(): void {
-    if (!this.hasRendered && this.images.length > 0) {
-      this.goToSlide(0);
-      this.hasRendered = true;
-    }
+  ngAfterViewInit(): void {
+    setTimeout(() => this.goToSlide(0));
   }
 
   loadPropertyDetails(): void {
@@ -72,7 +68,6 @@ export class PropertyDetailsComponent implements OnInit, AfterViewChecked {
         this.photoService.getMilosteaPension().then((images) => {
           console.log('Loaded Milostea images:', images);
           this.images = images;
-          this.hasRendered = false;
           this.loadingService.loadingOff();
           this.goToSlide(0);
         });
@@ -83,7 +78,6 @@ export class PropertyDetailsComponent implements OnInit, AfterViewChecked {
         this.photoService.getBaiaImages().then((images) => {
           console.log('Loaded Baia images:', images);
           this.images = images;
-          this.hasRendered = false;
           this.loadingService.loadingOff();
           this.goToSlide(0);
         });
@@ -94,7 +88,6 @@ export class PropertyDetailsComponent implements OnInit, AfterViewChecked {
         this.photoService.getBaiaTeren().then((images) => {
           console.log('Loaded Baia Teren images:', images);
           this.images = images;
-          this.hasRendered = false;
           this.loadingService.loadingOff();
           this.goToSlide(0);
         });
@@ -105,7 +98,6 @@ export class PropertyDetailsComponent implements OnInit, AfterViewChecked {
         this.photoService.getPolovragiImages().then((images) => {
           console.log('Loaded Polovragi images:', images);
           this.images = images;
-          this.hasRendered = false;
           this.loadingService.loadingOff();
           this.goToSlide(0);
         });
@@ -116,7 +108,6 @@ export class PropertyDetailsComponent implements OnInit, AfterViewChecked {
         this.photoService.getTerenPolovragi().then((images) => {
           console.log('Loaded Polovragi Teren images:', images);
           this.images = images;
-          this.hasRendered = false;
           this.loadingService.loadingOff();
           this.goToSlide(0);
         });
@@ -127,7 +118,6 @@ export class PropertyDetailsComponent implements OnInit, AfterViewChecked {
         this.photoService.getHorezuImages().then((images) => {
           console.log('Loaded Horezu images:', images);
           this.images = images;
-          this.hasRendered = false;
           this.loadingService.loadingOff();
           this.goToSlide(0);
         });
@@ -138,7 +128,6 @@ export class PropertyDetailsComponent implements OnInit, AfterViewChecked {
         this.photoService.getCostestiImages().then((images) => {
           console.log('Loaded Costesti images:', images);
           this.images = images;
-          this.hasRendered = false;
           this.loadingService.loadingOff();
           this.goToSlide(0);
         });
@@ -149,7 +138,6 @@ export class PropertyDetailsComponent implements OnInit, AfterViewChecked {
         this.photoService.getSlatioaraImages().then((images) => {
           console.log('Loaded Slatioara images:', images);
           this.images = images;
-          this.hasRendered = false;
           this.loadingService.loadingOff();
           this.goToSlide(0);
         });
@@ -160,7 +148,6 @@ export class PropertyDetailsComponent implements OnInit, AfterViewChecked {
         this.photoService.getVaideeniImages().then((images) => {
           console.log('Loaded Vaideeni images:', images);
           this.images = images;
-          this.hasRendered = false;
           this.loadingService.loadingOff();
           this.goToSlide(0);
         });
@@ -171,7 +158,6 @@ export class PropertyDetailsComponent implements OnInit, AfterViewChecked {
         this.photoService.getBarbatestiImages().then((images) => {
           console.log('Loaded Barbatesti images:', images);
           this.images = images;
-          this.hasRendered = false;
           this.loadingService.loadingOff();
           this.goToSlide(0);
         });
@@ -184,6 +170,18 @@ export class PropertyDetailsComponent implements OnInit, AfterViewChecked {
   }
 
   goToSlide(index: number): void {
+    const track = this.carouselTrack.nativeElement;
+    const slides = track.querySelectorAll('.gsap-carousel-slide') as NodeListOf<HTMLElement>;
+    const direction = index > this.currentIndex ? 1 : -1;
+
+    const currentSlide = slides[this.currentIndex];
+    const nextSlide = slides[index];
+    if (!currentSlide || !nextSlide) return;
+
+    const tl = gsap.timeline({ defaults: { duration: 0.5, ease: 'power2.inOut' } });
+    tl.to(currentSlide, { xPercent: -100 * direction, opacity: 0 });
+    tl.fromTo(nextSlide, { xPercent: 100 * direction, opacity: 0 }, { xPercent: 0, opacity: 1 }, '<');
+
     this.currentIndex = index;
   }
 

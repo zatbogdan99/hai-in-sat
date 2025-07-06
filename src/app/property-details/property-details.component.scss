@@ -18,11 +18,9 @@
   left: 0;
   width: 100%;
   height: 100%;
-  display: none;
   opacity: 0;
   pointer-events: none;
   transform: translateX(100%);
-  transition: all 0.5s ease;
 
   img {
     width: 100%;
@@ -32,7 +30,6 @@
 }
 
 .gsap-carousel-slide.active {
-  display: block;
   opacity: 1;
   pointer-events: auto;
   transform: translateX(0%);
