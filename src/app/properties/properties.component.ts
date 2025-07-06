@@ -262,6 +262,7 @@ export class PropertiesComponent implements AfterViewInit {
   }
 
   viewPropertyDetails(property: any) {
+    console.log('Viewing property details:', property);
     this.router.navigate(['/property', BuyEnum[property.id]]);
   }
 

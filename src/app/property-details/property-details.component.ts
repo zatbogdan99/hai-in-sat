@@ -52,6 +52,7 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
 
   loadPropertyDetails(): void {
     this.propertyType = BuyEnum[this.propertyId as keyof typeof BuyEnum];
+    console.log('Aici incarc detaliile pentru: ', this.propertyType);
 
     switch (this.propertyType) {
       case BuyEnum.MILOSTEA:
@@ -63,6 +64,15 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
           this.goToSlide(0);
         });
         break;
+        case BuyEnum.BAIA:
+          this.propertyName = 'Teren în Baia';
+          this.propertyDescription = 'Teren in baia de fier';
+          this.photoService.getBaiaTeren().then((images) => {
+            this.images = images;
+            this.loadingService.loadingOff();
+            this.goToSlide(0);
+          });
+          break;
       default:
         this.router.navigate(['/properties']);
         break;
