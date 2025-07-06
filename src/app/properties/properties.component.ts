@@ -6,7 +6,6 @@ import { LoadingService } from "../service/loading-service/loading-service.servi
 import { GalleriaModule } from "primeng/galleria";
 import { Divider } from "primeng/divider";
 import { Dialog } from "primeng/dialog";
-import { InputSwitch } from "primeng/inputswitch";
 import { ProgressSpinner } from "primeng/progressspinner";
 import { Button } from "primeng/button";
 import { FormsModule } from "@angular/forms";
@@ -23,7 +22,6 @@ import {FloatLabel} from "primeng/floatlabel";
   templateUrl: './properties.component.html',
   imports: [
     GalleriaModule,
-    InputSwitch,
     ProgressSpinner,
     Button,
     FormsModule,
@@ -60,15 +58,6 @@ export class PropertiesComponent implements AfterViewInit {
     return 'success';
   }
 
-  private _propertyType: boolean = true;
-
-  get propertyType(): boolean {
-    return this._propertyType;
-  }
-
-  set propertyType(value: boolean) {
-    this._propertyType = value;
-  }
 
   firstName: string = '';
   lastName: string = '';
@@ -184,47 +173,45 @@ export class PropertiesComponent implements AfterViewInit {
   }
 
   initializeSwiper(): void {
-    if (this._propertyType === false) {
-      setTimeout(() => {
-        const existingSwipers = document.querySelectorAll('.swiper');
-        existingSwipers.forEach(swiperEl => {
-          const swiperInstance = (swiperEl as any).swiper;
-          if (swiperInstance) {
-            swiperInstance.destroy(true, true);
-          }
-        });
+    setTimeout(() => {
+      const existingSwipers = document.querySelectorAll('.swiper');
+      existingSwipers.forEach(swiperEl => {
+        const swiperInstance = (swiperEl as any).swiper;
+        if (swiperInstance) {
+          swiperInstance.destroy(true, true);
+        }
+      });
 
-        const swiperBaia = new Swiper(".swiper-baia", {
-          effect: "coverflow",
-          grabCursor: true,
-          centeredSlides: true,
-          coverflowEffect: { rotate: 0, stretch: 0, depth: 100, modifier: 3, slideShadows: true },
-          loop: true,
-          loopAdditionalSlides: 3,
-          watchSlidesProgress: true,
-          watchOverflow: true,
-          observer: true,
-          observeParents: true,
-          pagination: { el: ".swiper-baia .swiper-pagination", clickable: true },
-          breakpoints: { 640: { slidesPerView: 2 }, 768: { slidesPerView: 1 }, 1024: { slidesPerView: 2 }, 1560: { slidesPerView: 3 } }
-        } as any);
+      const swiperBaia = new Swiper(".swiper-baia", {
+        effect: "coverflow",
+        grabCursor: true,
+        centeredSlides: true,
+        coverflowEffect: { rotate: 0, stretch: 0, depth: 100, modifier: 3, slideShadows: true },
+        loop: true,
+        loopAdditionalSlides: 3,
+        watchSlidesProgress: true,
+        watchOverflow: true,
+        observer: true,
+        observeParents: true,
+        pagination: { el: ".swiper-baia .swiper-pagination", clickable: true },
+        breakpoints: { 640: { slidesPerView: 2 }, 768: { slidesPerView: 1 }, 1024: { slidesPerView: 2 }, 1560: { slidesPerView: 3 } }
+      } as any);
 
-        const swiperPolovragi = new Swiper(".swiper-polovragi", {
-          effect: "coverflow",
-          grabCursor: true,
-          centeredSlides: true,
-          coverflowEffect: { rotate: 0, stretch: 0, depth: 100, modifier: 3, slideShadows: true },
-          loop: true,
-          loopAdditionalSlides: 3,
-          watchSlidesProgress: true,
-          watchOverflow: true,
-          observer: true,
-          observeParents: true,
-          pagination: { el: ".swiper-polovragi .swiper-pagination", clickable: true },
-          breakpoints: { 640: { slidesPerView: 2 }, 768: { slidesPerView: 1 }, 1024: { slidesPerView: 2 }, 1560: { slidesPerView: 3 } }
-        } as any);
-      }, 100);
-    }
+      const swiperPolovragi = new Swiper(".swiper-polovragi", {
+        effect: "coverflow",
+        grabCursor: true,
+        centeredSlides: true,
+        coverflowEffect: { rotate: 0, stretch: 0, depth: 100, modifier: 3, slideShadows: true },
+        loop: true,
+        loopAdditionalSlides: 3,
+        watchSlidesProgress: true,
+        watchOverflow: true,
+        observer: true,
+        observeParents: true,
+        pagination: { el: ".swiper-polovragi .swiper-pagination", clickable: true },
+        breakpoints: { 640: { slidesPerView: 2 }, 768: { slidesPerView: 1 }, 1024: { slidesPerView: 2 }, 1560: { slidesPerView: 3 } }
+      } as any);
+    }, 100);
   }
 
   protected readonly BuyEnum = BuyEnum;
@@ -267,9 +254,6 @@ export class PropertiesComponent implements AfterViewInit {
   }
 
   getFilteredProperties() {
-    return this.properties.filter(property =>
-      (this._propertyType && property.type === 'house') ||
-      (!this._propertyType && property.type === 'land')
-    );
+    return this.properties;
   }
 }
