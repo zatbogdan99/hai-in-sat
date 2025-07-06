@@ -2,73 +2,45 @@
   <p-progressSpinner></p-progressSpinner>
 </div>
 
-<main>
-  <div style="display: flex; flex-direction: column">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-      <div>
+<main class="property-details-container">
+  <div class="property-content">
+    <div class="property-header">
+      <div class="property-info">
         <span>Hai în sat</span>
         <h1>{{ propertyName }}</h1>
         <hr>
-        <p style="max-width: 40rem">{{ propertyDescription }}</p>
+        <p>{{ propertyDescription }}</p>
       </div>
-      <div>
+      <div class="back-button">
         <p-button icon="pi pi-arrow-left" label="Înapoi la lista de proprietăți" (onClick)="goBackToProperties()" styleClass="p-button-text"></p-button>
       </div>
     </div>
 
-    <!-- Large screen galleria -->
-    <div class="large-screen">
-      <div style="width: 100%; max-width: 80rem; margin: 2rem auto;">
-        <p-galleria
-          [value]="images"
-          [responsiveOptions]="responsiveOptions"
-          [numVisible]="7"
-          [circular]="true"
-          [fullScreen]="false"
-          [showItemNavigators]="true"
-          [autoPlay]="true"
-          [showThumbnails]="true">
-          <ng-template pTemplate="item" let-item>
-            <img
-              [src]="item.itemImageSrc" [alt]="item.alt"
-              style="width: 100%; display: block; max-height: 70vh; object-fit: contain;" />
-          </ng-template>
-          <ng-template pTemplate="thumbnail" let-item>
-            <div class="grid grid-nogutter justify-content-center">
-              <img [src]="item.itemImageSrc" [alt]="item.alt" style="display: block; max-width: 100px; max-height: 70px; object-fit: cover;" />
-            </div>
-          </ng-template>
-        </p-galleria>
+    <div class="carousel-wrapper">
+      <div #carouselTrack class="carousel-track">
+        <div *ngFor="let item of images; let i = index"
+             class="gsap-carousel-slide"
+             [class.active]="i === currentIndex">
+          <img [src]="item.itemImageSrc" [alt]="item.alt" />
+        </div>
       </div>
     </div>
 
-    <!-- Small screen galleria -->
-    <div class="small-screen">
-      <div style="width: 100%; margin: 1rem auto;">
-        <p-galleria
-          [value]="images"
-          [responsiveOptions]="responsiveOptions"
-          [numVisible]="3"
-          [circular]="true"
-          [fullScreen]="false"
-          [showItemNavigators]="true"
-          [autoPlay]="true"
-          [showThumbnails]="false">
-          <ng-template pTemplate="item" let-item>
-            <img
-              [src]="item.itemImageSrc" [alt]="item.alt"
-              style="width: 100%; display: block;" />
-          </ng-template>
-        </p-galleria>
-      </div>
+    <div class="carousel-controls">
+      <button class="carousel-button" (click)="prevSlide()">
+        ‹
+      </button>
+      <button class="carousel-button" (click)="nextSlide()">
+        ›
+      </button>
     </div>
 
     <!-- YouTube video for Milostea property -->
-    <div *ngIf="propertyType === 0" class="large-screen" style="padding-right: 1rem; padding-top: 2rem; height: 30rem; width: 80rem">
+    <div *ngIf="propertyType === 0" class="video-container large-screen">
       <app-youtube-player [videoId]="'rhuyNfSvz0s'" [height]="'100%'"></app-youtube-player>
     </div>
 
-    <div *ngIf="propertyType === 0" class="small-screen" style="padding-right: 1rem; padding-top: 2rem">
+    <div *ngIf="propertyType === 0" class="small-screen">
       <app-youtube-player [videoId]="'rhuyNfSvz0s'" [height]="'100%'"></app-youtube-player>
     </div>
   </div>

@@ -1,59 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PhotoService } from '../service/photo-service';
 import { BuyEnum } from '../dto/buy.enum';
 import { LoadingService } from '../service/loading-service/loading-service.service';
-import {YoutubePlayerComponent} from "../youtube-player/youtube-player.component";
-import {GalleriaModule} from "primeng/galleria";
+import { gsap } from 'gsap';
 import {ProgressSpinner} from "primeng/progressspinner";
 import {Button} from "primeng/button";
+import {YoutubePlayerComponent} from "../youtube-player/youtube-player.component";
+import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-property-details',
   templateUrl: './property-details.component.html',
   imports: [
-    YoutubePlayerComponent,
-    GalleriaModule,
     ProgressSpinner,
-    Button
+    Button,
+    YoutubePlayerComponent,
+    NgIf,
+    AsyncPipe,
+    NgForOf
   ],
   styleUrls: ['./property-details.component.scss']
 })
-export class PropertyDetailsComponent implements OnInit {
-  propertyId: string;
-  propertyType: BuyEnum;
+export class PropertyDetailsComponent implements OnInit, AfterViewInit {
+  @ViewChild('carouselTrack') carouselTrack!: ElementRef;
+  propertyId: string = '';
+  propertyType: BuyEnum = BuyEnum.MILOSTEA;
   propertyName: string = '';
   propertyDescription: string = '';
-  images: any[] | undefined;
-
-  responsiveOptions: any[] = [
-    {
-      breakpoint: '1500px',
-      numVisible: 5
-    },
-    {
-      breakpoint: '1024px',
-      numVisible: 3
-    },
-    {
-      breakpoint: '768px',
-      numVisible: 2
-    },
-    {
-      breakpoint: '560px',
-      numVisible: 1
-    }
-  ];
+  images: any[] = [];
+  currentIndex: number = 0;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private photoService: PhotoService,
     public loadingService: LoadingService
-  ) {
-    this.propertyId = '';
-    this.propertyType = BuyEnum.MILOSTEA;
-  }
+  ) {}
 
   ngOnInit(): void {
     this.loadingService.loadingOn();
@@ -63,11 +46,13 @@ export class PropertyDetailsComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit(): void {
+    setTimeout(() => this.goToSlide(0));
+  }
+
   loadPropertyDetails(): void {
-    // Convert string ID to enum
     this.propertyType = BuyEnum[this.propertyId as keyof typeof BuyEnum];
 
-    // Load property details based on ID
     switch (this.propertyType) {
       case BuyEnum.MILOSTEA:
         this.propertyName = 'Pensiune în Milostea';
@@ -75,85 +60,39 @@ export class PropertyDetailsComponent implements OnInit {
         this.photoService.getMilosteaPension().then((images) => {
           this.images = images;
           this.loadingService.loadingOff();
-        });
-        break;
-      case BuyEnum.BAIA_TEREN:
-        this.propertyName = 'Teren în Baia de Fier';
-        this.propertyDescription = 'Teren la drum asfaltat. Utilități la 200 de metri. Suprafață intravilan: 1948 mp. Suprafață extravilan: 5840 mp';
-        this.photoService.getBaiaTeren().then((images) => {
-          this.images = images;
-          this.loadingService.loadingOff();
-        });
-        break;
-      case BuyEnum.POLOVRAGI_TEREN:
-        this.propertyName = 'Teren în Polovragi';
-        this.propertyDescription = 'Teren cu utilități. Suprafață: 8000 mp. Situat într-o zonă pitorească';
-        this.photoService.getTerenPolovragi().then((images) => {
-          this.images = images;
-          this.loadingService.loadingOff();
-        });
-        break;
-      case BuyEnum.HOREZU:
-        this.propertyName = 'Casă în Horezu';
-        this.propertyDescription = 'Casă tradițională în Horezu, zonă renumită pentru ceramica sa. Aproape de mănăstirea Horezu, patrimoniu UNESCO.';
-        this.photoService.getHorezuImages().then((images) => {
-          this.images = images;
-          this.loadingService.loadingOff();
-        });
-        break;
-      case BuyEnum.COSTESTI:
-        this.propertyName = 'Casă în Costești';
-        this.propertyDescription = 'Proprietate în Costești, aproape de Cheile Oltețului și Peștera Polovragi. Zonă cu peisaje spectaculoase.';
-        this.photoService.getCostestiImages().then((images) => {
-          this.images = images;
-          this.loadingService.loadingOff();
-        });
-        break;
-      case BuyEnum.SLATIOARA:
-        this.propertyName = 'Casă în Slătioara';
-        this.propertyDescription = 'Casă în Slătioara, într-o zonă liniștită cu acces la natură și aer curat. Perfectă pentru relaxare.';
-        this.photoService.getSlatioaraImages().then((images) => {
-          this.images = images;
-          this.loadingService.loadingOff();
-        });
-        break;
-      case BuyEnum.POLOVRAGI:
-        this.propertyName = 'Casă în Polovragi';
-        this.propertyDescription = 'Casă în Polovragi, aproape de mănăstire și de intrarea în Cheile Oltețului. Zonă turistică în plină dezvoltare.';
-        this.photoService.getPolovragiImages().then((images) => {
-          this.images = images;
-          this.loadingService.loadingOff();
-        });
-        break;
-      case BuyEnum.BAIA:
-        this.propertyName = 'Casă în Baia de Fier';
-        this.propertyDescription = 'Casă în Baia de Fier, aproape de Peștera Muierilor. Zonă cu tradiții și peisaje montane.';
-        this.photoService.getBaiaImages().then((images) => {
-          this.images = images;
-          this.loadingService.loadingOff();
-        });
-        break;
-      case BuyEnum.VAIDEENI:
-        this.propertyName = 'Casă în Vaideeni';
-        this.propertyDescription = 'Proprietate în Vaideeni, zonă pastorală cu tradiții puternice și peisaje montane spectaculoase.';
-        this.photoService.getVaideeniImages().then((images) => {
-          this.images = images;
-          this.loadingService.loadingOff();
-        });
-        break;
-      case BuyEnum.BARBATESTI:
-        this.propertyName = 'Casă în Bărbătești';
-        this.propertyDescription = 'Casă în Bărbătești, într-o zonă liniștită cu acces la natură și aer curat. Perfectă pentru relaxare.';
-        this.photoService.getBarbatestiImages().then((images) => {
-          this.images = images;
-          this.loadingService.loadingOff();
+          this.goToSlide(0);
         });
         break;
       default:
-        // If property not found, navigate back to properties list
         this.router.navigate(['/properties']);
         break;
     }
+  }
+
+  goToSlide(index: number): void {
+    const track = this.carouselTrack.nativeElement;
+    const slides = track.querySelectorAll('.gsap-carousel-slide') as NodeListOf<HTMLElement>;
+    const direction = index > this.currentIndex ? 1 : -1;
+
+    const currentSlide = slides[this.currentIndex];
+    const nextSlide = slides[index];
+    if (!currentSlide || !nextSlide) return;
+
+    const tl = gsap.timeline({ defaults: { duration: 0.5, ease: 'power2.inOut' } });
+    tl.to(currentSlide, { xPercent: -100 * direction, opacity: 0 });
+    tl.fromTo(nextSlide, { xPercent: 100 * direction, opacity: 0 }, { xPercent: 0, opacity: 1 }, '<');
+
+    this.currentIndex = index;
+  }
+
+  prevSlide(): void {
+    const newIndex = (this.currentIndex - 1 + this.images.length) % this.images.length;
+    this.goToSlide(newIndex);
+  }
+
+  nextSlide(): void {
+    const newIndex = (this.currentIndex + 1) % this.images.length;
+    this.goToSlide(newIndex);
   }
 
   goBackToProperties(): void {
