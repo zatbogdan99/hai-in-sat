@@ -172,7 +172,7 @@ export class PhotoService {
     ];
   }
 
-  private static getBaiaTeren() {
+  private static getBaiaTerenData() {
     return [
       {
         itemImageSrc: 'assets/teren_baia1.jpg',
@@ -502,7 +502,7 @@ export class PhotoService {
   }
 
   getBaiaTeren() {
-    return Promise.resolve(PhotoService.getBaiaTeren());
+    return Promise.resolve(PhotoService.getBaiaTerenData());
   }
 
   getCostestiImages() {
