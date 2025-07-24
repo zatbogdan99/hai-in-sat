@@ -20,7 +20,6 @@
   </section>
 </main>
 
-<!-- DIALOGUL DE ADAUGARE PROPRIETATE -->
 <p-dialog
   header="Echipa noastră vă va ajuta cu tot ce aveți nevoie. Lăsați-ne câteva informații și vă vom contacta în cel mai scurt timp"
   [(visible)]="displayModal"
@@ -52,7 +51,6 @@
       </p-float-label>
     </div>
 
-    <!-- SAU + CONTACT -->
     <p-divider layout="vertical">SAU</p-divider>
 
     <div class="property-dialog-right">
@@ -90,7 +88,6 @@
   </ng-template>
 </p-dialog>
 
-<!-- LISTA PROPRIETĂȚI -->
 <div class="card property-data-view">
   <p-dataView #dv [value]="getFilteredProperties()" [layout]="layout">
     <ng-template pTemplate="header">
