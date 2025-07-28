@@ -6,6 +6,7 @@ import {DataService} from "../service/data-service";
 import { NgOptimizedImage } from '@angular/common'
 import {Button} from "primeng/button";
 import {Card} from "primeng/card";
+import {Divider} from "primeng/divider";
 import {YoutubePlayerComponent} from "../youtube-player/youtube-player.component";
 
 @Component({
@@ -14,6 +15,7 @@ import {YoutubePlayerComponent} from "../youtube-player/youtube-player.component
   imports: [
     Button,
     Card,
+    Divider,
     YoutubePlayerComponent
   ],
   styleUrls: ['./under-the-mountain.component.scss']

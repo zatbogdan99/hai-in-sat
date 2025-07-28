@@ -16,6 +16,8 @@ import { TagModule } from "primeng/tag";
 import {InputText} from "primeng/inputtext";
 import {Textarea} from "primeng/textarea";
 import {FloatLabel} from "primeng/floatlabel";
+import {DropdownModule} from "primeng/dropdown";
+import {AutoComplete} from "primeng/autocomplete";
 
 @Component({
   selector: 'app-properties',
@@ -32,7 +34,9 @@ import {FloatLabel} from "primeng/floatlabel";
     Dialog,
     InputText,
     Textarea,
-    FloatLabel
+    FloatLabel,
+    DropdownModule,
+    AutoComplete
   ],
   styleUrls: ['./properties.component.scss']
 })

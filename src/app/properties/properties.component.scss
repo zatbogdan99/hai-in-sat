@@ -192,6 +192,10 @@
     gap: 1.5rem;
   }
 
+  .property-dialog-right {
+    justify-content: center;
+  }
+
   .p-float-label {
     width: 100%;
   }
@@ -218,14 +222,43 @@
 .dialog-footer {
   display: flex;
   justify-content: flex-start;
-  gap: 1rem;
+  align-items: center;
   padding-top: 1rem;
+
+  .dialog-footer-left {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .dialog-footer-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: 2rem;
+    color: #666;
+    font-size: 0.9rem;
+
+    i {
+      color: #ffcc00;
+    }
+  }
 }
 
 /* Dialog header center */
 :host ::ng-deep .centered-dialog-header .p-dialog-header {
   justify-content: center;
   text-align: center;
+}
+
+/* Make the "Trimite" button a darker orange */
+:host ::ng-deep .p-button.p-button-warning {
+  background-color: #ff9900;
+  border-color: #ff9900;
+}
+
+:host ::ng-deep .p-button.p-button-warning:hover {
+  background-color: #e68a00;
+  border-color: #e68a00;
 }
 
 /* Responsive */
@@ -242,6 +275,22 @@
 
   .dialog-footer {
     flex-direction: column;
-    align-items: stretch;
+    align-items: flex-start;
+    gap: 1rem;
+
+    .dialog-footer-left, .dialog-footer-right {
+      width: 100%;
+    }
+
+    .dialog-footer-left {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .dialog-footer-right {
+      justify-content: flex-end;
+      margin-top: 0.5rem;
+      margin-left: 0;
+    }
   }
 }

@@ -129,12 +129,12 @@ export class AppComponent implements OnInit {
         command: () => this.goToProperties()
       },
       {
-        label: 'Vreau o casă',
+        label: 'Case',
         icon: 'pi pi-fw pi-home',
         command: () => this.goToHomeFormPage()
       },
       {
-        label: 'Vreau un teren',
+        label: 'Terenuri',
         icon: 'pi pi-fw pi-cloud',
         command: () => this.goToTerrainFormPage()
       }

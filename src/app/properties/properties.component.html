@@ -21,23 +21,23 @@
 </main>
 
 <p-dialog
-  header="Echipa noastră vă va ajuta cu tot ce aveți nevoie. Lăsați-ne câteva informații și vă vom contacta în cel mai scurt timp"
   [(visible)]="displayModal"
   [modal]="true"
   [style]="{ width: '50vw' }"
   styleClass="centered-dialog-header"
+  [closable]="false"
 >
+  <ng-template pTemplate="header">
+    <div style="text-align: center;">
+      <h2 style="margin-bottom: 5px;">Hai să ne cunoaștem!</h2>
+      <p style="margin-top: 0; font-size: 0.9rem; color: #666;">Spune-ne despre proprietatea ta si te contactam in cel mai scurt timp</p>
+    </div>
+  </ng-template>
   <div class="property-dialog-content">
-    <!-- FORMULAR -->
     <div class="property-dialog-left">
       <p-float-label>
         <input style="width: 100%" type="text" pInputText id="firstName" [(ngModel)]="firstName" />
-        <label for="firstName">Nume</label>
-      </p-float-label>
-
-      <p-float-label>
-        <input style="width: 100%" type="text" pInputText id="lastName" [(ngModel)]="lastName" />
-        <label for="lastName">Prenume</label>
+        <label for="firstName">Nume complet</label>
       </p-float-label>
 
       <p-float-label>
@@ -46,12 +46,28 @@
       </p-float-label>
 
       <p-float-label>
+        <input style="width: 100%" type="tel" pInputText id="phone" />
+        <label for="phone">Telefon</label>
+      </p-float-label>
+
+      <p-float-label>
+        <input style="width: 100%" type="text" pInputText id="village" />
+        <label for="village">Localitate</label>
+      </p-float-label>
+
+      <p-floatlabel>
+        <p-autoComplete inputId="propertyType" [dropdown]="true"/>
+        <label for="propertyType">Tip proprietate</label>
+      </p-floatlabel>
+
+
+      <p-float-label>
         <textarea style="width: 100%" rows="4" pInputTextarea id="propertyDescription" [(ngModel)]="propertyDescription"></textarea>
-        <label for="propertyDescription">Ce proprietate aveți de vânzare?</label>
+        <label for="propertyDescription">Descriere proprietate</label>
       </p-float-label>
     </div>
 
-    <p-divider layout="vertical">SAU</p-divider>
+    <p-divider layout="vertical"></p-divider>
 
     <div class="property-dialog-right">
       <h3>Ne puteți contacta prin:</h3>
@@ -82,8 +98,14 @@
 
   <ng-template pTemplate="footer">
     <div class="dialog-footer">
-      <p-button icon="pi pi-check" label="Salvează" (click)="saveProperty()"></p-button>
-      <p-button icon="pi pi-times" label="Înapoi" (click)="hideModal()" styleClass="p-button-text"></p-button>
+      <div class="dialog-footer-left">
+        <p-button icon="pi pi-send" label="Trimite" (click)="saveProperty()" styleClass="p-button-warning"></p-button>
+        <p-button icon="pi pi-times" label="Înapoi" (click)="hideModal()" styleClass="p-button-secondary"></p-button>
+      </div>
+      <div class="dialog-footer-right">
+        <i class="pi pi-thumbtack"></i>
+        <span>Datele tale raman confidentiale</span>
+      </div>
     </div>
   </ng-template>
 </p-dialog>

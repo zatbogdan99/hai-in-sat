@@ -2,6 +2,7 @@
 
 @import "primeicons/primeicons.css";
 @import 'swiper/css/bundle';
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 .despreNoiStyle {
   padding-left: 5rem;
@@ -212,4 +213,34 @@ img {
 
 #galleriaSmall .p-galleria .p-galleria-item-nav {
   color: black;
+}
+
+/* Custom styles for the menubar */
+.p-menubar {
+  background-color: #0f2f5d !important;
+  border: none !important;
+}
+
+.p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link .p-menuitem-text,
+.p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link .p-menuitem-icon {
+  color: white !important;
+  font-family: 'Playfair Display', serif !important;
+}
+
+.p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link:not(.p-disabled):hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.p-menubar .p-menubar-root-list > .p-menuitem.p-menuitem-active > .p-menuitem-link,
+.p-menubar .p-menubar-root-list > .p-menuitem.p-menuitem-active > .p-menuitem-link:not(.p-disabled):hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.p-menubar .p-menubar-item-link {
+  color: white !important;
+}
+
+.p-dialog-footer {
+  display: flex;
+  justify-content: flex-start !important;
 }

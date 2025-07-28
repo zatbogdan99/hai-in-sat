@@ -36,6 +36,12 @@
   margin-right: 0.5rem
 }
 
+/* Make social media icons fully opaque */
+fa-icon {
+  opacity: 1 !important;
+  color: white !important;
+}
+
 //mobile
 @media only screen and (max-width: 500px) {
   .small-screen {
@@ -54,4 +60,8 @@
   .large-screen {
     display: block;
   }
+}
+
+::ng-deep .p-menubar .p-menuitem-text {
+  color: white !important;
 }

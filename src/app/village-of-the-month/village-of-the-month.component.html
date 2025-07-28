@@ -2,6 +2,13 @@
   <p-progressSpinner></p-progressSpinner>
 </div>
 
+<div class="hero-banner">
+  <div class="hero-content">
+    <h1>Satul lunii - {{data[villageId].title}}</h1>
+    <h2>Descopera atmosfera, povestile si ceva text aici pentru satul ales luna aceasta</h2>
+  </div>
+</div>
+
 <div class="large-screen">
   <div class="container1">
     <p-button *ngIf="villageId === 0" label="Satul lunii iulie" icon="pi pi-arrow-left" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(1)"></p-button>
@@ -114,6 +121,13 @@
 
 
 <div class="small-screen">
+  <div class="hero-banner">
+    <div class="hero-content">
+      <h1>Satul lunii - {{data[villageId].title}}</h1>
+      <h2>Descopera atmosfera, povestile si ceva text aici pentru satul ales luna aceasta</h2>
+    </div>
+  </div>
+
   <div style="padding-top: 1rem">
     <p-button *ngIf="villageId === 0" label="Satul lunii iulie" icon="pi pi-arrow-left" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(1)"></p-button>
     <p-button *ngIf="villageId === 1" label="Satul lunii" icon="pi pi-arrow-right" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(2)"></p-button>
