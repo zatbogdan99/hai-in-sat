@@ -1,4 +1,4 @@
-import {Component, HostListener} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {DataDto} from "../dto/data.dto";
 import {VgApiService, VgCoreModule} from "@videogular/ngx-videogular/core";
 import {PhotoService} from "../service/photo-service";
@@ -13,7 +13,7 @@ import {VgBufferingModule} from "@videogular/ngx-videogular/buffering";
 import {VgOverlayPlayModule} from "@videogular/ngx-videogular/overlay-play";
 import {ProgressSpinner} from "primeng/progressspinner";
 import {AsyncPipe, NgIf} from "@angular/common";
-import {PrimeTemplate} from "primeng/api";
+import {Divider} from "primeng/divider";
 
 @Component({
   selector: 'app-village-of-the-month',
@@ -29,11 +29,11 @@ import {PrimeTemplate} from "primeng/api";
     ProgressSpinner,
     NgIf,
     AsyncPipe,
-    PrimeTemplate
+    Divider
   ],
   styleUrls: ['./village-of-the-month.component.scss']
 })
-export class VillageOfTheMonthComponent {
+export class VillageOfTheMonthComponent implements OnInit {
   horezuImages: any[] | undefined;
   costestiImages: any[] | undefined;
   slatioaraImages: any[] | undefined;
@@ -41,8 +41,6 @@ export class VillageOfTheMonthComponent {
   baiaImages: any[] | undefined;
   vaideeniImages: any[] | undefined;
   barbatestiImages: any[] | undefined;
-
-  lectieSpiritualitate = 'https://storage.googleapis.com/hai-in-sat-assets/videos/lectie%20spiritualitate.mov';
 
   data: DataDto[] = [];
 
@@ -116,7 +114,7 @@ export class VillageOfTheMonthComponent {
   }
 
   ngOnInit(): void {
-    this.loadingService.loadingOn();
+    // this.loadingService.loadingOn();
     gsap.registerPlugin(ScrollTrigger);
 
     let revealContainers = document.querySelectorAll(".reveal");
@@ -156,24 +154,6 @@ export class VillageOfTheMonthComponent {
     ];
 
   }
-
-  onPlayerReady(source: VgApiService) {
-    this.api = source;
-
-    this.api.getDefaultMedia().subscriptions.loadedMetadata.subscribe(() => {
-      this.loadingService.loadingOff();
-    });
-
-    this.api.getDefaultMedia().subscriptions.error.subscribe(() => {
-      this.loadingService.loadingOff();
-      console.error('Error loading video');
-    });
-  }
-
-  autoplay() {
-    this.api.play();
-  }
-
   changeVillage(villageId: number) {
     this.villageId = villageId;
   }

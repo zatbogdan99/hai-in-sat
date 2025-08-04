@@ -5,6 +5,11 @@
   font-family: "Open Sans", sans-serif;
 }
 
+.top-section-light-yellow {
+  background-color: #FFFDE7; /* Very light yellow background */
+  padding-bottom: 1rem;
+}
+
 .spinner-container {
   position: fixed;
   top: 0;
@@ -259,6 +264,44 @@
 :host ::ng-deep .p-button.p-button-warning:hover {
   background-color: #e68a00;
   border-color: #e68a00;
+}
+
+/* Property Filter Buttons */
+.property-filter-buttons {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.filter-button {
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 250px;
+  text-align: center;
+}
+
+.filter-button-transparent {
+  background-color: transparent;
+  color: #4CAF50;
+  border: 2px solid #4CAF50;
+}
+
+.filter-button-orange {
+  background-color: #ff9900;
+  color: white;
+  border: 2px solid #ff9900;
+}
+
+.filter-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Responsive */

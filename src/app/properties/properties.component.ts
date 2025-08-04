@@ -51,12 +51,17 @@ export class PropertiesComponent implements AfterViewInit {
   // Properties for DataView
   properties: any[] = [];
   layout: 'grid' | 'list' = 'grid';
+  propertyType: 'rent' | 'sale' = 'sale'; // Default to 'sale'
 
   // ✅ MODIFICAT - opțiuni compatibile cu p-selectbutton
   options = [
     { label: 'Listă', value: 'list' },
     { label: 'Grid', value: 'grid' }
   ];
+
+  setPropertyType(type: 'rent' | 'sale') {
+    this.propertyType = type;
+  }
 
   getSeverity(property: any): string {
     return 'success';
@@ -102,70 +107,80 @@ export class PropertiesComponent implements AfterViewInit {
         name: 'Pensiune în Milostea',
         description: 'Pensiune cu 16 camere. Utilități: Gratar/Restaurant/Terasa/Sala de evenimente. Afacere la cheie.',
         type: 'house',
-        thumbnail: 'assets/pensiune1.avif'
+        thumbnail: 'assets/pensiune1.avif',
+        forRent: false
       },
       {
         id: BuyEnum.BAIA,
         name: 'Casă în Baia de Fier',
         description: 'Casă în Baia de Fier, aproape de Peștera Muierilor. Zonă cu tradiții și peisaje montane.',
         type: 'house',
-        thumbnail: 'assets/baia1.avif'
+        thumbnail: 'assets/baia1.avif',
+        forRent: true
       },
       {
         id: BuyEnum.POLOVRAGI,
         name: 'Casă în Polovragi',
         description: 'Casă în Polovragi, aproape de mănăstire și de intrarea în Cheile Oltețului.',
         type: 'house',
-        thumbnail: 'assets/polovragi1.avif'
+        thumbnail: 'assets/polovragi1.avif',
+        forRent: false
       },
       {
         id: BuyEnum.HOREZU,
         name: 'Casă în Horezu',
         description: 'Casă tradițională în Horezu, zonă renumită pentru ceramica sa.',
         type: 'house',
-        thumbnail: 'assets/horezu1.avif'
+        thumbnail: 'assets/horezu1.avif',
+        forRent: true
       },
       {
         id: BuyEnum.COSTESTI,
         name: 'Casă în Costești',
         description: 'Proprietate în Costești, aproape de Cheile Oltețului și Peștera Polovragi.',
         type: 'house',
-        thumbnail: 'assets/costesti1.avif'
+        thumbnail: 'assets/costesti1.avif',
+        forRent: false
       },
       {
         id: BuyEnum.SLATIOARA,
         name: 'Casă în Slătioara',
         description: 'Casă în Slătioara, zonă liniștită, perfectă pentru relaxare.',
         type: 'house',
-        thumbnail: 'assets/slatioara1.avif'
+        thumbnail: 'assets/slatioara1.avif',
+        forRent: true
       },
       {
         id: BuyEnum.VAIDEENI,
         name: 'Casă în Vaideeni',
         description: 'Proprietate în Vaideeni, zonă pastorală cu peisaje montane spectaculoase.',
         type: 'house',
-        thumbnail: 'assets/vaideeni1.avif'
+        thumbnail: 'assets/vaideeni1.avif',
+        forRent: false
       },
       {
         id: BuyEnum.BARBATESTI,
         name: 'Casă în Bărbătești',
         description: 'Casă în Bărbătești, zonă liniștită cu acces la natură.',
         type: 'house',
-        thumbnail: 'assets/barbatesti1.avif'
+        thumbnail: 'assets/barbatesti1.avif',
+        forRent: true
       },
       {
         id: BuyEnum.BAIA_TEREN,
         name: 'Teren în Baia de Fier',
         description: 'Teren la drum asfaltat. Intravilan: 1948 mp. Extravilan: 5840 mp',
         type: 'land',
-        thumbnail: 'assets/teren_baia1.jpg'
+        thumbnail: 'assets/teren_baia1.jpg',
+        forRent: false
       },
       {
         id: BuyEnum.POLOVRAGI_TEREN,
         name: 'Teren în Polovragi',
         description: 'Teren cu utilități. Suprafață: 8000 mp. Zonă pitorească.',
         type: 'land',
-        thumbnail: 'assets/teren_polovragi1.avif'
+        thumbnail: 'assets/teren_polovragi1.avif',
+        forRent: true
       }
     ];
 
@@ -258,6 +273,8 @@ export class PropertiesComponent implements AfterViewInit {
   }
 
   getFilteredProperties() {
-    return this.properties;
+    return this.properties.filter(property => {
+      return this.propertyType === 'rent' ? property.forRent : !property.forRent;
+    });
   }
 }

@@ -183,8 +183,8 @@ img {
 }
 
 
-//mobile
-@media only screen and (max-width: 500px) {
+//mobile or smaller screens
+@media only screen and (max-width: 1199px), only screen and (max-height: 599px) {
   .small-screen {
     display: block;
   }

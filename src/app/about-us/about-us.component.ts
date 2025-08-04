@@ -3,11 +3,13 @@ import {gsap} from "gsap";
 import { faTiktok } from '@fortawesome/free-brands-svg-icons';
 import { faSquareFacebook } from "@fortawesome/free-brands-svg-icons";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
+import { Divider } from 'primeng/divider';
 
 @Component({
   selector: 'app-about-us',
   templateUrl: './about-us.component.html',
-  styleUrls: ['./about-us.component.scss']
+  styleUrls: ['./about-us.component.scss'],
+  imports: [Divider]
 })
 export class AboutUsComponent implements OnInit, AfterViewInit{
 

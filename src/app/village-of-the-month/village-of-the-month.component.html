@@ -2,47 +2,33 @@
   <p-progressSpinner></p-progressSpinner>
 </div>
 
-<div class="hero-banner">
-  <div class="hero-content">
-    <h1>Satul lunii - {{data[villageId].title}}</h1>
-    <h2>Descopera atmosfera, povestile si ceva text aici pentru satul ales luna aceasta</h2>
-  </div>
-</div>
-
 <div class="large-screen">
-  <div class="container1">
+  <div class="hero-banner">
+    <div class="hero-content">
+      <h1>Satul lunii - {{data[villageId].title}}</h1>
+      <h2>Descopera atmosfera, povestile si ceva text aici pentru satul ales luna aceasta</h2>
+    </div>
+  </div>
+  <div style="padding-top: 2rem; padding-left: 2rem; padding-right: 2rem;">
     <p-button *ngIf="villageId === 0" label="Satul lunii iulie" icon="pi pi-arrow-left" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(1)"></p-button>
     <p-button *ngIf="villageId === 1" label="Satul lunii" icon="pi pi-arrow-right" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(2)"></p-button>
     <p-button *ngIf="villageId === 2" label="Satul lunii august" icon="pi pi-arrow-left" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(0)"></p-button>
-
-    <div class="reveal">
-      <div style="padding-top: 4.5rem" class="reveal p-card-custom">
-        <p-card [style]="{ width: '35rem', height: '24rem' }">
-          <ng-template style="display: flex; justify-content: center; align-items: center; height: 100%" pTemplate="header">
-            <div style="flex-grow: 1">
-              <h5 class="title">{{data[villageId].title}}</h5>
-            </div>
-          </ng-template>
-          <p class="m-0 text-style">
-            {{data[villageId].desc}}
-          </p>
-        </p-card>
-      </div>
-      <div style="width: 40rem; padding-left: 3rem; align-items: center; justify-content: center">
-        <div style="display: flex; justify-content: center; align-items: center; height: 75vh; padding-top: 4.5rem">
-          <div style="width: 100%; height: 100%">
-            <app-youtube-player [videoId]="getYoutubeIdByVillage()"></app-youtube-player>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 
-  <div style="display: flex; justify-content: center">
-    <div class="p-card-custom" style="padding-top: 2rem; padding-bottom: 2rem">
-      <p-card [style]="{ width: '60rem' }">
+  <p-divider>
+    <i class="pi pi-star" style="color: #c8a96a;"></i>
+  </p-divider>
+
+  <section style="padding-left: 2rem; padding-right: 2rem;">
+    <div class="card-top" style="display: flex; flex-direction: row; justify-content: space-between;">
+      <div class="card-info" style="flex: 1;">
+        <div style="display: flex">
+          <div>
+            <h1 id="card-info-title" style="font-family: 'Comic Sans MS'; font-size: 2.5rem;">Prezentarea satului</h1>
+          </div>
+        </div>
         <p *ngIf="villageId === 0" class="m-0 text-style">
-          Racovița, un sat al comunei Polovragi, un sat unde copiii dacilor se jucau de-a războiul, un sat unde energiile se contopesc și se armonizează cu Universul.
+          Racovița, un sat al comunei Polovragi, un sat unde copiii dacilor se jucau de-a războiul, un sat unde energiile se contopesc și se armonizează cu Universul.
         </p>
         <p *ngIf="villageId === 1" class="m-0 text-style">
           Într-o după amiază cu soarele agățat pe albastrul boltei, cutreieram pădurea virgină și plină de viață în cătutarea gustoaselor ciuperci.
@@ -51,74 +37,50 @@
           Eram unit cu pădurea, respiram aerul acesteia... Eu însumi eram pădurea...
           <br>
           Coborând brusc o pantă abruptă am auzit cântecul unui cocoș. Atunci m-am trezit. Civilizație. Am ajuns în curtea bunicilor ancestrali. Bunicul bătea coasa, bunica întorcea fânul.
-          I-am întrebat „Pot să traversez curtea? Unde sunt aici? Câți ani aveți?”. M-am îndrăgostit ireversibil de tot ceea ce era în jurul lor. Aveau o energie pozitivă ce-mi inunda existența.
-          „Da, poți să vii! E satul Râpa... Ai fost după ciuperci, nu? Tataie are 90 de ani, iar eu 80. Ne rânduim cum putem. Vaca e viața noastră.”
+          I-am întrebat „Pot să traversez curtea? Unde sunt aici? Câți ani aveți?". M-am îndrăgostit ireversibil de tot ceea ce era în jurul lor. Aveau o energie pozitivă ce-mi inunda existența.
+          „Da, poți să vii! E satul Râpa... Ai fost după ciuperci, nu? Tataie are 90 de ani, iar eu 80. Ne rânduim cum putem. Vaca e viața noastră."
           <br><br>
           I-am iubit din prima clipă, iar apoi i-am căutat... tataie căzuse la pat, mamaia era puternică.
-          După un timp am revenit și am văzut doliu la poartă. M-am gândit “A murit tataie!”. Nu, mamaie murise și tataie era la pat, dar eu îi iubeam…
+          După un timp am revenit și am văzut doliu la poartă. M-am gândit "A murit tataie!". Nu, mamaie murise și tataie era la pat, dar eu îi iubeam…
         </p>
-        <p>
+        <p *ngIf="villageId === 2" class="m-0 text-style">
           Satul Olari, situat în orașul Horezu, județul Vâlcea, este renumit datorită faptului că foarte mulți săteni practică meșteșugul olăritului. Arta tradițională a olăritului din satul Olari este recunoscută la nivel mondial, Horezu fiind capitala ceramicii românești.
           În fiecare an, în prima săptămână din iunie, la Horezu se organizează târgul ceramicii populare, la care participă olari din toată țara. La acest târg sunt premiate cele mai frumoase creații din anul respectiv.
           <br><br>Meșteșugarii olari participă în fiecare an la târguri internaționale de ceramică, fiind renumiți și recunoscuți pentru puritatea și complexitatea artei populare pe care o propun.
           Satul Olari poate fi vizitat în orice perioadă a anului, unde puteți admira atât expozițiile meșteșugarilor populari, cât și peisajele pitorești din acest sat.
-          <br><br>Vă invităm cu drag în satul Olari!
+          <br><br>Vă invităm cu drag în satul Olari!
         </p>
-      </p-card>
-    </div>
-  </div>
+      </div>
 
-<div class="container1">
-  <div class="reveal">
-    <div class="reveal p-card-custom">
-      <p-card [style]="{ width: '40rem', height: '32.5rem' }">
-        <h5 style="font-size: 3rem; font-family: 'Comic Sans MS'; text-align: center">
-          Pastilă pentru suflet
-        </h5>
-        <p style="text-align: center; font-size: 1.6rem">
-          Trăiește prezentul!<br>
-          Trecutul și viitorul n-au nicio relevanță!
-        </p>
-      </p-card>
+      <div style="flex: 1; margin-left: 20px; height: 50rem;">
+        <app-youtube-player [videoId]="getYoutubeIdByVillage()"></app-youtube-player>
+      </div>
     </div>
-    <div style="max-width: 45rem; max-height: 32.5rem; min-width: 40rem; padding-left: 3rem">
-<!--      <app-youtube-player [videoId]="'W10oX2mk_R8'"></app-youtube-player>-->
-      <vg-player (onPlayerReady)="onPlayerReady($event)">
-        <vg-overlay-play></vg-overlay-play>
-        <vg-buffering></vg-buffering>
-        <vg-scrub-bar>
-          <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
-          <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
-        </vg-scrub-bar>
-        <vg-controls>
-          <vg-play-pause></vg-play-pause>
-          <vg-playback-button></vg-playback-button>
-          <vg-time-display></vg-time-display>
-          <vg-scrub-bar style="pointer-events: none"></vg-scrub-bar>
-<!--          <vg-time-display property="left"></vg-time-display>-->
-<!--          <vg-time-display property="total"></vg-time-display>-->
-          <vg-track-selector></vg-track-selector>
-          <vg-mute></vg-mute>
-          <vg-volume></vg-volume>
-          <vg-fullscreen></vg-fullscreen>
-        </vg-controls>
-        <video [vgMedia]="$any(media2)"
-               #media2 id="secondVideoDesktop"
-               preload="auto"
-               [src]="lectieSpiritualitate"
-               crossorigin>
-        </video>
-      </vg-player>
+  </section>
 
+  <p-divider>
+    <i class="pi pi-star" style="color: #c8a96a;"></i>
+  </p-divider>
+
+  <div class="container1" style="padding-left: 2rem; padding-right: 2rem;">
+    <div class="reveal">
+      <div class="p-card-custom">
+        <p-card [style]="{ width: '40rem', height: '32.5rem' }">
+          <h5 style="font-size: 3rem; font-family: 'Comic Sans MS'; text-align: center">
+            Pastilă pentru suflet
+          </h5>
+          <p style="text-align: center; font-size: 1.6rem">
+            Trăiește prezentul!<br>
+            Trecutul și viitorul n-au nicio relevanță!
+          </p>
+        </p-card>
+      </div>
+      <div class="youtube-container">
+        <app-youtube-player videoId="W10oX2mk_R8"></app-youtube-player>
+      </div>
     </div>
   </div>
 </div>
-</div>
-
-
-
-
-
 
 <div class="small-screen">
   <div class="hero-banner">
@@ -128,24 +90,24 @@
     </div>
   </div>
 
-  <div style="padding-top: 1rem">
+  <div style="padding-top: 2rem; padding-left: 1rem; padding-right: 1rem;">
     <p-button *ngIf="villageId === 0" label="Satul lunii iulie" icon="pi pi-arrow-left" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(1)"></p-button>
     <p-button *ngIf="villageId === 1" label="Satul lunii" icon="pi pi-arrow-right" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(2)"></p-button>
     <p-button *ngIf="villageId === 2" label="Satul lunii august" icon="pi pi-arrow-left" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(0)"></p-button>
   </div>
 
-      <div style="display: flex; justify-content: center; align-items: center; height: 25vh">
-        <div style="width: 90%">
-          <app-youtube-player *ngIf="isMobile" [videoId]="getYoutubeIdByVillage()"></app-youtube-player>
-        </div>
-      </div>
+  <p-divider>
+    <i class="pi pi-star" style="color: #c8a96a;"></i>
+  </p-divider>
 
-
-  <div class="container2">
+  <div class="container2" style="padding-left: 1rem; padding-right: 1rem;">
     <div class="reveal p-card-custom">
       <p-card>
+        <h2 style="text-align: center; font-size: 2rem;" class="m-0">
+          Prezentarea satului
+        </h2>
         <p *ngIf="villageId === 0" class="m-0 text-style">
-          Racovița, un sat al comunei Polovragi, un sat unde copiii dacilor se jucau de-a războiul, un sat unde energiile se contopesc și se armonizează cu Universul.
+          Racovița, un sat al comunei Polovragi, un sat unde copiii dacilor se jucau de-a războiul, un sat unde energiile se contopesc și se armonizează cu Universul.
         </p>
         <p *ngIf="villageId === 1" class="m-0 text-style">
           Într-o după amiază cu soarele agățat pe albastrul boltei, cutreieram pădurea virgină și plină de viață în cătutarea gustoaselor ciuperci.
@@ -154,26 +116,33 @@
           Eram unit cu pădurea, respiram aerul acesteia... Eu însumi eram pădurea...
           <br>
           Coborând brusc o pantă abruptă am auzit cântecul unui cocoș. Atunci m-am trezit. Civilizație. Am ajuns în curtea bunicilor ancestrali. Bunicul bătea coasa, bunica întorcea fânul.
-          I-am întrebat „Pot să traversez curtea? Unde sunt aici? Câți ani aveți?”. M-am îndrăgostit ireversibil de tot ceea ce era în jurul lor. Aveau o energie pozitivă ce-mi inunda existența.
-          „Da, poți să vii! E satul Râpa... Ai fost după ciuperci, nu? Tataie are 90 de ani, iar eu 80. Ne rânduim cum putem. Vaca e viața noastră.”
+          I-am întrebat „Pot să traversez curtea? Unde sunt aici? Câți ani aveți?". M-am îndrăgostit ireversibil de tot ceea ce era în jurul lor. Aveau o energie pozitivă ce-mi inunda existența.
+          „Da, poți să vii! E satul Râpa... Ai fost după ciuperci, nu? Tataie are 90 de ani, iar eu 80. Ne rânduim cum putem. Vaca e viața noastră."
           <br><br>
           I-am iubit din prima clipă, iar apoi i-am căutat... tataie căzuse la pat, mamaia era puternică.
-          După un timp am revenit și am văzut doliu la poartă. M-am gândit “A murit tataie!”. Nu, mamaie murise și tataie era la pat, dar eu îi iubeam…
+          După un timp am revenit și am văzut doliu la poartă. M-am gândit "A murit tataie!". Nu, mamaie murise și tataie era la pat, dar eu îi iubeam…
         </p>
         <p *ngIf="villageId === 2" class="m-0 text-style">
           Satul Olari, situat în orașul Horezu, județul Vâlcea, este renumit datorită faptului că foarte mulți săteni practică meșteșugul olăritului. Arta tradițională a olăritului din satul Olari este recunoscută la nivel mondial, Horezu fiind capitala ceramicii românești.
           În fiecare an, în prima săptămână din iunie, la Horezu se organizează târgul ceramicii populare, la care participă olari din toată țara. La acest târg sunt premiate cele mai frumoase creații din anul respectiv.
           <br><br>Meșteșugarii olari participă în fiecare an la târguri internaționale de ceramică, fiind renumiți și recunoscuți pentru puritatea și complexitatea artei populare pe care o propun.
           Satul Olari poate fi vizitat în orice perioadă a anului, unde puteți admira atât expozițiile meșteșugarilor populari, cât și peisajele pitorești din acest sat.
-          <br><br>Vă invităm cu drag în satul Olari!
+          <br><br>Vă invităm cu drag în satul Olari!
         </p>
       </p-card>
     </div>
+    <div class="youtube-container">
+      <app-youtube-player [videoId]="getYoutubeIdByVillage()"></app-youtube-player>
+    </div>
   </div>
 
-  <div class="container2">
+  <p-divider>
+    <i class="pi pi-star" style="color: #c8a96a;"></i>
+  </p-divider>
+
+  <div class="container2" style="padding-left: 1rem; padding-right: 1rem;">
       <p-card>
-        <h2 style="text-align: center" class="m-0">
+        <h2 style="text-align: center; font-size: 2rem;" class="m-0">
           Pastilă pentru suflet
         </h2>
         <p style="text-align: center">
@@ -181,12 +150,8 @@
           Trecutul și viitorul n-au nicio relevanță!
         </p>
       </p-card>
-  </div>
-
-        <div style="display: flex; justify-content: center; align-items: center; height: 25vh">
-          <div style="width: 90%">
-            <app-youtube-player [videoId]="'zKvVMNQElo4'"></app-youtube-player>
-          </div>
+      <div class="youtube-container">
+        <app-youtube-player videoId="W10oX2mk_R8"></app-youtube-player>
       </div>
-
+  </div>
 </div>
