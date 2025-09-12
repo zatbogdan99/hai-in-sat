@@ -1,0 +1,14 @@
+.add-property-container {
+  padding: 1rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  max-width: 600px;
+}
+
+.actions {
+  margin-top: 1rem;
+}

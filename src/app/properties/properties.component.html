@@ -4,13 +4,6 @@
   </div>
 
   <main class="property-header-container">
-    <section class="property-filter">
-      <p class="property-subtext">
-        Pentru doar <strong>99 de lei</strong> pe an vă puteți lista proprietatea pe site-ul nostru
-      </p>
-      <p-button label="Aplică" class="cta-btn" (click)="showAddPropertyModal()"></p-button>
-    </section>
-
     <section class="property-header-text">
       <h1>Case și terenuri de vânzare</h1>
       <hr />
@@ -19,6 +12,13 @@
         incredibile pe care viața la țară le oferă. Alegeți să faceți pasul și să explorați ce înseamnă cu adevărat să trăiești.
       </p>
     </section>
+
+    <section class="property-filter">
+      <p class="property-subtext">
+        Pentru doar <strong>99 de lei</strong> pe an vă puteți lista<br /> proprietatea pe site-ul nostru
+      </p>
+      <p-button label="Aplică" class="cta-btn" (click)="showAddPropertyModal()"></p-button>
+    </section>
   </main>
 
   <p-dialog
@@ -26,7 +26,7 @@
     [modal]="true"
     [style]="{ width: '50vw' }"
     styleClass="centered-dialog-header"
-    [closable]="false"
+    [closable]="true"
   >
     <ng-template pTemplate="header">
       <div style="text-align: center;">
@@ -36,36 +36,53 @@
     </ng-template>
     <div class="property-dialog-content">
       <div class="property-dialog-left">
-        <p-float-label>
-          <input style="width: 100%" type="text" pInputText id="firstName" [(ngModel)]="firstName" />
-          <label for="firstName">Nume complet</label>
-        </p-float-label>
+        <div class="field-with-icon">
+          <i class="pi pi-user field-icon" aria-hidden="true"></i>
+          <p-float-label style="width: 100%">
+            <input style="width: 100%" type="text" pInputText id="firstName" [(ngModel)]="firstName" />
+            <label for="firstName">Nume complet</label>
+          </p-float-label>
+        </div>
 
-        <p-float-label>
-          <input style="width: 100%" type="email" pInputText id="email" [(ngModel)]="email" />
-          <label for="email">E-mail</label>
-        </p-float-label>
+        <div class="field-with-icon">
+          <i class="pi pi-envelope field-icon" aria-hidden="true"></i>
+          <p-float-label style="width: 100%">
+            <input style="width: 100%" type="email" pInputText id="email" [(ngModel)]="email" />
+            <label for="email">E-mail</label>
+          </p-float-label>
+        </div>
 
-        <p-float-label>
-          <input style="width: 100%" type="tel" pInputText id="phone" />
-          <label for="phone">Telefon</label>
-        </p-float-label>
+        <div class="field-with-icon">
+          <i class="pi pi-phone field-icon" aria-hidden="true"></i>
+          <p-float-label style="width: 100%">
+            <input style="width: 100%" type="tel" pInputText id="phone" />
+            <label for="phone">Telefon</label>
+          </p-float-label>
+        </div>
 
-        <p-float-label>
-          <input style="width: 100%" type="text" pInputText id="village" />
-          <label for="village">Localitate</label>
-        </p-float-label>
+        <div class="field-with-icon">
+          <i class="pi pi-map-marker field-icon" aria-hidden="true"></i>
+          <p-float-label style="width: 100%">
+            <input style="width: 100%" type="text" pInputText id="village" />
+            <label for="village">Localitate</label>
+          </p-float-label>
+        </div>
 
-        <p-floatlabel>
-          <p-autoComplete inputId="propertyType" [dropdown]="true"/>
-          <label for="propertyType">Tip proprietate</label>
-        </p-floatlabel>
+        <div class="field-with-icon">
+          <i class="pi pi-home field-icon" aria-hidden="true"></i>
+          <p-floatlabel style="width: 100%">
+            <p-autoComplete inputId="propertyType" [dropdown]="true" [style]="{ width: '100%' }"/>
+            <label for="propertyType">Tip proprietate</label>
+          </p-floatlabel>
+        </div>
 
-
-        <p-float-label>
-          <textarea style="width: 100%" rows="4" pInputTextarea id="propertyDescription" [(ngModel)]="propertyDescription"></textarea>
-          <label for="propertyDescription">Descriere proprietate</label>
-        </p-float-label>
+        <div class="field-with-icon">
+          <i class="pi pi-info-circle field-icon" aria-hidden="true"></i>
+          <p-float-label style="width: 100%">
+            <textarea style="width: 100%" rows="4" pInputTextarea id="propertyDescription" [(ngModel)]="propertyDescription"></textarea>
+            <label for="propertyDescription">Descriere proprietate</label>
+          </p-float-label>
+        </div>
       </div>
 
       <p-divider layout="vertical"></p-divider>
@@ -101,10 +118,9 @@
       <div class="dialog-footer">
         <div class="dialog-footer-left">
           <p-button icon="pi pi-send" label="Trimite" (click)="saveProperty()" styleClass="p-button-primary"></p-button>
-          <p-button icon="pi pi-times" label="Înapoi" (click)="hideModal()" styleClass="p-button-secondary"></p-button>
         </div>
         <div class="dialog-footer-right">
-          <i class="pi pi-thumbtack"></i>
+          <i class="pi pi-lock privacy-icon" aria-hidden="true"></i>
           <span>Datele tale raman confidentiale</span>
         </div>
       </div>
@@ -112,8 +128,8 @@
   </p-dialog>
 
   <div class="property-filter-buttons">
-    <button class="filter-button" [ngClass]="{'filter-button-transparent': propertyType === 'sale', 'filter-button-orange': propertyType === 'rent'}" (click)="setPropertyType('rent')">Vezi case de inchiriat</button>
-    <button class="filter-button" [ngClass]="{'filter-button-transparent': propertyType === 'rent', 'filter-button-orange': propertyType === 'sale'}" (click)="setPropertyType('sale')">Vezi case de vanzare</button>
+    <button class="filter-button" [ngClass]="{'filter-button-transparent': propertyType === 'land', 'filter-button-orange': propertyType === 'house'}" (click)="setPropertyType('house')">Case</button>
+    <button class="filter-button" [ngClass]="{'filter-button-transparent': propertyType === 'house', 'filter-button-orange': propertyType === 'land'}" (click)="setPropertyType('land')">Terenuri</button>
   </div>
 </div>
 
@@ -136,7 +152,7 @@
           <div class="property-list-content">
             <h2>{{ property.name }}</h2>
             <p>{{ property.description }}</p>
-            <p-button [label]="property.forRent ? 'Închiriază' : 'Cumpără'" (click)="viewPropertyDetails(property)"></p-button>
+            <p-button label="Detalii" (click)="viewPropertyDetails(property)"></p-button>
           </div>
         </div>
       </div>
@@ -148,7 +164,7 @@
           <img [src]="property.thumbnail" [alt]="property.name" />
           <h2>{{ property.name }}</h2>
           <p>{{ property.description }}</p>
-          <p-button [label]="property.forRent ? 'Închiriază' : 'Cumpără'" (click)="viewPropertyDetails(property)"></p-button>
+          <p-button label="Detalii" (click)="viewPropertyDetails(property)"></p-button>
         </div>
       </div>
     </ng-template>

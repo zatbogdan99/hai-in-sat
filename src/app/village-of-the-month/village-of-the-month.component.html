@@ -5,14 +5,13 @@
 <div class="large-screen">
   <div class="hero-banner">
     <div class="hero-content">
-      <h1>Satul lunii - {{data[villageId].title}}</h1>
+      <h1>Satul lunii - {{ data[villageId]?.title }}</h1>
       <h2>Locuri care spun povesti - Oltenia de sub Munte</h2>
     </div>
   </div>
-  <div style="padding-top: 2rem; padding-left: 2rem; padding-right: 2rem;">
-    <p-button *ngIf="villageId === 0" label="Satul lunii iulie" icon="pi pi-arrow-left" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(1)"></p-button>
-    <p-button *ngIf="villageId === 1" label="Satul lunii" icon="pi pi-arrow-right" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(2)"></p-button>
-    <p-button *ngIf="villageId === 2" label="Satul lunii august" icon="pi pi-arrow-left" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(0)"></p-button>
+  <div style="padding-top: 2rem; padding-left: 2rem; padding-right: 2rem; display: flex; justify-content: space-between; gap: 1rem;">
+    <p-button *ngIf="prevId !== null" [label]="'Satul lunii ' + getMonthLabelByVillage(prevId)" icon="pi pi-arrow-left" size="small" [raised]="true" severity="secondary" (onClick)="goPrev()"></p-button>
+    <p-button *ngIf="nextId !== null" [label]="'Satul lunii ' + getMonthLabelByVillage(nextId)" icon="pi pi-arrow-right" size="small" [raised]="true" severity="secondary" (onClick)="goNext()" [ngStyle]="{ 'margin-left': prevId === null ? 'auto' : '0' }"></p-button>
   </div>
 
   <p-divider>
@@ -52,8 +51,8 @@
         </p>
       </div>
 
-      <div style="flex: 1; margin-left: 20px; height: 50rem;">
-        <app-youtube-player [videoId]="getYoutubeIdByVillage()"></app-youtube-player>
+      <div style="flex: 1; margin-left: 20px; height: 30rem;">
+        <app-youtube-player [videoId]="getYoutubeIdByVillage()" [height]="'100%'"></app-youtube-player>
       </div>
     </div>
   </section>
@@ -85,15 +84,14 @@
 <div class="small-screen">
   <div class="hero-banner">
     <div class="hero-content">
-      <h1>Satul lunii - {{data[villageId].title}}</h1>
+      <h1>Satul lunii - {{ data[villageId]?.title }}</h1>
       <h2>Locuri care spun povesti - Oltenia de sub Munte</h2>
     </div>
   </div>
 
-  <div style="padding-top: 2rem; padding-left: 1rem; padding-right: 1rem;">
-    <p-button *ngIf="villageId === 0" label="Satul lunii iulie" icon="pi pi-arrow-left" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(1)"></p-button>
-    <p-button *ngIf="villageId === 1" label="Satul lunii" icon="pi pi-arrow-right" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(2)"></p-button>
-    <p-button *ngIf="villageId === 2" label="Satul lunii august" icon="pi pi-arrow-left" size="small" [raised]="true" severity="secondary" (onClick)="changeVillage(0)"></p-button>
+  <div style="padding-top: 2rem; padding-left: 1rem; padding-right: 1rem; display: flex; justify-content: space-between; gap: 0.5rem;">
+    <p-button *ngIf="prevId !== null" [label]="'Satul lunii ' + getMonthLabelByVillage(prevId)" icon="pi pi-arrow-left" size="small" [raised]="true" severity="secondary" (onClick)="goPrev()"></p-button>
+    <p-button *ngIf="nextId !== null" [label]="'Satul lunii ' + getMonthLabelByVillage(nextId)" icon="pi pi-arrow-right" size="small" [raised]="true" severity="secondary" (onClick)="goNext()" [ngStyle]="{ 'margin-left': prevId === null ? 'auto' : '0' }"></p-button>
   </div>
 
   <p-divider>

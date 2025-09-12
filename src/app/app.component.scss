@@ -47,6 +47,13 @@ fa-icon {
   color: white !important;
 }
 
+/* Footer bottom bar background */
+.large-screen .card,
+.small-screen .card {
+  background-color: #0f2f5d !important;
+  color: white;
+}
+
 //mobile or smaller screens
 @media only screen and (max-width: 1199px), only screen and (max-height: 599px) {
   .small-screen {
@@ -69,4 +76,31 @@ fa-icon {
 
 ::ng-deep .p-menubar .p-menuitem-text {
   color: white !important;
+}
+
+/* Header menubar hover/focus: black text on semi-transparent white background */
+::ng-deep .p-menubar .p-menuitem-link:hover,
+::ng-deep .p-menubar .p-menuitem-link:focus {
+  background-color: rgba(255, 255, 255, 0.7) !important;
+  color: #000000 !important;
+}
+
+::ng-deep .p-menubar .p-menuitem-link:hover .p-menuitem-text,
+::ng-deep .p-menubar .p-menuitem-link:focus .p-menuitem-text,
+::ng-deep .p-menubar .p-menuitem-link:hover .p-menuitem-icon,
+::ng-deep .p-menubar .p-menuitem-link:focus .p-menuitem-icon {
+  color: #000000 !important;
+}
+
+/* Also cover PrimeNG 17+ markup using .p-menuitem-content */
+::ng-deep .p-menubar .p-menuitem:hover > .p-menuitem-content,
+::ng-deep .p-menubar .p-menuitem:focus-within > .p-menuitem-content {
+  background-color: rgba(255, 255, 255, 0.7) !important;
+}
+
+::ng-deep .p-menubar .p-menuitem:hover > .p-menuitem-content .p-menuitem-text,
+::ng-deep .p-menubar .p-menuitem:hover > .p-menuitem-content .p-menuitem-icon,
+::ng-deep .p-menubar .p-menuitem:focus-within > .p-menuitem-content .p-menuitem-text,
+::ng-deep .p-menubar .p-menuitem:focus-within > .p-menuitem-content .p-menuitem-icon {
+  color: #000000 !important;
 }

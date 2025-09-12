@@ -11,6 +11,7 @@ import { SeeTheAreaComponent } from './see-the-area/see-the-area.component';
 import { VillageOfTheMonthComponent } from './village-of-the-month/village-of-the-month.component';
 import { PropertiesComponent } from './properties/properties.component';
 import { PropertyDetailsComponent } from './property-details/property-details.component';
+import { AddPropertyComponent } from './add-property/add-property.component';
 
 export const appRoutes: Routes = [
   { path: 'terrain-form-page', component: TerrainFormPageComponent },
@@ -23,5 +24,6 @@ export const appRoutes: Routes = [
   { path: 'properties', component: PropertiesComponent },
   { path: 'property/:id', component: PropertyDetailsComponent },
   { path: 'village-of-the-month', component: VillageOfTheMonthComponent },
+  { path: 'add-property', component: AddPropertyComponent },
   { path: '**', component: LandingPageComponent }
 ];

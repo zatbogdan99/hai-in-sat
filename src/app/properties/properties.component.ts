@@ -51,7 +51,7 @@ export class PropertiesComponent implements AfterViewInit {
   // Properties for DataView
   properties: any[] = [];
   layout: 'grid' | 'list' = 'grid';
-  propertyType: 'rent' | 'sale' = 'sale'; // Default to 'sale'
+  propertyType: 'house' | 'land' = 'house'; // Default to 'house'
 
   // ✅ MODIFICAT - opțiuni compatibile cu p-selectbutton
   options = [
@@ -59,7 +59,7 @@ export class PropertiesComponent implements AfterViewInit {
     { label: 'Grid', value: 'grid' }
   ];
 
-  setPropertyType(type: 'rent' | 'sale') {
+  setPropertyType(type: 'house' | 'land') {
     this.propertyType = type;
   }
 
@@ -108,7 +108,6 @@ export class PropertiesComponent implements AfterViewInit {
         description: 'Pensiune cu 16 camere. Utilități: Gratar/Restaurant/Terasa/Sala de evenimente. Afacere la cheie.',
         type: 'house',
         thumbnail: 'assets/pensiune1.avif',
-        forRent: false
       },
       {
         id: BuyEnum.BAIA,
@@ -116,7 +115,6 @@ export class PropertiesComponent implements AfterViewInit {
         description: 'Casă în Baia de Fier, aproape de Peștera Muierilor. Zonă cu tradiții și peisaje montane.',
         type: 'house',
         thumbnail: 'assets/baia1.avif',
-        forRent: true
       },
       {
         id: BuyEnum.POLOVRAGI,
@@ -124,7 +122,6 @@ export class PropertiesComponent implements AfterViewInit {
         description: 'Casă în Polovragi, aproape de mănăstire și de intrarea în Cheile Oltețului.',
         type: 'house',
         thumbnail: 'assets/polovragi1.avif',
-        forRent: false
       },
       {
         id: BuyEnum.HOREZU,
@@ -132,7 +129,6 @@ export class PropertiesComponent implements AfterViewInit {
         description: 'Casă tradițională în Horezu, zonă renumită pentru ceramica sa.',
         type: 'house',
         thumbnail: 'assets/horezu1.avif',
-        forRent: true
       },
       {
         id: BuyEnum.COSTESTI,
@@ -140,7 +136,6 @@ export class PropertiesComponent implements AfterViewInit {
         description: 'Proprietate în Costești, aproape de Cheile Oltețului și Peștera Polovragi.',
         type: 'house',
         thumbnail: 'assets/costesti1.avif',
-        forRent: false
       },
       {
         id: BuyEnum.SLATIOARA,
@@ -148,7 +143,6 @@ export class PropertiesComponent implements AfterViewInit {
         description: 'Casă în Slătioara, zonă liniștită, perfectă pentru relaxare.',
         type: 'house',
         thumbnail: 'assets/slatioara1.avif',
-        forRent: true
       },
       {
         id: BuyEnum.VAIDEENI,
@@ -156,7 +150,6 @@ export class PropertiesComponent implements AfterViewInit {
         description: 'Proprietate în Vaideeni, zonă pastorală cu peisaje montane spectaculoase.',
         type: 'house',
         thumbnail: 'assets/vaideeni1.avif',
-        forRent: false
       },
       {
         id: BuyEnum.BARBATESTI,
@@ -164,7 +157,6 @@ export class PropertiesComponent implements AfterViewInit {
         description: 'Casă în Bărbătești, zonă liniștită cu acces la natură.',
         type: 'house',
         thumbnail: 'assets/barbatesti1.avif',
-        forRent: true
       },
       {
         id: BuyEnum.BAIA_TEREN,
@@ -172,7 +164,6 @@ export class PropertiesComponent implements AfterViewInit {
         description: 'Teren la drum asfaltat. Intravilan: 1948 mp. Extravilan: 5840 mp',
         type: 'land',
         thumbnail: 'assets/teren_baia1.jpg',
-        forRent: false
       },
       {
         id: BuyEnum.POLOVRAGI_TEREN,
@@ -180,7 +171,6 @@ export class PropertiesComponent implements AfterViewInit {
         description: 'Teren cu utilități. Suprafață: 8000 mp. Zonă pitorească.',
         type: 'land',
         thumbnail: 'assets/teren_polovragi1.avif',
-        forRent: true
       }
     ];
 
@@ -273,8 +263,6 @@ export class PropertiesComponent implements AfterViewInit {
   }
 
   getFilteredProperties() {
-    return this.properties.filter(property => {
-      return this.propertyType === 'rent' ? property.forRent : !property.forRent;
-    });
+    return this.properties.filter(property => property.type === this.propertyType);
   }
 }

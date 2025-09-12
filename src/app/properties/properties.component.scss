@@ -30,6 +30,7 @@
   padding: 2rem 1rem;
   display: flex;
   flex-wrap: wrap;
+  flex-direction: column;
   gap: 2rem;
   justify-content: space-between;
   align-items: center;
@@ -39,9 +40,15 @@
   flex: 1;
   min-width: 280px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 1rem;
+  justify-content: space-between;
+  gap: 2rem;
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 800px;
+  margin: 1rem auto;
+  padding: 1.5rem 2rem;
 
   .property-toggle {
     display: flex;
@@ -53,13 +60,19 @@
   }
 
   .property-subtext {
-    text-align: center;
+    flex: 0 0 75%;
+    text-align: left;
     font-size: 1.40rem;
     color: #444;
+    margin: 0;
   }
 
   .cta-btn {
-    width: fit-content;
+    flex: 0 0 25%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 1rem;
   }
 }
 
@@ -335,5 +348,64 @@
       margin-top: 0.5rem;
       margin-left: 0;
     }
+  }
+}
+
+/* Dialog field icons and footer visibility */
+:host ::ng-deep .centered-dialog-header .property-dialog-left .field-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+:host ::ng-deep .centered-dialog-header .property-dialog-left .field-with-icon .field-icon {
+  font-size: 1.25rem;
+  color: #0f2f5d;
+  width: 1.5rem;
+  text-align: center;
+  flex: 0 0 auto;
+}
+
+:host ::ng-deep .centered-dialog-header .property-dialog-left .field-with-icon p-float-label,
+:host ::ng-deep .centered-dialog-header .property-dialog-left .field-with-icon p-floatlabel {
+  flex: 1 1 auto;
+}
+
+:host ::ng-deep .centered-dialog-header .dialog-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+:host ::ng-deep .centered-dialog-header .dialog-footer-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #374151;
+}
+
+:host ::ng-deep .centered-dialog-header .dialog-footer-right .privacy-icon {
+  color: #0f2f5d;
+}
+
+
+@media (max-width: 768px) {
+  .property-filter {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.75rem;
+  }
+  .property-filter .property-subtext {
+    flex: none;
+    width: 100%;
+    text-align: center;
+  }
+  .property-filter .cta-btn {
+    flex: none;
+    width: 100%;
+    justify-content: center;
+    padding-right: 0;
   }
 }

@@ -104,6 +104,10 @@ export class AppComponent implements OnInit {
     this.router.navigateByUrl("/properties");
   }
 
+  private goToAddProperty() {
+    this.router.navigateByUrl("/add-property");
+  }
+
   ngOnInit() {
 
     this.items = [
@@ -137,6 +141,10 @@ export class AppComponent implements OnInit {
         label: 'Terenuri',
         icon: 'pi pi-fw pi-cloud',
         command: () => this.goToTerrainFormPage()
+      },
+      {
+        label: "Adaugare",
+        command: () => this.goToAddProperty()
       }
       // {
       //   label: 'Contactează-ne!',

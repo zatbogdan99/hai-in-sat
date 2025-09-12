@@ -1,0 +1,45 @@
+<div class="add-property-container">
+  <h2>Adaugă proprietate</h2>
+
+  <form [formGroup]="store.form" class="form-grid">
+    <div class="form-field">
+      <p-float-label>
+        <input pInputText id="name" formControlName="name" />
+        <label for="name">name</label>
+      </p-float-label>
+    </div>
+
+    <div class="form-field">
+      <p-float-label>
+        <input pInputText id="description" formControlName="description" />
+        <label for="description">description</label>
+      </p-float-label>
+    </div>
+
+    <div class="form-field">
+      <p-float-label>
+        <p-dropdown id="type"
+                    [options]="propertyTypeOptions"
+                    optionLabel="label"
+                    optionValue="value"
+                    formControlName="type"
+                    inputId="type"></p-dropdown>
+        <label for="type">type</label>
+      </p-float-label>
+    </div>
+
+    <div class="form-field">
+      <p-fileupload mode="basic"
+                    name="photo"
+                    [customUpload]="true"
+                    [auto]="true"
+                    (uploadHandler)="onUpload($event)"
+                    chooseLabel="Selectează poză">
+      </p-fileupload>
+    </div>
+
+    <div class="actions">
+      <button pButton type="button" label="Save" (click)="onSave()"></button>
+    </div>
+  </form>
+</div>

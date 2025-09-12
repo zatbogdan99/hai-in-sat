@@ -12,7 +12,7 @@ import {VgControlsModule} from "@videogular/ngx-videogular/controls";
 import {VgBufferingModule} from "@videogular/ngx-videogular/buffering";
 import {VgOverlayPlayModule} from "@videogular/ngx-videogular/overlay-play";
 import {ProgressSpinner} from "primeng/progressspinner";
-import {AsyncPipe, NgIf} from "@angular/common";
+import {AsyncPipe, NgIf, NgStyle} from "@angular/common";
 import {Divider} from "primeng/divider";
 
 @Component({
@@ -28,6 +28,7 @@ import {Divider} from "primeng/divider";
     VgCoreModule,
     ProgressSpinner,
     NgIf,
+    NgStyle,
     AsyncPipe,
     Divider
   ],
@@ -44,7 +45,13 @@ export class VillageOfTheMonthComponent implements OnInit {
 
   data: DataDto[] = [];
 
+  // Index in the data array for the currently selected village
   villageId: number = 2;
+
+  // Computed navigation order and neighbors
+  order: number[] = [];
+  prevId: number | null = null;
+  nextId: number | null = null;
 
   preload: string = 'auto';
   api: VgApiService = new VgApiService;
@@ -102,6 +109,10 @@ export class VillageOfTheMonthComponent implements OnInit {
       ""
     );
     this.data.push(dataDto);
+
+    // Establish chronological order by months: iulie(0) -> august(2) -> septembrie(1)
+    this.order = [0, 2, 1].filter((idx) => idx >= 0 && idx < this.data.length);
+    this.updateNeighbors();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -153,9 +164,41 @@ export class VillageOfTheMonthComponent implements OnInit {
       }
     ];
 
+    // Ensure neighbors are in sync on init
+    this.updateNeighbors();
   }
+
+  private updateNeighbors() {
+    if (!this.order || this.order.length === 0) {
+      this.prevId = null;
+      this.nextId = null;
+      return;
+    }
+    const currentIndexInOrder = this.order.indexOf(this.villageId);
+    if (currentIndexInOrder === -1) {
+      this.prevId = null;
+      this.nextId = null;
+      return;
+    }
+    this.prevId = currentIndexInOrder > 0 ? this.order[currentIndexInOrder - 1] : null;
+    this.nextId = currentIndexInOrder < this.order.length - 1 ? this.order[currentIndexInOrder + 1] : null;
+  }
+
   changeVillage(villageId: number) {
     this.villageId = villageId;
+    this.updateNeighbors();
+  }
+
+  goPrev() {
+    if (this.prevId !== null) {
+      this.changeVillage(this.prevId);
+    }
+  }
+
+  goNext() {
+    if (this.nextId !== null) {
+      this.changeVillage(this.nextId);
+    }
   }
 
   getYoutubeIdByVillage() {
@@ -166,5 +209,14 @@ export class VillageOfTheMonthComponent implements OnInit {
     } else {
       return 'Ly4Gp7sRKBE';
     }
+  }
+
+  getMonthLabelByVillage(id: number | null): string {
+    if (id === 0) return 'iulie';
+    if (id === 2) return 'august';
+    if (id === 1) return 'septembrie';
+    if (id === null || id === undefined) return '';
+    // Fallback to village title if an unexpected id appears
+    return this.data[id]?.title ?? '';
   }
 }
