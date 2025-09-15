@@ -7,6 +7,8 @@ export interface AddPropertyFormValue {
   description: string;
   type: PropertyType | null;
   photo: File | null;
+  photos: File[]; // gallery files
+  propertyId: string; // for delete action
 }
 
 @Injectable({ providedIn: 'root' })
@@ -16,16 +18,25 @@ export class PropertyTypeStore {
     description: FormControl<string>;
     type: FormControl<PropertyType | null>;
     photo: FormControl<File | null>;
+    photos: FormControl<File[]>;
+    propertyId: FormControl<string>;
   }> = new FormGroup({
     name: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
     description: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
     type: new FormControl<PropertyType | null>(null, { validators: [Validators.required] }),
-    photo: new FormControl<File | null>(null)
+    photo: new FormControl<File | null>(null),
+    photos: new FormControl<File[]>([], { nonNullable: true }),
+    propertyId: new FormControl<string>('', { nonNullable: true })
   });
 
   setPhoto(file: File | null) {
     this.form.controls.photo.setValue(file);
     this.form.controls.photo.markAsDirty();
+  }
+
+  setGalleryPhotos(files: File[]) {
+    this.form.controls.photos.setValue(files ?? []);
+    this.form.controls.photos.markAsDirty();
   }
 
   get value(): AddPropertyFormValue {

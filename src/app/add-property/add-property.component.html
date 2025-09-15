@@ -11,7 +11,7 @@
 
     <div class="form-field">
       <p-float-label>
-        <input pInputText id="description" formControlName="description" />
+        <textarea pInputTextarea id="description" formControlName="description"></textarea>
         <label for="description">description</label>
       </p-float-label>
     </div>
@@ -28,18 +28,38 @@
       </p-float-label>
     </div>
 
-    <div class="form-field">
+    <div class="form-field" style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
       <p-fileupload mode="basic"
                     name="photo"
                     [customUpload]="true"
                     [auto]="true"
+                    accept="image/*"
                     (uploadHandler)="onUpload($event)"
                     chooseLabel="Selectează poză">
       </p-fileupload>
+
+      <p-fileupload mode="basic"
+                    name="gallery"
+                    [customUpload]="true"
+                    [auto]="true"
+                    [multiple]="true"
+                    accept="image/*"
+                    (uploadHandler)="onUploadGallery($event)"
+                    chooseLabel="Selecteaza galeria de poze">
+      </p-fileupload>
+    </div>
+
+    <div class="form-field">
+      <p-float-label>
+        <input pInputText id="propertyId" formControlName="propertyId" />
+        <label for="propertyId">id proprietate</label>
+      </p-float-label>
     </div>
 
     <div class="actions">
       <button pButton type="button" label="Save" (click)="onSave()"></button>
+      <button pButton type="button" label="Show properties" class="p-button-secondary" (click)="onShowProperties()"></button>
+      <button pButton type="button" label="Sterge casa/teren" class="p-button-danger" (click)="onDeleteProperty()"></button>
     </div>
   </form>
 </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PhotoService } from '../service/photo-service';
+import { PropertyFormServiceService } from '../service/property-form-service/property-form-service.service';
+import { PropertyDTO } from '../dto/property.dto';
 import { BuyEnum } from '../dto/buy.enum';
 import { LoadingService } from '../service/loading-service/loading-service.service';
 import { gsap } from 'gsap';
@@ -25,7 +26,7 @@ import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
 export class PropertyDetailsComponent implements OnInit, AfterViewInit {
   @ViewChild('carouselTrack') carouselTrack!: ElementRef;
   propertyId: string = '';
-  propertyType: BuyEnum = BuyEnum.MILOSTEA;
+  propertyType: BuyEnum = BuyEnum.BAIA;
   propertyName: string = '';
   propertyDescription: string = '';
   images: any[] = [];
@@ -34,7 +35,7 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private photoService: PhotoService,
+    private propertyService: PropertyFormServiceService,
     public loadingService: LoadingService
   ) {}
 
@@ -51,122 +52,42 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
   }
 
   loadPropertyDetails(): void {
-    this.propertyType = BuyEnum[this.propertyId as keyof typeof BuyEnum];
-    console.log('Aici incarc detaliile pentru: ', this.propertyType);
-    console.log('Property ID:', this.propertyId);
-    console.log('Property Type (enum value):', this.propertyType);
-    console.log('BuyEnum values:', {
-      MILOSTEA: BuyEnum.MILOSTEA,
-      BAIA: BuyEnum.BAIA,
-      BAIA_TEREN: BuyEnum.BAIA_TEREN
-    });
+    // Hide special MILOSTEA video by default after switching to dynamic backend data
+    this.propertyType = BuyEnum.BAIA;
 
-    switch (this.propertyType) {
-      case BuyEnum.MILOSTEA:
-        this.propertyName = 'Pensiune în Milostea';
-        this.propertyDescription = 'Pensiune cu 16 camere. Utilități: Gratar/Restaurant/Terasa/Sala de evenimente. Afacere la cheie.';
-        this.photoService.getMilosteaPension().then((images) => {
-          console.log('Loaded Milostea images:', images);
-          this.images = images;
+    this.propertyService.getAllProperties().subscribe({
+      next: (props: PropertyDTO[]) => {
+        const list = Array.isArray(props) ? props : [];
+        const prop = list.find(p => p.id === this.propertyId);
+        if (!prop) {
+          console.warn('Property not found for id', this.propertyId);
           this.loadingService.loadingOff();
+          this.router.navigate(['/properties']);
+          return;
+        }
+        this.propertyName = prop.name;
+        this.propertyDescription = prop.description;
+
+        const imgs: any[] = [];
+        if (prop.photos && prop.photos.length) {
+          prop.photos.forEach((src, idx) => imgs.push({ itemImageSrc: src, alt: `${prop.name} ${idx + 1}` }));
+        }
+        if (!imgs.length && prop.thumbnail) {
+          imgs.push({ itemImageSrc: prop.thumbnail, alt: prop.name });
+        }
+        this.images = imgs;
+
+        this.loadingService.loadingOff();
+        if (this.images.length) {
           this.goToSlide(0);
-        });
-        break;
-      case BuyEnum.BAIA:
-        this.propertyName = 'Casă în Baia de Fier';
-        this.propertyDescription = 'Casă în Baia de Fier, aproape de Peștera Muierilor. Zonă cu tradiții și peisaje montane.';
-        this.photoService.getBaiaImages().then((images) => {
-          console.log('Loaded Baia images:', images);
-          this.images = images;
-          this.loadingService.loadingOff();
-          this.goToSlide(0);
-        });
-        break;
-      case BuyEnum.BAIA_TEREN:
-        this.propertyName = 'Teren în Baia de Fier';
-        this.propertyDescription = 'Teren la drum asfaltat. Intravilan: 1948 mp. Extravilan: 5840 mp';
-        this.photoService.getBaiaTeren().then((images) => {
-          console.log('Loaded Baia Teren images:', images);
-          this.images = images;
-          this.loadingService.loadingOff();
-          this.goToSlide(0);
-        });
-        break;
-      case BuyEnum.POLOVRAGI:
-        this.propertyName = 'Casă în Polovragi';
-        this.propertyDescription = 'Casă în Polovragi, aproape de mănăstire și de intrarea în Cheile Oltețului.';
-        this.photoService.getPolovragiImages().then((images) => {
-          console.log('Loaded Polovragi images:', images);
-          this.images = images;
-          this.loadingService.loadingOff();
-          this.goToSlide(0);
-        });
-        break;
-      case BuyEnum.POLOVRAGI_TEREN:
-        this.propertyName = 'Teren în Polovragi';
-        this.propertyDescription = 'Teren cu utilități. Suprafață: 8000 mp. Zonă pitorească.';
-        this.photoService.getTerenPolovragi().then((images) => {
-          console.log('Loaded Polovragi Teren images:', images);
-          this.images = images;
-          this.loadingService.loadingOff();
-          this.goToSlide(0);
-        });
-        break;
-      case BuyEnum.HOREZU:
-        this.propertyName = 'Casă în Horezu';
-        this.propertyDescription = 'Casă tradițională în Horezu, zonă renumită pentru ceramica sa.';
-        this.photoService.getHorezuImages().then((images) => {
-          console.log('Loaded Horezu images:', images);
-          this.images = images;
-          this.loadingService.loadingOff();
-          this.goToSlide(0);
-        });
-        break;
-      case BuyEnum.COSTESTI:
-        this.propertyName = 'Casă în Costești';
-        this.propertyDescription = 'Proprietate în Costești, aproape de Cheile Oltețului și Peștera Polovragi.';
-        this.photoService.getCostestiImages().then((images) => {
-          console.log('Loaded Costesti images:', images);
-          this.images = images;
-          this.loadingService.loadingOff();
-          this.goToSlide(0);
-        });
-        break;
-      case BuyEnum.SLATIOARA:
-        this.propertyName = 'Casă în Slătioara';
-        this.propertyDescription = 'Casă în Slătioara, zonă liniștită, perfectă pentru relaxare.';
-        this.photoService.getSlatioaraImages().then((images) => {
-          console.log('Loaded Slatioara images:', images);
-          this.images = images;
-          this.loadingService.loadingOff();
-          this.goToSlide(0);
-        });
-        break;
-      case BuyEnum.VAIDEENI:
-        this.propertyName = 'Casă în Vaideeni';
-        this.propertyDescription = 'Proprietate în Vaideeni, zonă pastorală cu peisaje montane spectaculoase.';
-        this.photoService.getVaideeniImages().then((images) => {
-          console.log('Loaded Vaideeni images:', images);
-          this.images = images;
-          this.loadingService.loadingOff();
-          this.goToSlide(0);
-        });
-        break;
-      case BuyEnum.BARBATESTI:
-        this.propertyName = 'Casă în Bărbătești';
-        this.propertyDescription = 'Casă în Bărbătești, zonă liniștită cu acces la natură.';
-        this.photoService.getBarbatestiImages().then((images) => {
-          console.log('Loaded Barbatesti images:', images);
-          this.images = images;
-          this.loadingService.loadingOff();
-          this.goToSlide(0);
-        });
-        break;
-      default:
-        console.log('Unknown property type:', this.propertyType, 'with ID:', this.propertyId);
+        }
+      },
+      error: (err) => {
+        console.error('Failed to load property details', err);
+        this.loadingService.loadingOff();
         this.router.navigate(['/properties']);
-        break;
-    }
+      }
+    });
   }
 
   goToSlide(index: number): void {

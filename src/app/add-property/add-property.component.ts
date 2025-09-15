@@ -10,13 +10,14 @@ import { FileUpload } from 'primeng/fileupload';
 import { ButtonDirective } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';
 import { PropertyFormServiceService } from '../service/property-form-service/property-form-service.service';
+import {Textarea} from "primeng/textarea";
 
 @Component({
   selector: 'app-add-property',
   standalone: true,
   templateUrl: './add-property.component.html',
   styleUrls: ['./add-property.component.scss'],
-  imports: [CommonModule, ReactiveFormsModule, InputText, DropdownModule, FileUpload, FloatLabel, ButtonDirective]
+  imports: [CommonModule, ReactiveFormsModule, InputText, DropdownModule, FileUpload, FloatLabel, ButtonDirective, Textarea]
 })
 export class AddPropertyComponent {
   PropertyType = PropertyType;
@@ -30,6 +31,11 @@ export class AddPropertyComponent {
   onUpload(event: any) {
     const file: File | undefined = event?.files?.[0];
     this.store.setPhoto(file ?? null);
+  }
+
+  onUploadGallery(event: any) {
+    const files: File[] = event?.files ?? [];
+    this.store.setGalleryPhotos(files);
   }
 
   private fileToBase64(file: File): Promise<string> {
@@ -51,7 +57,7 @@ export class AddPropertyComponent {
       return;
     }
 
-    const { name, description, type, photo } = this.store.value;
+    const { name, description, type, photo, photos } = this.store.value;
 
     let thumbnail = '';
     if (photo) {
@@ -62,11 +68,21 @@ export class AddPropertyComponent {
       }
     }
 
+    let gallery: string[] = [];
+    if (photos && photos.length) {
+      try {
+        gallery = await Promise.all(photos.map((f) => this.fileToBase64(f)));
+      } catch (e) {
+        console.error('Eroare la conversia imaginilor din galerie:', e);
+      }
+    }
+
     const payload: PropertyDTO = {
       name,
       description,
       type: type as PropertyType,
-      thumbnail
+      thumbnail,
+      photos: gallery
     };
 
     this.propertyFormService.saveProperty(payload).subscribe({
@@ -75,6 +91,34 @@ export class AddPropertyComponent {
       },
       error: (err) => {
         console.error('Failed to save property', err);
+      }
+    });
+  }
+
+  onShowProperties() {
+    this.propertyFormService.getAllProperties().subscribe({
+      next: (props) => {
+        console.log('Properties fetched successfully:', props);
+      },
+      error: (err) => {
+        console.error('Failed to fetch properties', err);
+      }
+    });
+  }
+
+  onDeleteProperty() {
+    const id = this.store.form.controls.propertyId.value;
+    const trimmed = (id ?? '').trim();
+    if (!trimmed) {
+      console.warn('Introdu un id de proprietate pentru ștergere.');
+      return;
+    }
+    this.propertyFormService.deleteProperty(trimmed).subscribe({
+      next: () => {
+        console.log('Proprietate ștearsă cu succes');
+      },
+      error: (err) => {
+        console.error('Eroare la ștergerea proprietății', err);
       }
     });
   }

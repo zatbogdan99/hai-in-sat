@@ -11,6 +11,8 @@ import { Button } from "primeng/button";
 import { FormsModule } from "@angular/forms";
 import { DataViewModule } from "primeng/dataview";
 import { Router } from "@angular/router";
+import { PropertyFormServiceService } from "../service/property-form-service/property-form-service.service";
+import { PropertyDTO } from "../dto/property.dto";
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { TagModule } from "primeng/tag";
 import {InputText} from "primeng/inputtext";
@@ -49,7 +51,7 @@ export class PropertiesComponent implements AfterViewInit {
   displayModal: boolean = false;
 
   // Properties for DataView
-  properties: any[] = [];
+  properties: PropertyDTO[] = [];
   layout: 'grid' | 'list' = 'grid';
   propertyType: 'house' | 'land' = 'house'; // Default to 'house'
 
@@ -83,7 +85,8 @@ export class PropertiesComponent implements AfterViewInit {
   constructor(
     private photoService: PhotoService,
     public loadingService: LoadingService,
-    private router: Router
+    private router: Router,
+    private propertyFormService: PropertyFormServiceService
   ) {
     this.loadingService.loadingOn();
     this.photoService.getBaiaTeren().then((images) => {
@@ -101,80 +104,18 @@ export class PropertiesComponent implements AfterViewInit {
   }
 
   initializeProperties() {
-    this.properties = [
-      {
-        id: BuyEnum.MILOSTEA,
-        name: 'Pensiune în Milostea',
-        description: 'Pensiune cu 16 camere. Utilități: Gratar/Restaurant/Terasa/Sala de evenimente. Afacere la cheie.',
-        type: 'house',
-        thumbnail: 'assets/pensiune1.avif',
+    this.loadingService.loadingOn();
+    this.propertyFormService.getAllProperties().subscribe({
+      next: (props: PropertyDTO[]) => {
+        this.properties = Array.isArray(props) ? props : [];
+        this.loadingService.loadingOff();
       },
-      {
-        id: BuyEnum.BAIA,
-        name: 'Casă în Baia de Fier',
-        description: 'Casă în Baia de Fier, aproape de Peștera Muierilor. Zonă cu tradiții și peisaje montane.',
-        type: 'house',
-        thumbnail: 'assets/baia1.avif',
-      },
-      {
-        id: BuyEnum.POLOVRAGI,
-        name: 'Casă în Polovragi',
-        description: 'Casă în Polovragi, aproape de mănăstire și de intrarea în Cheile Oltețului.',
-        type: 'house',
-        thumbnail: 'assets/polovragi1.avif',
-      },
-      {
-        id: BuyEnum.HOREZU,
-        name: 'Casă în Horezu',
-        description: 'Casă tradițională în Horezu, zonă renumită pentru ceramica sa.',
-        type: 'house',
-        thumbnail: 'assets/horezu1.avif',
-      },
-      {
-        id: BuyEnum.COSTESTI,
-        name: 'Casă în Costești',
-        description: 'Proprietate în Costești, aproape de Cheile Oltețului și Peștera Polovragi.',
-        type: 'house',
-        thumbnail: 'assets/costesti1.avif',
-      },
-      {
-        id: BuyEnum.SLATIOARA,
-        name: 'Casă în Slătioara',
-        description: 'Casă în Slătioara, zonă liniștită, perfectă pentru relaxare.',
-        type: 'house',
-        thumbnail: 'assets/slatioara1.avif',
-      },
-      {
-        id: BuyEnum.VAIDEENI,
-        name: 'Casă în Vaideeni',
-        description: 'Proprietate în Vaideeni, zonă pastorală cu peisaje montane spectaculoase.',
-        type: 'house',
-        thumbnail: 'assets/vaideeni1.avif',
-      },
-      {
-        id: BuyEnum.BARBATESTI,
-        name: 'Casă în Bărbătești',
-        description: 'Casă în Bărbătești, zonă liniștită cu acces la natură.',
-        type: 'house',
-        thumbnail: 'assets/barbatesti1.avif',
-      },
-      {
-        id: BuyEnum.BAIA_TEREN,
-        name: 'Teren în Baia de Fier',
-        description: 'Teren la drum asfaltat. Intravilan: 1948 mp. Extravilan: 5840 mp',
-        type: 'land',
-        thumbnail: 'assets/teren_baia1.jpg',
-      },
-      {
-        id: BuyEnum.POLOVRAGI_TEREN,
-        name: 'Teren în Polovragi',
-        description: 'Teren cu utilități. Suprafață: 8000 mp. Zonă pitorească.',
-        type: 'land',
-        thumbnail: 'assets/teren_polovragi1.avif',
+      error: (err) => {
+        console.error('Failed to fetch properties', err);
+        this.properties = [];
+        this.loadingService.loadingOff();
       }
-    ];
-
-    this.loadingService.loadingOff();
+    });
   }
 
   ngAfterViewInit(): void {
@@ -257,9 +198,11 @@ export class PropertiesComponent implements AfterViewInit {
     this.displayModal = false;
   }
 
-  viewPropertyDetails(property: any) {
+  viewPropertyDetails(property: PropertyDTO) {
     console.log('Viewing property details:', property);
-    this.router.navigate(['/property', BuyEnum[property.id]]);
+    if (property && property.id) {
+      this.router.navigate(['/property', property.id]);
+    }
   }
 
   getFilteredProperties() {

@@ -9,6 +9,8 @@ import { PropertyDTO } from '../../dto/property.dto';
 export class PropertyFormServiceService {
   // private savePropertyUrl = 'https://hai-in-sat-api.lm.r.appspot.com/save-property';
   private savePropertyUrl = 'http://localhost:8080/save-property';
+  private getAllPropertiesUrl = 'http://localhost:8080/get-all-properties';
+  private deletePropertyUrl = 'http://localhost:8080/delete-property';
 
   constructor(private http: HttpClient) {}
 
@@ -22,5 +24,13 @@ export class PropertyFormServiceService {
       })
     };
     return this.http.post(this.savePropertyUrl, formData, httpOptions);
+  }
+
+  getAllProperties(): Observable<any> {
+    return this.http.get(this.getAllPropertiesUrl);
+  }
+
+  deleteProperty(id: string): Observable<any> {
+    return this.http.delete(`${this.deletePropertyUrl}?id=${encodeURIComponent(id)}`);
   }
 }

@@ -6,4 +6,5 @@ export interface PropertyDTO {
   description: string;
   type: PropertyType;
   thumbnail: string; // base64 string or URL
+  photos?: string[]; // base64 strings for gallery images
 }
