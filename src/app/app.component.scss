@@ -19,7 +19,7 @@
 
 /* Darker gray background for footer buttons */
 ::ng-deep .p-chip.clickable {
-  background-color: #d0d0d0 !important; /* Slightly darker gray */
+  background-color: #F4EFE5 !important; /* beige per request */
 }
 
 .contact-info {
@@ -50,8 +50,9 @@ fa-icon {
 /* Footer bottom bar background */
 .large-screen .card,
 .small-screen .card {
-  background-color: #0f2f5d !important;
+  background-color: #042677 !important;
   color: white;
+  border-radius: 0 !important;
 }
 
 //mobile or smaller screens
@@ -75,32 +76,32 @@ fa-icon {
 }
 
 ::ng-deep .p-menubar .p-menuitem-text {
-  color: white !important;
+  color: #1b3a2a !important; /* dark green text on chips */
 }
 
-/* Header menubar hover/focus: black text on semi-transparent white background */
+/* Header menubar hover/focus: keep beige chip and green text */
 ::ng-deep .p-menubar .p-menuitem-link:hover,
 ::ng-deep .p-menubar .p-menuitem-link:focus {
-  background-color: rgba(255, 255, 255, 0.7) !important;
-  color: #000000 !important;
+  background-color: #E9DFC9 !important;
+  color: #1b3a2a !important;
 }
 
 ::ng-deep .p-menubar .p-menuitem-link:hover .p-menuitem-text,
 ::ng-deep .p-menubar .p-menuitem-link:focus .p-menuitem-text,
 ::ng-deep .p-menubar .p-menuitem-link:hover .p-menuitem-icon,
 ::ng-deep .p-menubar .p-menuitem-link:focus .p-menuitem-icon {
-  color: #000000 !important;
+  color: #1b3a2a !important;
 }
 
 /* Also cover PrimeNG 17+ markup using .p-menuitem-content */
 ::ng-deep .p-menubar .p-menuitem:hover > .p-menuitem-content,
 ::ng-deep .p-menubar .p-menuitem:focus-within > .p-menuitem-content {
-  background-color: rgba(255, 255, 255, 0.7) !important;
+  background-color: #E9DFC9 !important;
 }
 
 ::ng-deep .p-menubar .p-menuitem:hover > .p-menuitem-content .p-menuitem-text,
 ::ng-deep .p-menubar .p-menuitem:hover > .p-menuitem-content .p-menuitem-icon,
 ::ng-deep .p-menubar .p-menuitem:focus-within > .p-menuitem-content .p-menuitem-text,
 ::ng-deep .p-menubar .p-menuitem:focus-within > .p-menuitem-content .p-menuitem-icon {
-  color: #000000 !important;
+  color: #1b3a2a !important;
 }

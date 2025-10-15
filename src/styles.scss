@@ -2,7 +2,6 @@
 
 @import "primeicons/primeicons.css";
 @import 'swiper/css/bundle';
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 .despreNoiStyle {
   padding-left: 5rem;
@@ -12,13 +11,24 @@ html {
   box-sizing: border-box;
 }
 
+:root {
+  --font-base: 'Libre Baskerville', serif;
+}
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-base);
   box-sizing: inherit;
   position: relative;
   background-color: #fafafa;
   overflow-y: scroll;
   overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6,
+p, a, button, input, textarea, select, label,
+li, span, div {
+  font-family: var(--font-base);
 }
 
 .main {
@@ -67,8 +77,6 @@ body {
 }
 
 img {
-  //width: 100%;
-  //height: 100%;
   display: block;
   object-fit: cover;
 }
@@ -217,27 +225,36 @@ img {
 
 /* Custom styles for the menubar */
 .p-menubar {
-  background-color: #0f2f5d !important;
+  background-color: #042677 !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+.p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link {
+  background-color: #F4EFE5 !important; /* beige chip */
+  border-radius: 9999px !important;
+  padding: 0.6rem 1.2rem !important;
+  margin: 0.4rem 0.6rem !important;
   border: none !important;
 }
 
 .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link .p-menuitem-text,
 .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link .p-menuitem-icon {
-  color: white !important;
-  font-family: 'Playfair Display', serif !important;
+  color: #1b3a2a !important; /* dark green text */
+  font-family: 'Libre Baskerville', serif !important;
 }
 
 .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link:not(.p-disabled):hover {
-  background-color: rgba(255, 255, 255, 0.1) !important;
+  background-color: #E9DFC9 !important; /* darker beige on hover */
 }
 
 .p-menubar .p-menubar-root-list > .p-menuitem.p-menuitem-active > .p-menuitem-link,
 .p-menubar .p-menubar-root-list > .p-menuitem.p-menuitem-active > .p-menuitem-link:not(.p-disabled):hover {
-  background-color: rgba(255, 255, 255, 0.2) !important;
+  background-color: #E6D9C0 !important; /* active beige */
 }
 
 .p-menubar .p-menubar-item-link {
-  color: white !important;
+  color: #1b3a2a !important;
 }
 
 .p-dialog-footer {

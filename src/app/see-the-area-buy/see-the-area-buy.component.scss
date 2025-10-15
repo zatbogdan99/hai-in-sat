@@ -2,7 +2,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Libre Baskerville', serif;
+  font-size: 16px;
 }
 
 main {
@@ -30,7 +31,7 @@ main > div h1 {
   -moz-background-clip: text;
   //text-transform: capitalize;
   letter-spacing: 0.8px;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Libre Baskerville', serif;
   font-size: clamp(3.4375rem, 3.25rem + 0.75vw, 4rem);
   font-weight: 800;
 }
@@ -347,7 +348,7 @@ img {
 }
 
 .swiper-slide h2 {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Libre Baskerville', serif;
   color: #fff;
   font-weight: 400;
   font-size: 1.4rem;
@@ -358,7 +359,7 @@ img {
 }
 
 .swiper-slide p {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Libre Baskerville', serif;
   color: #dadada;
   font-weight: 300;
   padding: 0 1.563rem;

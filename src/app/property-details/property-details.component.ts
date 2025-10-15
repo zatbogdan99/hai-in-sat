@@ -52,13 +52,10 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
   }
 
   loadPropertyDetails(): void {
-    // Hide special MILOSTEA video by default after switching to dynamic backend data
     this.propertyType = BuyEnum.BAIA;
 
-    this.propertyService.getAllProperties().subscribe({
-      next: (props: PropertyDTO[]) => {
-        const list = Array.isArray(props) ? props : [];
-        const prop = list.find(p => p.id === this.propertyId);
+    this.propertyService.getPropertyById(this.propertyId).subscribe({
+      next: (prop: PropertyDTO) => {
         if (!prop) {
           console.warn('Property not found for id', this.propertyId);
           this.loadingService.loadingOff();

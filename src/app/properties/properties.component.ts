@@ -8,7 +8,7 @@ import { Divider } from "primeng/divider";
 import { Dialog } from "primeng/dialog";
 import { ProgressSpinner } from "primeng/progressspinner";
 import { Button } from "primeng/button";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup } from "@angular/forms";
 import { DataViewModule } from "primeng/dataview";
 import { Router } from "@angular/router";
 import { PropertyFormServiceService } from "../service/property-form-service/property-form-service.service";
@@ -20,6 +20,8 @@ import {Textarea} from "primeng/textarea";
 import {FloatLabel} from "primeng/floatlabel";
 import {DropdownModule} from "primeng/dropdown";
 import {AutoComplete} from "primeng/autocomplete";
+import { PropertyFormDTO } from "../dto/property-form.dto";
+import { PropertyFormEmailServiceService } from "../service/property-form-email-service/property-form-email-service.service";
 
 @Component({
   selector: 'app-properties',
@@ -29,6 +31,7 @@ import {AutoComplete} from "primeng/autocomplete";
     ProgressSpinner,
     Button,
     FormsModule,
+    ReactiveFormsModule,
     DataViewModule,
     SelectButtonModule,
     TagModule,
@@ -42,20 +45,15 @@ import {AutoComplete} from "primeng/autocomplete";
   ],
   styleUrls: ['./properties.component.scss']
 })
-export class PropertiesComponent implements AfterViewInit {
+export class PropertiesComponent {
   displayGalleria: boolean;
   images: any[] | undefined;
-  terenBaiaImages: any[] | undefined;
-  terenPolovragiImages: any[] | undefined;
-  milosteaImages: any[] | undefined;
   displayModal: boolean = false;
 
-  // Properties for DataView
   properties: PropertyDTO[] = [];
   layout: 'grid' | 'list' = 'grid';
-  propertyType: 'house' | 'land' = 'house'; // Default to 'house'
+  propertyType: 'house' | 'land' = 'land';
 
-  // ✅ MODIFICAT - opțiuni compatibile cu p-selectbutton
   options = [
     { label: 'Listă', value: 'list' },
     { label: 'Grid', value: 'grid' }
@@ -65,15 +63,11 @@ export class PropertiesComponent implements AfterViewInit {
     this.propertyType = type;
   }
 
-  getSeverity(property: any): string {
-    return 'success';
-  }
 
+  propertyForm!: FormGroup;
 
-  firstName: string = '';
-  lastName: string = '';
-  email: string = '';
-  propertyDescription: string = '';
+  propertyTypeOptions: string[] = ['Teren', 'Casă'];
+  filteredPropertyTypeOptions: string[] = [];
 
   responsiveOptions: any[] = [
     { breakpoint: '1500px', numVisible: 5 },
@@ -83,23 +77,25 @@ export class PropertiesComponent implements AfterViewInit {
   ];
 
   constructor(
-    private photoService: PhotoService,
     public loadingService: LoadingService,
     private router: Router,
-    private propertyFormService: PropertyFormServiceService
+    private propertyFormService: PropertyFormServiceService,
+    private propertyFormEmailService: PropertyFormEmailServiceService,
+    private fb: FormBuilder
   ) {
     this.loadingService.loadingOn();
-    this.photoService.getBaiaTeren().then((images) => {
-      this.terenBaiaImages = images;
-    });
-    this.photoService.getTerenPolovragi().then((images) => {
-      this.terenPolovragiImages = images;
-    });
-    this.displayGalleria = false;
-    this.photoService.getMilosteaPension().then((images) => {
-      this.milosteaImages = images;
-    });
 
+    this.propertyForm = this.fb.group({
+      firstName: [''],
+      email: [''],
+      phone: [''],
+      village: [''],
+      propertyType: [''],
+      propertyDescription: ['']
+    });
+    this.filteredPropertyTypeOptions = this.propertyTypeOptions.slice();
+
+    this.displayGalleria = false;
     this.initializeProperties();
   }
 
@@ -108,6 +104,7 @@ export class PropertiesComponent implements AfterViewInit {
     this.propertyFormService.getAllProperties().subscribe({
       next: (props: PropertyDTO[]) => {
         this.properties = Array.isArray(props) ? props : [];
+        console.log('Properties:', this.properties);
         this.loadingService.loadingOff();
       },
       error: (err) => {
@@ -118,84 +115,44 @@ export class PropertiesComponent implements AfterViewInit {
     });
   }
 
-  ngAfterViewInit(): void {
-    this.initializeSwiper();
-  }
-
-  initializeSwiper(): void {
-    setTimeout(() => {
-      const existingSwipers = document.querySelectorAll('.swiper');
-      existingSwipers.forEach(swiperEl => {
-        const swiperInstance = (swiperEl as any).swiper;
-        if (swiperInstance) {
-          swiperInstance.destroy(true, true);
-        }
-      });
-
-      const swiperBaia = new Swiper(".swiper-baia", {
-        effect: "coverflow",
-        grabCursor: true,
-        centeredSlides: true,
-        coverflowEffect: { rotate: 0, stretch: 0, depth: 100, modifier: 3, slideShadows: true },
-        loop: true,
-        loopAdditionalSlides: 3,
-        watchSlidesProgress: true,
-        watchOverflow: true,
-        observer: true,
-        observeParents: true,
-        pagination: { el: ".swiper-baia .swiper-pagination", clickable: true },
-        breakpoints: { 640: { slidesPerView: 2 }, 768: { slidesPerView: 1 }, 1024: { slidesPerView: 2 }, 1560: { slidesPerView: 3 } }
-      } as any);
-
-      const swiperPolovragi = new Swiper(".swiper-polovragi", {
-        effect: "coverflow",
-        grabCursor: true,
-        centeredSlides: true,
-        coverflowEffect: { rotate: 0, stretch: 0, depth: 100, modifier: 3, slideShadows: true },
-        loop: true,
-        loopAdditionalSlides: 3,
-        watchSlidesProgress: true,
-        watchOverflow: true,
-        observer: true,
-        observeParents: true,
-        pagination: { el: ".swiper-polovragi .swiper-pagination", clickable: true },
-        breakpoints: { 640: { slidesPerView: 2 }, 768: { slidesPerView: 1 }, 1024: { slidesPerView: 2 }, 1560: { slidesPerView: 3 } }
-      } as any);
-    }, 100);
-  }
-
-  protected readonly BuyEnum = BuyEnum;
-
-  openGalleria(type: BuyEnum) {
-    this.displayGalleria = true;
-    if (type === BuyEnum.BAIA) {
-      this.images = this.terenBaiaImages;
-    } else if (type === BuyEnum.POLOVRAGI) {
-      this.images = this.terenPolovragiImages;
-    }
-  }
-
   showAddPropertyModal() {
     this.displayModal = true;
   }
 
-  hideModal() {
+  saveProperty() {
+    const formValue = this.propertyForm.value;
+
+    const dto: PropertyFormDTO = {
+      firstName: formValue.firstName || '',
+      email: formValue.email || '',
+      phone: formValue.phone || '',
+      village: formValue.village || '',
+      propertyType: formValue.propertyType as 'Teren' | 'Casă',
+      propertyDescription: formValue.propertyDescription || ''
+    };
+
+    console.log('PropertyFormDTO:', dto);
+
+    this.propertyForm.reset();
     this.displayModal = false;
+
+    // Send DTO to backend service
+    this.loadingService.loadingOn();
+    this.propertyFormEmailService.sendPropertyForm(dto).subscribe({
+      next: () => {
+        console.log('Property form sent successfully');
+        this.loadingService.loadingOff();
+      },
+      error: (err) => {
+        console.error('Failed to send property form', err);
+        this.loadingService.loadingOff();
+      }
+    });
   }
 
-  saveProperty() {
-    console.log('Property details:', {
-      firstName: this.firstName,
-      lastName: this.lastName,
-      email: this.email,
-      propertyDescription: this.propertyDescription
-    });
-
-    this.firstName = '';
-    this.lastName = '';
-    this.email = '';
-    this.propertyDescription = '';
-    this.displayModal = false;
+  filterPropertyType(event: any) {
+    const query = (event && event.query ? event.query : '').toLowerCase();
+    this.filteredPropertyTypeOptions = this.propertyTypeOptions.filter(opt => opt.toLowerCase().includes(query));
   }
 
   viewPropertyDetails(property: PropertyDTO) {
@@ -207,5 +164,10 @@ export class PropertiesComponent implements AfterViewInit {
 
   getFilteredProperties() {
     return this.properties.filter(property => property.type === this.propertyType);
+  }
+
+  truncate(text: string, limit: number = 50): string {
+    if (!text) return '';
+    return text.length > limit ? text.slice(0, limit) + '...' : text;
   }
 }

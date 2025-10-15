@@ -12,6 +12,7 @@ import { VillageOfTheMonthComponent } from './village-of-the-month/village-of-th
 import { PropertiesComponent } from './properties/properties.component';
 import { PropertyDetailsComponent } from './property-details/property-details.component';
 import { AddPropertyComponent } from './add-property/add-property.component';
+import { NewLandingPageComponent } from './new-landing-page/new-landing-page.component';
 
 export const appRoutes: Routes = [
   { path: 'terrain-form-page', component: TerrainFormPageComponent },
@@ -25,5 +26,5 @@ export const appRoutes: Routes = [
   { path: 'property/:id', component: PropertyDetailsComponent },
   { path: 'village-of-the-month', component: VillageOfTheMonthComponent },
   { path: 'add-property', component: AddPropertyComponent },
-  { path: '**', component: LandingPageComponent }
+  { path: '**', component: NewLandingPageComponent }
 ];

@@ -38,13 +38,13 @@
   font-size: 3rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
-  font-family: 'Playfair Display', serif;
+  font-family: 'Libre Baskerville'
 }
 
 .hero-content h2 {
   font-size: 1.5rem;
   font-weight: 400;
-  font-family: 'Playfair Display', serif;
+  font-family: 'Libre Baskerville'
 }
 
 a {
@@ -109,7 +109,7 @@ section {
   -moz-background-clip: text;
   //text-transform: capitalize;
   letter-spacing: 0.8px;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Libre Baskerville'
   font-size: clamp(2.4375rem, 2.25rem + 0.75vw, 2rem);
   font-weight: 800;
   text-align: center;
@@ -136,7 +136,7 @@ section {
 }
 
 .card-info h1 {
-  font-family: "Allura", serif;
+  font-family: 'Libre Baskerville'
   font-size: 3.5rem;
   align-items: center;
   //clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
@@ -148,7 +148,7 @@ section {
   align-self: start;
   //line-height: 22px;
   //font-family: "Calisto MT";
-  font-family: sans-serif;
+  font-family: 'Libre Baskerville', serif;
   color: #43434b;
   //clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
 }

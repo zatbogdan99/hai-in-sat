@@ -15,7 +15,7 @@
 
     <section class="property-filter">
       <p class="property-subtext">
-        Pentru doar <strong>99 de lei</strong> pe an vă puteți lista<br /> proprietatea pe site-ul nostru
+        Pentru doar <strong>150 de lei</strong> pe an vă puteți lista<br /> proprietatea pe site-ul nostru
       </p>
       <p-button label="Aplică" class="cta-btn" (click)="showAddPropertyModal()"></p-button>
     </section>
@@ -35,11 +35,11 @@
       </div>
     </ng-template>
     <div class="property-dialog-content">
-      <div class="property-dialog-left">
+      <div class="property-dialog-left" [formGroup]="propertyForm">
         <div class="field-with-icon">
           <i class="pi pi-user field-icon" aria-hidden="true"></i>
           <p-float-label style="width: 100%">
-            <input style="width: 100%" type="text" pInputText id="firstName" [(ngModel)]="firstName" />
+            <input style="width: 100%" type="text" pInputText id="firstName" formControlName="firstName" />
             <label for="firstName">Nume complet</label>
           </p-float-label>
         </div>
@@ -47,7 +47,7 @@
         <div class="field-with-icon">
           <i class="pi pi-envelope field-icon" aria-hidden="true"></i>
           <p-float-label style="width: 100%">
-            <input style="width: 100%" type="email" pInputText id="email" [(ngModel)]="email" />
+            <input style="width: 100%" type="email" pInputText id="email" formControlName="email" />
             <label for="email">E-mail</label>
           </p-float-label>
         </div>
@@ -55,7 +55,7 @@
         <div class="field-with-icon">
           <i class="pi pi-phone field-icon" aria-hidden="true"></i>
           <p-float-label style="width: 100%">
-            <input style="width: 100%" type="tel" pInputText id="phone" />
+            <input style="width: 100%" type="tel" pInputText id="phone" formControlName="phone" />
             <label for="phone">Telefon</label>
           </p-float-label>
         </div>
@@ -63,23 +63,31 @@
         <div class="field-with-icon">
           <i class="pi pi-map-marker field-icon" aria-hidden="true"></i>
           <p-float-label style="width: 100%">
-            <input style="width: 100%" type="text" pInputText id="village" />
+            <input style="width: 100%" type="text" pInputText id="village" formControlName="village" />
             <label for="village">Localitate</label>
           </p-float-label>
         </div>
 
         <div class="field-with-icon">
           <i class="pi pi-home field-icon" aria-hidden="true"></i>
-          <p-floatlabel style="width: 100%">
-            <p-autoComplete inputId="propertyType" [dropdown]="true" [style]="{ width: '100%' }"/>
+          <p-float-label style="width: 100%">
+            <p-autoComplete
+              inputId="propertyType"
+              formControlName="propertyType"
+              [dropdown]="true"
+              [forceSelection]="true"
+              [suggestions]="filteredPropertyTypeOptions"
+              (completeMethod)="filterPropertyType($event)"
+              [style]="{ width: '100%' }">
+            </p-autoComplete>
             <label for="propertyType">Tip proprietate</label>
-          </p-floatlabel>
+          </p-float-label>
         </div>
 
         <div class="field-with-icon">
           <i class="pi pi-info-circle field-icon" aria-hidden="true"></i>
           <p-float-label style="width: 100%">
-            <textarea style="width: 100%" rows="4" pInputTextarea id="propertyDescription" [(ngModel)]="propertyDescription"></textarea>
+            <textarea style="width: 100%" rows="4" pInputTextarea id="propertyDescription" formControlName="propertyDescription"></textarea>
             <label for="propertyDescription">Descriere proprietate</label>
           </p-float-label>
         </div>
@@ -150,8 +158,8 @@
         <div *ngFor="let property of items; let first = first" class="property-list-item">
           <img [src]="property.thumbnail" [alt]="property.name" />
           <div class="property-list-content">
-            <h2>{{ property.name }}</h2>
-            <p>{{ property.description }}</p>
+            <h2>{{ truncate(property.name, 40) }}</h2>
+            <p>{{ truncate(property.description, 50) }}</p>
             <p-button label="Detalii" (click)="viewPropertyDetails(property)"></p-button>
           </div>
         </div>
@@ -162,8 +170,8 @@
       <div class="property-grid">
         <div *ngFor="let property of items" class="property-card">
           <img [src]="property.thumbnail" [alt]="property.name" />
-          <h2>{{ property.name }}</h2>
-          <p>{{ property.description }}</p>
+          <h2>{{ truncate(property.name, 40) }}</h2>
+          <p>{{ truncate(property.description, 50) }}</p>
           <p-button label="Detalii" (click)="viewPropertyDetails(property)"></p-button>
         </div>
       </div>
