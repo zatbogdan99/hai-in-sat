@@ -3,23 +3,11 @@
     <p-progressSpinner></p-progressSpinner>
   </div>
 
-  <main class="property-header-container">
-    <section class="property-header-text">
-      <h1>Case și terenuri de vânzare</h1>
-      <hr />
-      <p>
-        Echipa noastră poate fi ghidul dvs. în această călătorie de transformare. Suntem aici să vă prezentăm oportunitățile
-        incredibile pe care viața la țară le oferă. Alegeți să faceți pasul și să explorați ce înseamnă cu adevărat să trăiești.
-      </p>
-    </section>
-
-    <section class="property-filter">
-      <p class="property-subtext">
-        Pentru doar <strong>150 de lei</strong> pe an vă puteți lista<br /> proprietatea pe site-ul nostru
-      </p>
-      <p-button label="Aplică" class="cta-btn" (click)="showAddPropertyModal()"></p-button>
-    </section>
-  </main>
+  <section class="properties-hero">
+    <h1 class="hero-title">Case si terenuri</h1>
+    <p class="hero-subtitle">Cu 150 lei/an, iti facem proprietatea vizibilă pentru oameni care vor locuri ca ale tale!</p>
+    <p-button label="Vreau și eu!" class="hero-cta" (click)="showAddPropertyModal()"></p-button>
+  </section>
 
   <p-dialog
     [(visible)]="displayModal"
@@ -177,4 +165,14 @@
       </div>
     </ng-template>
   </p-dataView>
+  <div style="display: flex; justify-content: center; padding: 1rem 0 2rem 0;">
+    <p-paginator
+      [rows]="size"
+      [totalRecords]="totalRecords"
+      [first]="page * size"
+      [pageLinkSize]="6"
+      (onPageChange)="onPageChange($event)"
+    >
+    </p-paginator>
+  </div>
 </div>

@@ -1,13 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import {Router} from "@angular/router";
 import {gsap} from "gsap";
 import {DataDto} from "../dto/data.dto";
 import {DataService} from "../service/data-service";
-import { NgOptimizedImage } from '@angular/common'
 import {Button} from "primeng/button";
 import {Card} from "primeng/card";
-import {Divider} from "primeng/divider";
 import {YoutubePlayerComponent} from "../youtube-player/youtube-player.component";
+import { NgFor } from '@angular/common';
+import { register } from 'swiper/element/bundle';
+import {PrimeTemplate} from "primeng/api";
+
+register();
 
 @Component({
   selector: 'app-under-the-mountain',
@@ -15,16 +18,22 @@ import {YoutubePlayerComponent} from "../youtube-player/youtube-player.component
   imports: [
     Button,
     Card,
-    Divider,
-    YoutubePlayerComponent
+    YoutubePlayerComponent,
+    NgFor,
+    PrimeTemplate
   ],
-  styleUrls: ['./under-the-mountain.component.scss']
+  styleUrls: ['./under-the-mountain.component.scss'],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class UnderTheMountainComponent {
+export class UnderTheMountainComponent implements AfterViewInit {
 
   currentNum: number = 0;
   maxNum: number = 7;
   data: DataDto[] = [];
+
+  @ViewChild('villageSwiper') villageSwiper?: ElementRef<HTMLElement>;
+  @ViewChild('prevNav') prevNav?: ElementRef<HTMLElement>;
+  @ViewChild('nextNav') nextNav?: ElementRef<HTMLElement>;
 
 
   constructor(private router: Router, private service: DataService) {
@@ -121,6 +130,11 @@ export class UnderTheMountainComponent {
 
   showMore() {
     this.service.village$.next(this.currentNum + 1);
+    this.router.navigateByUrl("/info-page");
+  }
+
+  goToVillage(id: number) {
+    this.service.village$.next(id);
     this.router.navigateByUrl("/info-page");
   }
 
@@ -235,5 +249,37 @@ export class UnderTheMountainComponent {
 
   getCardInfoDesc() {
     return this.data[this.currentNum].desc;
+  }
+
+  ngAfterViewInit(): void {
+    const swiperEl = this.villageSwiper?.nativeElement as any;
+    const prevEl = this.prevNav?.nativeElement as HTMLElement | undefined;
+    const nextEl = this.nextNav?.nativeElement as HTMLElement | undefined;
+
+    if (!swiperEl) {
+      return;
+    }
+
+    const params: any = {
+      slidesPerView: 3,
+      spaceBetween: 16,
+      centeredSlides: true,
+      loop: true,
+      grabCursor: true,
+      initialSlide: 1,
+      navigation: {
+        prevEl,
+        nextEl
+      }
+    };
+
+    // Assign parameters and initialize after the view is ready
+    Object.assign(swiperEl, params);
+    // Initialize on next microtask to ensure refs are painted
+    setTimeout(() => {
+      if (typeof swiperEl.initialize === 'function') {
+        swiperEl.initialize();
+      }
+    });
   }
 }

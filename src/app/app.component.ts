@@ -20,9 +20,7 @@ import {Toast} from "primeng/toast";
     Chip,
     FaIconComponent,
     RouterOutlet,
-    Menubar,
-    Toast,
-    PrimeTemplate
+    Toast
   ],
   styleUrls: ['./app.component.scss']
 })
@@ -92,7 +90,7 @@ export class AppComponent implements OnInit {
     this.router.navigateByUrl("/contact-us");
   }
 
-  private goToUnderTheMountain() {
+  goToUnderTheMountain() {
     this.router.navigateByUrl("/under-the-mountain");
   }
 
@@ -100,7 +98,7 @@ export class AppComponent implements OnInit {
     this.router.navigateByUrl("/see-the-area");
   }
 
-  private goToProperties() {
+  goToProperties() {
     this.router.navigateByUrl("/properties");
   }
 

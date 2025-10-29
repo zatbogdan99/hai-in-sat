@@ -29,8 +29,7 @@ import {Divider} from "primeng/divider";
     ProgressSpinner,
     NgIf,
     NgStyle,
-    AsyncPipe,
-    Divider
+    AsyncPipe
   ],
   styleUrls: ['./village-of-the-month.component.scss']
 })

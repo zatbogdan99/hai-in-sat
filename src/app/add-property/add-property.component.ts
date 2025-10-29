@@ -96,9 +96,9 @@ export class AddPropertyComponent {
   }
 
   onShowProperties() {
-    this.propertyFormService.getAllProperties().subscribe({
-      next: (props) => {
-        console.log('Properties fetched successfully:', props);
+    this.propertyFormService.getPropertiesPage(0, 6).subscribe({
+      next: (resp) => {
+        console.log('Properties page fetched successfully:', resp);
       },
       error: (err) => {
         console.error('Failed to fetch properties', err);

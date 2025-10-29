@@ -2,7 +2,6 @@
   background: var(--surface-card);
   padding: 2rem;
   border-radius: 10px;
-  margin-bottom: 1rem;
 }
 
 .vertical-center {
@@ -45,6 +44,150 @@
 fa-icon {
   opacity: 1 !important;
   color: white !important;
+}
+
+/* Footer bottom bar background */
+.large-screen .card,
+.small-screen .card {
+  background-color: #042677 !important;
+  color: white;
+  border-radius: 0 !important;
+}
+
+//mobile or smaller screens
+@media only screen and (max-width: 1199px), only screen and (max-height: 599px) {
+  .small-screen {
+    display: block;
+  }
+  .large-screen {
+    display: none;
+  }
+}
+
+//desktop or larger screens
+@media only screen and (min-width: 1200px) and (min-height: 600px) {
+  .small-screen {
+    display: none;
+  }
+  .large-screen {
+    display: block;
+  }
+}
+
+::ng-deep .p-menubar .p-menuitem-text {
+  color: #1b3a2a !important; /* dark green text on chips */
+}
+
+/* Header menubar hover/focus: keep beige chip and green text */
+::ng-deep .p-menubar .p-menuitem-link:hover,
+::ng-deep .p-menubar .p-menuitem-link:focus {
+  background-color: #E9DFC9 !important;
+  color: #1b3a2a !important;
+}
+
+::ng-deep .p-menubar .p-menuitem-link:hover .p-menuitem-text,
+::ng-deep .p-menubar .p-menuitem-link:focus .p-menuitem-text,
+::ng-deep .p-menubar .p-menuitem-link:hover .p-menuitem-icon,
+::ng-deep .p-menubar .p-menuitem-link:focus .p-menuitem-icon {
+  color: #1b3a2a !important;
+}
+
+/* Also cover PrimeNG 17+ markup using .p-menuitem-content */
+::ng-deep .p-menubar .p-menuitem:hover > .p-menuitem-content,
+::ng-deep .p-menubar .p-menuitem:focus-within > .p-menuitem-content {
+  background-color: #E9DFC9 !important;
+}
+
+::ng-deep .p-menubar .p-menuitem:hover > .p-menuitem-content .p-menuitem-text,
+::ng-deep .p-menubar .p-menuitem:hover > .p-menuitem-content .p-menuitem-icon,
+::ng-deep .p-menubar .p-menuitem:focus-within > .p-menuitem-content .p-menuitem-text,
+::ng-deep .p-menubar .p-menuitem:focus-within > .p-menuitem-content .p-menuitem-icon {
+  color: #1b3a2a !important;
+}
+
+.card {
+  background: var(--surface-card);
+  padding: 2rem;
+  border-radius: 10px;
+}
+
+.vertical-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+/* Darker gray background for footer buttons */
+::ng-deep .p-chip.clickable {
+  background-color: #F4EFE5 !important; /* beige per request */
+}
+
+.contact-info {
+  margin: 10px;
+  padding: 15px;
+}
+
+.contact-info h2 {
+  font-size: 24px;
+}
+
+.contact-info li {
+  font-size: 18px;
+}
+
+.images-style {
+  height: 1.5rem;
+  width: 1.5rem;
+  margin-right: 0.5rem
+}
+
+/* Make social media icons fully opaque */
+fa-icon {
+  opacity: 1 !important;
+  color: white !important;
+}
+
+/* Header top bar styles (replace menubar) */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #042677; /* keep same blue as footer */
+  color: white;
+  padding: 0.25rem 1rem;
+}
+
+.topbar__left,
+.topbar__right {
+  display: flex;
+  align-items: center;
+}
+
+.topbar__logo {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  cursor: pointer;
+}
+
+.topbar__center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+}
+
+.topbar__icon {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  cursor: pointer;
 }
 
 /* Footer bottom bar background */

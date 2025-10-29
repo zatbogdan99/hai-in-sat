@@ -11,7 +11,7 @@ import { Button } from "primeng/button";
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup } from "@angular/forms";
 import { DataViewModule } from "primeng/dataview";
 import { Router } from "@angular/router";
-import { PropertyFormServiceService } from "../service/property-form-service/property-form-service.service";
+import { PropertyFormServiceService, PageResponse } from "../service/property-form-service/property-form-service.service";
 import { PropertyDTO } from "../dto/property.dto";
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { TagModule } from "primeng/tag";
@@ -20,6 +20,7 @@ import {Textarea} from "primeng/textarea";
 import {FloatLabel} from "primeng/floatlabel";
 import {DropdownModule} from "primeng/dropdown";
 import {AutoComplete} from "primeng/autocomplete";
+import {PaginatorModule} from "primeng/paginator";
 import { PropertyFormDTO } from "../dto/property-form.dto";
 import { PropertyFormEmailServiceService } from "../service/property-form-email-service/property-form-email-service.service";
 
@@ -41,7 +42,8 @@ import { PropertyFormEmailServiceService } from "../service/property-form-email-
     Textarea,
     FloatLabel,
     DropdownModule,
-    AutoComplete
+    AutoComplete,
+    PaginatorModule
   ],
   styleUrls: ['./properties.component.scss']
 })
@@ -53,6 +55,12 @@ export class PropertiesComponent {
   properties: PropertyDTO[] = [];
   layout: 'grid' | 'list' = 'grid';
   propertyType: 'house' | 'land' = 'land';
+
+  // pagination
+  page: number = 0;
+  size: number = 6;
+  totalRecords: number = 0;
+  totalPages: number = 0;
 
   options = [
     { label: 'Listă', value: 'list' },
@@ -101,18 +109,32 @@ export class PropertiesComponent {
 
   initializeProperties() {
     this.loadingService.loadingOn();
-    this.propertyFormService.getAllProperties().subscribe({
-      next: (props: PropertyDTO[]) => {
-        this.properties = Array.isArray(props) ? props : [];
-        console.log('Properties:', this.properties);
+    this.propertyFormService.getPropertiesPage(this.page, this.size).subscribe({
+      next: (resp) => {
+        console.log('Apelul initial (paginat):', resp);
+        const content = Array.isArray(resp?.content) ? resp.content : [];
+        this.properties = content;
+        this.totalRecords = typeof resp?.totalElements === 'number' ? resp.totalElements : content.length;
+        this.totalPages = typeof resp?.totalPages === 'number' ? resp.totalPages : 1;
         this.loadingService.loadingOff();
       },
       error: (err) => {
         console.error('Failed to fetch properties', err);
         this.properties = [];
+        this.totalRecords = 0;
+        this.totalPages = 0;
         this.loadingService.loadingOff();
       }
     });
+  }
+
+  onPageChange(event: any) {
+    // event: { first: number, rows: number, page: number, pageCount: number }
+    this.page = event?.page ?? 0;
+    if (event?.rows && event.rows !== this.size) {
+      this.size = event.rows;
+    }
+    this.initializeProperties();
   }
 
   showAddPropertyModal() {

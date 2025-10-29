@@ -3,11 +3,24 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PropertyDTO } from '../../dto/property.dto';
 
+export interface PageResponse<T> {
+  content: T[];
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  number: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class PropertyFormServiceService {
   // private savePropertyUrl = 'https://hai-in-sat-api.lm.r.appspot.com/save-property';
+  // private getAllPropertiesUrl = 'https://hai-in-sat-api.lm.r.appspot.com/get-all-properties';
+  // private getPropertyByIdUrl = 'https://hai-in-sat-api.lm.r.appspot.com/get-by-id';
+  // private deletePropertyUrl = 'https://hai-in-sat-api.lm.r.appspot.com/delete-property';
+
+
   private savePropertyUrl = 'http://localhost:8080/save-property';
   private getAllPropertiesUrl = 'http://localhost:8080/get-all-properties';
   private getPropertyByIdUrl = 'http://localhost:8080/get-by-id';
@@ -27,8 +40,13 @@ export class PropertyFormServiceService {
     return this.http.post(this.savePropertyUrl, formData, httpOptions);
   }
 
-  getAllProperties(): Observable<any> {
-    return this.http.get(this.getAllPropertiesUrl);
+  // Legacy method: now returns the first page (backend defaults to size=6)
+  getAllProperties(): Observable<PageResponse<PropertyDTO>> {
+    return this.http.get<PageResponse<PropertyDTO>>(this.getAllPropertiesUrl);
+  }
+
+  getPropertiesPage(page: number, size: number): Observable<PageResponse<PropertyDTO>> {
+    return this.http.get<PageResponse<PropertyDTO>>(`${this.getAllPropertiesUrl}?page=${encodeURIComponent(page)}&size=${encodeURIComponent(size)}`);
   }
 
   getPropertyById(id: string): Observable<PropertyDTO> {

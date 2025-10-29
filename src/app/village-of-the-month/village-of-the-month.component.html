@@ -5,7 +5,7 @@
 <div class="large-screen">
   <div class="hero-banner">
     <div class="hero-content">
-      <h1>Satul lunii - {{ data[villageId]?.title }}</h1>
+      <h1>Satul lunii - {{ data[villageId].title }}</h1>
       <h2>Locuri care spun povesti - Oltenia de sub Munte</h2>
     </div>
   </div>
@@ -13,10 +13,6 @@
     <p-button *ngIf="prevId !== null" [label]="'Satul lunii ' + getMonthLabelByVillage(prevId)" icon="pi pi-arrow-left" size="small" [raised]="true" severity="secondary" (onClick)="goPrev()"></p-button>
     <p-button *ngIf="nextId !== null" [label]="'Satul lunii ' + getMonthLabelByVillage(nextId)" icon="pi pi-arrow-right" size="small" [raised]="true" severity="secondary" (onClick)="goNext()" [ngStyle]="{ 'margin-left': prevId === null ? 'auto' : '0' }"></p-button>
   </div>
-
-  <p-divider>
-    <i class="pi pi-star" style="color: #c8a96a;"></i>
-  </p-divider>
 
   <section style="padding-left: 2rem; padding-right: 2rem;">
     <div class="card-top" style="display: flex; flex-direction: row; justify-content: space-between;">
@@ -57,10 +53,6 @@
     </div>
   </section>
 
-  <p-divider>
-    <i class="pi pi-star" style="color: #c8a96a;"></i>
-  </p-divider>
-
   <div class="container1" style="padding-left: 2rem; padding-right: 2rem;">
     <div class="reveal">
       <div class="p-card-custom">
@@ -84,7 +76,7 @@
 <div class="small-screen">
   <div class="hero-banner">
     <div class="hero-content">
-      <h1>Satul lunii - {{ data[villageId]?.title }}</h1>
+      <h1>Satul lunii - {{ data[villageId].title }}</h1>
       <h2>Locuri care spun povesti - Oltenia de sub Munte</h2>
     </div>
   </div>
@@ -93,10 +85,6 @@
     <p-button *ngIf="prevId !== null" [label]="'Satul lunii ' + getMonthLabelByVillage(prevId)" icon="pi pi-arrow-left" size="small" [raised]="true" severity="secondary" (onClick)="goPrev()"></p-button>
     <p-button *ngIf="nextId !== null" [label]="'Satul lunii ' + getMonthLabelByVillage(nextId)" icon="pi pi-arrow-right" size="small" [raised]="true" severity="secondary" (onClick)="goNext()" [ngStyle]="{ 'margin-left': prevId === null ? 'auto' : '0' }"></p-button>
   </div>
-
-  <p-divider>
-    <i class="pi pi-star" style="color: #c8a96a;"></i>
-  </p-divider>
 
   <div class="container2" style="padding-left: 1rem; padding-right: 1rem;">
     <div class="reveal p-card-custom">
@@ -133,10 +121,6 @@
       <app-youtube-player [videoId]="getYoutubeIdByVillage()"></app-youtube-player>
     </div>
   </div>
-
-  <p-divider>
-    <i class="pi pi-star" style="color: #c8a96a;"></i>
-  </p-divider>
 
   <div class="container2" style="padding-left: 1rem; padding-right: 1rem;">
       <p-card>

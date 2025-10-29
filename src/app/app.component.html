@@ -1,17 +1,23 @@
 <p-toast></p-toast>
 <div>
-  <p-menubar [model]="items">
-    <ng-template pTemplate="start">
-      <img style="padding-left: 1rem; padding-right: 1rem" src="assets/Hai%20in%20sat.png" alt="Logo" height="80" class="mr-2" (click)="goToLandingPage()"/>
-    </ng-template>
-    <ng-template pTemplate="end">
-      <div>
-        <fa-icon (click)="openLink('https://www.facebook.com/profile.php?id=61560478122728&is_tour_dismissed')" style="padding-left: 1rem; padding-right: 1rem; cursor: pointer" [icon]="faFacebook"></fa-icon>
-        <fa-icon style="padding-left: 1rem; padding-right: 1rem; cursor: pointer" [icon]="faInstagram" (click)="openLink('https://www.instagram.com/hai.in.sat?igsh=MXh5NmFqcXhjdThtYQ%3D%3D&utm_source=qr')"></fa-icon>
-        <fa-icon (click)="openLink('https://www.tiktok.com/@hai.in.sat?_t=8n1yemWQQMr&_r=1')" style="padding-left: 1rem; padding-right: 1rem; cursor: pointer" [icon]="faTiktok"></fa-icon>
-      </div>
-    </ng-template>
-  </p-menubar>
+  <div class="topbar">
+    <div class="topbar__left">
+      <img class="topbar__logo" src="assets/Hai%20in%20sat.png" alt="Logo" height="80" (click)="goToLandingPage()"/>
+    </div>
+    <div class="topbar__center">
+<!--      <p-chip class="clickable topchip" icon="pi pi-images" label="Despre noi" (click)="goToAboutUs()"></p-chip>-->
+      <p-chip class="clickable topchip" icon="pi pi-sun" label="Oltenia de sub Munte" (click)="goToUnderTheMountain()"></p-chip>
+      <p-chip class="clickable topchip" icon="pi pi-home" label="Satul lunii" (click)="goToVillageOfTheMonth()"></p-chip>
+      <p-chip class="clickable topchip" icon="pi pi-eye" label="Proprietăți" (click)="goToProperties()"></p-chip>
+      <p-chip class="clickable topchip" icon="pi pi-home" label="Case" (click)="goToHomeFormPage()"></p-chip>
+      <p-chip class="clickable topchip" icon="pi pi-cloud" label="Terenuri" (click)="goToTerrainFormPage()"></p-chip>
+    </div>
+    <div class="topbar__right">
+      <fa-icon (click)="openLink('https://www.facebook.com/profile.php?id=61560478122728&is_tour_dismissed')" class="topbar__icon" [icon]="faFacebook"></fa-icon>
+      <fa-icon class="topbar__icon" [icon]="faInstagram" (click)="openLink('https://www.instagram.com/hai.in.sat?igsh=MXh5NmFqcXhjdThtYQ%3D%3D&utm_source=qr')"></fa-icon>
+      <fa-icon (click)="openLink('https://www.tiktok.com/@hai.in.sat?_t=8n1yemWQQMr&_r=1')" class="topbar__icon" [icon]="faTiktok"></fa-icon>
+    </div>
+  </div>
   <router-outlet></router-outlet>
 
   <div class="large-screen">

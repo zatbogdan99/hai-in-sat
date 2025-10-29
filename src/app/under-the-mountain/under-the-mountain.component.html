@@ -1,78 +1,84 @@
-<div class="hero-banner">
-  <div class="hero-content">
-    <h1>Oltenia de sub Munte</h1>
-    <h2>Regiune cu istorie si traditii autentice</h2>
+<!--TODO mie mi se pare urat fara titlu-->
+<!--<div class="hero-banner">-->
+<!--  <div class="hero-content">-->
+<!--    <h1>Oltenia de sub Munte</h1>-->
+<!--    <h2>Regiune cu istorie si traditii autentice</h2>-->
+<!--  </div>-->
+<!--</div>-->
+
+<section class="why-odsm">
+  <div class="why__container">
+    <div class="why__gallery">
+      <div class="why__img-wrap">
+        <img src="assets/poza1_oltenia.jpeg" alt="Peisaj montan 1" />
+      </div>
+      <div class="why__img-wrap">
+        <img src="assets/poza2_oltenia.jpeg" alt="Peisaj montan 2" />
+      </div>
+      <div class="why__img-wrap">
+        <img src="assets/poza3_oltenia.jpeg" alt="Peisaj montan 3" />
+      </div>
+    </div>
+
+    <div class="why__content">
+      <h2 class="why__title">De ce Oltenia de sub Munte?</h2>
+      <div class="why__text">
+        <p>Pentru că este una dintre cele mai autentice zone din România — o îmbinare rară între munte și câmpie, între tradiție și liniște.</p>
+        <p>Aici găsești sate pitorești, cu case vechi de lemn și curți largi, aer curat, peisaje spectaculoase și oameni care trăiesc simplu, dar frumos.</p>
+        <p>Dacă visezi la o casă cu grădină, la o curte cu meri bătrâni sau la un teren de unde vezi munții, aici o să o găsești.</p>
+        <p><strong>Aici începe acasă. Aici e Oltenia de sub Munte.</strong></p>
+      </div>
+    </div>
   </div>
-</div>
+</section>
 
-<div class="large-screen">
-  <section>
-    <div class="card-top">
-      <div class="card-info">
-        <div style="display: flex">
-          <div>
-            <h1 id="card-info-title" class="degrade" style="font-family: 'Libre Baskerville', serif; font-size: 2.7rem; text-align: left">Un colt de rai numit "Oltenia de sub Munte"</h1>
-            <hr class="degrade-line">
+<section class="discover-odsm">
+  <div class="discover__overlay"></div>
+  <div class="discover__container">
+    <h2 class="discover__title">Descopera Oltenia de sub Munte</h2>
+    <div class="discover__cards">
+      <button #prevNav type="button" class="discover__nav discover-prev" aria-label="Imaginea anterioară">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <swiper-container #villageSwiper init="false" class="village-swiper" style="width: 100%; grid-column: 1 / -1;" slides-per-view="3" space-between="16" centered-slides="true" loop="true" grab-cursor="true" initial-slide="1">
+        <swiper-slide *ngFor="let item of data">
+          <div class="discover-card">
+            <div class="discover-card__img">
+              <img [src]="item.photo" [alt]="item.title" />
+            </div>
+            <div class="discover-card__body">
+              <h3>{{ item.title }}</h3>
+              <button type="button" class="discover-card__link" (click)="goToVillage(item.id)">Mai multe</button>
+            </div>
           </div>
-        </div>
-        <p id="card-info-desc">Echipa "Hai in sat" sustine Geoparcul "Oltenia de sub Munte" si va
-          invita sa-i descoperiti farmecul intr-un film realizat de Charlie Ottley, in colaborare cu Asociatia Kogayon.
-          O invitatie la simplitate si autenticitate, o poveste despre locuri care merita iubite si pastrate in suflet.
-        </p>
-      </div>
+        </swiper-slide>
+      </swiper-container>
+      <button #nextNav type="button" class="discover__nav discover-next" aria-label="Imaginea următoare">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>
 
-      <div class="card-video">
-          <app-youtube-player></app-youtube-player>
+<section class="feel-odsm">
+  <div class="feel__container">
+    <div class="feel__image">
+      <app-youtube-player [videoId]="'CKiPdxYl0MA'" [width]="'100%'" [height]="'400'"></app-youtube-player>
+    </div>
+    <div class="feel__content">
+      <h2 class="feel__title">Și noi simțim la fel!</h2>
+      <div class="feel__text">
+        <p>În fiecare sat, în fiecare curte, în fiecare om — Oltenia de sub Munte are un suflet aparte.</p>
+        <p>De aceea, susținem inițiativele care o arată lumii, așa cum este ea: simplă, curată, adevărată.</p>
       </div>
     </div>
+  </div>
+</section>
 
-
-  </section>
-
-  <p-divider>
-    <i class="pi pi-star" style="color: #c8a96a;"></i>
-  </p-divider>
-
-  <section>
-    <div class="card">
-      <div class="card-info">
-        <div style="display: flex">
-          <div>
-            <h1 class="degrade" id="card-info-title" style="font-family: 'Libre Baskerville', serif">{{data[currentNum].title}}</h1>
-            <hr class="degrade-line">
-          </div>
-          <a style="padding-left: 15rem; padding-bottom: 3rem">
-            <p (click)="nextButton()">Următorul</p>
-            <svg viewBox="0 0 20 10">
-              <line x1="0" y1="5" x2="20" y2="5"></line>
-              <line x1="15" y1="0" x2="20" y2="5"></line>
-              <line x1="15" y1="10" x2="20" y2="5"></line>
-            </svg>
-          </a>
-        </div>
-        <p id="card-info-desc">{{getCardInfoDesc()}}</p>
-        <a style="padding-right: 40rem">
-          <p (click)="showMore()">Mai multe</p>
-          <svg viewBox="0 0 20 10">
-            <line x1="0" y1="5" x2="20" y2="5"></line>
-            <line x1="15" y1="0" x2="20" y2="5"></line>
-            <line x1="15" y1="10" x2="20" y2="5"></line>
-          </svg>
-        </a>
-      </div>
-
-      <div class="card-photo">
-          <div id="mask" class="mask">
-            <img src="{{data[currentNum].photo}}">
-          </div>
-      </div>
-    </div>
-  </section>
-
-  <p-divider>
-    <i style="color: #0453ea !important;"></i>
-  </p-divider>
-</div>
 
 <div class="small-screen">
   <div class="hero-banner">

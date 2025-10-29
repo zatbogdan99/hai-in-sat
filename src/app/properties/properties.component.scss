@@ -27,87 +27,53 @@
   z-index: 1000;
 }
 
-/* Header Section */
-.property-header-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
+/* Hero Section (new) */
+.properties-hero {
+  background-image: url('../../assets/vaideeni.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   display: flex;
-  flex-wrap: wrap;
   flex-direction: column;
-  gap: 2rem;
-  justify-content: space-between;
   align-items: center;
-}
-
-.property-filter {
-  flex: 1;
-  min-width: 280px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
-  background-color: #ffffff;
-  width: 100%;
-  max-width: 800px;
-  margin: 1rem auto;
-  padding: 1.5rem 2rem;
-
-  .property-toggle {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-weight: bold;
-    letter-spacing: 1px;
-    color: #555;
-  }
-
-  .property-subtext {
-    flex: 0 0 75%;
-    text-align: left;
-    font-size: 1.40rem;
-    color: #444;
-    margin: 0;
-  }
-
-  .cta-btn {
-    flex: 0 0 25%;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding-right: 1rem;
-  }
-}
-
-.property-header-text {
-  flex: 1;
-  min-width: 280px;
+  justify-content: center;
   text-align: center;
+  padding: clamp(2rem, 6vw, 5rem) 1rem;
+  min-height: 280px;
+  gap: 1rem;
+}
 
-  h1 {
-    font-size: clamp(2.5rem, 5vw, 3.5rem);
-    font-weight: 800;
-    background: linear-gradient(45deg, #005baa, #000000);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+.hero-title {
+  background-color: #F4EFE5;
+  color: #111;
+  padding: 0.5rem 1.5rem;
+  border-radius: 24px;
+  font-weight: 800;
+  font-size: clamp(2rem, 6vw, 4rem);
+  line-height: 1.1;
+}
 
-  hr {
-    width: 80px;
-    height: 4px;
-    background-color: #005baa;
-    border: none;
-    margin: 1rem auto;
-  }
+.hero-subtitle {
+  background-color: #F4EFE5;
+  color: #0b2f6b;
+  padding: 1rem 1.5rem;
+  border-radius: 16px;
+  font-size: clamp(1rem, 2.2vw, 1.4rem);
+  max-width: 1000px;
+}
 
-  p {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: #444;
-    max-width: 600px;
-    margin: 0 auto;
-  }
+:host ::ng-deep .hero-cta .p-button {
+  background-color: #0b2f6b;
+  color: #fff;
+  border: none;
+  padding: 0.85rem 1.75rem;
+  border-radius: 999px;
+  font-size: 1.1rem;
+  box-shadow: 0 8px 16px rgba(11, 47, 107, 0.3);
+}
+
+:host ::ng-deep .hero-cta .p-button:hover {
+  background-color: #0d3b8e;
 }
 
 /* LISTA */
