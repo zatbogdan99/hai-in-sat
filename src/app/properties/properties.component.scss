@@ -27,9 +27,8 @@
   z-index: 1000;
 }
 
-/* Hero Section (new) */
 .properties-hero {
-  background-image: url('../../assets/vaideeni.png');
+  background-image: url('../../assets/fundal_properties.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -39,7 +38,7 @@
   justify-content: center;
   text-align: center;
   padding: clamp(2rem, 6vw, 5rem) 1rem;
-  min-height: 280px;
+  min-height: 350px;
   gap: 1rem;
 }
 
@@ -48,9 +47,9 @@
   color: #111;
   padding: 0.5rem 1.5rem;
   border-radius: 24px;
-  font-weight: 800;
+  font-weight: 500;
   font-size: clamp(2rem, 6vw, 4rem);
-  line-height: 1.1;
+  font-family: 'Libre Baskerville', serif;
 }
 
 .hero-subtitle {
@@ -58,8 +57,9 @@
   color: #0b2f6b;
   padding: 1rem 1.5rem;
   border-radius: 16px;
-  font-size: clamp(1rem, 2.2vw, 1.4rem);
-  max-width: 1000px;
+  font-size: clamp(1.8rem, 2.2vw, 1.4rem);
+  max-width:800px;
+  font-family: 'Libre Baskerville', serif;
 }
 
 :host ::ng-deep .hero-cta .p-button {

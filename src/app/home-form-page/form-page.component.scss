@@ -79,7 +79,7 @@ h1 {
 }
 
 .div-style {
-  padding-top: 5rem;
+  padding-top: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -146,4 +146,132 @@ h1 {
   .large-screen {
     display: block;
   }
+}
+
+/* beige background wrapper for this page */
+.page-beige {
+  background-color: #F4EFE5;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.form-hero-title {
+  font-family: 'Libre Baskerville', 'Times New Roman', serif;
+  color: #101828; /* very dark for good contrast, close to screenshot */
+  text-align: center;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: 0.3px;
+  margin: 2rem 0 0.5rem 0;
+  font-size: clamp(2rem, 4.8vw, 3.25rem);
+}
+
+.form-hero-subtitle {
+  font-family: 'Libre Baskerville', 'Times New Roman', serif;
+  color: #0b2f6b; /* same navy used elsewhere in the app */
+  text-align: center;
+  margin: 2rem auto;
+  max-width: 46rem;
+  font-size: clamp(1.25rem, 1.2vw, 1.1rem);
+}
+
+.property-type-section {
+  text-align: center;
+  margin: 0.5rem 0 1.5rem 0;
+}
+
+.property-type-title {
+  font-family: 'Playfair Display', 'Times New Roman', serif;
+  font-weight: 700;
+  color: #111111;
+  margin: 0;
+  font-size: clamp(2rem, 1.6vw, 1.6rem);
+}
+
+.property-type-options {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.75rem;
+  margin-top: 0.5rem;
+}
+
+.property-type-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pill-label {
+  background-color: #0b2f6b;
+  color: #ffffff;
+  padding: 0.35rem 1rem;
+  border-radius: 999px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  line-height: 1;
+  user-select: none;
+  display: inline-block;
+  min-width: 4.5rem;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(11, 47, 107, 0.22);
+}
+
+/* Tweak PrimeNG radio look/spacing so it matches the screenshot layout */
+:host ::ng-deep .property-type-section .p-radiobutton .p-radiobutton-box {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+/* Mobile adjustments */
+@media only screen and (max-width: 500px) {
+  .property-type-section {
+    margin-bottom: 2.25rem;
+  }
+  .property-type-options {
+    gap: 1.25rem;
+  }
+  .pill-label {
+    padding: 0.32rem 0.85rem;
+    font-weight: 800;
+  }
+}
+
+/* Make PrimeNG radio buttons appear fully filled when selected (only in this section) */
+:host ::ng-deep .property-type-section .p-radiobutton .p-radiobutton-box {
+  border: 2px solid #0b2f6b;
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+}
+
+/* Hide the inner dot so the whole circle can be the indicator */
+:host ::ng-deep .property-type-section .p-radiobutton .p-radiobutton-box .p-radiobutton-icon {
+  display: none;
+}
+
+/* When selected, fill the entire circle (persist after hover/focus) */
+::host ::ng-deep .property-type-section .p-radiobutton .p-radiobutton-box.p-highlight,
+::host ::ng-deep .property-type-section .p-radiobutton.p-radiobutton-checked .p-radiobutton-box,
+::host ::ng-deep .property-type-section .p-radiobutton .p-radiobutton-box[aria-checked="true"] {
+  background-color: #0b2f6b !important;
+  border-color: #0b2f6b !important;
+}
+
+/* Hover and focus states */
+:host ::ng-deep .property-type-section .p-radiobutton:not(.p-disabled) .p-radiobutton-box:hover {
+  border-color: #0b2f6b;
+}
+:host ::ng-deep .property-type-section .p-radiobutton.p-focus .p-radiobutton-box,
+:host ::ng-deep .property-type-section .p-radiobutton .p-radiobutton-box.p-focus {
+  box-shadow: 0 0 0 0.2rem rgba(11, 47, 107, 0.15);
+}
+
+
+/* Fix persistent filled state for PrimeNG radios in 'Ce cauți?' section */
+:host ::ng-deep .property-type-section .p-radiobutton.p-radiobutton-checked .p-radiobutton-box,
+:host ::ng-deep .property-type-section .p-radiobutton .p-radiobutton-box.p-highlight,
+:host ::ng-deep .property-type-section .p-radiobutton .p-radiobutton-box[aria-checked="true"],
+:host ::ng-deep .property-type-section .p-radiobutton .p-radiobutton-input:checked + .p-radiobutton-box {
+  background-color: #0b2f6b !important;
+  border-color: #0b2f6b !important;
 }

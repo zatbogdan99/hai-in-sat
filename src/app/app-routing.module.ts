@@ -4,7 +4,6 @@ import {LandingPageComponent} from "./landing-page/landing-page.component";
 import {FormPageComponent} from "./home-form-page/form-page.component";
 import {AboutUsComponent} from "./about-us/about-us.component";
 import {InfoPageComponent} from "./info-page/info-page.component";
-import {TerrainFormPageComponent} from "./terrain-form-page/terrain-form-page.component";
 import {ContactUsComponent} from "./contact-us/contact-us.component";
 import {UnderTheMountainComponent} from "./under-the-mountain/under-the-mountain.component";
 import {SeeTheAreaComponent} from "./see-the-area/see-the-area.component";
@@ -14,7 +13,6 @@ import {PropertyDetailsComponent} from "./property-details/property-details.comp
 import {AddPropertyComponent} from "./add-property/add-property.component";
 
 const routes: Routes = [
-  {path: 'terrain-form-page', component: TerrainFormPageComponent},
   {path: 'homes', component: FormPageComponent},
   {path: 'about-us', component: AboutUsComponent},
   {path: 'info-page', component: InfoPageComponent},

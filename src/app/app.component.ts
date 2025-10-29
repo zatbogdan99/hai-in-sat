@@ -131,14 +131,9 @@ export class AppComponent implements OnInit {
         command: () => this.goToProperties()
       },
       {
-        label: 'Case',
+        label: 'Găsește-mi locul',
         icon: 'pi pi-fw pi-home',
         command: () => this.goToHomeFormPage()
-      },
-      {
-        label: 'Terenuri',
-        icon: 'pi pi-fw pi-cloud',
-        command: () => this.goToTerrainFormPage()
       },
       // {
       //   label: "Adaugare",

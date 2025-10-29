@@ -1,12 +1,13 @@
 <p-toast></p-toast>
-<div *ngIf="loadingService.loading$ | async" class="spinner-container">
-  <p-progressSpinner></p-progressSpinner>
-</div>
-<div class="large-screen">
+<div class="page-beige">
+  <div *ngIf="loadingService.loading$ | async" class="spinner-container">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+  <div class="large-screen">
   <div class="parent-container">
 
-    <h1 class="degrade">Configurează-ți casa perfectă pentru tine</h1>
-    <hr class="degrade-line">
+    <h1 class="form-hero-title">Spune-ne ce cauti,<br>iar noi gasim pentru tine</h1>
+    <p class="form-hero-subtitle">Fie că visezi la o casă tradițională sau un teren unde să-ți construiești locul tău, noi suntem aici să te ajutăm să-l găsești. Lasă datele tale, iar echipa noastră revine cu variante reale, din zonă.</p>
 
     <div class="div-style">
       <p-float-label style="margin-bottom: 2rem; width: 30rem" [formGroup]="formGroup">
@@ -19,63 +20,38 @@
       </p-float-label>
       <p-float-label class="surname-style" [formGroup]="formGroup">
         <input style="padding: 10px; width: 100%" type="text" pInputText id="phoneNumber" formControlName="phoneNumber">
-        <label for="phoneNumber">Număr de telefon</label>
+        <label for="phoneNumber">Telefon</label>
       </p-float-label>
       <p-float-label class="surname-style" [formGroup]="formGroup">
         <input style="padding: 10px; width: 100%" type="text" pInputText id="mail" formControlName="mail">
-        <label for="mail">Adresă de e-mail</label>
+        <label for="mail">Email</label>
       </p-float-label>
 
-      <h2>La ce apropiere de un centru urban(Km)</h2>
-      <div class="container">
-        <div class="element">
-          <input style="margin-bottom: 20px;" type="number" [(ngModel)]="ariaRangeValues[0]" pInputText/>
-        </div>
-        <div class="element">
-          <p-slider [step]="20" [min]="0" [max]="30" [(ngModel)]="ariaRangeValues" [range]="true"></p-slider>
-        </div>
-        <div class="element" style="padding-left: 5rem">
-          <input style="margin-bottom: 20px;" type="number" [(ngModel)]="ariaRangeValues[1]" pInputText/>
-        </div>
-      </div>
-
-      <h2>Preț(€)</h2>
-      <div class="container">
-        <div class="element">
-          <input style="margin-bottom: 20px;" type="number" [(ngModel)]="priceRangeValues[0]" pInputText/>
-        </div>
-        <div class="element">
-          <p-slider [step]="20" [min]="0" [max]="200000" [(ngModel)]="priceRangeValues" [range]="true"></p-slider>
-        </div>
-        <div class="element" style="padding-left: 5rem">
-          <input style="margin-bottom: 20px;" type="number" [(ngModel)]="priceRangeValues[1]" pInputText/>
-        </div>
-      </div>
-      <span class="span-style">
-      <div class="container">
-        <div style="padding-right: 1rem">
-          <p-chip class="chipClass" label="Lângă o apă:"></p-chip>
-        </div>
-        <div style="padding-right: 3rem">
-          <p-checkbox [(ngModel)]="river" [binary]="true" inputId="binary"></p-checkbox>
-        </div>
-
-        <div style="padding-right: 1rem">
-          <p-chip class="chipClass" label="Cu vecini:"></p-chip>
-        </div>
-        <div style="padding-right: 3rem">
-          <p-checkbox [(ngModel)]="neighbor" [binary]="true" inputId="binary"></p-checkbox>
-        </div>
-      </div>
-    </span>
       <p-float-label style="margin-bottom: 2rem" [formGroup]="formGroup">
-        <textarea rows="5" cols="120" pInputTextarea id="mentions" formControlName="mentions"></textarea>
-        <label for="mentions">Alte mențiuni</label>
+        <textarea rows="5" cols="44" pInputTextarea id="details" formControlName="details"></textarea>
+        <label for="details">Detalii</label>
       </p-float-label>
+      <div class="property-type-section" [formGroup]="formGroup">
+        <h2 class="property-type-title">Ce cauți?</h2>
+        <div class="property-type-options">
+          <div class="property-type-option">
+            <p-radioButton name="propertyType" [value]="PropertyType.HOUSE" formControlName="propertyType" inputId="optHouse"></p-radioButton>
+            <label for="optHouse" class="pill-label">CASĂ</label>
+          </div>
+          <div class="property-type-option">
+            <p-radioButton name="propertyType" [value]="PropertyType.LAND" formControlName="propertyType" inputId="optLand"></p-radioButton>
+            <label for="optLand" class="pill-label">TEREN</label>
+          </div>
+        </div>
+      </div>
 
-      <div style="display: flex">
-        <p-checkbox [(ngModel)]="accord" [binary]="true" inputId="binary"></p-checkbox>
-        <h3 style="padding-left: 1rem">Sunt de acord cu <a href="javascript:void(0)" (click)="openTermenii()">termenii si condițiile</a> și <a href="javascript:void(0)" (click)="openPolitica()">politica de confidențialitate</a> </h3>
+      <div [formGroup]="formGroup" style="display: flex; align-items: center; gap: 0.75rem;">
+        <p-checkbox formControlName="terms" [binary]="true" inputId="terms"></p-checkbox>
+        <h3 style="padding-left: 1rem">Sunt de acord cu <a href="javascript:void(0)" (click)="openTermenii()">termenii si condițiile</a> și <a href="javascript:void(0)" (click)="openPolitica()">politica de confidențialitate</a></h3>
+      </div>
+      <div [formGroup]="formGroup" style="display: flex; align-items: center; gap: 0.75rem; margin-top: 0.5rem;">
+        <p-checkbox formControlName="newsletter" [binary]="true" inputId="newsletter"></p-checkbox>
+        <h3 style="padding-left: 1rem">Ma abonez la newsletter pentru a afla mai multe despre zonă si propietati noi</h3>
       </div>
 
       <span style="margin-bottom: 2rem;">
@@ -92,8 +68,8 @@
 <div class="small-screen">
   <div>
 
-    <h1 class="h1-style degrade" id="first-text1-mobile">Configurează-ți casa perfectă pentru tine</h1>
-    <hr>
+    <h1 class="form-hero-title">Spune-ne ce cauti,<br>iar noi gasim pentru tine</h1>
+    <p class="form-hero-subtitle">Fie că visezi la o casă tradițională sau un teren unde să-ți construiești locul tău, noi suntem aici să te ajutăm să-l găsești. Lasă datele tale, iar echipa noastră revine cu variante reale, din zonă.</p>
     <div class="div-style">
       <p-float-label style="margin-bottom: 2rem" [formGroup]="formGroup">
         <input type="text" pInputText id="name-mobile" formControlName="name">
@@ -105,75 +81,48 @@
       </p-float-label>
       <p-float-label style="margin-bottom: 2rem" [formGroup]="formGroup">
         <input type="tel" pInputText id="phoneNumberMobile" formControlName="phoneNumber">
-        <label for="phoneNumberMobile">Număr de telefon</label>
+        <label for="phoneNumberMobile">TELEFON</label>
       </p-float-label>
       <p-float-label style="margin-bottom: 2rem" [formGroup]="formGroup">
         <input pInputText id="mail-mobile" formControlName="mail">
-        <label for="mail-mobile">Adresă de e-mail</label>
+        <label for="mail-mobile">EMAIL</label>
       </p-float-label>
 
-      <h2 style="text-align: center; font-size: 1.3rem">La ce apropiere de un centru urban(Km)</h2>
-      <div>
-        <div style="margin-bottom: 1rem">
-          <div style="padding-right: 1rem; display: inline">
-            <p-chip label="Min:"></p-chip>
-          </div>
-          <input type="tel" style="width: 11rem" [(ngModel)]="ariaRangeValues[0]" pInputText/>
-        </div>
-        <div>
-          <div style="padding-right: 1rem; display: inline">
-            <p-chip label="Max:"></p-chip>
-          </div>
-          <input type="tel" style="width: 10.6rem" [(ngModel)]="ariaRangeValues[1]" pInputText/>
-        </div>
-      </div>
-
-      <h2 style="font-size: 1.3rem">Pret(€)</h2>
-      <div>
-        <div style="margin-bottom: 1rem">
-          <div style="padding-right: 1rem; display: inline">
-            <p-chip label="Min:"></p-chip>
-          </div>
-          <input type="tel" style="width: 11rem" [(ngModel)]="priceRangeValues[0]" pInputText/>
-        </div>
-        <div>
-          <div style="padding-right: 1rem; display: inline">
-            <p-chip label="Max:"></p-chip>
-          </div>
-          <input type="tel" style="width: 10.6rem" [(ngModel)]="priceRangeValues[1]" pInputText/>
-        </div>
-      </div>
-      <span>
-      <div class="container">
-        <div style="padding-bottom: 1rem; padding-top: 1rem; display: flex">
-          <p-chip label="Lângă o apă:"></p-chip>
-          <div style="padding-left: 2rem; padding-top: 0.5rem">
-            <p-checkbox [(ngModel)]="river" [binary]="true" inputId="binary"></p-checkbox>
-          </div>
-        </div>
-        <div style="padding-bottom: 2rem">
-          <p-chip class="chipClass" label="Cu vecini:"></p-chip>
-          <div style="display: inline; padding-left: 3.7rem">
-            <p-checkbox [(ngModel)]="neighbor" [binary]="true" inputId="binary"></p-checkbox>
-          </div>
-        </div>
-      </div>
-    </span>
-      <p-float-label [formGroup]="formGroup">
-        <textarea style="width: 20rem" rows="5" pInputTextarea formControlName="mentions" id="mentions_mobile"></textarea>
-        <label for="mentions_mobile">Alte mențiuni</label>
+      <p-float-label style="margin-bottom: 2rem" [formGroup]="formGroup">
+        <textarea style="width: 20rem" rows="5" pInputTextarea formControlName="details" id="details_mobile"></textarea>
+        <label for="details_mobile">DETALII</label>
       </p-float-label>
 
-      <div style="display: flex; padding-left: 2rem">
-        <p-checkbox [(ngModel)]="accord" [binary]="true" inputId="binary"></p-checkbox>
-        <h4 style="padding-left: 1rem">Sunt de acord cu <a href="javascript:void(0)" (click)="openTermenii()">termenii si condițiile</a> și <a href="javascript:void(0)" (click)="openPolitica()">politica de confidențialitate</a> </h4>
+      <div class="property-type-section" [formGroup]="formGroup">
+        <h2 class="property-type-title">Ce cauți?</h2>
+        <div class="property-type-options">
+          <div class="property-type-option">
+            <p-radioButton name="propertyTypeMobile" [value]="PropertyType.HOUSE" formControlName="propertyType" inputId="optHouseMobile"></p-radioButton>
+            <label for="optHouseMobile" class="pill-label">CASĂ</label>
+          </div>
+          <div class="property-type-option">
+            <p-radioButton name="propertyTypeMobile" [value]="PropertyType.LAND" formControlName="propertyType" inputId="optLandMobile"></p-radioButton>
+            <label for="optLandMobile" class="pill-label">TEREN</label>
+          </div>
+        </div>
+      </div>
+
+      <div [formGroup]="formGroup" style="display: flex; align-items: center; gap: 0.5rem; padding-left: 0.5rem">
+        <p-checkbox formControlName="terms" [binary]="true" inputId="terms_mobile"></p-checkbox>
+        <h4 style="padding-left: 0.5rem">Sunt de acord cu <a href="javascript:void(0)" (click)="openTermenii()">termenii si condițiile</a> și <a href="javascript:void(0)" (click)="openPolitica()">politica de confidențialitate</a></h4>
+      </div>
+      <div [formGroup]="formGroup" style="display: flex; align-items: center; gap: 0.5rem; padding-left: 0.5rem; margin-top: 0.5rem;">
+        <p-checkbox formControlName="newsletter" [binary]="true" inputId="newsletter_mobile"></p-checkbox>
+        <h4 style="padding-left: 0.5rem">Mă abonez la newsletter</h4>
       </div>
 
       <span>
-        <button pButton pRipple label="HAI IN SAT" class="p-button-success" (click)="sendRequest()"></button>
+        <button style="background: #1b3a2a" pButton pRipple label="HAI IN SAT" class="p-button-success" (click)="sendRequest()"></button>
       </span>
     </div>
 
     <img class="bg" alt="logo-background" src="assets/logo.png" />
   </div>
+</div>
+
 </div>

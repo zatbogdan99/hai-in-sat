@@ -1,6 +1,5 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {gsap} from "gsap";
 import {MessageService} from "primeng/api";
 import {HomeFormServiceService} from "../service/home-form-service/home-form-service.service";
 import {HomeFormDto} from "../dto/home-form.dto";
@@ -11,12 +10,13 @@ import {Chip} from "primeng/chip";
 import {InputText} from "primeng/inputtext";
 import {ProgressSpinner} from "primeng/progressspinner";
 import {Toast} from "primeng/toast";
-import {Slider} from "primeng/slider";
 import {AsyncPipe, NgIf} from "@angular/common";
 import {Textarea} from "primeng/textarea";
 import {ButtonDirective} from "primeng/button";
 import {Ripple} from "primeng/ripple";
 import {FloatLabel} from "primeng/floatlabel";
+import {RadioButton} from "primeng/radiobutton";
+import { PropertyType } from "../dto/property-type.enum";
 
 @Component({
   selector: 'app-form-page',
@@ -25,30 +25,27 @@ import {FloatLabel} from "primeng/floatlabel";
   imports: [
     Checkbox,
     ReactiveFormsModule,
-    Chip,
     FormsModule,
     InputText,
     ProgressSpinner,
     Toast,
-    Slider,
     NgIf,
     AsyncPipe,
     Textarea,
     ButtonDirective,
     Ripple,
-    FloatLabel
+    FloatLabel,
+    RadioButton
   ],
   providers: [MessageService]
 })
 export class FormPageComponent implements OnInit, AfterViewInit{
   formGroup!: FormGroup;
-  ariaRangeValues: number[] = [0, 30];
-  priceRangeValues: number[] = [0, 200000];
-  river: boolean = false;
-  neighbor: boolean = false;
   accord: boolean = false;
+  newsletter: boolean = false;
   termenii: boolean = false;
   politica: boolean = false;
+  PropertyType = PropertyType;
 
   constructor(private messageService: MessageService,
               private homeFormService: HomeFormServiceService,
@@ -57,15 +54,16 @@ export class FormPageComponent implements OnInit, AfterViewInit{
   }
 
   ngOnInit(): void {
-    this.ariaRangeValues = [0, 30];
-    this.priceRangeValues = [0, 200000];
     this.formGroup = this.formBuilder.group(
       {
         name: ['', Validators.required],
         surname: ['', Validators.required],
         phoneNumber: ['', Validators.required],
-        mail: ['', Validators.required],
-        mentions: new FormControl()
+        mail: ['', [Validators.required, Validators.email]],
+        details: new FormControl('', { validators: [Validators.required] }),
+        propertyType: new FormControl<PropertyType | null>(PropertyType.HOUSE, { validators: [Validators.required] }),
+        terms: new FormControl<boolean>(false, { validators: [Validators.requiredTrue] }),
+        newsletter: new FormControl<boolean>(false)
       }
     );
   }
@@ -76,34 +74,37 @@ export class FormPageComponent implements OnInit, AfterViewInit{
 
   sendRequest() {
     if (this.formGroup.valid) {
-      if (this.accord) {
+      if (this.formGroup.get('terms')?.value) {
         const formData: HomeFormDto = new HomeFormDto();
-        formData.name = this.formGroup.get("name")?.value;
-        formData.surname = this.formGroup.get("surname")?.value;
-        formData.phone = this.formGroup.get("phoneNumber")?.value;
-        formData.mail = this.formGroup.get("mail")?.value;
-        formData.mentions = this.formGroup.get("mentions")?.value;
-        formData.nearRiver = this.river;
-        formData.withNeighbours = this.neighbor;
-        formData.price = 'între ' + this.priceRangeValues[0] + '€ și ' + this.priceRangeValues[1] + '€';
-        formData.distance = 'între ' + this.ariaRangeValues[0] + 'km și ' + this.ariaRangeValues[1] + 'km';
+        formData.name = this.formGroup.get('name')?.value;
+        formData.surname = this.formGroup.get('surname')?.value;
+        formData.phone = this.formGroup.get('phoneNumber')?.value;
+        formData.mail = this.formGroup.get('mail')?.value;
+        formData.details = this.formGroup.get('details')?.value || '';
+        formData.propertyType = this.formGroup.get('propertyType')?.value ?? PropertyType.HOUSE;
         this.loadingService.loadingOn();
         this.homeFormService.sendHomeEmails(formData).subscribe({
-          next: (response) => {
+          next: () => {
             this.messageService.add({
               severity: 'success',
               summary: 'HAI IN SAT',
               detail: 'Formularul a fost trimis cu succes'
             });
-            this.formGroup.reset();
-            this.river = false;
-            this.neighbor = false;
-            this.ariaRangeValues= [0, 30];
-            this.priceRangeValues = [0, 200000];
+            this.formGroup.reset({
+              name: '',
+              surname: '',
+              phoneNumber: '',
+              mail: '',
+              details: '',
+              propertyType: PropertyType.HOUSE,
+              terms: false,
+              newsletter: false
+            });
             this.loadingService.loadingOff();
           },
           error: (error) => {
             console.error('There was an error!', error);
+            this.loadingService.loadingOff();
           }
         })
       } else {
