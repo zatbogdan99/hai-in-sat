@@ -184,6 +184,17 @@ fa-icon {
   flex-wrap: wrap;
 }
 
+/* Desktop chips vs mobile menu button */
+.nav-chips {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.topbar__menu-button {
+  display: none; /* hidden on desktop by default */
+  color: #ffffff;
+}
+
 .topbar__icon {
   padding-left: 1rem;
   padding-right: 1rem;
@@ -247,4 +258,25 @@ fa-icon {
 ::ng-deep .p-menubar .p-menuitem:focus-within > .p-menuitem-content .p-menuitem-text,
 ::ng-deep .p-menubar .p-menuitem:focus-within > .p-menuitem-content .p-menuitem-icon {
   color: #1b3a2a !important;
+}
+
+
+/* Mobile behavior: replace chips with menu button and vertical list */
+@media only screen and (max-width: 1199px), only screen and (max-height: 599px) {
+  .nav-chips { display: none; }
+  .topbar__menu-button { display: inline-flex; align-items: center; justify-content: center; }
+  .mobile-menu-list { display: flex; flex-direction: column; gap: 0.5rem; padding: 0.25rem; }
+}
+
+/* Desktop behavior: keep chips visible and hide the menu button */
+@media only screen and (min-width: 1200px) and (min-height: 600px) {
+  .nav-chips { display: flex; }
+  .topbar__menu-button { display: none; }
+}
+
+/* Overlay/Popover fine-tuning */
+:host ::ng-deep .mobile-menu-panel .p-overlaypanel-content,
+:host ::ng-deep .mobile-menu-panel .p-popover-content {
+  padding: 0.5rem !important;
+  background: transparent;
 }

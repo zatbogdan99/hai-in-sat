@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {MenuItem, MessageService, PrimeTemplate} from "primeng/api";
+import {MenuItem} from "primeng/api";
 import {Router, RouterOutlet} from "@angular/router";
 import { faTiktok } from '@fortawesome/free-brands-svg-icons';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
@@ -8,8 +8,9 @@ import { faSquareFacebook } from "@fortawesome/free-brands-svg-icons";
 import {DataService} from "./service/data-service";
 import {Dialog} from "primeng/dialog";
 import {Chip} from "primeng/chip";
+import {Button} from "primeng/button";
+import {Popover} from "primeng/popover";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
-import {Menubar} from "primeng/menubar";
 import {Toast} from "primeng/toast";
 
 @Component({
@@ -18,6 +19,8 @@ import {Toast} from "primeng/toast";
   imports: [
     Dialog,
     Chip,
+    Button,
+    Popover,
     FaIconComponent,
     RouterOutlet,
     Toast
