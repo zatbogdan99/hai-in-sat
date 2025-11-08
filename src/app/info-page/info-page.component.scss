@@ -4,6 +4,150 @@
 
 .text-style {
   font-size: 18px;
+  padding-left: 8rem;
+}
+
+/* New design styles */
+.info-page-bg {
+  background-color: #f4efe5;
+  padding: 2rem 0 4rem 0;
+}
+
+.header-wrap {
+  padding-left: 3rem;
+}
+
+.title-underline {
+  display: block;
+  background: #1b3a2a;
+  height: 6px;
+  width: 120px;
+  border: 0;
+  margin: 0.75rem 0 0 0;
+  border-radius: 3px;
+}
+
+.features-row {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  align-items: stretch;
+  padding: 4rem 3rem;
+}
+
+.features-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 1rem 2rem 1rem;
+}
+
+.feature-card {
+  width: 35rem;
+}
+
+.feature-card .p-card {
+  background: #ffffff;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+:host ::ng-deep .feature-card .p-card .p-card-body {
+  height: 15rem !important;
+}
+
+.features-title {
+  font-size: 2rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.features-list {
+  list-style: disc;
+  padding-left: 1.5rem;
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.left-text {
+  //width: 42rem;
+}
+
+.gallery-wrap {
+  max-width: 80rem;
+  max-height: 33.5rem;
+  margin-left: auto;
+  padding-right: 12rem;
+}
+
+.galleria-card {
+  background: transparent;
+  box-shadow: none;
+}
+
+/* top row: left text + gallery side by side on desktop */
+.top-row {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  justify-content: flex-start; /* left aligns content */
+}
+
+/* Polovragi special bottom layout */
+.polovragi-section {
+  padding: 1rem 3rem 0 3rem;
+}
+
+.polovragi-row {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.polovragi-left {
+  //flex: 1 1 60%;
+}
+
+.polovragi-right {
+  flex: 1 1 40%;
+  display: flex;
+  justify-content: center;
+}
+
+.polovragi-image {
+  width: 45rem;
+  max-width: 100%;
+  max-height: 30rem;
+  border-radius: 4px;
+}
+
+.polovragi-bottom {
+  margin-top: 1.5rem;
+}
+
+.polovragi-paragraph {
+  max-width: 60ch;
+  font-size: 20px;
+}
+
+.polovragi-paragraph-2 {
+  font-size: 20px;
+}
+
+@media (max-width: 900px) {
+  .polovragi-row {
+    flex-direction: column;
+  }
+  .polovragi-right {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 900px) {
+  .features-row {
+    flex-direction: column;
+    padding: 1rem;
+  }
 }
 
 .galeria-style {
@@ -102,10 +246,11 @@ img {
   }
 
   .title {
-    font-size: 2.3rem;
+    font-size: 2rem;
     font-weight: 700;
-    text-align: center;
+    //text-align: center;
     padding-left: 4rem;
+    padding-bottom: 1rem;
   }
 
   .container2 {
@@ -193,5 +338,84 @@ img {
     //width: 60%;
     //height: 50vh;
     position: relative;
+  }
+}
+
+
+/* Horezu custom layout */
+.horezu-section {
+  padding: 1rem 3rem 0 3rem;
+}
+
+.horezu-row {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.horezu-left {
+  max-width: 60rem;
+}
+
+.horezu-right {
+  flex: 1 1 40%;
+  display: flex;
+  justify-content: center;
+}
+
+.horezu-image {
+  width: 45rem;
+  max-width: 100%;
+  max-height: 30rem;
+  border-radius: 4px;
+}
+
+.horezu-title {
+  font-size: 3.25rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+}
+
+.horezu-subtitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 2rem 0 0.5rem 0;
+}
+
+.horezu-paragraph {
+  font-size: 20px;
+  max-width: 68ch;
+  line-height: 1.7;
+  margin: 0 0 0.5rem 0;
+}
+
+.horezu-list {
+  list-style: disc;
+  padding-left: 1.5rem;
+  font-size: 20px;
+  line-height: 1.7;
+  margin: 0 0 1rem 0;
+}
+
+.horezu-note {
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 0 0.25rem 0;
+}
+
+.horezu-note-list {
+  list-style: disc;
+  padding-left: 1.5rem;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 0 0.5rem 0;
+}
+
+@media (max-width: 900px) {
+  .horezu-row {
+    flex-direction: column;
+  }
+  .horezu-right {
+    justify-content: flex-start;
   }
 }

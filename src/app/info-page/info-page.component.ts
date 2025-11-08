@@ -31,6 +31,10 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
 
   data: DataDto[] = [];
 
+  // Feature lists for the two white cards (left/right)
+  private featuresLeft: { [key: number]: string[] } = {};
+  private featuresRight: { [key: number]: string[] } = {};
+
   villageId: number = 0;
 
   preload: string = 'auto';
@@ -45,6 +49,105 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
         this.router.navigateByUrl("/village-of-the-month");
       }
     });
+
+    // Populate features for villages
+    // Horezu (exact texts as in the mock)
+    this.featuresLeft[1] = [
+      '🧑‍🎨 Ceramica Horezu, lucrată la roată',
+      '🔺 Priveliști liniștite între munți și dealuri',
+      '⛪ Mănăstirea Hurezi (UNESCO)',
+      '🧀 Brânzeturi și produse locale de stână'
+    ];
+    this.featuresRight[1] = [
+      '📍 Depresiunea Horezu',
+      '🏞️ La poalele Munților Căpățânii',
+      '🛣️ Acces pe DN 67 (Râmnicu Vâlcea – Târgu Jiu)',
+      '🔗 Legături: Vaideeni – Polovragi – Costești'
+    ];
+
+    // Polovragi (placeholders)
+    this.featuresLeft[2] = [
+      '⛪ Mănăstirea Polovragi\n',
+      '⛰️ Cheile Oltețului\n',
+      '🕳️ Peștera Polovragi\n',
+      '✝️ Crucea lui Ursache'
+    ];
+    this.featuresRight[2] = [
+      '📍 Depresiunea Polovragi\n',
+      '🌄 Între Munții Căpățânii și Subcarpați\n',
+      '🛣 Acces direct pe DN 67\n',
+      '🔗 Legături: Horezu – Vaideeni – Novaci'
+    ];
+
+    // Baia de Fier (placeholders)
+    this.featuresLeft[3] = [
+      '🕳️ Peștera Muierilor',
+      '⛰️ Chei pitorești',
+      '🏡 Gospodării tradiționale',
+      '🧀 Produse locale'
+    ];
+    this.featuresRight[3] = [
+      '📍 La poalele Parângului',
+      '🚗 Acces: DN 67',
+      '🚶 Trasee montane',
+      '🔗 Legături: Polovragi – Novaci'
+    ];
+
+    // Vaideeni (placeholders)
+    this.featuresLeft[4] = [
+      '🐑 Transhumanță și stâne',
+      '🏡 Case cu arhitectură specifică',
+      '🎭 Tradiții momârlănești',
+      '🧀 Brânzeturi locale'
+    ];
+    this.featuresRight[4] = [
+      '📍 Depresiunea Horezu',
+      '🏞️ Peisaje colinare',
+      '🛣️ Aproape de DN 67',
+      '🔗 Legături: Horezu – Polovragi'
+    ];
+
+    // Slătioara (placeholders)
+    this.featuresLeft[5] = [
+      '⛪ Biserica Potecașilor',
+      '🌲 Păduri și aer curat',
+      '🏡 Sat tradițional',
+      '🧀 Produse locale'
+    ];
+    this.featuresRight[5] = [
+      '📍 Lângă Horezu',
+      '🚶 Plimbări liniștite',
+      '🚗 Acces din DN 67',
+      '🔗 Legături: Horezu – Costești'
+    ];
+
+    // Costești (placeholders)
+    this.featuresLeft[6] = [
+      '🪨 Muzeul Trovanților',
+      '🏞️ Cheile Bistriței',
+      '🕳️ Peștera Bistrița',
+      '⛪ Mănăstiri din apropiere'
+    ];
+    this.featuresRight[6] = [
+      '📍 Valea Bistriței',
+      '🛣️ Acces pe DN 67',
+      '🚶 Trasee ușoare',
+      '🔗 Legături: Bistrița – Horezu'
+    ];
+
+    // Bărbătești (placeholders)
+    this.featuresLeft[7] = [
+      '⛰️ Pătrunsa și Pahomie aproape\n',
+      '🌲 Buila–Vânturarița la pas\n',
+      '💧 Izvoare și răcoare\n',
+      '🏡 Sat liniștit între dealuri'
+    ];
+    this.featuresRight[7] = [
+      '📍 Sat submontan în Oltenia de sub Munte\n',
+      '🌄 La poalele Masivului Buila–Vânturarița\n',
+      ' 🛣 Acces pe DJ 646, legat de DN 67\n',
+      '🔗 Aproape de Costești – Bistrița – Chei – Horezu'
+    ];
 
     this.photoService.getHorezuImages().then((images) => {
       this.horezuImages = images;
@@ -84,10 +187,17 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
       2,
       "Polovragi",
       "Polovragi, o bijuterie istorică a județului Gorj, strălucește ca o comoară păstrată în sânul muntelui. Cu o istorie străveche dovedită de numeroase cercetări arheologice, această locație adânc încărcată de istorie își deschide porțile către trecutul său fascinant.",
-      "În adâncurile timpului, în secolele II - I î.Hr., Polovragi găzduia o așezare dacică unică, cu două nivele diferite. Unul dintre ele, precum o cetate de refugiu, se înălța mândru pe Platoul Padeșului și al Crucii lui Ursache, străjuit de misterul istoriei, în timp ce celălalt nivel se ascundea în adâncurile zonei cunoscute ca \"Gura Pietrei,\" respirând aerul unei comunități civile înfloritoare. Aici, istoria se întrepătrundea cu natura într-un dans veșnic. Dar ceea ce încântă ochiul și inima călătorului în căutarea istoriei este Peștera Polovragi. Aflată în partea de nord-est a Gorjului, această peșteră, cu o lungime impresionantă de aproximativ 11.000 de metri, ascunde povestea timpurilor antice în galeriile sale întunecate. O galerie orizontală, cu mici ramificații laterale, dezvăluie secretele sale cu măreție.",
-      "În urmă cu aproape un secol, temerarii speologi care au explorat această peșteră au dat peste dovezi uluitoare ale prezenței daco-geților. Dar ce a captivat inima cercetătorilor au fost urmele lăsate de picioare umane încălțate, semne de viață străveche în urmă cu aproape 2.000 de ani. Aceste urme ne dezvăluie cum strămoșii acestei regiuni foloseau peștera, și probabil, cum venerau locurile sacre.\n" +
+
+      "În adâncurile timpului, în secolele II - I î.Hr., Polovragi găzduia o așezare dacică unică, cu două nivele diferite. Unul dintre ele, precum o cetate de refugiu, se înălța mândru pe Platoul Padeșului și al Crucii lui Ursache, străjuit de misterul istoriei, în timp ce celălalt nivel se ascundea în adâncurile zonei cunoscute ca \"Gura Pietrei,\" respirând aerul unei comunități civile înfloritoare. " +
+      "Aici, istoria se întrepătrundea cu natura într-un dans veșnic. Dar ceea ce încântă ochiul și inima călătorului în căutarea istoriei este Peștera Polovragi. Aflată în partea de nord-est a Gorjului, această peșteră, cu o lungime impresionantă de aproximativ 11.000 de metri, ascunde povestea timpurilor " +
+      "antice în galeriile sale întunecate. O galerie orizontală, cu mici ramificații laterale, dezvăluie secretele sale cu măreție." +
+      "În urmă cu aproape un secol, temerarii speologi care au explorat această peșteră au dat peste dovezi uluitoare ale prezenței daco-geților. " +
+      "Dar ce a captivat inima cercetătorilor au fost urmele lăsate de picioare umane încălțate, semne de viață străveche în urmă cu aproape 2.000 de ani. ",
+
+      "Aceste urme ne dezvăluie cum " +
+      "strămoșii acestei regiuni foloseau peștera, și probabil, cum venerau locurile sacre.\n" +
       "Mănăstirea Polovragi este un lăcaș monastic cu hramul \"Adormirea Maicii Domnului\". Cunoscută pentru frumusețea naturală din jur și pentru icoana Maicii Domnului, mănăstirea atrage turiști dornici să exploreze atât aspectele spirituale, cât și peisajele spectaculoase ale Cheilor Oltețului.\n",
-      "Locuitorii practică tradițional oieritul, având grijă de oi pe pășune și producând brânzeturi de calitate. Această activitate, transmisă din generație în generație, nu doar că susține economia locală, ci și contribuie la identitatea culturală distinctivă a regiunii.\n" +
+      +
       "\n" +
       "\n" +
       "\n" +
@@ -196,14 +306,7 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    // const firstText1 = new SplitType('#first-text1');
-    //
-    // gsap.to('.char', {
-    //   y: 0,
-    //   stagger: 0.05,
-    //   delay: 0.2,
-    //   duration: .1
-    // })
+    // animations placeholder
   }
 
   isHorezu() {
@@ -212,13 +315,18 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
 
   onPlayerReady(source: VgApiService) {
     this.api = source;
-    // this.api.getDefaultMedia().subscriptions.loadedMetadata.subscribe(
-    //   this.autoplay.bind(this)
-    // )
   }
 
   autoplay() {
     this.api.play();
+  }
+
+  getFeaturesLeft(): string[] {
+    return this.featuresLeft[this.villageId] || [];
+  }
+
+  getFeaturesRight(): string[] {
+    return this.featuresRight[this.villageId] || [];
   }
 
   getImagesForSelected() {
@@ -248,6 +356,111 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
         return this.horezuImages;
       }
     }
+  }
+
+  // Returns the second image from Polovragi gallery (index 1).
+  // Falls back to first image if not available.
+  getPolovragiSecondImage(): string | undefined {
+    const list = this.polovragiImages;
+    if (Array.isArray(list)) {
+      if (list[1]?.itemImageSrc) {
+        return list[1].itemImageSrc;
+      }
+      if (list[0]?.itemImageSrc) {
+        return list[0].itemImageSrc;
+      }
+    }
+    return undefined;
+  }
+
+  // Returns the second image from Bărbătești gallery (index 1).
+  // Falls back to first image if not available.
+  getBarbatestiSecondImage(): string | undefined {
+    const list = this.barbatestiImages;
+    if (Array.isArray(list)) {
+      if (list[1]?.itemImageSrc) {
+        return list[1].itemImageSrc;
+      }
+      if (list[0]?.itemImageSrc) {
+        return list[0].itemImageSrc;
+      }
+    }
+    return undefined;
+  }
+
+  // Returns the second image from Horezu gallery (index 1).
+  // Falls back to first image if not available.
+  getHorezuSecondImage(): string | undefined {
+    const list = this.horezuImages;
+    if (Array.isArray(list)) {
+      if (list[1]?.itemImageSrc) {
+        return list[1].itemImageSrc;
+      }
+      if (list[0]?.itemImageSrc) {
+        return list[0].itemImageSrc;
+      }
+    }
+    return undefined;
+  }
+
+  // Returns the second image from Baia de Fier gallery (index 1).
+  // Falls back to first image if not available.
+  getBaiaSecondImage(): string | undefined {
+    const list = this.baiaImages;
+    if (Array.isArray(list)) {
+      if (list[1]?.itemImageSrc) {
+        return list[1].itemImageSrc;
+      }
+      if (list[0]?.itemImageSrc) {
+        return list[0].itemImageSrc;
+      }
+    }
+    return undefined;
+  }
+
+  // Returns the second image from Vaideeni gallery (index 1).
+  // Falls back to first image if not available.
+  getVaideeniSecondImage(): string | undefined {
+    const list = this.vaideeniImages;
+    if (Array.isArray(list)) {
+      if (list[1]?.itemImageSrc) {
+        return list[1].itemImageSrc;
+      }
+      if (list[0]?.itemImageSrc) {
+        return list[0].itemImageSrc;
+      }
+    }
+    return undefined;
+  }
+
+  // Returns the second image from Slătioara gallery (index 1).
+  // Falls back to first image if not available.
+  getSlatioaraSecondImage(): string | undefined {
+    const list = this.slatioaraImages;
+    if (Array.isArray(list)) {
+      if (list[1]?.itemImageSrc) {
+        return list[1].itemImageSrc;
+      }
+      if (list[0]?.itemImageSrc) {
+        return list[0].itemImageSrc;
+      }
+    }
+    return undefined;
+  }
+
+  // Returns the second image from Costești gallery (index 1).
+  // Falls back to first image if not available.
+  getCostestiSecondImage(): string | undefined {
+    const list = this.costestiImages;
+    if (Array.isArray(list)) {
+      if (list[1]?.itemImageSrc) {
+        return list[1].itemImageSrc;
+      }
+      if (list[0]?.itemImageSrc) {
+        return list[0].itemImageSrc;
+      }
+    }
+    return undefined;
   }
 }
 
