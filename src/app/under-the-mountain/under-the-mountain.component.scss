@@ -535,6 +535,27 @@ section {
   .discover__cards { grid-template-columns: 1fr; }
 }
 
+/* Mobile slider layout tweaks: one centered card, arrows over slider */
+@media (max-width: 640px) {
+  .discover__cards {
+    display: block;
+    position: relative;
+  }
+  swiper-container.village-swiper {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    display: block;
+  }
+  swiper-slide {
+    display: flex;
+    justify-content: center;
+  }
+  .discover-card {
+    width: min(92vw, 420px);
+  }
+}
+
 
 /* Feel section: "Și noi simțim la fel!" */
 .feel-odsm {

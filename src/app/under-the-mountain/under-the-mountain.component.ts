@@ -261,12 +261,21 @@ export class UnderTheMountainComponent implements AfterViewInit {
     }
 
     const params: any = {
-      slidesPerView: 3,
-      spaceBetween: 16,
-      centeredSlides: true,
       loop: true,
       grabCursor: true,
+      centeredSlides: true,
+      centeredSlidesBounds: true,
+      spaceBetween: 16,
       initialSlide: 1,
+      slidesPerView: 3,
+      autoHeight: true,
+      watchSlidesProgress: true,
+      allowTouchMove: true,
+      speed: 450,
+      breakpoints: {
+        0: { slidesPerView: 1, centeredSlides: true },
+        641: { slidesPerView: 3, centeredSlides: true }
+      },
       navigation: {
         prevEl,
         nextEl

@@ -42,7 +42,7 @@
           <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
-      <swiper-container #villageSwiper init="false" class="village-swiper" style="width: 100%; grid-column: 1 / -1;" slides-per-view="3" space-between="16" centered-slides="true" loop="true" grab-cursor="true" initial-slide="1">
+      <swiper-container #villageSwiper init="false" class="village-swiper" style="width: 100%; grid-column: 1 / -1;" space-between="16" centered-slides="true" loop="true" grab-cursor="true" initial-slide="1">
         <swiper-slide *ngFor="let item of data">
           <div class="discover-card">
             <div class="discover-card__img">
@@ -78,39 +78,3 @@
     </div>
   </div>
 </section>
-
-
-<div class="small-screen">
-  <div class="hero-banner">
-    <div class="hero-content">
-      <h1>Oltenia de sub Munte</h1>
-      <h2>Regiune cu istorie si traditii autentice</h2>
-    </div>
-  </div>
-
-  <div style="padding-top: 2rem">
-
-    <p-card>
-      <ng-template pTemplate="header">
-        <div class="card-video-mobile">
-          <app-youtube-player></app-youtube-player>
-          <h1 style="text-align: center; padding-top: 2rem">Oltenia de sub Munte</h1>
-          <p style="padding-top: 3rem; text-align: center">Și noi susținem geoparcul Oltenia de sub Munte. Vă prezentăm frumusețile
-            acestei zone printr-un film realizat de Charlie Ottley, în colaborare cu Asociația Kogayon</p>
-        </div>
-      </ng-template>
-    </p-card>
-
-    <p-card>
-      <ng-template pTemplate="header">
-        <img id="mask-mobile" src="{{data[currentNum].photo}}" alt="Poza de prezentare">
-        <h1 style="padding-top: 2rem; text-align: center" id="card-info-title">{{data[currentNum].title}}</h1>
-      </ng-template>
-      <p id="card-info-desc">{{data[currentNum].desc}}</p>
-      <ng-template pTemplate="footer">
-        <p-button label="Mai multe" icon="pi pi-book" (onClick)="showMore()"></p-button>
-        <p-button label="Următorul" icon="pi pi-arrow-right" (onClick)="nextButton()" [style]="{ 'margin-left': '.5em' }"></p-button>
-      </ng-template>
-    </p-card>
-  </div>
-</div>

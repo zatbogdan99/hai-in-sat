@@ -6,7 +6,7 @@
 
 /* Do not override PrimeIcons font */
 *:not(.pi) {
-  font-family: "Open Sans", sans-serif;
+  font-family: var(--font-base);
 }
 
 .top-section-light-yellow {

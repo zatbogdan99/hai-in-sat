@@ -165,7 +165,7 @@
   -moz-background-clip: text;
   //text-transform: capitalize;
   letter-spacing: 0.8px;
-  font-family: "Open Sans", sans-serif;
+  font-family: var(--font-base);
   font-weight: 800;
   text-align: center;
 }
@@ -274,6 +274,18 @@ img {
     //width: 60%;
     //height: 50vh;
     position: relative;
+  }
+
+  /* Mobile fixes: ensure feature cards fit viewport and adjust text padding */
+  .feature-card {
+    width: 100%;
+    max-width: 100%;
+  }
+  .feature-card .p-card {
+    width: 100%;
+  }
+  .text-style {
+    padding-left: 2rem;
   }
 }
 

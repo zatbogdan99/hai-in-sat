@@ -131,7 +131,7 @@ img {
   a.btn--start {
     grid-row: 3 / -1;
     grid-column: 1 / -1;
-    font-family: cursive;
+    font-family: var(--font-base);
     font-size: 30px;
   }
 }
@@ -156,7 +156,7 @@ img {
     }
 
     a.btn--start {
-      font-family: cursive;
+      font-family: var(--font-base);
       font-size: 15rem;
     }
   }
