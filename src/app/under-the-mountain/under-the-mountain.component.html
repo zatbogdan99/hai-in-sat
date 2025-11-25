@@ -16,14 +16,14 @@
         <img src="assets/poza2_oltenia.jpeg" alt="Peisaj montan 2" />
       </div>
       <div class="why__img-wrap">
-        <img src="assets/poza3_oltenia.jpeg" alt="Peisaj montan 3" />
+        <img src="assets/poza3_oltenia-cismea.jpeg" alt="Peisaj montan 3" />
       </div>
     </div>
 
     <div class="why__content">
       <h2 class="why__title">De ce Oltenia de sub Munte?</h2>
       <div class="why__text">
-        <p>Pentru că este una dintre cele mai autentice zone din România — o îmbinare rară între munte și câmpie, între tradiție și liniște.</p>
+        <p>Pentru că este una dintre cele mai autentice zone din România.</p>
         <p>Aici găsești sate pitorești, cu case vechi de lemn și curți largi, aer curat, peisaje spectaculoase și oameni care trăiesc simplu, dar frumos.</p>
         <p>Dacă visezi la o casă cu grădină, la o curte cu meri bătrâni sau la un teren de unde vezi munții, aici o să o găsești.</p>
         <p><strong>Aici începe acasă. Aici e Oltenia de sub Munte.</strong></p>
@@ -44,13 +44,13 @@
       </button>
       <swiper-container #villageSwiper init="false" class="village-swiper" style="width: 100%; grid-column: 1 / -1;" space-between="16" centered-slides="true" loop="true" grab-cursor="true" initial-slide="1">
         <swiper-slide *ngFor="let item of data">
-          <div class="discover-card">
+          <div class="discover-card" role="button" tabindex="0" (click)="goToVillage(item.id)" (keydown.enter)="goToVillage(item.id)">
             <div class="discover-card__img">
               <img [src]="item.photo" [alt]="item.title" />
             </div>
             <div class="discover-card__body">
               <h3>{{ item.title }}</h3>
-              <button type="button" class="discover-card__link" (click)="goToVillage(item.id)">Mai multe</button>
+              <button type="button" class="discover-card__link">Mai multe</button>
             </div>
           </div>
         </swiper-slide>

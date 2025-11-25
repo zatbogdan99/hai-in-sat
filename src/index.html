@@ -1,10 +1,61 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" style="color-scheme: light; background-color: #ffffff;">
 <head>
   <meta charset="utf-8">
   <title>HaiInSat</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Descoperă viața autentică din Oltenia de sub Munte. Terenuri și case în locuri unde munții întâlnesc satul, iar timpul curge mai încet.">
+  <!-- Force light color scheme across browsers (including Safari) -->
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
+  <meta name="theme-color" content="#ffffff">
+  <!-- iOS Safari: status bar in light/default (PWA context) -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <!-- Hint for Dark Reader extension (Safari iOS/macOS supports extensions) -->
+  <meta name="darkreader-lock">
+  <!-- Force light immediately (prevents iOS Safari auto-darkening before CSS loads) -->
+  <style id="force-light-scheme">
+    :root, html, body {
+      color-scheme: light !important;
+      background-color: #ffffff !important;
+      color: #111111 !important;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root, html, body { color-scheme: light !important; }
+    }
+  </style>
+  <script>
+    // Reinforce light scheme as early as possible
+    (function() {
+      try {
+        var de = document.documentElement;
+        var bd = document.body || null;
+        // Force light scheme on the root element
+        de.style.colorScheme = 'light';
+        de.style.backgroundColor = '#ffffff';
+        // Remove any dark theme classes/attributes that might be injected by libraries or extensions
+        de.classList.remove('dark');
+        de.setAttribute('data-theme', 'light');
+        if (bd) {
+          bd.style.colorScheme = 'light';
+          bd.style.backgroundColor = '#ffffff';
+          bd.classList.remove('dark');
+          bd.setAttribute('data-theme', 'light');
+        }
+
+        // Ensure meta declarations exist and are set to light
+        var m1 = document.querySelector('meta[name="color-scheme"]');
+        if (!m1) { m1 = document.createElement('meta'); m1.setAttribute('name', 'color-scheme'); document.head.appendChild(m1); }
+        m1.setAttribute('content', 'light');
+
+        var m2 = document.querySelector('meta[name="supported-color-schemes"]');
+        if (!m2) { m2 = document.createElement('meta'); m2.setAttribute('name', 'supported-color-schemes'); document.head.appendChild(m2); }
+        m2.setAttribute('content', 'light');
+      } catch (e) { /* no-op */ }
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">

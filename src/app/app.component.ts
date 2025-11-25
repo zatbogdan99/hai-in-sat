@@ -154,6 +154,23 @@ export class AppComponent implements OnInit {
     //   duration: 0.5,
     //   ease: 'power2.inOut'
     // });
+
+    // Abonare la semnalele globale pentru deschiderea pop-up-urilor
+    this.service.openTerms$.subscribe((open) => {
+      if (open) {
+        this.termenii = true;
+        // resetăm semnalul pentru a evita reaprinderea nedorită
+        this.service.openTerms$.next(false);
+      }
+    });
+
+    this.service.openPrivacy$.subscribe((open) => {
+      if (open) {
+        this.politica = true;
+        // resetăm semnalul pentru a evita reaprinderea nedorită
+        this.service.openPrivacy$.next(false);
+      }
+    });
   }
 
   goToTikTokPage() {

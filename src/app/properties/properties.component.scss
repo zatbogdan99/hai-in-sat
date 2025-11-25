@@ -9,8 +9,14 @@
   font-family: var(--font-base);
 }
 
+:host {
+  display: block;
+  /* Fundal bej pentru toată pagina Proprietăți (exceptând hero cu poză și footerul din afara componentei) */
+  //background-color: #FFFDE7;
+}
+
 .top-section-light-yellow {
-  background-color: #FFFDE7; /* Very light yellow background */
+  //background-color: #FFFDE7;
   padding-bottom: 1rem;
 }
 
@@ -78,7 +84,7 @@
 
 /* LISTA */
 .property-data-view {
-  max-width: 1200px;
+  max-width: 68rem;
   margin: 2rem auto;
   padding: 0 1rem;
 
@@ -131,13 +137,15 @@
     flex-wrap: wrap;
     gap: 1rem;
     justify-content: center;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 
     .property-card {
       background-color: #fff;
       border: 1px solid #ddd;
       border-radius: 0.5rem;
       padding: 1rem;
-      width: 280px;
+      width: 20rem;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -233,7 +241,16 @@
       color: #ffcc00;
     }
   }
-}
+  }
+
+  /* Divider vizibilitate implicită (desktop) */
+  :host ::ng-deep .dialog-divider-desktop {
+    display: block;
+  }
+
+  :host ::ng-deep .dialog-divider-mobile {
+    display: none;
+  }
 
 /* Dialog header center */
 :host ::ng-deep .centered-dialog-header .p-dialog-header {
@@ -321,6 +338,56 @@
       margin-top: 0.5rem;
       margin-left: 0;
     }
+  }
+
+  /* Lărgim popup-ul pe mobil ca să fie aproape cât ecranul, cu puțin spațiu stânga-dreapta */
+  :host ::ng-deep .centered-dialog-header.p-dialog {
+    width: calc(100vw - 2rem) !important; /* ~1rem spațiu pe fiecare parte */
+    max-width: calc(100vw - 2rem) !important;
+    margin: 0 auto;
+  }
+
+  /* Păstrăm un mic padding intern ca să nu lipească conținutul de margini */
+  :host ::ng-deep .centered-dialog-header .p-dialog-header,
+  :host ::ng-deep .centered-dialog-header .p-dialog-content,
+  :host ::ng-deep .centered-dialog-header .p-dialog-footer {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Pe mobil: afisăm dividerul orizontal și ascundem dividerul vertical */
+  :host ::ng-deep .dialog-divider-desktop {
+    display: none !important;
+  }
+
+  :host ::ng-deep .dialog-divider-mobile {
+    display: block !important;
+  }
+
+  /* Asigurăm comportament corect pentru dividerul orizontal în containerul flex pe coloană */
+  :host ::ng-deep .dialog-divider-mobile.p-divider.p-divider-horizontal {
+    align-self: stretch;
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+}
+
+/* Mobile: butoanele "Case" și "Terenuri" una sub alta */
+@media (max-width: 768px) {
+  .property-filter-buttons {
+    padding: 0 4rem;   /* puțin spațiu la margini */
+    gap: 0.75rem;         /* spațiu între butoane */
+    flex-direction: column;
+    align-items: stretch; /* butoanele să ocupe toată lățimea containerului */
+    justify-content: flex-start;
+  }
+
+  .filter-button {
+    min-width: 0;         /* anulăm min-width-ul de desktop */
+    width: 100%;          /* fiecare buton pe un rând, full width */
+    flex: none;
+    padding: 0.9rem 0.5rem;
+    font-size: 1.05rem;
   }
 }
 

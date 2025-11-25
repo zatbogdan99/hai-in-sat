@@ -17,6 +17,7 @@ import {Ripple} from "primeng/ripple";
 import {FloatLabel} from "primeng/floatlabel";
 import {RadioButton} from "primeng/radiobutton";
 import { PropertyType } from "../dto/property-type.enum";
+import { DataService } from "../service/data-service";
 
 @Component({
   selector: 'app-form-page',
@@ -50,7 +51,8 @@ export class FormPageComponent implements OnInit, AfterViewInit{
   constructor(private messageService: MessageService,
               private homeFormService: HomeFormServiceService,
               public loadingService: LoadingService,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private dataService: DataService) {
   }
 
   ngOnInit(): void {
@@ -126,10 +128,12 @@ export class FormPageComponent implements OnInit, AfterViewInit{
   }
 
   openTermenii() {
-    this.termenii = true;
+    // deschide pop-up-ul global din footer
+    this.dataService.openTermsPopup();
   }
 
   openPolitica() {
-    this.politica = true;
+    // deschide pop-up-ul global din footer
+    this.dataService.openPrivacyPopup();
   }
 }

@@ -16,11 +16,8 @@ register();
   selector: 'app-under-the-mountain',
   templateUrl: './under-the-mountain.component.html',
   imports: [
-    Button,
-    Card,
     YoutubePlayerComponent,
-    NgFor,
-    PrimeTemplate
+    NgFor
   ],
   styleUrls: ['./under-the-mountain.component.scss'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -136,6 +133,15 @@ export class UnderTheMountainComponent implements AfterViewInit {
   goToVillage(id: number) {
     this.service.village$.next(id);
     this.router.navigateByUrl("/info-page");
+  }
+
+  // Permite activarea navigării cu tasta Space pe card, prevenind scrollul paginii
+  onCardKeyDown(event: KeyboardEvent, id: number) {
+    // Activăm doar pentru Space; Enter este legat direct în template
+    if (event.code === 'Space' || event.key === ' ') {
+      event.preventDefault();
+      this.goToVillage(id);
+    }
   }
 
   playForward() {

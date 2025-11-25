@@ -81,7 +81,10 @@
         </div>
       </div>
 
-      <p-divider layout="vertical"></p-divider>
+      <!-- Divider desktop: vertical -->
+      <p-divider class="dialog-divider-desktop" layout="vertical"></p-divider>
+      <!-- Divider mobile: horizontal (shown only pe ecrane mici) -->
+      <p-divider class="dialog-divider-mobile" layout="horizontal"></p-divider>
 
       <div class="property-dialog-right">
         <h3>Ne puteți contacta prin:</h3>
@@ -113,7 +116,7 @@
     <ng-template pTemplate="footer">
       <div class="dialog-footer">
         <div class="dialog-footer-left">
-          <p-button icon="pi pi-send" label="Trimite" (click)="saveProperty()" styleClass="p-button-primary"></p-button>
+          <p-button severity="info" icon="pi pi-send" label="Trimite" (click)="saveProperty()"></p-button>
         </div>
         <div class="dialog-footer-right">
           <i class="pi pi-lock privacy-icon" aria-hidden="true"></i>

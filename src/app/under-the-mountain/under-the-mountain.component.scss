@@ -496,6 +496,13 @@ section {
   border-radius: 0.75rem;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  cursor: pointer;
+}
+
+/* Focus ring for keyboard accessibility without changing visual style too much */
+.discover-card:focus-visible {
+  outline: 2px solid rgba(20,90,180,0.4);
+  outline-offset: 2px;
 }
 
 .discover-card__img img {

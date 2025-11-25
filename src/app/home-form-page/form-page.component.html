@@ -67,7 +67,6 @@
 <!-- mobile section updated as well -->
 <div class="small-screen">
   <div>
-
     <h1 class="form-hero-title">Spune-ne ce cauti,<br>iar noi gasim pentru tine</h1>
     <p class="form-hero-subtitle">Fie că visezi la o casă tradițională sau un teren unde să-ți construiești locul tău, noi suntem aici să te ajutăm să-l găsești. Lasă datele tale, iar echipa noastră revine cu variante reale, din zonă.</p>
     <div class="div-style">
@@ -89,7 +88,7 @@
       </p-float-label>
 
       <p-float-label style="margin-bottom: 2rem" [formGroup]="formGroup">
-        <textarea style="width: 20rem" rows="5" pInputTextarea formControlName="details" id="details_mobile"></textarea>
+        <textarea style="width: 15.5rem" rows="5" pInputTextarea formControlName="details" id="details_mobile"></textarea>
         <label for="details_mobile">DETALII</label>
       </p-float-label>
 
@@ -117,11 +116,9 @@
       </div>
 
       <span>
-        <button style="background: #f59533; border-color: #f59533" pButton pRipple label="HAI IN SAT" class="p-button-success" (click)="sendRequest()"></button>
+        <button style="background: #f59533; border-color: #f59533; margin-bottom: 1.25rem;" pButton pRipple label="HAI IN SAT" class="p-button-success" (click)="sendRequest()"></button>
       </span>
     </div>
-
-    <img class="bg" alt="logo-background" src="assets/logo.png" />
   </div>
 </div>
 

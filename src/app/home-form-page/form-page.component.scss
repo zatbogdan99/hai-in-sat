@@ -153,6 +153,10 @@ h1 {
   background-color: #F4EFE5;
   min-height: 100vh;
   width: 100%;
+  /* Previne colapsul marginilor primului copil (ex: h1) care crea banda alba
+     intre topbar si continut, asigurand ca spatiul ramane in interiorul
+     containerului cu fundal bej. */
+  overflow: hidden;
 }
 
 .form-hero-title {

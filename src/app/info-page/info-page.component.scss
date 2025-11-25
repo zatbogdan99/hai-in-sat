@@ -431,3 +431,44 @@ img {
     justify-content: flex-start;
   }
 }
+
+/* =============================================
+   TYPOGRAPHY NORMALIZATION FOR INFO-PAGE
+   Cerințe:
+   - Text (descrieri) = 1.2rem
+   - Titluri = 3.2rem
+   - Font unic: 'Libre Baskerville'
+   Se aplică doar în containerul info-page
+   ============================================= */
+
+.info-page-bg {
+  font-family: 'Libre Baskerville', serif;
+}
+
+/* Text (descriere sate) */
+.info-page-bg p,
+.info-page-bg li,
+.info-page-bg .text-style,
+.info-page-bg .polovragi-paragraph,
+.info-page-bg .polovragi-paragraph-2,
+.info-page-bg .horezu-paragraph,
+.info-page-bg .horezu-list,
+.info-page-bg .features-list {
+  font-size: 1.2rem;
+  line-height: 1.7;
+}
+
+/* Titluri din secțiunile info-page */
+.info-page-bg h1,
+.info-page-bg h2,
+.info-page-bg h3,
+.info-page-bg h4,
+.info-page-bg h5,
+.info-page-bg h6,
+.info-page-bg .title,
+.info-page-bg .features-title,
+.info-page-bg .horezu-title,
+.info-page-bg .horezu-subtitle {
+  font-size: 3.2rem;
+  line-height: 1.2;
+}

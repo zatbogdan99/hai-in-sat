@@ -202,7 +202,7 @@ img {
     //width: 80%;
     //height: 80%;
     //max-width: 50rem;
-    border-radius: 10px;
+    border-radius: 0; // Elimină colțurile rotunjite pentru containerul ce găzduiește videoclipul „Pastilă pentru suflet” pe desktop
     overflow: hidden;
     visibility: hidden;
     padding-left: 3rem;

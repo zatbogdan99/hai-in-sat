@@ -28,7 +28,13 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: true })],
+  imports: [RouterModule.forRoot(routes, {
+    useHash: true,
+    // Asigură că la fiecare navigare pe o pagină nouă, scroll-ul pornește din partea de sus
+    scrollPositionRestoration: 'top',
+    // Permite scroll automat la ancore (#id) dacă sunt folosite în pagini
+    anchorScrolling: 'enabled'
+  })],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

@@ -8,22 +8,49 @@
   padding-left: 5rem;
 }
 
+/* core variables + schema de culoare */
+:root {
+  /* Forțează schema de culoare luminoasă pentru controale și elementele UA */
+  color-scheme: light;
+  forced-color-adjust: none;
+  --font-base: 'Libre Baskerville', serif;
+}
 html {
   box-sizing: border-box;
-}
-
-:root {
-  --font-base: 'Libre Baskerville', serif;
+  background-color: #ffffff; /* fundal explicit alb pentru UA */
 }
 body {
   font-family: var(--font-base);
   box-sizing: inherit;
   position: relative;
   background-color: #fafafa;
+  color: #111111; /* text explicit întunecat pe fundal deschis */
   overflow-y: scroll;
   overflow-x: hidden;
   margin: 0;
   padding: 0;
+}
+
+/* Întărire pentru iOS Safari: aplică explicit schema luminoasă pe html/body */
+html, body {
+  color-scheme: light !important;
+  forced-color-adjust: none;
+}
+
+/* Evită întunecarea automată a controalelor native în iOS */
+input, select, textarea, button {
+  color-scheme: light;
+  forced-color-adjust: none;
+}
+
+/* Iframe-uri (ex. YouTube) – semnalăm schema luminoasă pentru a evita întunecarea conținutului încorporat */
+iframe, video {
+  color-scheme: light;
+}
+
+/* Dacă sistemul este pe dark mode, rămânem tot în schema luminoasă */
+@media (prefers-color-scheme: dark) {
+  :root { color-scheme: light; }
 }
 
 h1, h2, h3, h4, h5, h6,
