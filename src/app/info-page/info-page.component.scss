@@ -3,7 +3,6 @@
 }
 
 .text-style {
-  font-size: 18px;
   padding-left: 8rem;
 }
 
@@ -15,6 +14,7 @@
 
 .header-wrap {
   padding-left: 3rem;
+  margin-bottom: 2rem;
 }
 
 .title-underline {
@@ -30,9 +30,8 @@
 .features-row {
   display: flex;
   gap: 2rem;
-  justify-content: center;
   align-items: stretch;
-  padding: 4rem 3rem;
+  padding: 4rem 8rem;
 }
 
 .features-column {
@@ -43,7 +42,14 @@
 }
 
 .feature-card {
-  width: 35rem;
+  width: 40rem;
+  margin-left: 0.5rem;
+  height: 26rem;
+}
+
+.feature-card-left {
+  width: 56.5rem;
+  height: 25rem;
 }
 
 .feature-card .p-card {
@@ -54,18 +60,16 @@
 }
 
 :host ::ng-deep .feature-card .p-card .p-card-body {
-  height: 15rem !important;
+  height: 18.5rem !important;
 }
 
 .features-title {
-  font-size: 2rem;
   margin: 0 0 0.5rem 0;
 }
 
 .features-list {
   list-style: disc;
   padding-left: 1.5rem;
-  font-size: 1.125rem;
   line-height: 1.6;
 }
 
@@ -93,11 +97,6 @@
   justify-content: flex-start; /* left aligns content */
 }
 
-/* Polovragi special bottom layout */
-.polovragi-section {
-  padding: 1rem 3rem 0 3rem;
-}
-
 .polovragi-row {
   display: flex;
   gap: 2rem;
@@ -111,7 +110,7 @@
 .polovragi-right {
   flex: 1 1 40%;
   display: flex;
-  justify-content: center;
+  justify-content: left;
 }
 
 .polovragi-image {
@@ -126,12 +125,7 @@
 }
 
 .polovragi-paragraph {
-  max-width: 60ch;
-  font-size: 20px;
-}
-
-.polovragi-paragraph-2 {
-  font-size: 20px;
+  max-width: 58.5ch;
 }
 
 @media (max-width: 900px) {
@@ -246,7 +240,6 @@ img {
   }
 
   .title {
-    font-size: 2rem;
     font-weight: 700;
     //text-align: center;
     padding-left: 4rem;
@@ -321,7 +314,6 @@ img {
   }
 
   .title {
-    font-size: 4rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
     text-align: center;
@@ -356,7 +348,8 @@ img {
 
 /* Horezu custom layout */
 .horezu-section {
-  padding: 1rem 3rem 0 3rem;
+  /* Secțiunea principală pentru Horezu */
+  padding: 1rem 3rem 0 8rem;
 }
 
 .horezu-row {
@@ -383,19 +376,16 @@ img {
 }
 
 .horezu-title {
-  font-size: 3.25rem;
   font-weight: 700;
   margin: 0 0 1rem 0;
 }
 
 .horezu-subtitle {
-  font-size: 2.5rem;
   font-weight: 700;
   margin: 2rem 0 0.5rem 0;
 }
 
 .horezu-paragraph {
-  font-size: 20px;
   max-width: 68ch;
   line-height: 1.7;
   margin: 0 0 0.5rem 0;
@@ -404,13 +394,11 @@ img {
 .horezu-list {
   list-style: disc;
   padding-left: 1.5rem;
-  font-size: 20px;
   line-height: 1.7;
   margin: 0 0 1rem 0;
 }
 
 .horezu-note {
-  font-size: 14px;
   line-height: 1.6;
   margin: 0 0 0.25rem 0;
 }
@@ -418,7 +406,6 @@ img {
 .horezu-note-list {
   list-style: disc;
   padding-left: 1.5rem;
-  font-size: 14px;
   line-height: 1.6;
   margin: 0 0 0.5rem 0;
 }
@@ -432,11 +419,56 @@ img {
   }
 }
 
+/* Blocul UNESCO full-width pentru Horezu (iese din coloana stângă) */
+.horezu-unesco-full {
+  margin-top: 2rem;
+  //padding: 0 3rem 0 8rem; /* același aliniament ca restul textului pe desktop */
+}
+
+@media (max-width: 900px) {
+  .horezu-unesco-full {
+    padding: 0 1rem; /* spațiere prietenoasă pe mobil */
+  }
+}
+
+/* Horezu: card alb pentru secțiunea introductivă (titlu + descriere) */
+.horezu-context .intro-card {
+  /* aliniere similară cu header-wrap-ul vechi */
+  margin-left: 8rem;
+  margin-right: 1rem;
+  margin-top: 7rem;
+  max-width: 60rem;
+}
+
+.horezu-context .intro-card .p-card {
+  background: #ffffff;
+}
+
+.horezu-context .intro-card .p-card .p-card-body {
+  padding: 1.5rem 2rem;
+}
+
+/* în card nu mai folosim padding-urile mari din layoutul clasic */
+.horezu-context .intro-card .header-wrap {
+  padding-left: 0;
+}
+
+.horezu-context .intro-card .text-style {
+  padding-left: 0;
+}
+
+@media (max-width: 900px) {
+  .horezu-context .intro-card {
+    margin: 0 1rem;
+    max-width: 100%;
+  }
+}
+
 /* =============================================
    TYPOGRAPHY NORMALIZATION FOR INFO-PAGE
    Cerințe:
-   - Text (descrieri) = 1.2rem
-   - Titluri = 3.2rem
+   - Paragrafe = 36px
+   - Titluri = 50px
    - Font unic: 'Libre Baskerville'
    Se aplică doar în containerul info-page
    ============================================= */
@@ -445,16 +477,14 @@ img {
   font-family: 'Libre Baskerville', serif;
 }
 
-/* Text (descriere sate) */
+/* Paragrafe */
 .info-page-bg p,
-.info-page-bg li,
 .info-page-bg .text-style,
 .info-page-bg .polovragi-paragraph,
 .info-page-bg .polovragi-paragraph-2,
 .info-page-bg .horezu-paragraph,
-.info-page-bg .horezu-list,
-.info-page-bg .features-list {
-  font-size: 1.2rem;
+.info-page-bg .horezu-note {
+  font-size: 25px;
   line-height: 1.7;
 }
 
@@ -469,6 +499,138 @@ img {
 .info-page-bg .features-title,
 .info-page-bg .horezu-title,
 .info-page-bg .horezu-subtitle {
-  font-size: 3.2rem;
+  font-size: 4rem;
   line-height: 1.2;
+}
+
+/* Override sizes to match Horezu across all villages:
+   - Village titles (.title) = 5rem (same as "Horezu")
+   - Section titles "Ce găsești aici" (.features-title) = 2rem (same as Horezu)
+*/
+.info-page-bg .title {
+  font-size: 5rem;
+  line-height: 1.2;
+}
+
+.info-page-bg .features-title {
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+/* Dimensiuni pentru listele din cardurile „Ce găsești aici” */
+.info-page-bg .features-list,
+.info-page-bg .features-list li {
+  font-size: 25px;
+  line-height: 1.6;
+}
+
+/* Horezu: listele cu bullet points să aibă aceeași mărime ca paragrafele */
+.info-page-bg .horezu-list,
+.info-page-bg .horezu-list li,
+.info-page-bg .horezu-note-list,
+.info-page-bg .horezu-note-list li {
+  font-size: 25px;
+}
+
+/* Baia de Fier: al doilea paragraf continuă sub primul, în stânga imaginii */
+.baia-section .polovragi-paragraph-2 {
+  margin-top: 1.5rem;
+}
+
+/* Baia de Fier: păstrăm dimensiunea imaginii ca înainte (desktop) */
+.baia-section .polovragi-right {
+  /* rezervăm spațiu fix pentru imagine, ca să nu se micșoreze */
+  flex: 0 0 45rem;
+  min-width: 52rem;
+  justify-content: flex-start; /* lipită de stânga coloanei drepte */
+}
+
+/* Dimensiunea efectivă a imaginii (identică cu varianta anterioară) */
+.baia-section .polovragi-image {
+  width: 45rem;        /* lățimea clasică */
+  max-height: 33.5rem; /* înlocuiește limita globală de 30rem */
+}
+
+/* Siguranță: pe mobil revenim la comportamentul fluid */
+@media (max-width: 900px) {
+  .baia-section .polovragi-right {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .baia-section .polovragi-image {
+    width: 100%;
+    max-height: none;
+  }
+}
+
+/* DOAR pentru Horezu: centrarea verticală a conținutului din cardurile albe */
+:host ::ng-deep .horezu-context .feature-card .p-card .p-card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* centrează vertical lista în card */
+}
+
+/* =============================================
+   Cerință nouă (doar pentru Horezu):
+   - Titlul principal „Horezu” mai mare cu 1rem
+   - Titlul „Ce găsești aici” mai mic cu 1rem
+   Baza actuală pentru titluri este 4rem, deci:
+   - .title devine 5rem în intro-card (Horezu)
+   - .features-title devine 3rem pentru secțiunea de features
+   ============================================= */
+.horezu-context .intro-card .title {
+  font-size: 5rem;
+}
+
+.horezu-context .features-title {
+  font-size: 2rem;
+}
+
+/* =============================================
+   Bărbătești (villageId === 7):
+   - Aliniere la stânga pentru titlu și text în secțiunea specială
+   ============================================= */
+.barbatesti-section .title {
+  text-align: left;
+}
+
+.barbatesti-section .text-style,
+.barbatesti-section .polovragi-paragraph,
+.barbatesti-section p {
+  text-align: left;
+}
+
+/* Aliniem și indentarea textului cu titlul (header-wrap are padding-left: 3rem) */
+.barbatesti-section .text-style {
+  padding-left: 3rem;
+}
+
+/* =============================================
+   Vaideeni (4), Slătioara (5), Costești (6)
+   - Al doilea paragraf continuă sub primul în stânga imaginii
+   - Imaginea din dreapta își păstrează dimensiunea/poziția ca înainte
+     (fixăm coloana dreaptă la 45rem, identic cu lățimea imaginii)
+   - Comportament fluid pe mobil
+   ============================================= */
+.vaideeni-section .polovragi-paragraph-2,
+.slatioara-section .polovragi-paragraph-2,
+.costesti-section .polovragi-paragraph-2 {
+  margin-top: 1.5rem;
+}
+
+.vaideeni-section .polovragi-right,
+.slatioara-section .polovragi-right,
+.costesti-section .polovragi-right {
+  flex: 0 0 45rem; /* rezervăm spațiul pentru imagine (nu se micșorează) */
+  min-width: 52rem;
+  justify-content: left; /* păstrăm poziționarea actuală a imaginii */
+}
+
+@media (max-width: 900px) {
+  .vaideeni-section .polovragi-right,
+  .slatioara-section .polovragi-right,
+  .costesti-section .polovragi-right {
+    flex: 1 1 auto; /* revenim la layout fluid pe mobil */
+    min-width: 0;
+  }
 }

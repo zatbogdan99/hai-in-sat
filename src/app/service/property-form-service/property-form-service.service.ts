@@ -17,16 +17,16 @@ export interface PageResponse<T> {
 export class PropertyFormServiceService {
   // private savePropertyUrl = 'https://hai-in-sat-api.lm.r.appspot.com/save-property';
   // private deletePropertyUrl = 'https://hai-in-sat-api.lm.r.appspot.com/delete-property';
-  private getAllPropertiesUrl = 'https://hai-in-sat-api.lm.r.appspot.com/get-all-properties';
-  private getPropertyByIdUrl = 'https://hai-in-sat-api.lm.r.appspot.com/get-by-id';
+  // private getAllPropertiesUrl = 'https://hai-in-sat-api.lm.r.appspot.com/get-all-properties';
+  // private getPropertyByIdUrl = 'https://hai-in-sat-api.lm.r.appspot.com/get-by-id';
 
 //TODO astea trebuie sa fie mereu pe localhost
   private savePropertyUrl = 'http://localhost:8080/save-property';
   private deletePropertyUrl = 'http://localhost:8080/delete-property';
 
   //Astea pe mediu
-  // private getAllPropertiesUrl = 'http://localhost:8080/get-all-properties';
-  // private getPropertyByIdUrl = 'http://localhost:8080/get-by-id';
+  private getAllPropertiesUrl = 'http://localhost:8080/get-all-properties';
+  private getPropertyByIdUrl = 'http://localhost:8080/get-by-id';
 
   constructor(private http: HttpClient) {}
 

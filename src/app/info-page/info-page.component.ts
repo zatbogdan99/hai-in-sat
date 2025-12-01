@@ -329,31 +329,44 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
     return this.featuresRight[this.villageId] || [];
   }
 
+  // Helper: returns a shallow-copied list without the second element (index 1)
+  // Used to ensure the image shown separat ("a doua poză") nu mai apare și în galerie.
+  private galleryWithoutSecond<T>(list: T[] | undefined): T[] | undefined {
+    if (!Array.isArray(list)) {
+      return list;
+    }
+    // dacă lista are mai puțin de 2 elemente, nu scoatem nimic
+    if (list.length < 2) {
+      return [...list];
+    }
+    return list.filter((_, idx) => idx !== 1);
+  }
+
   getImagesForSelected() {
     switch (this.villageId) {
       case 1: {
-        return this.horezuImages;
+        return this.galleryWithoutSecond(this.horezuImages);
       }
       case 2: {
-        return this.polovragiImages;
+        return this.galleryWithoutSecond(this.polovragiImages);
       }
       case 3: {
-        return this.baiaImages;
+        return this.galleryWithoutSecond(this.baiaImages);
       }
       case 4: {
-        return this.vaideeniImages;
+        return this.galleryWithoutSecond(this.vaideeniImages);
       }
       case 5: {
-        return this.slatioaraImages;
+        return this.galleryWithoutSecond(this.slatioaraImages);
       }
       case 6: {
-        return this.costestiImages;
+        return this.galleryWithoutSecond(this.costestiImages);
       }
       case 7: {
-        return this.barbatestiImages;
+        return this.galleryWithoutSecond(this.barbatestiImages);
       }
       default: {
-        return this.horezuImages;
+        return this.galleryWithoutSecond(this.horezuImages);
       }
     }
   }

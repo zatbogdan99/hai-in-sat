@@ -55,6 +55,13 @@
   transition: all 0.2s ease;
 }
 
+/* Center the CTA button horizontally without affecting the surrounding text */
+.content .cta {
+  display: block;            /* allow auto margins to center */
+  width: fit-content;        /* shrink to content so it doesn't stretch full width */
+  margin: 0 auto;            /* horizontal centering */
+}
+
 .cta:hover {
   background: rgba(255,255,255,0.15);
 }

@@ -1,13 +1,22 @@
-<div class="info-page-bg">
+<div class="info-page-bg" [ngClass]="{ 'horezu-context': villageId === 1 }">
   <div class="large-screen">
     <div class="top-row">
       <div class="left-text">
-        <div class="header-wrap">
-          <h1 class="title">{{ data[villageId].title }}</h1>
-        </div>
-        <p class="m-0 text-style">
-          {{ data[villageId].desc }}
-        </p>
+        @if (villageId === 1) {
+          <div class="header-wrap">
+            <h1 class="title">{{ data[villageId].title }}</h1>
+          </div>
+          <p class="m-0 text-style">
+            {{ data[villageId].desc }}
+          </p>
+        } @else {
+          <div class="header-wrap">
+            <h1 class="title">{{ data[villageId].title }}</h1>
+          </div>
+          <p class="m-0 text-style">
+            {{ data[villageId].desc }}
+          </p>
+        }
       </div>
       <div class="gallery-wrap">
         <div class="galleria-card">
@@ -31,9 +40,9 @@
 
     <!-- Features section: two white cards side by side -->
     <div class="features-row">
-      <div class="feature-card p-card-custom">
+      <div class="feature-card-left p-card-custom" >
         <p-card>
-          <h2 class="features-title">Ce găsești aici</h2>
+          <h4 class="features-title">Ce găsești aici</h4>
           <ul class="features-list">
             <li *ngFor="let item of getFeaturesLeft()">{{ item }}</li>
           </ul>
@@ -66,10 +75,11 @@
       </div>
     } @else {
       @if (villageId === 3) {
-        <div class="polovragi-section">
+        <div class="polovragi-section baia-section">
           <div class="polovragi-row">
             <div class="polovragi-left">
               <p class="m-0 text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
+              <p class="m-0 text-style polovragi-paragraph-2">{{ data[villageId].secondDesc2 }}</p>
             </div>
             <div class="polovragi-right">
               @if (getBaiaSecondImage()) {
@@ -77,16 +87,14 @@
               }
             </div>
           </div>
-          <div class="polovragi-bottom">
-            <p class="m-0 text-style polovragi-paragraph-2">{{ data[villageId].secondDesc2 }}</p>
-          </div>
         </div>
       } @else {
         @if (villageId === 4) {
-        <div class="polovragi-section">
+        <div class="polovragi-section vaideeni-section">
           <div class="polovragi-row">
             <div class="polovragi-left">
               <p class="m-0 text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
+              <p class="m-0 text-style polovragi-paragraph-2">{{ data[villageId].secondDesc2 }}</p>
             </div>
             <div class="polovragi-right">
               @if (getVaideeniSecondImage()) {
@@ -94,16 +102,14 @@
               }
             </div>
           </div>
-          <div class="polovragi-bottom">
-            <p class="m-0 text-style polovragi-paragraph-2">{{ data[villageId].secondDesc2 }}</p>
-          </div>
         </div>
       } @else {
         @if (villageId === 5) {
-        <div class="polovragi-section">
+        <div class="polovragi-section slatioara-section">
           <div class="polovragi-row">
             <div class="polovragi-left">
               <p class="m-0 text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
+              <p class="m-0 text-style polovragi-paragraph-2">{{ data[villageId].secondDesc2 }}</p>
             </div>
             <div class="polovragi-right">
               @if (getSlatioaraSecondImage()) {
@@ -111,16 +117,14 @@
               }
             </div>
           </div>
-          <div class="polovragi-bottom">
-            <p class="m-0 text-style polovragi-paragraph-2">{{ data[villageId].secondDesc2 }}</p>
-          </div>
         </div>
       } @else {
         @if (villageId === 6) {
-        <div class="polovragi-section">
+        <div class="polovragi-section costesti-section">
           <div class="polovragi-row">
             <div class="polovragi-left">
               <p class="m-0 text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
+              <p class="m-0 text-style polovragi-paragraph-2">{{ data[villageId].secondDesc2 }}</p>
             </div>
             <div class="polovragi-right">
               @if (getCostestiSecondImage()) {
@@ -128,13 +132,10 @@
               }
             </div>
           </div>
-          <div class="polovragi-bottom">
-            <p class="m-0 text-style polovragi-paragraph-2">{{ data[villageId].secondDesc2 }}</p>
-          </div>
         </div>
       } @else {
         @if (villageId === 7) {
-        <div class="polovragi-section">
+        <div class="polovragi-section barbatesti-section">
           <div class="polovragi-row">
             <div class="polovragi-left">
               <div class="header-wrap">
@@ -178,22 +179,25 @@
                 <p class="horezu-paragraph">
                   Aceste rute vechi au format o comunitate deschisă, meșteșugărească și rezistentă în timp.
                 </p>
-
-                <h2 class="horezu-subtitle">Recunoaștere UNESCO</h2>
-                <p class="horezu-note">În 2012, ceramica de Horezu a fost inclusă în Lista Patrimoniului Cultural Imaterial al Umanității UNESCO.</p>
-                <p class="horezu-note">Această distincție a:</p>
-                <ul class="horezu-note-list">
-                  <li>adus vizibilitate internațională</li>
-                  <li>încurajat păstrarea tradiției</li>
-                  <li>sprijinit continuarea școlilor de olari</li>
-                </ul>
-                <p class="horezu-note">Astăzi, meșteșugarii din Horezu continuă să transmită arta și povestea locului generațiilor tinere.</p>
               </div>
               <div class="horezu-right">
                 @if (getHorezuSecondImage()) {
                   <img class="horezu-image" [src]="getHorezuSecondImage()" alt="Horezu" />
                 }
               </div>
+            </div>
+
+            <!-- UNESCO: full width block only for Horezu -->
+            <div class="horezu-unesco-full">
+              <h2 class="horezu-subtitle">Recunoaștere UNESCO</h2>
+              <p class="horezu-note">În 2012, ceramica de Horezu a fost inclusă în Lista Patrimoniului Cultural Imaterial al Umanității UNESCO.</p>
+              <p class="horezu-note">Această distincție a:</p>
+              <ul class="horezu-note-list">
+                <li>adus vizibilitate internațională</li>
+                <li>încurajat păstrarea tradiției</li>
+                <li>sprijinit continuarea școlilor de olari</li>
+              </ul>
+              <p class="horezu-note">Astăzi, meșteșugarii din Horezu continuă să transmită arta și povestea locului generațiilor tinere.</p>
             </div>
           </div>
         } @else {
@@ -233,7 +237,14 @@
   <div class="small-screen">
     <div class="container1">
       <div class="left-text mobile">
-        <h1 class="title">{{ data[villageId].title }}</h1>
+        @if (villageId === 1) {
+          <h1 class="title">{{ data[villageId].title }}</h1>
+          <p *ngIf="data[villageId].desc !== null" class="m-0 text-style">
+            {{ data[villageId].desc }}
+          </p>
+        } @else {
+          <h1 class="title">{{ data[villageId].title }}</h1>
+        }
         <p-galleria
           *ngIf="villageId !== 0"
           [value]="getImagesForSelected()"
@@ -249,16 +260,18 @@
             <img [src]="item.itemImageSrc" style="width: 18rem; height: 18rem" />
           </ng-template>
         </p-galleria>
-        <p *ngIf="data[villageId].desc !== null" class="m-0 text-style">
-          {{ data[villageId].desc }}
-        </p>
+        @if (villageId !== 1) {
+          <p *ngIf="data[villageId].desc !== null" class="m-0 text-style">
+            {{ data[villageId].desc }}
+          </p>
+        }
       </div>
     </div>
 
     <div class="features-column">
       <div class="feature-card p-card-custom">
         <p-card>
-          <h2 class="features-title">Ce găsești aici</h2>
+          <h4 class="features-title">Ce găsești aici</h4>
           <ul class="features-list">
             <li *ngFor="let item of getFeaturesLeft()">{{ item }}</li>
           </ul>
