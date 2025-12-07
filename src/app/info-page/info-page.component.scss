@@ -31,7 +31,11 @@
   display: flex;
   gap: 2rem;
   align-items: stretch;
-  padding: 4rem 8rem;
+  padding-left: 8rem;
+  padding-right: 8rem;
+  padding-top: 4rem;
+  /* Asigurăm același spațiu stânga/dreapta până la marginea ecranului */
+  justify-content: space-between;
 }
 
 .features-column {
@@ -43,7 +47,8 @@
 
 .feature-card {
   width: 40rem;
-  margin-left: 0.5rem;
+  /* eliminăm marginea suplimentară din stânga pentru a alinia perfect cu spațiul din dreapta */
+  margin-left: 0;
   height: 26rem;
 }
 
@@ -141,6 +146,51 @@
   .features-row {
     flex-direction: column;
     padding: 1rem;
+  }
+}
+
+/* =========================
+   MOBILE ADJUSTMENTS (/info-page)
+   - Fix title and first description overflow
+   - Make "Ce găsești aici" cards auto-height with 1rem top/bottom padding
+   - Add small horizontal padding for long paragraphs at the bottom
+   ========================= */
+@media (max-width: 900px) {
+  /* Top section: prevent overflow of title + first paragraph */
+  .top-row { flex-direction: column; }
+  .header-wrap { padding-left: 1rem; padding-right: 1rem; }
+  .text-style { padding-left: 1rem; padding-right: 1rem; }
+  .info-page-bg .title {
+    /* Scale down nicely on small screens */
+    font-size: clamp(1.5rem, 7vw, 2.5rem);
+    line-height: 1.15;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  /* Gallery spacing on mobile */
+  .gallery-wrap { padding-right: 0; margin: 0 auto; }
+  :host ::ng-deep .p-galleria .p-galleria-item img { width: 100% !important; height: auto !important; }
+
+  /* Feature cards: auto height to fit content; 1rem top/bottom padding */
+  .feature-card,
+  .feature-card-left { width: 100%; height: auto; }
+  .feature-card .p-card,
+  .feature-card-left .p-card { height: auto; }
+  :host ::ng-deep .feature-card .p-card .p-card-body,
+  :host ::ng-deep .feature-card-left .p-card .p-card-body {
+    height: auto !important;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  /* Bottom paragraphs: add small left/right spacing */
+  .info-page-bg .polovragi-paragraph,
+  .info-page-bg .polovragi-paragraph-2,
+  .info-page-bg .horezu-paragraph,
+  .info-page-bg .horezu-note {
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 }
 
@@ -508,7 +558,8 @@ img {
    - Section titles "Ce găsești aici" (.features-title) = 2rem (same as Horezu)
 */
 .info-page-bg .title {
-  font-size: 5rem;
+  /* redus aproximativ la jumătate față de dimensiunea anterioară */
+  font-size: 2.5rem;
   line-height: 1.2;
 }
 

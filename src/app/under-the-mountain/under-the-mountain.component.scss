@@ -445,11 +445,20 @@ section {
   .why-odsm {
     padding: 2rem 1rem;
   }
+  /* Tighten the space between the image gallery and the title on mobile */
+  .why__container {
+    gap: 1rem;
+  }
   .why__gallery {
     grid-template-columns: 1fr;
   }
   .why__title {
-    font-size: 2rem;
+    /* Make the title slightly smaller on mobile and add side padding inside the box */
+    font-size: 1.8rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    /* Reduce the vertical gap between the gallery and the title on mobile */
+    margin-top: 1.25rem;
   }
 }
 

@@ -3,11 +3,11 @@
 }
 
 .hero-banner {
-  height: 50vh; /* Doubled height as requested */
-  background-image: url('../../assets/munte2.jpeg');
+  height: 50vh;
+  background-image: url('../../assets/poza_robita.jpeg');
   background-repeat: no-repeat;
   background-position: center center;
-  background-size: cover; /* Changed to cover to fill the entire width */
+  background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -43,6 +43,10 @@
   font-size: 1.5rem;
   font-weight: 400;
   font-family: 'Libre Baskerville', serif;
+}
+
+.large-screen {
+  background-color: #fafafa;
 }
 
 .text-style {

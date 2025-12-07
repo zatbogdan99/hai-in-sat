@@ -15,9 +15,9 @@
 }
 
 .content {
-  position: relative;
+  //position: relative;
   z-index: 1;
-  max-width: 900px;
+  //max-width: 900px;
   padding: 3rem;
   margin-left: 4rem;
   color: #ffffff;
@@ -59,7 +59,7 @@
 .content .cta {
   display: block;            /* allow auto margins to center */
   width: fit-content;        /* shrink to content so it doesn't stretch full width */
-  margin: 0 auto;            /* horizontal centering */
+  margin: 0 auto;            /* center horizontally under the text */
 }
 
 .cta:hover {
@@ -67,6 +67,12 @@
 }
 
 @media (max-width: 768px) {
+  /* Crop ~1/3 from the top of the hero image on mobile by reducing the
+     section height and anchoring the background to the bottom. */
+  .hero {
+    min-height: 66vh; /* about two-thirds of the viewport height */
+    background-position: center bottom; /* keep the lower area visible */
+  }
   .content {
     margin-left: 1.25rem;
     padding: 2rem 1.5rem;

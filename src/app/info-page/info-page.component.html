@@ -29,9 +29,10 @@
             [numVisible]="5"
             [circular]="true"
             [showItemNavigators]="true"
+            (onItemChange)="onGalleryItemChange($event)"
           >
             <ng-template pTemplate="item" let-item>
-              <img [src]="item.itemImageSrc" style="width: 45rem; height: 33.5rem" />
+              <img (click)="openFullScreen(activeIndex)" [src]="item.itemImageSrc" style="width: 45rem; height: 33.5rem; cursor: pointer;" />
             </ng-template>
           </p-galleria>
         </div>
@@ -218,13 +219,15 @@
             </div>
           </div>
 
-          <div class="container2">
-            <div class="p-card-custom" style="padding-top: 3rem">
-              <p-card>
-                <p class="m-0 text-style">{{ data[villageId].secondDesc3 }}</p>
-              </p-card>
+          @if (data[villageId].secondDesc3 && villageId !== 3) {
+            <div class="container2">
+              <div class="p-card-custom" style="padding-top: 3rem">
+                <p-card>
+                  <p class="m-0 text-style">{{ data[villageId].secondDesc3 }}</p>
+                </p-card>
+              </div>
             </div>
-          </div>
+          }
         }
       }
     }
@@ -255,11 +258,12 @@
           [numVisible]="5"
           [circular]="true"
           [showItemNavigators]="true"
+          (onItemChange)="onGalleryItemChange($event)"
         >
-          <ng-template pTemplate="item" let-item>
-            <img [src]="item.itemImageSrc" style="width: 18rem; height: 18rem" />
-          </ng-template>
-        </p-galleria>
+        <ng-template pTemplate="item" let-item>
+          <img (click)="openFullScreen(activeIndex)" [src]="item.itemImageSrc" style="width: 18rem; height: 18rem; cursor: pointer;" />
+        </ng-template>
+      </p-galleria>
         @if (villageId !== 1) {
           <p *ngIf="data[villageId].desc !== null" class="m-0 text-style">
             {{ data[villageId].desc }}
@@ -267,6 +271,7 @@
         }
       </div>
     </div>
+
 
     <div class="features-column">
       <div class="feature-card p-card-custom">
@@ -289,7 +294,7 @@
     <div class="container2">
       <div style="padding-top: 1rem" class="p-card-custom">
         <p-card>
-          <p class="m-0 text-style" [ngClass]="{ 'polovragi-paragraph': villageId === 2 }">{{ data[villageId].secondDesc1 }}</p>
+          <p class="m-0 text-style" [ngClass]="{ 'polovragi-paragraph': villageId === 2 }">{{ villageId === 2 ? removeLeadingMarker(data[villageId].secondDesc1) : data[villageId].secondDesc1 }}</p>
         </p-card>
       </div>
     </div>
@@ -297,17 +302,37 @@
     <div class="container2">
       <div style="padding-top: 1rem" class="p-card-custom">
         <p-card>
-          <p class="m-0 text-style" [ngClass]="{ 'polovragi-paragraph': villageId === 2 }">{{ data[villageId].secondDesc2 }}</p>
+          <p class="m-0 text-style" [ngClass]="{ 'polovragi-paragraph': villageId === 2 }">{{ villageId === 2 ? removeLeadingMarker(data[villageId].secondDesc2) : data[villageId].secondDesc2 }}</p>
         </p-card>
       </div>
     </div>
 
-    <div class="container2">
-      <div style="padding-top: 3rem" class="p-card-custom">
-        <p-card>
-          <p class="m-0 text-style">{{ data[villageId].secondDesc3 }}</p>
-        </p-card>
+    @if (data[villageId].secondDesc3 && villageId !== 3) {
+      <div class="container2">
+        <div style="padding-top: 3rem" class="p-card-custom">
+          <p-card>
+            <p class="m-0 text-style">{{ villageId === 2 ? removeLeadingMarker(data[villageId].secondDesc3) : data[villageId].secondDesc3 }}</p>
+          </p-card>
+        </div>
       </div>
-    </div>
+    }
   </div>
 </div>
+
+<!-- Fullscreen overlay Galleria available at root so it works on all breakpoints -->
+<p-galleria
+  [value]="getImagesForSelected()"
+  [fullScreen]="true"
+  [(visible)]="displayFullScreen"
+  [containerStyle]="{ 'max-width': '50rem' }"
+  [responsiveOptions]="responsiveOptions"
+  [showThumbnails]="false"
+  [showIndicators]="false"
+  [circular]="true"
+  [showItemNavigators]="true"
+  [activeIndex]="activeIndex"
+>
+  <ng-template pTemplate="item" let-item>
+    <img [src]="item.itemImageSrc" style="width: 100%; height: auto; display: block;" />
+  </ng-template>
+</p-galleria>

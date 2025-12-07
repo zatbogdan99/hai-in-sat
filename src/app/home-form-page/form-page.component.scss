@@ -160,7 +160,7 @@ h1 {
 }
 
 .form-hero-title {
-  font-family: 'Libre Baskerville', 'Times New Roman', serif;
+  font-family: var(--font-base);
   color: #101828; /* very dark for good contrast, close to screenshot */
   text-align: center;
   font-weight: 800;
@@ -171,7 +171,7 @@ h1 {
 }
 
 .form-hero-subtitle {
-  font-family: 'Libre Baskerville', 'Times New Roman', serif;
+  font-family: var(--font-base);
   color: #0b2f6b; /* same navy used elsewhere in the app */
   text-align: center;
   margin: 2rem auto;
@@ -229,6 +229,12 @@ h1 {
 
 /* Mobile adjustments */
 @media only screen and (max-width: 500px) {
+  /* Add a bit of horizontal breathing room for the hero title and subtitle */
+  .form-hero-title,
+  .form-hero-subtitle {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
   .property-type-section {
     margin-bottom: 2.25rem;
   }

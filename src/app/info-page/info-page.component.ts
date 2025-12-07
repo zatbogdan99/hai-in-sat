@@ -42,6 +42,10 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
 
   responsiveOptions: any[] | undefined;
 
+  // Galleria fullscreen state
+  displayFullScreen = false;
+  activeIndex = 0;
+
   constructor(private photoService: PhotoService, private service: DataService, private router: Router) {
     this.service.village$.subscribe(value => {
       this.villageId = value;
@@ -213,7 +217,7 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
       "Numele său, Baia de Fier, evocă vremuri îndepărtate, când minereul de fier era prelucrat în adâncul pamântului, folosindu-se apa canalizată pentru a purifica acest dar al naturii. În inima acestor adâncuri, se găsea inestimabila mină de grafit, unică în România, care a contribuit la faima acestui loc.",
       "Baia de Fier este nu doar o comoară arheologică, ci și un loc binecuvântat de natură. În această \"Oltenie de sub munte,\" se pot găsi chei fermecătoare și peșteri misterioase, iar satele din apropiere păstrează cu sfințenie tradițiile românești.",
       "Mănăstirile și biserici vechi îmbină arhitectura și istoria, transformând acest loc într-un adevărat monument al patrimoniului național.",
-      "HAI ÎN SAT",
+      null,
       "assets/baia1.avif"
     );
     this.data.push(dataDto);
@@ -319,6 +323,25 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
 
   autoplay() {
     this.api.play();
+  }
+
+  // Open PrimeNG Galleria in fullscreen at the clicked image index
+  openFullScreen(index: number) {
+    this.activeIndex = index ?? 0;
+    this.displayFullScreen = true;
+  }
+
+  // Handle PrimeNG Galleria onItemChange event safely
+  onGalleryItemChange(e: any) {
+    // PrimeNG emits an object like { index: number } for onItemChange
+    this.activeIndex = (e && typeof e.index === 'number') ? e.index : 0;
+  }
+
+  // Mobile-only fix: on Polovragi (villageId = 2) a stray leading character
+  // like "O " or "0 " appears before the paragraph. Strip it defensively.
+  removeLeadingMarker(text: string | null | undefined): string {
+    if (!text) return '';
+    return text.replace(/^\s*[0O]\s+/, '');
   }
 
   getFeaturesLeft(): string[] {

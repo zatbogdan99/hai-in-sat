@@ -9,7 +9,7 @@
       <h2>Locuri care spun povesti - Oltenia de sub Munte</h2>
     </div>
   </div>
-  <div style="padding-top: 2rem; padding-left: 2rem; padding-right: 2rem; display: flex; justify-content: space-between; gap: 1rem;">
+  <div style="padding-top: 2rem; padding-left: 2rem; padding-right: 2rem; display: flex; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem;">
     <p-button *ngIf="prevId !== null" [label]="'Satul lunii ' + getMonthLabelByVillage(prevId)" icon="pi pi-arrow-left" size="small" [raised]="true" severity="secondary" (onClick)="goPrev()"></p-button>
     <p-button *ngIf="nextId !== null" [label]="'Satul lunii ' + getMonthLabelByVillage(nextId)" icon="pi pi-arrow-right" size="small" [raised]="true" severity="secondary" (onClick)="goNext()" [ngStyle]="{ 'margin-left': prevId === null ? 'auto' : '0' }"></p-button>
   </div>

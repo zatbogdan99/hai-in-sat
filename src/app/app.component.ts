@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
+import { ViewportScroller } from '@angular/common';
 import {MenuItem} from "primeng/api";
-import {Router, RouterOutlet} from "@angular/router";
+import {Router, RouterOutlet, NavigationEnd} from "@angular/router";
 import { faTiktok } from '@fortawesome/free-brands-svg-icons';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
 import { faInstagram } from '@fortawesome/free-brands-svg-icons';
@@ -12,6 +13,7 @@ import {Button} from "primeng/button";
 import {Popover} from "primeng/popover";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {Toast} from "primeng/toast";
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -58,8 +60,13 @@ export class AppComponent implements OnInit {
     this.contact = true;
   }
 
-  constructor(private router: Router, private service: DataService) {
-
+  constructor(private router: Router, private service: DataService, private viewportScroller: ViewportScroller) {
+    // Forțează resetarea poziției de scroll la top la fiecare navigare (inclusiv pe aceeași rută)
+    this.router.events
+      .pipe(filter((e) => e instanceof NavigationEnd))
+      .subscribe(() => {
+        this.viewportScroller.scrollToPosition([0, 0]);
+      });
   }
 
   goToAboutUs() {

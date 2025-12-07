@@ -49,10 +49,11 @@
         <p-checkbox formControlName="terms" [binary]="true" inputId="terms"></p-checkbox>
         <h3 style="padding-left: 1rem">Sunt de acord cu <a href="javascript:void(0)" (click)="openTermenii()">termenii si condițiile</a> și <a href="javascript:void(0)" (click)="openPolitica()">politica de confidențialitate</a></h3>
       </div>
-      <div [formGroup]="formGroup" style="display: flex; align-items: center; gap: 0.75rem; margin-top: 0.5rem;">
-        <p-checkbox formControlName="newsletter" [binary]="true" inputId="newsletter"></p-checkbox>
-        <h3 style="padding-left: 1rem">Ma abonez la newsletter pentru a afla mai multe despre zonă si propietati noi</h3>
-      </div>
+<!--      //TODO scos temporar-->
+<!--      <div [formGroup]="formGroup" style="display: flex; align-items: center; gap: 0.75rem; margin-top: 0.5rem;">-->
+<!--        <p-checkbox formControlName="newsletter" [binary]="true" inputId="newsletter"></p-checkbox>-->
+<!--        <h3 style="padding-left: 1rem">Ma abonez la newsletter pentru a afla mai multe despre zonă si propietati noi</h3>-->
+<!--      </div>-->
 
       <span style="margin-bottom: 2rem;">
       <button style="background: #f59533; border-color: #f59533" pButton pRipple label="HAI IN SAT" class="p-button-success" (click)="sendRequest()"></button>
@@ -106,14 +107,15 @@
         </div>
       </div>
 
-      <div [formGroup]="formGroup" style="display: flex; align-items: center; gap: 0.5rem; padding-left: 0.5rem">
+      <div [formGroup]="formGroup" style="display: flex; align-items: center; gap: 0.5rem; padding-left: 1rem; padding-right: 1rem">
         <p-checkbox formControlName="terms" [binary]="true" inputId="terms_mobile"></p-checkbox>
         <h4 style="padding-left: 0.5rem">Sunt de acord cu <a href="javascript:void(0)" (click)="openTermenii()">termenii si condițiile</a> și <a href="javascript:void(0)" (click)="openPolitica()">politica de confidențialitate</a></h4>
       </div>
-      <div [formGroup]="formGroup" style="display: flex; align-items: center; gap: 0.5rem; padding-left: 0.5rem; margin-top: 0.5rem;">
-        <p-checkbox formControlName="newsletter" [binary]="true" inputId="newsletter_mobile"></p-checkbox>
-        <h4 style="padding-left: 0.5rem">Mă abonez la newsletter</h4>
-      </div>
+<!--      //TODO dezactivat temporar-->
+<!--      <div [formGroup]="formGroup" style="display: flex; align-items: center; gap: 0.5rem; padding-left: 0.5rem; margin-top: 0.5rem;">-->
+<!--        <p-checkbox formControlName="newsletter" [binary]="true" inputId="newsletter_mobile"></p-checkbox>-->
+<!--        <h4 style="padding-left: 0.5rem">Mă abonez la newsletter</h4>-->
+<!--      </div>-->
 
       <span>
         <button style="background: #f59533; border-color: #f59533; margin-bottom: 1.25rem;" pButton pRipple label="HAI IN SAT" class="p-button-success" (click)="sendRequest()"></button>

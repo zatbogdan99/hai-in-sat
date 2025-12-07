@@ -1,20 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
-
-@import "primeicons/primeicons.css";
-@import 'swiper/css/bundle';
-@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700;900&display=swap');
-
-.despreNoiStyle {
-  padding-left: 5rem;
-}
-
-/* core variables + schema de culoare */
+/* Core variables + enforce light color scheme */
 :root {
-  /* Forțează schema de culoare luminoasă pentru controale și elementele UA */
   color-scheme: light;
   forced-color-adjust: none;
   --font-base: 'Libre Baskerville', serif;
 }
+
 html {
   box-sizing: border-box;
   background-color: #ffffff; /* fundal explicit alb pentru UA */
@@ -41,6 +31,9 @@ html, body {
 input, select, textarea, button {
   color-scheme: light;
   forced-color-adjust: none;
+  /* Asigură fundal/text deschis pentru a evita auto-darkening pe Safari iOS */
+  background-color: #ffffff;
+  color: #111111;
 }
 
 /* Iframe-uri (ex. YouTube) – semnalăm schema luminoasă pentru a evita întunecarea conținutului încorporat */
@@ -51,6 +44,17 @@ iframe, video {
 /* Dacă sistemul este pe dark mode, rămânem tot în schema luminoasă */
 @media (prefers-color-scheme: dark) {
   :root { color-scheme: light; }
+}
+
+/* ———————————————————————————————————————————————
+   ENFORCEMENT LA FINALUL FIȘIERULUI (are prioritate)
+   Nu elimina: previne comutarea automată pe dark în browsere.
+   ——————————————————————————————————————————————— */
+:root, html, body {
+  color-scheme: light !important;
+}
+@media (prefers-color-scheme: dark) {
+  html { color-scheme: light !important; }
 }
 
 h1, h2, h3, h4, h5, h6,
