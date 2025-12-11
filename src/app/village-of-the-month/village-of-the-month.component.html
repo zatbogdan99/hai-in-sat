@@ -9,12 +9,12 @@
       <h2>Locuri care spun povesti - Oltenia de sub Munte</h2>
     </div>
   </div>
-  <div style="padding-top: 2rem; padding-left: 2rem; padding-right: 2rem; display: flex; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem;">
+  <div style="padding-top: 2rem; padding-left: 5rem; padding-right: 5rem; display: flex; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem;">
     <p-button *ngIf="prevId !== null" [label]="'Satul lunii ' + getMonthLabelByVillage(prevId)" icon="pi pi-arrow-left" size="small" [raised]="true" severity="secondary" (onClick)="goPrev()"></p-button>
     <p-button *ngIf="nextId !== null" [label]="'Satul lunii ' + getMonthLabelByVillage(nextId)" icon="pi pi-arrow-right" size="small" [raised]="true" severity="secondary" (onClick)="goNext()" [ngStyle]="{ 'margin-left': prevId === null ? 'auto' : '0' }"></p-button>
   </div>
 
-  <section style="padding-left: 2rem; padding-right: 2rem;">
+  <section style="padding-left: 5rem; padding-right: 5rem;">
     <div class="card-top" style="display: flex; flex-direction: row; justify-content: space-between;">
       <div class="card-info" style="flex: 1;">
         <div style="display: flex">
@@ -53,7 +53,7 @@
     </div>
   </section>
 
-  <div class="container1" style="padding-left: 2rem; padding-right: 2rem;">
+  <div class="container1" style="padding-right: 3rem;">
     <div class="reveal">
       <div class="p-card-custom">
         <p-card [style]="{ width: '40rem', height: '32.5rem' }">
@@ -89,7 +89,7 @@
   <div class="container2" style="padding-left: 1rem; padding-right: 1rem;">
     <div class="reveal p-card-custom">
       <p-card>
-        <h2 style="text-align: center; font-size: 2rem;" class="m-0">
+        <h2 style="text-align: center; font-size: 2rem; margin-bottom: 1.5rem !important;" class="m-0">
           Prezentarea satului
         </h2>
         <p *ngIf="villageId === 0" class="m-0 text-style">

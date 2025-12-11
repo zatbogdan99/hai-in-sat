@@ -32,7 +32,7 @@
   gap: 2rem;
   align-items: stretch;
   padding-left: 8rem;
-  padding-right: 8rem;
+  padding-right: 12rem;
   padding-top: 4rem;
   /* Asigurăm același spațiu stânga/dreapta până la marginea ecranului */
   justify-content: space-between;
@@ -102,6 +102,25 @@
   justify-content: flex-start; /* left aligns content */
 }
 
+/* Desktop: keep long paragraphs aligned with the right edge of the gallery image
+   The gallery wrapper uses padding-right: 12rem; apply the same right padding
+   to the village description texts so they never extend further right than the image above. */
+@media (min-width: 901px) {
+  .info-page-bg .text-style,
+  .info-page-bg .polovragi-paragraph,
+  .info-page-bg .polovragi-paragraph-2,
+  .info-page-bg .horezu-paragraph,
+  .info-page-bg .horezu-note {
+    padding-right: 12rem;
+  }
+
+  /* Do not add extra right padding inside two-column rows where an image sits to the right */
+  .polovragi-row .polovragi-left .text-style,
+  .horezu-row .horezu-left .text-style {
+    padding-right: 0;
+  }
+}
+
 .polovragi-row {
   display: flex;
   gap: 2rem;
@@ -119,7 +138,7 @@
 }
 
 .polovragi-image {
-  width: 45rem;
+  width: 39.5rem;
   max-width: 100%;
   max-height: 30rem;
   border-radius: 4px;
@@ -223,30 +242,34 @@
   margin: 1.125rem 0 1.875rem 0;
 }
 
+
+/* Mobile section containers previously had a very light blue background.
+   The requirement is to use white anywhere the beige page background isn't used.
+   Keep all container backgrounds white. */
 .container1:nth-child(1) {
-  background-color: rgb(238, 245, 245);
+  background-color: #ffffff;
 }
 
 .container1:nth-child(2) {
-  background-color: rgb(237, 245, 245);
+  background-color: #ffffff;
 }
 
 .container1:nth-child(3) {
-  background-color: rgb(237, 245, 245);
+  background-color: #ffffff;
 }
 
 .container1:nth-child(4) {
-  background-color: rgb(237, 245, 245);
+  background-color: #ffffff;
 }
 
 .container1:nth-child(5) {
-  background-color: rgb(237, 245, 245);
+  background-color: #ffffff;
 }
 .container1:nth-child(6) {
-  background-color: rgb(237, 245, 245);
+  background-color: #ffffff;
 }
 .container1:nth-child(7) {
-  background-color: rgb(237, 245, 245);
+  background-color: #ffffff;
 }
 
 img {
@@ -284,6 +307,8 @@ img {
     display: flex;
     justify-content: center;
     align-content: center;
+    /* Ensure white background on phone */
+    background-color: #ffffff;
     //width: 100%;
     //height: 90vh;
     //position: relative;
@@ -328,7 +353,7 @@ img {
     width: 100%;
   }
   .text-style {
-    padding-left: 2rem;
+    //padding-left: 2rem;
   }
 }
 
@@ -409,7 +434,7 @@ img {
 }
 
 .horezu-left {
-  max-width: 60rem;
+  max-width: 48rem;
 }
 
 .horezu-right {
@@ -419,7 +444,7 @@ img {
 }
 
 .horezu-image {
-  width: 45rem;
+  width: 39.5rem;
   max-width: 100%;
   max-height: 30rem;
   border-radius: 4px;
@@ -598,7 +623,7 @@ img {
 
 /* Dimensiunea efectivă a imaginii (identică cu varianta anterioară) */
 .baia-section .polovragi-image {
-  width: 45rem;        /* lățimea clasică */
+  //width: 45rem;        /* lățimea clasică */
   max-height: 33.5rem; /* înlocuiește limita globală de 30rem */
 }
 
@@ -651,9 +676,17 @@ img {
   text-align: left;
 }
 
-/* Aliniem și indentarea textului cu titlul (header-wrap are padding-left: 3rem) */
-.barbatesti-section .text-style {
-  padding-left: 3rem;
+/* Bărbătești: aliniază paragraful din secțiunea de jos cu textul de sus și cu
+   secțiunea „Ce găsești aici” (același gutter stânga ca .text-style global: 8rem).
+   Notă: aplicăm doar pe desktop; pe mobil rămâne spațiul mic din regulile mobile. */
+@media (min-width: 901px) {
+  .barbatesti-section .text-style {
+    padding-left: 8rem;
+  }
+  /* Aliniem și titlul „Inima spirituală a Bărbăteștiului” cu același gutter ca paragraful de sub el */
+  .barbatesti-section .header-wrap {
+    padding-left: 8rem;
+  }
 }
 
 /* =============================================

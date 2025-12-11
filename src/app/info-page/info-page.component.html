@@ -242,9 +242,13 @@
       <div class="left-text mobile">
         @if (villageId === 1) {
           <h1 class="title">{{ data[villageId].title }}</h1>
-          <p *ngIf="data[villageId].desc !== null" class="m-0 text-style">
-            {{ data[villageId].desc }}
-          </p>
+          <div class="p-card-custom" style="padding-top: 1rem" *ngIf="data[villageId].desc !== null">
+            <p-card>
+              <p class="m-0 text-style">
+                {{ data[villageId].desc }}
+              </p>
+            </p-card>
+          </div>
         } @else {
           <h1 class="title">{{ data[villageId].title }}</h1>
         }
@@ -265,9 +269,13 @@
         </ng-template>
       </p-galleria>
         @if (villageId !== 1) {
-          <p *ngIf="data[villageId].desc !== null" class="m-0 text-style">
-            {{ data[villageId].desc }}
-          </p>
+          <div class="p-card-custom" style="padding-top: 1rem" *ngIf="data[villageId].desc !== null">
+            <p-card>
+              <p class="m-0 text-style">
+                {{ data[villageId].desc }}
+              </p>
+            </p-card>
+          </div>
         }
       </div>
     </div>

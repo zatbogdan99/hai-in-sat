@@ -81,33 +81,35 @@
       </p-float-label>
       <p-float-label style="margin-bottom: 2rem" [formGroup]="formGroup">
         <input type="tel" pInputText id="phoneNumberMobile" formControlName="phoneNumber">
-        <label for="phoneNumberMobile">TELEFON</label>
+        <label for="phoneNumberMobile">Telefon</label>
       </p-float-label>
       <p-float-label style="margin-bottom: 2rem" [formGroup]="formGroup">
         <input pInputText id="mail-mobile" formControlName="mail">
-        <label for="mail-mobile">EMAIL</label>
+        <label for="mail-mobile">E-mail</label>
       </p-float-label>
 
       <p-float-label style="margin-bottom: 2rem" [formGroup]="formGroup">
         <textarea style="width: 15.5rem" rows="5" pInputTextarea formControlName="details" id="details_mobile"></textarea>
-        <label for="details_mobile">DETALII</label>
+        <label for="details_mobile">Detalii</label>
       </p-float-label>
 
       <div class="property-type-section" [formGroup]="formGroup">
         <h2 class="property-type-title">Ce cauți?</h2>
         <div class="property-type-options">
           <div class="property-type-option">
-            <p-radioButton name="propertyTypeMobile" [value]="PropertyType.HOUSE" formControlName="propertyType" inputId="optHouseMobile"></p-radioButton>
+            <!-- Name must match formControlName to avoid Angular runtime error -->
+            <p-radioButton name="propertyType" [value]="PropertyType.HOUSE" formControlName="propertyType" inputId="optHouseMobile"></p-radioButton>
             <label for="optHouseMobile" class="pill-label">CASĂ</label>
           </div>
           <div class="property-type-option">
-            <p-radioButton name="propertyTypeMobile" [value]="PropertyType.LAND" formControlName="propertyType" inputId="optLandMobile"></p-radioButton>
+            <!-- Name must match formControlName to avoid Angular runtime error -->
+            <p-radioButton name="propertyType" [value]="PropertyType.LAND" formControlName="propertyType" inputId="optLandMobile"></p-radioButton>
             <label for="optLandMobile" class="pill-label">TEREN</label>
           </div>
         </div>
       </div>
 
-      <div [formGroup]="formGroup" style="display: flex; align-items: center; gap: 0.5rem; padding-left: 1rem; padding-right: 1rem">
+      <div [formGroup]="formGroup" style="display: flex; align-items: center; gap: 0.5rem; padding-left: 2rem; padding-right: 1rem">
         <p-checkbox formControlName="terms" [binary]="true" inputId="terms_mobile"></p-checkbox>
         <h4 style="padding-left: 0.5rem">Sunt de acord cu <a href="javascript:void(0)" (click)="openTermenii()">termenii si condițiile</a> și <a href="javascript:void(0)" (click)="openPolitica()">politica de confidențialitate</a></h4>
       </div>

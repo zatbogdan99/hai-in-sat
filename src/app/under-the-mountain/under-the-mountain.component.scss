@@ -419,7 +419,7 @@ section {
   font-family: 'Libre Baskerville', serif;
   font-size: clamp(0.8rem, 1.6vw, 1.3rem);
   line-height: 1.9;
-  text-align: center;
+  text-align: left;
 }
 
 .why__text p {
@@ -459,6 +459,14 @@ section {
     padding-right: 1rem;
     /* Reduce the vertical gap between the gallery and the title on mobile */
     margin-top: 1.25rem;
+    /* Make the drop shadow much more subtle on mobile */
+    -webkit-box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+    -moz-box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+  }
+  /* Add ~1rem extra space between the title and the text below it */
+  .why__content {
+    gap: 2.5rem;
   }
 }
 

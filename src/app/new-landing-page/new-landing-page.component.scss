@@ -67,10 +67,10 @@
 }
 
 @media (max-width: 768px) {
-  /* Crop ~1/3 from the top of the hero image on mobile by reducing the
+  /* Crop ~1/4 from the top of the hero image on mobile by reducing the
      section height and anchoring the background to the bottom. */
   .hero {
-    min-height: 66vh; /* about two-thirds of the viewport height */
+    min-height: 75vh; /* about three-quarters of the viewport height */
     background-position: center bottom; /* keep the lower area visible */
   }
   .content {
