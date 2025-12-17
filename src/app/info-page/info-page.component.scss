@@ -10,6 +10,9 @@
 .info-page-bg {
   background-color: #f4efe5;
   padding: 2rem 0 4rem 0;
+  /* gutters orizontale consistente pe desktop și mobil */
+  padding-left: clamp(1rem, 6vw, 8rem);
+  padding-right: clamp(1rem, 8vw, 12rem);
 }
 
 .header-wrap {
@@ -20,11 +23,11 @@
 .title-underline {
   display: block;
   background: #1b3a2a;
-  height: 6px;
-  width: 120px;
+  height: 0.375rem;
+  width: 7.5rem;
   border: 0;
   margin: 0.75rem 0 0 0;
-  border-radius: 3px;
+  border-radius: 0.1875rem;
 }
 
 .features-row {
@@ -32,7 +35,7 @@
   gap: 2rem;
   align-items: stretch;
   padding-left: 8rem;
-  padding-right: 12rem;
+  padding-right: 1rem;
   padding-top: 4rem;
   /* Asigurăm același spațiu stânga/dreapta până la marginea ecranului */
   justify-content: space-between;
@@ -83,10 +86,10 @@
 }
 
 .gallery-wrap {
-  max-width: 80rem;
+  max-width: 39rem;
   max-height: 33.5rem;
   margin-left: auto;
-  padding-right: 12rem;
+  //padding-right: 12rem;
 }
 
 .galleria-card {
@@ -141,7 +144,7 @@
   width: 39.5rem;
   max-width: 100%;
   max-height: 30rem;
-  border-radius: 4px;
+  border-radius: 0.25rem;
 }
 
 .polovragi-bottom {
@@ -152,7 +155,7 @@
   max-width: 58.5ch;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 56.25rem) {
   .polovragi-row {
     flex-direction: column;
   }
@@ -161,7 +164,7 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 56.25rem) {
   .features-row {
     flex-direction: column;
     padding: 1rem;
@@ -174,7 +177,7 @@
    - Make "Ce găsești aici" cards auto-height with 1rem top/bottom padding
    - Add small horizontal padding for long paragraphs at the bottom
    ========================= */
-@media (max-width: 900px) {
+@media (max-width: 56.25rem) {
   /* Remove beige strip above the title on mobile (/info-page)
      - Make the page background white and remove the top padding so the
        white title section starts immediately under the navbar.
@@ -269,7 +272,7 @@
   -webkit-text-fill-color: transparent;
   -moz-background-clip: text;
   //text-transform: capitalize;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.05rem;
   font-family: var(--font-base);
   font-weight: 800;
   text-align: center;
@@ -319,13 +322,13 @@ img {
   height: 100%;
   object-fit: cover;
   transform-origin: left;
-  border-radius: 10px;
+  border-radius: 0.625rem;
 }
 
 
 
 //mobile
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 31.25rem) {
   .small-screen {
     display: block;
   }
@@ -338,7 +341,7 @@ img {
     //width: 80%;
     //height: 80%;
     //max-width: 50rem;
-    border-radius: 10px;
+    border-radius: 0.625rem;
     overflow: hidden;
     visibility: hidden;
     display: inline-block;
@@ -401,7 +404,7 @@ img {
 }
 
 //desktop
-@media only screen and (min-width: 500px) {
+@media only screen and (min-width: 31.25rem) {
   .small-screen {
     display: none;
   }
@@ -414,7 +417,7 @@ img {
     //width: 80%;
     //height: 80%;
     //max-width: 50rem;
-    border-radius: 10px;
+    border-radius: 0.625rem;
     overflow: hidden;
     visibility: hidden;
     padding-left: 3rem;
@@ -467,7 +470,9 @@ img {
 /* Horezu custom layout */
 .horezu-section {
   /* Secțiunea principală pentru Horezu */
-  padding: 1rem 3rem 0 8rem;
+  /* Aliniem cu .features-row (care are padding-right: 1rem și padding-left: 8rem)
+     pentru ca imaginea din dreapta să cadă pe aceeași verticală cu al doilea card alb. */
+  padding: 1rem 1rem 0 8rem;
 }
 
 .horezu-row {
@@ -481,16 +486,19 @@ img {
 }
 
 .horezu-right {
-  flex: 1 1 40%;
+  /* Alinează cu al doilea card alb ca la celelalte sate */
+  flex: 0 0 40rem;
+  margin-left: auto;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
 }
 
 .horezu-image {
-  width: 39.5rem;
+  /* Reglaj fin pentru potrivire 1:1 cu al doilea card alb */
+  width: 38.375rem; /* +0.875rem total spre dreapta față de 39.25rem (încă 0.125rem cerut) */
   max-width: 100%;
   max-height: 30rem;
-  border-radius: 4px;
+  border-radius: 0.25rem;
 }
 
 .horezu-title {
@@ -528,11 +536,14 @@ img {
   margin: 0 0 0.5rem 0;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 56.25rem) {
   .horezu-row {
     flex-direction: column;
   }
   .horezu-right {
+    flex: 1 1 auto;
+    margin-left: 0;
+    min-width: 0;
     justify-content: flex-start;
   }
 }
@@ -543,7 +554,7 @@ img {
   //padding: 0 3rem 0 8rem; /* același aliniament ca restul textului pe desktop */
 }
 
-@media (max-width: 900px) {
+@media (max-width: 56.25rem) {
   .horezu-unesco-full {
     padding: 0 1rem; /* spațiere prietenoasă pe mobil */
   }
@@ -575,7 +586,7 @@ img {
   padding-left: 0;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 56.25rem) {
   .horezu-context .intro-card {
     margin: 0 1rem;
     max-width: 100%;
@@ -602,7 +613,7 @@ img {
 .info-page-bg .polovragi-paragraph-2,
 .info-page-bg .horezu-paragraph,
 .info-page-bg .horezu-note {
-  font-size: 25px;
+  font-size: 1.5625rem;
   line-height: 1.7;
 }
 
@@ -639,7 +650,7 @@ img {
 /* Dimensiuni pentru listele din cardurile „Ce găsești aici” */
 .info-page-bg .features-list,
 .info-page-bg .features-list li {
-  font-size: 25px;
+  font-size: 1.5625rem;
   line-height: 1.6;
 }
 
@@ -648,7 +659,7 @@ img {
 .info-page-bg .horezu-list li,
 .info-page-bg .horezu-note-list,
 .info-page-bg .horezu-note-list li {
-  font-size: 25px;
+  font-size: 1.5625rem;
 }
 
 /* Baia de Fier: al doilea paragraf continuă sub primul, în stânga imaginii */
@@ -658,9 +669,12 @@ img {
 
 /* Baia de Fier: păstrăm dimensiunea imaginii ca înainte (desktop) */
 .baia-section .polovragi-right {
-  /* rezervăm spațiu fix pentru imagine, ca să nu se micșoreze */
-  flex: 0 0 45rem;
-  min-width: 52rem;
+  /* Aliniere identică cu al doilea card alb (dreapta):
+     - lățime coloană = 40rem (egală cu .feature-card)
+     - împinsă la dreapta cu margin-left: auto, astfel încât marginea stângă
+       a imaginii să fie pe aceeași verticală cu cardul de deasupra. */
+  flex: 0 0 39rem;
+  margin-left: auto;
   justify-content: flex-start; /* lipită de stânga coloanei drepte */
 }
 
@@ -671,9 +685,10 @@ img {
 }
 
 /* Siguranță: pe mobil revenim la comportamentul fluid */
-@media (max-width: 900px) {
+@media (max-width: 56.25rem) {
   .baia-section .polovragi-right {
     flex: 1 1 auto;
+    margin-left: 0;
     min-width: 0;
   }
   .baia-section .polovragi-image {
@@ -748,16 +763,31 @@ img {
 .vaideeni-section .polovragi-right,
 .slatioara-section .polovragi-right,
 .costesti-section .polovragi-right {
-  flex: 0 0 45rem; /* rezervăm spațiul pentru imagine (nu se micșorează) */
-  min-width: 52rem;
-  justify-content: left; /* păstrăm poziționarea actuală a imaginii */
+  /* Standardizare cu .feature-card (40rem) + aliniere pe aceeași verticală
+     cu cardul din dreapta de deasupra */
+  flex: 0 0 40rem;
+  margin-left: auto;
+  /* Mutăm ușor imaginea spre dreapta (≈0.5rem),
+     aliniind marginea ei dreaptă cu marginea cardului de deasupra. */
+  justify-content: flex-end;
 }
 
-@media (max-width: 900px) {
+/* Reglaj fin suplimentar: mai 0.25rem spre dreapta pentru a egala perfect
+   verticala cardului alb (diferență totală 0.75rem între coloană și imagine) */
+.vaideeni-section .polovragi-image,
+.slatioara-section .polovragi-image,
+.costesti-section .polovragi-image {
+  width: 39.25rem;
+  max-width: 100%;
+}
+
+@media (max-width: 56.25rem) {
   .vaideeni-section .polovragi-right,
   .slatioara-section .polovragi-right,
   .costesti-section .polovragi-right {
     flex: 1 1 auto; /* revenim la layout fluid pe mobil */
+    margin-left: 0;
     min-width: 0;
+    justify-content: flex-start; /* pe mobil păstrăm imaginea lipită la stânga */
   }
 }
