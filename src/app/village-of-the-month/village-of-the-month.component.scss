@@ -3,7 +3,7 @@
 }
 
 .hero-banner {
-  height: 25vh;
+  height: 50vh; /* Desktop/Large screens keep original height */
   background-image: url('../../assets/poza_robita.jpeg');
   background-repeat: no-repeat;
   /* Keep the bottom of the image visible so we effectively crop from the top */
@@ -87,7 +87,7 @@ img {
   }
 
   .hero-banner {
-    height: 30vh; /* About half the previous height on mobile */
+    height: 25vh; /* Apply reduced height only on mobile */
   }
 
   .hero-content h1 {

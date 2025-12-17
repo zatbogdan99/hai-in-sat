@@ -175,9 +175,17 @@
    - Add small horizontal padding for long paragraphs at the bottom
    ========================= */
 @media (max-width: 900px) {
+  /* Remove beige strip above the title on mobile (/info-page)
+     - Make the page background white and remove the top padding so the
+       white title section starts immediately under the navbar.
+       Applies to all villages on the info-page. */
+  .info-page-bg {
+    padding-top: 0;
+  }
+
   /* Top section: prevent overflow of title + first paragraph */
   .top-row { flex-direction: column; }
-  .header-wrap { padding-left: 1rem; padding-right: 1rem; }
+  .header-wrap { padding-left: 1rem; padding-right: 1rem; text-align: center; }
   .text-style { padding-left: 1rem; padding-right: 1rem; }
   .info-page-bg .title {
     /* Scale down nicely on small screens */
@@ -185,6 +193,9 @@
     line-height: 1.15;
     word-break: break-word;
     overflow-wrap: anywhere;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   /* Gallery spacing on mobile */
@@ -208,6 +219,37 @@
   .info-page-bg .polovragi-paragraph-2,
   .info-page-bg .horezu-paragraph,
   .info-page-bg .horezu-note {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* --- Unificare carduri pe mobil (același stil ca „Ce găsești aici”) --- */
+  /* Containerul pentru descrierile de jos: același padding lateral ca features-column, fără spațiu vertical suplimentar */
+  .small-screen .container2 {
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    display: block;
+  }
+
+  /* Asigurăm aceleași margini laterale și pentru containerul de sus (prima descriere) */
+  .small-screen .container1 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Cardurile de descriere (sus și jos): lățime 100%, același gap de 1rem între ele
+     și anulăm padding-ul inline din HTML pentru consistență */
+  .small-screen .container1 .p-card-custom,
+  .small-screen .container2 .p-card-custom {
+    width: 100%;
+    margin: 1rem 0; /* spațiu egal deasupra și dedesubtul fiecărui card */
+    padding-top: 0 !important; /* override pentru style="padding-top: ..." din HTML */
+  }
+
+  /* Ne asigurăm că și coloana cu „Ce găsești aici” are aceleași margini laterale */
+  .small-screen .features-column {
     padding-left: 1rem;
     padding-right: 1rem;
   }
@@ -316,8 +358,9 @@ img {
 
   .title {
     font-weight: 700;
-    //text-align: center;
-    padding-left: 4rem;
+    text-align: center;
+    padding-left: 0;
+    padding-right: 0;
     padding-bottom: 1rem;
   }
 

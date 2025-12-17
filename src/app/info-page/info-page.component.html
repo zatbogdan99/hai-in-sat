@@ -268,17 +268,20 @@
           <img (click)="openFullScreen(activeIndex)" [src]="item.itemImageSrc" style="width: 18rem; height: 18rem; cursor: pointer;" />
         </ng-template>
       </p-galleria>
-        @if (villageId !== 1) {
-          <div class="p-card-custom" style="padding-top: 1rem" *ngIf="data[villageId].desc !== null">
-            <p-card>
-              <p class="m-0 text-style">
-                {{ data[villageId].desc }}
-              </p>
-            </p-card>
-          </div>
-        }
       </div>
     </div>
+
+    @if (villageId !== 1 && data[villageId].desc !== null) {
+      <div class="container2">
+        <div style="padding-top: 1rem" class="p-card-custom">
+          <p-card>
+            <p class="m-0 text-style">
+              {{ data[villageId].desc }}
+            </p>
+          </p-card>
+        </div>
+      </div>
+    }
 
 
     <div class="features-column">
