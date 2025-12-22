@@ -3,20 +3,18 @@
 }
 
 .text-style {
-  padding-left: 8rem;
+  padding-left: 0;
 }
 
-/* New design styles */
 .info-page-bg {
   background-color: #f4efe5;
   padding: 2rem 0 4rem 0;
-  /* gutters orizontale consistente pe desktop și mobil */
   padding-left: clamp(1rem, 6vw, 8rem);
   padding-right: clamp(1rem, 8vw, 12rem);
 }
 
 .header-wrap {
-  padding-left: 3rem;
+  padding-left: 0;
   margin-bottom: 2rem;
 }
 
@@ -34,10 +32,9 @@
   display: flex;
   gap: 2rem;
   align-items: stretch;
-  padding-left: 8rem;
-  padding-right: 1rem;
+  padding-left: 0;
+  padding-right: 0rem;
   padding-top: 4rem;
-  /* Asigurăm același spațiu stânga/dreapta până la marginea ecranului */
   justify-content: space-between;
 }
 
@@ -86,7 +83,7 @@
 }
 
 .gallery-wrap {
-  max-width: 39rem;
+  max-width: 41rem;
   max-height: 33.5rem;
   margin-left: auto;
   //padding-right: 12rem;
@@ -109,15 +106,7 @@
    The gallery wrapper uses padding-right: 12rem; apply the same right padding
    to the village description texts so they never extend further right than the image above. */
 @media (min-width: 901px) {
-  .info-page-bg .text-style,
-  .info-page-bg .polovragi-paragraph,
-  .info-page-bg .polovragi-paragraph-2,
-  .info-page-bg .horezu-paragraph,
-  .info-page-bg .horezu-note {
-    padding-right: 12rem;
-  }
 
-  /* Do not add extra right padding inside two-column rows where an image sits to the right */
   .polovragi-row .polovragi-left .text-style,
   .horezu-row .horezu-left .text-style {
     padding-right: 0;
@@ -152,7 +141,7 @@
 }
 
 .polovragi-paragraph {
-  max-width: 58.5ch;
+  max-width: clamp(42ch, 52vw, 68ch);
 }
 
 @media (max-width: 56.25rem) {
@@ -171,17 +160,7 @@
   }
 }
 
-/* =========================
-   MOBILE ADJUSTMENTS (/info-page)
-   - Fix title and first description overflow
-   - Make "Ce găsești aici" cards auto-height with 1rem top/bottom padding
-   - Add small horizontal padding for long paragraphs at the bottom
-   ========================= */
 @media (max-width: 56.25rem) {
-  /* Remove beige strip above the title on mobile (/info-page)
-     - Make the page background white and remove the top padding so the
-       white title section starts immediately under the navbar.
-       Applies to all villages on the info-page. */
   .info-page-bg {
     padding-top: 0;
   }
@@ -191,7 +170,6 @@
   .header-wrap { padding-left: 1rem; padding-right: 1rem; text-align: center; }
   .text-style { padding-left: 1rem; padding-right: 1rem; }
   .info-page-bg .title {
-    /* Scale down nicely on small screens */
     font-size: clamp(1.5rem, 7vw, 2.5rem);
     line-height: 1.15;
     word-break: break-word;
@@ -201,11 +179,9 @@
     margin-right: auto;
   }
 
-  /* Gallery spacing on mobile */
   .gallery-wrap { padding-right: 0; margin: 0 auto; }
   :host ::ng-deep .p-galleria .p-galleria-item img { width: 100% !important; height: auto !important; }
 
-  /* Feature cards: auto height to fit content; 1rem top/bottom padding */
   .feature-card,
   .feature-card-left { width: 100%; height: auto; }
   .feature-card .p-card,
@@ -217,7 +193,6 @@
     padding-bottom: 1rem;
   }
 
-  /* Bottom paragraphs: add small left/right spacing */
   .info-page-bg .polovragi-paragraph,
   .info-page-bg .polovragi-paragraph-2,
   .info-page-bg .horezu-paragraph,
@@ -226,8 +201,6 @@
     padding-right: 1rem;
   }
 
-  /* --- Unificare carduri pe mobil (același stil ca „Ce găsești aici”) --- */
-  /* Containerul pentru descrierile de jos: același padding lateral ca features-column, fără spațiu vertical suplimentar */
   .small-screen .container2 {
     padding-top: 0;
     padding-bottom: 0;
@@ -236,22 +209,18 @@
     display: block;
   }
 
-  /* Asigurăm aceleași margini laterale și pentru containerul de sus (prima descriere) */
   .small-screen .container1 {
     padding-left: 1rem;
     padding-right: 1rem;
   }
 
-  /* Cardurile de descriere (sus și jos): lățime 100%, același gap de 1rem între ele
-     și anulăm padding-ul inline din HTML pentru consistență */
   .small-screen .container1 .p-card-custom,
   .small-screen .container2 .p-card-custom {
     width: 100%;
-    margin: 1rem 0; /* spațiu egal deasupra și dedesubtul fiecărui card */
-    padding-top: 0 !important; /* override pentru style="padding-top: ..." din HTML */
+    margin: 1rem 0;
+    padding-top: 0 !important;
   }
 
-  /* Ne asigurăm că și coloana cu „Ce găsești aici” are aceleași margini laterale */
   .small-screen .features-column {
     padding-left: 1rem;
     padding-right: 1rem;
@@ -259,7 +228,7 @@
 }
 
 .galeria-style {
-  padding-left: 5rem;
+  padding-left: 0;
   padding-top: 2rem;
 }
 
@@ -288,9 +257,6 @@
 }
 
 
-/* Mobile section containers previously had a very light blue background.
-   The requirement is to use white anywhere the beige page background isn't used.
-   Keep all container backgrounds white. */
 .container1:nth-child(1) {
   background-color: #ffffff;
 }
@@ -467,11 +433,7 @@ img {
 }
 
 
-/* Horezu custom layout */
 .horezu-section {
-  /* Secțiunea principală pentru Horezu */
-  /* Aliniem cu .features-row (care are padding-right: 1rem și padding-left: 8rem)
-     pentru ca imaginea din dreapta să cadă pe aceeași verticală cu al doilea card alb. */
   padding: 1rem 1rem 0 8rem;
 }
 
@@ -563,8 +525,8 @@ img {
 /* Horezu: card alb pentru secțiunea introductivă (titlu + descriere) */
 .horezu-context .intro-card {
   /* aliniere similară cu header-wrap-ul vechi */
-  margin-left: 8rem;
-  margin-right: 1rem;
+  margin-left: 0;
+  margin-right: 0;
   margin-top: 7rem;
   max-width: 60rem;
 }
@@ -737,13 +699,13 @@ img {
 /* Bărbătești: aliniază paragraful din secțiunea de jos cu textul de sus și cu
    secțiunea „Ce găsești aici” (același gutter stânga ca .text-style global: 8rem).
    Notă: aplicăm doar pe desktop; pe mobil rămâne spațiul mic din regulile mobile. */
-@media (min-width: 901px) {
+@media (min-width: 56.25rem) {
   .barbatesti-section .text-style {
-    padding-left: 8rem;
+    padding-left: 0;
   }
   /* Aliniem și titlul „Inima spirituală a Bărbăteștiului” cu același gutter ca paragraful de sub el */
   .barbatesti-section .header-wrap {
-    padding-left: 8rem;
+    padding-left: 0;
   }
 }
 

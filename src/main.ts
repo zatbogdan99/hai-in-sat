@@ -15,7 +15,15 @@ import Lara from '@primeng/themes/lara';
 bootstrapApplication(AppComponent, {
   providers: [
     provideAnimationsAsync(),
-    providePrimeNG({ theme: { preset: Lara } }),
+    providePrimeNG({
+      theme: {
+        preset: Lara,
+        options: {
+          // Disable automatic dark mode handling from Prime Theme engine
+          darkModeSelector: 'none'
+        }
+      }
+    }),
     provideRouter(appRoutes, withHashLocation()),
     importProvidersFrom(HttpClientModule),
     MessageService,

@@ -53,6 +53,36 @@
         var m2 = document.querySelector('meta[name="supported-color-schemes"]');
         if (!m2) { m2 = document.createElement('meta'); m2.setAttribute('name', 'supported-color-schemes'); document.head.appendChild(m2); }
         m2.setAttribute('content', 'light');
+
+        // Runtime guard: keep forcing light when OS theme changes (Safari/macOS)
+        if (typeof window !== 'undefined' && 'matchMedia' in window) {
+          var mql = window.matchMedia('(prefers-color-scheme: dark)');
+          var enforceLight = function() {
+            try {
+              var de2 = document.documentElement;
+              var bd2 = document.body || null;
+              de2.style.colorScheme = 'light';
+              de2.style.backgroundColor = '#ffffff';
+              de2.classList.remove('dark');
+              de2.setAttribute('data-theme', 'light');
+              if (bd2) {
+                bd2.style.colorScheme = 'light';
+                bd2.style.backgroundColor = '#ffffff';
+                bd2.classList.remove('dark');
+                bd2.setAttribute('data-theme', 'light');
+              }
+            } catch (e2) { /* no-op */ }
+          };
+
+          // Apply immediately and on any future changes to OS theme
+          enforceLight();
+          if (mql && typeof mql.addEventListener === 'function') {
+            mql.addEventListener('change', enforceLight);
+          } else if (mql && typeof mql.addListener === 'function') {
+            // Safari/WebKit legacy
+            mql.addListener(enforceLight);
+          }
+        }
       } catch (e) { /* no-op */ }
     })();
   </script>
