@@ -8,7 +8,7 @@ describe('UnderTheMountainComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [UnderTheMountainComponent]
+      imports: [UnderTheMountainComponent]
     });
     fixture = TestBed.createComponent(UnderTheMountainComponent);
     component = fixture.componentInstance;

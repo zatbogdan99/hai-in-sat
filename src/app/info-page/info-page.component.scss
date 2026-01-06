@@ -66,6 +66,7 @@
 
 :host ::ng-deep .feature-card .p-card .p-card-body {
   height: 18.5rem !important;
+  width: 36rem;
 }
 
 .features-title {
@@ -83,7 +84,7 @@
 }
 
 .gallery-wrap {
-  max-width: 41rem;
+  max-width: 36rem;
   max-height: 33.5rem;
   margin-left: auto;
   //padding-right: 12rem;
@@ -114,23 +115,23 @@
 }
 
 .polovragi-row {
-  display: flex;
-  gap: 2rem;
-  align-items: flex-start;
+  /* Folosim flow-root + float pentru ca textul să poată curge sub imagine pe desktop */
+  display: flow-root;
 }
 
 .polovragi-left {
   //flex: 1 1 60%;
 }
 
-.polovragi-right {
-  flex: 1 1 40%;
-  display: flex;
-  justify-content: left;
+
+.polovragi-image--float {
+  float: right;
+  margin-left: 2rem;
+  margin-bottom: 1rem;
 }
 
 .polovragi-image {
-  width: 39.5rem;
+  width: 36rem;
   max-width: 100%;
   max-height: 30rem;
   border-radius: 0.25rem;
@@ -138,18 +139,20 @@
 
 .polovragi-bottom {
   margin-top: 1.5rem;
+  clear: both;
 }
 
 .polovragi-paragraph {
-  max-width: clamp(42ch, 52vw, 68ch);
+  max-width: none;
 }
 
 @media (max-width: 56.25rem) {
-  .polovragi-row {
-    flex-direction: column;
-  }
-  .polovragi-right {
-    justify-content: flex-start;
+  .polovragi-image--float {
+    float: none;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem;
   }
 }
 
@@ -434,25 +437,22 @@ img {
 
 
 .horezu-section {
-  padding: 1rem 1rem 0 8rem;
+  //padding: 1rem 1rem 0 8rem;
 }
 
 .horezu-row {
-  display: flex;
-  gap: 2rem;
-  align-items: flex-start;
+  /* Folosim flow-root + float pentru ca textul să poată curge sub imagine pe desktop */
+  display: flow-root;
 }
 
 .horezu-left {
-  max-width: 48rem;
+  max-width: none;
 }
 
-.horezu-right {
-  /* Alinează cu al doilea card alb ca la celelalte sate */
-  flex: 0 0 40rem;
-  margin-left: auto;
-  display: flex;
-  justify-content: flex-end;
+.horezu-image--float {
+  float: right;
+  margin-left: 2rem;
+  margin-bottom: 1rem;
 }
 
 .horezu-image {
@@ -474,7 +474,7 @@ img {
 }
 
 .horezu-paragraph {
-  max-width: 68ch;
+  max-width: none;
   line-height: 1.7;
   margin: 0 0 0.5rem 0;
 }
@@ -499,20 +499,19 @@ img {
 }
 
 @media (max-width: 56.25rem) {
-  .horezu-row {
-    flex-direction: column;
-  }
-  .horezu-right {
-    flex: 1 1 auto;
-    margin-left: 0;
-    min-width: 0;
-    justify-content: flex-start;
+  .horezu-image--float {
+    float: none;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem;
   }
 }
 
 /* Blocul UNESCO full-width pentru Horezu (iese din coloana stângă) */
 .horezu-unesco-full {
   margin-top: 2rem;
+  clear: both;
   //padding: 0 3rem 0 8rem; /* același aliniament ca restul textului pe desktop */
 }
 
@@ -637,7 +636,7 @@ img {
        a imaginii să fie pe aceeași verticală cu cardul de deasupra. */
   flex: 0 0 39rem;
   margin-left: auto;
-  justify-content: flex-start; /* lipită de stânga coloanei drepte */
+  justify-content: end; /* lipită de stânga coloanei drepte */
 }
 
 /* Dimensiunea efectivă a imaginii (identică cu varianta anterioară) */

@@ -8,7 +8,7 @@ describe('SeeTheAreaComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [SeeTheAreaComponent]
+      imports: [SeeTheAreaComponent]
     });
     fixture = TestBed.createComponent(SeeTheAreaComponent);
     component = fixture.componentInstance;

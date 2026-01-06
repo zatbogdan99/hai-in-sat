@@ -28,19 +28,26 @@ export class YoutubePlayerComponent implements AfterViewInit, OnChanges, OnDestr
   }
 
   initPlayer(): void {
-    if (this.playerElementRef != undefined) {
-      this.player = new YT.Player(this.playerElementRef.nativeElement, {
-        height: this.height,
-        width: this.width,
-        videoId: this.videoId,
-        events: {
-          'onReady': this.onPlayerReady,
-          'onStateChange': this.onPlayerStateChange
-        }
-      });
-    } else {
+    if (this.playerElementRef == undefined) {
       console.error('Eroare la initializarea playerului de youtube');
+      return;
     }
+
+    // In unit tests / SSR, the YouTube IFrame API may be missing.
+    // Guard against crashing the app when `YT` is not available.
+    if (typeof YT === 'undefined' || !YT?.Player) {
+      return;
+    }
+
+    this.player = new YT.Player(this.playerElementRef.nativeElement, {
+      height: this.height,
+      width: this.width,
+      videoId: this.videoId,
+      events: {
+        'onReady': this.onPlayerReady,
+        'onStateChange': this.onPlayerStateChange
+      }
+    });
   }
 
   updateVideo(newVideoId: string): void {
@@ -62,7 +69,9 @@ export class YoutubePlayerComponent implements AfterViewInit, OnChanges, OnDestr
   }
 
   ngOnDestroy() {
-    this.player.destroy();
+    if (this.player?.destroy) {
+      this.player.destroy();
+    }
   }
 
 }

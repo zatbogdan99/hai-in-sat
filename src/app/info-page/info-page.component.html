@@ -61,13 +61,11 @@
     @if (villageId === 2) {
       <div class="polovragi-section">
         <div class="polovragi-row">
+          @if (getPolovragiSecondImage()) {
+            <img class="polovragi-image polovragi-image--float" [src]="getPolovragiSecondImage()" alt="Polovragi" />
+          }
           <div class="polovragi-left">
             <p class="m-0 text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
-          </div>
-          <div class="polovragi-right">
-            @if (getPolovragiSecondImage()) {
-              <img class="polovragi-image" [src]="getPolovragiSecondImage()" alt="Polovragi" />
-            }
           </div>
         </div>
         <div class="polovragi-bottom">
@@ -78,14 +76,12 @@
       @if (villageId === 3) {
         <div class="polovragi-section baia-section">
           <div class="polovragi-row">
+            @if (getBaiaSecondImage()) {
+              <img class="polovragi-image polovragi-image--float" [src]="getBaiaSecondImage()" alt="Baia de Fier" />
+            }
             <div class="polovragi-left">
               <p class="m-0 text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
               <p class="m-0 text-style polovragi-paragraph-2">{{ data[villageId].secondDesc2 }}</p>
-            </div>
-            <div class="polovragi-right">
-              @if (getBaiaSecondImage()) {
-                <img class="polovragi-image" [src]="getBaiaSecondImage()" alt="Baia de Fier" />
-              }
             </div>
           </div>
         </div>
@@ -93,14 +89,12 @@
         @if (villageId === 4) {
         <div class="polovragi-section vaideeni-section">
           <div class="polovragi-row">
+            @if (getVaideeniSecondImage()) {
+              <img class="polovragi-image polovragi-image--float" [src]="getVaideeniSecondImage()" alt="Vaideeni" />
+            }
             <div class="polovragi-left">
               <p class="m-0 text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
               <p class="m-0 text-style polovragi-paragraph-2">{{ data[villageId].secondDesc2 }}</p>
-            </div>
-            <div class="polovragi-right">
-              @if (getVaideeniSecondImage()) {
-                <img class="polovragi-image" [src]="getVaideeniSecondImage()" alt="Vaideeni" />
-              }
             </div>
           </div>
         </div>
@@ -108,14 +102,12 @@
         @if (villageId === 5) {
         <div class="polovragi-section slatioara-section">
           <div class="polovragi-row">
+            @if (getSlatioaraSecondImage()) {
+              <img class="polovragi-image polovragi-image--float" [src]="getSlatioaraSecondImage()" alt="Slătioara" />
+            }
             <div class="polovragi-left">
               <p class="m-0 text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
               <p class="m-0 text-style polovragi-paragraph-2">{{ data[villageId].secondDesc2 }}</p>
-            </div>
-            <div class="polovragi-right">
-              @if (getSlatioaraSecondImage()) {
-                <img class="polovragi-image" [src]="getSlatioaraSecondImage()" alt="Slătioara" />
-              }
             </div>
           </div>
         </div>
@@ -123,14 +115,12 @@
         @if (villageId === 6) {
         <div class="polovragi-section costesti-section">
           <div class="polovragi-row">
+            @if (getCostestiSecondImage()) {
+              <img class="polovragi-image polovragi-image--float" [src]="getCostestiSecondImage()" alt="Costești" />
+            }
             <div class="polovragi-left">
               <p class="m-0 text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
               <p class="m-0 text-style polovragi-paragraph-2">{{ data[villageId].secondDesc2 }}</p>
-            </div>
-            <div class="polovragi-right">
-              @if (getCostestiSecondImage()) {
-                <img class="polovragi-image" [src]="getCostestiSecondImage()" alt="Costești" />
-              }
             </div>
           </div>
         </div>
@@ -138,16 +128,14 @@
         @if (villageId === 7) {
         <div class="polovragi-section barbatesti-section">
           <div class="polovragi-row">
+            @if (getBarbatestiSecondImage()) {
+              <img class="polovragi-image polovragi-image--float" [src]="getBarbatestiSecondImage()" alt="Bărbătești" />
+            }
             <div class="polovragi-left">
               <div class="header-wrap">
                 <h1 class="title">Inima spirituală a Bărbăteștiului</h1>
               </div>
               <p class="m-0 text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
-            </div>
-            <div class="polovragi-right">
-              @if (getBarbatestiSecondImage()) {
-                <img class="polovragi-image" [src]="getBarbatestiSecondImage()" alt="Bărbătești" />
-              }
             </div>
           </div>
         </div>
@@ -155,6 +143,9 @@
         @if (villageId === 1) {
           <div class="horezu-section">
             <div class="horezu-row">
+              @if (getHorezuSecondImage()) {
+                <img class="horezu-image horezu-image--float" [src]="getHorezuSecondImage()" alt="Horezu" />
+              }
               <div class="horezu-left">
                 <h1 class="horezu-title">Ceramica Horezu</h1>
                 <p class="horezu-paragraph">
@@ -180,11 +171,6 @@
                 <p class="horezu-paragraph">
                   Aceste rute vechi au format o comunitate deschisă, meșteșugărească și rezistentă în timp.
                 </p>
-              </div>
-              <div class="horezu-right">
-                @if (getHorezuSecondImage()) {
-                  <img class="horezu-image" [src]="getHorezuSecondImage()" alt="Horezu" />
-                }
               </div>
             </div>
 
