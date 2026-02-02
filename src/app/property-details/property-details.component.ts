@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PropertyFormServiceService } from '../service/property-form-service/property-form-service.service';
+import { PropertiesStateService, PropertyTypeFilter } from '../service/properties-state-service/properties-state.service';
 import { PropertyDTO } from '../dto/property.dto';
 import { BuyEnum } from '../dto/buy.enum';
 import { LoadingService } from '../service/loading-service/loading-service.service';
@@ -36,7 +37,8 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private router: Router,
     private propertyService: PropertyFormServiceService,
-    public loadingService: LoadingService
+    public loadingService: LoadingService,
+    private propertiesState: PropertiesStateService
   ) {}
 
   ngOnInit(): void {
@@ -131,6 +133,36 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
   }
 
   goBackToProperties(): void {
-    this.router.navigate(['/properties']);
+    const queryParams = this.route.snapshot.queryParamMap;
+    const pageParam = queryParams.get('page');
+    const sizeParam = queryParams.get('size');
+    const typeParam = queryParams.get('type');
+
+    const page = this.parseNumberParam(pageParam, this.propertiesState.page);
+    const size = this.parseNumberParam(sizeParam, this.propertiesState.size);
+    const type = this.parseTypeParam(typeParam, this.propertiesState.propertyType);
+
+    this.router.navigate(['/properties'], {
+      queryParams: {
+        page,
+        size,
+        type
+      }
+    });
+  }
+
+  private parseNumberParam(value: string | null, fallback: number): number {
+    if (value === null || value === '') {
+      return fallback;
+    }
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : fallback;
+  }
+
+  private parseTypeParam(value: string | null, fallback: PropertyTypeFilter): PropertyTypeFilter {
+    if (value === 'house' || value === 'land') {
+      return value;
+    }
+    return fallback;
   }
 }

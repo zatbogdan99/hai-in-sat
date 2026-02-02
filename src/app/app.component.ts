@@ -131,7 +131,7 @@ export class AppComponent implements OnInit {
         command: () => this.goToUnderTheMountain()
       },
       {
-        label: 'Satul lunii',
+        label: 'Sate în Oltenia de sub Munte',
         icon: 'pi pi-fw pi-home',
         command: () => this.goToVillageOfTheMonth()
       },

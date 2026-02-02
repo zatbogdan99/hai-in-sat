@@ -5,6 +5,7 @@ import { NEVER } from 'rxjs';
 
 import { PropertyFormServiceService } from '../service/property-form-service/property-form-service.service';
 import { LoadingService } from '../service/loading-service/loading-service.service';
+import { PropertiesStateService } from '../service/properties-state-service/properties-state.service';
 import { PropertyDetailsComponent } from './property-details.component';
 
 describe('PropertyDetailsComponent', () => {
@@ -16,6 +17,7 @@ describe('PropertyDetailsComponent', () => {
       imports: [PropertyDetailsComponent, RouterTestingModule],
       providers: [
         LoadingService,
+        PropertiesStateService,
         {
           provide: ActivatedRoute,
           useValue: {

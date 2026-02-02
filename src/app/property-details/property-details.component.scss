@@ -125,8 +125,54 @@
   }
 }
 
+.property-description {
+  white-space: pre-wrap;
+  tab-size: 4;
+  overflow-wrap: anywhere;
+}
+
 .back-button {
   display: flex;
   align-items: center;
+}
+
+.back-button--mobile {
+  display: none;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+@media (max-width: 56.25rem) {
+  .property-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .back-button {
+    order: -1;
+  }
+
+  .back-button--header {
+    display: none;
+  }
+
+  .back-button--mobile {
+    display: flex;
+  }
+
+  .carousel-wrapper {
+    height: min(70vw, 360px);
+    max-width: 100%;
+  }
+
+  .carousel-controls {
+    max-width: 100%;
+  }
+
+  .gsap-carousel-slide img {
+    object-fit: cover;
+  }
 }
 

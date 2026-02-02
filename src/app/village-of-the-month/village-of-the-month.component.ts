@@ -211,11 +211,7 @@ export class VillageOfTheMonthComponent implements OnInit {
   }
 
   getMonthLabelByVillage(id: number | null): string {
-    if (id === 0) return 'iulie';
-    if (id === 2) return 'august';
-    if (id === 1) return 'septembrie';
     if (id === null || id === undefined) return '';
-    // Fallback to village title if an unexpected id appears
     return this.data[id]?.title ?? '';
   }
 }

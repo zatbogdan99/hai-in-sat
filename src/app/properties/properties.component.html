@@ -101,10 +101,10 @@
             <img src="assets/tiktok.png" alt="Tiktok" />
             <span>Tiktok</span>
           </a>
-          <div class="contact-item">
-            <img src="assets/wapp.png" alt="WhatsApp" />
+          <a class="contact-item" href="tel:+40728140650" (click)="callPhone($event)">
+            <img src="assets/phone.png" alt="Telefon" />
             <span>0728140650</span>
-          </div>
+          </a>
           <div class="contact-item">
             <img src="assets/envelope-solid.svg" alt="Email" />
             <span>contact&#64;hai-în-sat.ro</span>
@@ -151,7 +151,7 @@
           <div class="property-list-content">
             <h2>{{ truncate(property.name, 40) }}</h2>
             <p>{{ truncate(property.description, 50) }}</p>
-            <p-button label="Detalii" (click)="viewPropertyDetails(property)"></p-button>
+            <p-button severity="info" label="Detalii" (click)="viewPropertyDetails(property)"></p-button>
           </div>
         </div>
       </div>
@@ -163,7 +163,7 @@
           <img [src]="property.thumbnail" [alt]="property.name" />
           <h2>{{ truncate(property.name, 40) }}</h2>
           <p>{{ truncate(property.description, 50) }}</p>
-          <p-button label="Detalii" (click)="viewPropertyDetails(property)"></p-button>
+          <p-button severity="info" label="Detalii" (click)="viewPropertyDetails(property)"></p-button>
         </div>
       </div>
     </ng-template>
