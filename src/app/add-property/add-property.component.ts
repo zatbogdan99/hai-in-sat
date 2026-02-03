@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PropertyTypeStore } from '../service/property-type.store';
@@ -12,35 +12,90 @@ import { FloatLabel } from 'primeng/floatlabel';
 import { PropertyFormServiceService } from '../service/property-form-service/property-form-service.service';
 import {Textarea} from "primeng/textarea";
 import { PhotoAdminService, ReplacePhotosRequest } from '../service/photo-admin.service';
+import { MessageService } from 'primeng/api';
+import { LoadingService } from '../service/loading-service/loading-service.service';
+import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { PaginatorModule } from 'primeng/paginator';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-add-property',
   standalone: true,
   templateUrl: './add-property.component.html',
   styleUrls: ['./add-property.component.scss'],
-  imports: [CommonModule, ReactiveFormsModule, InputText, DropdownModule, FileUpload, FloatLabel, ButtonDirective, Textarea]
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    InputText,
+    DropdownModule,
+    FileUpload,
+    FloatLabel,
+    ButtonDirective,
+    Textarea,
+    TableModule,
+    DialogModule,
+    ProgressSpinnerModule,
+    PaginatorModule
+  ]
 })
 export class AddPropertyComponent {
+  @ViewChild('replaceGalleryInput') replaceGalleryInput?: ElementRef<HTMLInputElement>;
+
   PropertyType = PropertyType;
   propertyTypeOptions = [
     { label: 'house', value: PropertyType.HOUSE },
     { label: 'land', value: PropertyType.LAND }
   ];
 
+  mainPhotoPreviewUrl: string | null = null;
+  galleryPreviewUrls: string[] = [];
+
+  properties: PropertyDTO[] = [];
+  totalRecords = 0;
+  pageSize = 20;
+  currentPage = 0;
+  showPropertiesTable = false;
+
+  replaceDialogVisible = false;
+  replaceGalleryFiles: File[] = [];
+  replacePreviewUrls: string[] = [];
+  selectedReplaceProperty: PropertyDTO | null = null;
+
   constructor(
     public store: PropertyTypeStore,
     private propertyFormService: PropertyFormServiceService,
-    private photoAdminService: PhotoAdminService
+    private photoAdminService: PhotoAdminService,
+    private messageService: MessageService,
+    public loadingService: LoadingService
   ) {}
 
   onUpload(event: any) {
     const file: File | undefined = event?.files?.[0];
     this.store.setPhoto(file ?? null);
+    this.setMainPhotoPreview(file ?? null);
   }
 
   onUploadGallery(event: any) {
     const files: File[] = event?.files ?? [];
     this.store.setGalleryPhotos(files);
+    this.setGalleryPreviews(files);
+  }
+
+  clearMainPhoto() {
+    this.store.setPhoto(null);
+    this.setMainPhotoPreview(null);
+  }
+
+  removeGalleryPhoto(index: number) {
+    const files = [...this.store.form.controls.photos.value];
+    if (index < 0 || index >= files.length) {
+      return;
+    }
+    files.splice(index, 1);
+    this.store.setGalleryPhotos(files);
+    this.setGalleryPreviews(files);
   }
 
   private fileToBase64(file: File): Promise<string> {
@@ -53,16 +108,19 @@ export class AddPropertyComponent {
   }
 
   async onSave() {
-    console.log('Salvare efectuata cu succes');
-    console.log('form', this.store.form.value);
-
     if (this.store.form.invalid) {
       this.store.form.markAllAsTouched();
-      console.warn('Formular invalid. Verificați câmpurile obligatorii.');
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Formular invalid',
+        detail: 'Verificați câmpurile obligatorii.'
+      });
       return;
     }
 
     const { name, description, type, photo, photos } = this.store.value;
+
+    this.loadingService.loadingOn();
 
     let thumbnail = '';
     if (photo) {
@@ -92,95 +150,293 @@ export class AddPropertyComponent {
 
     this.propertyFormService.saveProperty(payload).subscribe({
       next: (resp) => {
-        console.log('Property saved successfully', resp);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Salvare reușită',
+          detail: 'Proprietatea a fost salvată.'
+        });
+        this.loadingService.loadingOff();
       },
       error: (err) => {
         console.error('Failed to save property', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Eroare',
+          detail: 'Nu s-a putut salva proprietatea.'
+        });
+        this.loadingService.loadingOff();
       }
     });
   }
 
   onShowProperties() {
-    this.propertyFormService.getPropertiesPage(0, 6).subscribe({
-      next: (resp) => {
-        console.log('Properties page fetched successfully:', resp);
-      },
-      error: (err) => {
-        console.error('Failed to fetch properties', err);
-      }
-    });
+    this.loadPropertiesPage(0);
   }
 
-  onDeleteProperty() {
-    const id = this.store.form.controls.propertyId.value;
-    const trimmed = (id ?? '').trim();
+  onPropertiesPageChange(event: any) {
+    const page = event?.page ?? 0;
+    this.loadPropertiesPage(page);
+  }
+
+  onDeleteProperty(property: PropertyDTO) {
+    const trimmed = (property.id ?? '').trim();
     if (!trimmed) {
-      console.warn('Introdu un id de proprietate pentru ștergere.');
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Lipsă ID',
+        detail: 'Nu am găsit ID-ul proprietății pentru ștergere.'
+      });
       return;
     }
     this.propertyFormService.deleteProperty(trimmed).subscribe({
       next: () => {
-        console.log('Proprietate ștearsă cu succes');
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Șters',
+          detail: 'Proprietatea a fost ștearsă.'
+        });
+        this.loadPropertiesPage(this.currentPage);
       },
       error: (err) => {
         console.error('Eroare la ștergerea proprietății', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Eroare',
+          detail: 'Nu s-a putut șterge proprietatea.'
+        });
       }
     });
   }
 
-  private async assetToBase64(assetPath: string): Promise<string> {
-    const response = await fetch(encodeURI(assetPath));
-    if (!response.ok) {
-      throw new Error(`Nu s-a putut încărca asset-ul: ${assetPath}`);
+  movePropertyUp(index: number) {
+    if (index <= 0 || index >= this.properties.length) {
+      return;
     }
-    const blob = await response.blob();
-    return await new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (e) => reject(e);
-      reader.readAsDataURL(blob);
-    });
+    this.swapProperties(index, index - 1);
   }
 
-  async onReplacePhotos() {
+  movePropertyDown(index: number) {
+    if (index < 0 || index >= this.properties.length - 1) {
+      return;
+    }
+    this.swapProperties(index, index + 1);
+  }
+
+  openReplacePhotos(property: PropertyDTO) {
+    this.selectedReplaceProperty = property;
+    this.replaceGalleryInput?.nativeElement.click();
+  }
+
+  onReplaceGallerySelected(event: Event) {
+    const input = event.target as HTMLInputElement | null;
+    const files = input?.files ? Array.from(input.files) : [];
+    if (!files.length) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Nicio poză selectată',
+        detail: 'Selectează cel puțin o poză pentru înlocuire.'
+      });
+      if (input) {
+        input.value = '';
+      }
+      return;
+    }
+    this.replaceGalleryFiles = files;
+    this.setReplacePreviews(files);
+    this.replaceDialogVisible = true;
+  }
+
+  async confirmReplacePhotos() {
+    if (!this.selectedReplaceProperty?.id) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Lipsă proprietate',
+        detail: 'Nu este selectată nicio proprietate.'
+      });
+      return;
+    }
+    if (!this.replaceGalleryFiles.length) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Nicio poză selectată',
+        detail: 'Selectează poze înainte de a confirma.'
+      });
+      return;
+    }
+
     try {
-      const propertyId = '126495e7-a342-4868-8783-cc6f0a0a0dd7';
-      // Thumbnail
-      const thumbnailPath = 'assets/HOREZU parc avif/horezu1.avif';
-      const thumbnailBase64 = await this.assetToBase64(thumbnailPath);
-
-      // Lista de poze din folder (toate .avif cunoscute)
-      const galleryPaths: string[] = [
-        'assets/HOREZU parc avif/horezu1.avif',
-        'assets/HOREZU parc avif/horezu2.avif',
-        'assets/HOREZU parc avif/horezu3.avif',
-        'assets/HOREZU parc avif/horezu4.avif',
-        'assets/HOREZU parc avif/horezu5.avif',
-        'assets/HOREZU parc avif/horesu6.avif'
-      ];
-      const photosBase64: string[] = await Promise.all(
-        galleryPaths.map((p) => this.assetToBase64(p))
+      const photosBase64 = await Promise.all(
+        this.replaceGalleryFiles.map((file) => this.fileToBase64(file))
       );
-
       const payload: ReplacePhotosRequest = {
-        propertyId,
-        thumbnail: thumbnailBase64,
+        propertyId: this.selectedReplaceProperty.id,
+        thumbnail: photosBase64[0],
         photos: photosBase64
       };
-
       this.photoAdminService.replacePhotos(payload).subscribe({
-        next: () => console.log('Pozele au fost înlocuite cu succes. -> HOREZU parc'),
-        error: (err) => console.error('Eroare la înlocuirea pozelor:', err)
+        next: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Poze înlocuite',
+            detail: 'Pozele au fost actualizate.'
+          });
+          this.closeReplaceDialog();
+        },
+        error: (err) => {
+          console.error('Eroare la înlocuirea pozelor:', err);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Eroare',
+            detail: 'Nu s-au putut înlocui pozele.'
+          });
+        }
       });
     } catch (e) {
       console.error('Eroare la pregătirea pozelor pentru înlocuire:', e);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Eroare',
+        detail: 'Nu s-au putut procesa pozele selectate.'
+      });
     }
+  }
+
+  closeReplaceDialog() {
+    this.replaceDialogVisible = false;
+    this.clearReplaceSelection();
   }
 
   onDeleteAllPhotos() {
     this.photoAdminService.deleteAllPhotos().subscribe({
-      next: () => console.log('Toate pozele au fost șterse.'),
-      error: (err) => console.error('Eroare la ștergerea tuturor pozelor:', err)
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Poze șterse',
+          detail: 'Toate pozele au fost șterse.'
+        });
+      },
+      error: (err) => {
+        console.error('Eroare la ștergerea tuturor pozelor:', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Eroare',
+          detail: 'Nu s-au putut șterge toate pozele.'
+        });
+      }
     });
+  }
+
+  private loadPropertiesPage(page: number) {
+    this.loadingService.loadingOn();
+    this.propertyFormService.getPropertiesPage(page, this.pageSize).subscribe({
+      next: (resp) => {
+        this.currentPage = page;
+        const content = resp?.content ?? [];
+        this.properties = this.sortPropertiesByOrder(content);
+        this.totalRecords = resp?.totalElements ?? this.properties.length;
+        this.showPropertiesTable = true;
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Proprietăți încărcate',
+          detail: 'Lista de proprietăți a fost actualizată.'
+        });
+        this.loadingService.loadingOff();
+      },
+      error: (err) => {
+        console.error('Failed to fetch properties', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Eroare',
+          detail: 'Nu s-au putut încărca proprietățile.'
+        });
+        this.loadingService.loadingOff();
+      }
+    });
+  }
+
+  private sortPropertiesByOrder(properties: PropertyDTO[]): PropertyDTO[] {
+    return [...properties].sort((first, second) => {
+      const firstOrder = first.sortOrder ?? Number.MAX_SAFE_INTEGER;
+      const secondOrder = second.sortOrder ?? Number.MAX_SAFE_INTEGER;
+      if (firstOrder !== secondOrder) {
+        return firstOrder - secondOrder;
+      }
+      return first.name.localeCompare(second.name);
+    });
+  }
+
+  private swapProperties(currentIndex: number, targetIndex: number) {
+    const updated = [...this.properties];
+    [updated[currentIndex], updated[targetIndex]] = [updated[targetIndex], updated[currentIndex]];
+    this.properties = updated;
+    this.updateLocalSortOrders();
+    const changed = [this.properties[currentIndex], this.properties[targetIndex]].filter(Boolean);
+    this.persistSortOrderChanges(changed);
+  }
+
+  private updateLocalSortOrders() {
+    this.properties = this.properties.map((property, index) => ({
+      ...property,
+      sortOrder: index + 1
+    }));
+  }
+
+  private persistSortOrderChanges(properties: PropertyDTO[]) {
+    const updates = properties
+      .filter((property) => property?.id && typeof property.sortOrder === 'number')
+      .map((property) => this.propertyFormService.updateSortOrder(property.id!, property.sortOrder!));
+
+    if (!updates.length) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Lipsă date',
+        detail: 'Nu pot salva ordinea fără ID sau sortOrder.'
+      });
+      return;
+    }
+
+    forkJoin(updates).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Ordine salvată',
+          detail: 'Ordinea a fost actualizată.'
+        });
+      },
+      error: (err) => {
+        console.error('Eroare la salvarea ordinii:', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Eroare',
+          detail: 'Nu s-a putut salva ordinea.'
+        });
+      }
+    });
+  }
+
+  private setMainPhotoPreview(file: File | null) {
+    if (this.mainPhotoPreviewUrl) {
+      URL.revokeObjectURL(this.mainPhotoPreviewUrl);
+    }
+    this.mainPhotoPreviewUrl = file ? URL.createObjectURL(file) : null;
+  }
+
+  private setGalleryPreviews(files: File[]) {
+    this.galleryPreviewUrls.forEach((url) => URL.revokeObjectURL(url));
+    this.galleryPreviewUrls = files.map((file) => URL.createObjectURL(file));
+  }
+
+  private setReplacePreviews(files: File[]) {
+    this.replacePreviewUrls.forEach((url) => URL.revokeObjectURL(url));
+    this.replacePreviewUrls = files.map((file) => URL.createObjectURL(file));
+  }
+
+  private clearReplaceSelection() {
+    this.replaceGalleryFiles = [];
+    this.replacePreviewUrls.forEach((url) => URL.revokeObjectURL(url));
+    this.replacePreviewUrls = [];
+    if (this.replaceGalleryInput?.nativeElement) {
+      this.replaceGalleryInput.nativeElement.value = '';
+    }
   }
 }

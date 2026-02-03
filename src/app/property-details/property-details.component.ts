@@ -10,6 +10,7 @@ import {ProgressSpinner} from "primeng/progressspinner";
 import {Button} from "primeng/button";
 import {YoutubePlayerComponent} from "../youtube-player/youtube-player.component";
 import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
+import {PhoneLinkPipe} from "../pipes/phone-link.pipe";
 
 @Component({
   selector: 'app-property-details',
@@ -20,7 +21,8 @@ import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
     YoutubePlayerComponent,
     NgIf,
     AsyncPipe,
-    NgForOf
+    NgForOf,
+    PhoneLinkPipe
   ],
   styleUrls: ['./property-details.component.scss']
 })

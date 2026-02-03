@@ -19,9 +19,11 @@ export class PropertyFormServiceService {
   // private deletePropertyUrl = 'https://hai-in-sat-api.lm.r.appspot.com/delete-property';
   private getAllPropertiesUrl = 'https://hai-in-sat-api.lm.r.appspot.com/get-all-properties';
   private getPropertyByIdUrl = 'https://hai-in-sat-api.lm.r.appspot.com/get-by-id';
+  private updateSortOrderBaseUrl = 'https://hai-in-sat-api.lm.r.appspot.com/properties';
 
   private savePropertyUrl = 'http://localhost:8080/save-property';
   private deletePropertyUrl = 'http://localhost:8080/delete-property';
+  private updateSortOrderBaseLocalUrl = 'http://localhost:8080/properties';
 
   //Astea pe mediu
   // private getAllPropertiesUrl = 'http://localhost:8080/get-all-properties';
@@ -39,6 +41,22 @@ export class PropertyFormServiceService {
       })
     };
     return this.http.post(this.savePropertyUrl, formData, httpOptions);
+  }
+
+  updateSortOrder(id: string, sortOrder: number): Observable<void> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'
+      })
+    };
+    return this.http.patch<void>(
+      `${this.updateSortOrderBaseLocalUrl}/${encodeURIComponent(id)}/sort-order`,
+      { sortOrder },
+      httpOptions
+    );
   }
 
   // Legacy method: now returns the first page (backend defaults to size=6)

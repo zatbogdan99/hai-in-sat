@@ -8,7 +8,6 @@ export interface AddPropertyFormValue {
   type: PropertyType | null;
   photo: File | null;
   photos: File[]; // gallery files
-  propertyId: string; // for delete action
 }
 
 @Injectable({ providedIn: 'root' })
@@ -19,14 +18,12 @@ export class PropertyTypeStore {
     type: FormControl<PropertyType | null>;
     photo: FormControl<File | null>;
     photos: FormControl<File[]>;
-    propertyId: FormControl<string>;
   }> = new FormGroup({
     name: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
     description: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
     type: new FormControl<PropertyType | null>(null, { validators: [Validators.required] }),
     photo: new FormControl<File | null>(null),
-    photos: new FormControl<File[]>([], { nonNullable: true }),
-    propertyId: new FormControl<string>('', { nonNullable: true })
+    photos: new FormControl<File[]>([], { nonNullable: true })
   });
 
   setPhoto(file: File | null) {

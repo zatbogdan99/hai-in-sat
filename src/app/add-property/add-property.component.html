@@ -1,4 +1,8 @@
 <div class="add-property-container">
+  <div *ngIf="loadingService.loading$ | async" class="spinner-container">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+
   <h2>Adaugă proprietate</h2>
 
   <form [formGroup]="store.form" class="form-grid">
@@ -18,12 +22,14 @@
 
     <div class="form-field">
       <p-float-label>
-        <p-dropdown id="type"
-                    [options]="propertyTypeOptions"
-                    optionLabel="label"
-                    optionValue="value"
-                    formControlName="type"
-                    inputId="type"></p-dropdown>
+        <p-dropdown
+          id="type"
+          class="type-dropdown"
+          [options]="propertyTypeOptions"
+          optionLabel="label"
+          optionValue="value"
+          formControlName="type"
+          inputId="type"></p-dropdown>
         <label for="type">type</label>
       </p-float-label>
     </div>
@@ -49,19 +55,94 @@
       </p-fileupload>
     </div>
 
-    <div class="form-field">
-      <p-float-label>
-        <input pInputText id="propertyId" formControlName="propertyId" />
-        <label for="propertyId">id proprietate</label>
-      </p-float-label>
+    <div class="preview-section" *ngIf="mainPhotoPreviewUrl">
+      <div class="preview-label">Poza principală</div>
+      <div class="preview-item">
+        <img [src]="mainPhotoPreviewUrl" alt="Poza principală" />
+        <button type="button" class="remove-button" (click)="clearMainPhoto()">X</button>
+      </div>
+    </div>
+
+    <div class="preview-section" *ngIf="galleryPreviewUrls.length">
+      <div class="preview-label">Galerie</div>
+      <div class="preview-grid">
+        <div class="preview-item" *ngFor="let url of galleryPreviewUrls; let i = index">
+          <img [src]="url" alt="Poză galerie" />
+          <button type="button" class="remove-button" (click)="removeGalleryPhoto(i)">X</button>
+        </div>
+      </div>
     </div>
 
     <div class="actions">
       <button pButton type="button" label="Save" (click)="onSave()"></button>
       <button pButton type="button" label="Show properties" class="p-button-secondary" (click)="onShowProperties()"></button>
-      <button pButton type="button" label="Sterge casa/teren" class="p-button-danger" (click)="onDeleteProperty()"></button>
-      <button pButton type="button" label="Inlocuiește pozele" class="p-button-help" (click)="onReplacePhotos()"></button>
       <button pButton type="button" label="Șterge toate pozele" class="p-button-danger" (click)="onDeleteAllPhotos()"></button>
     </div>
   </form>
+
+  <input
+    #replaceGalleryInput
+    type="file"
+    accept="image/*"
+    multiple
+    class="hidden-input"
+    (change)="onReplaceGallerySelected($event)" />
+
+  <div class="properties-section" *ngIf="showPropertiesTable">
+    <h3>Proprietăți</h3>
+    <p-table [value]="properties" [tableStyle]="{ 'min-width': '60rem' }">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Ordine</th>
+          <th>Nume</th>
+          <th>Descriere</th>
+          <th>Tip</th>
+          <th>Acțiuni</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-property let-rowIndex="rowIndex">
+        <tr>
+          <td>{{ property.sortOrder ?? '-' }}</td>
+          <td>{{ property.name }}</td>
+          <td>{{ property.description }}</td>
+          <td>{{ property.type }}</td>
+          <td class="actions-cell">
+            <button pButton type="button" label="Muta sus" class="p-button-secondary" (click)="movePropertyUp(rowIndex)" [disabled]="rowIndex === 0"></button>
+            <button pButton type="button" label="Muta jos" class="p-button-secondary" (click)="movePropertyDown(rowIndex)" [disabled]="rowIndex === properties.length - 1"></button>
+            <button pButton type="button" label="Sterge casa/teren" class="p-button-danger" (click)="onDeleteProperty(property)"></button>
+            <button pButton type="button" label="Inlocuieste pozele" class="p-button-help" (click)="openReplacePhotos(property)"></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <p-paginator
+      [rows]="pageSize"
+      [totalRecords]="totalRecords"
+      [first]="currentPage * pageSize"
+      (onPageChange)="onPropertiesPageChange($event)">
+    </p-paginator>
+  </div>
+
+  <p-dialog
+    header="Înlocuire poze"
+    [modal]="true"
+    [(visible)]="replaceDialogVisible"
+    [style]="{ width: '45rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+    <p class="dialog-text">
+      Sunteți sigur că vreți să înlocuiți pozele proprietății
+      <b>{{ selectedReplaceProperty?.name || selectedReplaceProperty?.id }}</b>
+      cu cele selectate?
+    </p>
+    <div class="preview-grid" *ngIf="replacePreviewUrls.length">
+      <div class="preview-item" *ngFor="let url of replacePreviewUrls">
+        <img [src]="url" alt="Poză selectată" />
+      </div>
+    </div>
+    <div class="dialog-actions">
+      <button pButton type="button" label="Da" (click)="confirmReplacePhotos()"></button>
+      <button pButton type="button" label="Renunță" class="p-button-secondary" (click)="closeReplaceDialog()"></button>
+    </div>
+  </p-dialog>
 </div>

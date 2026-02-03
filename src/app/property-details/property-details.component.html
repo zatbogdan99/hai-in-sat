@@ -9,7 +9,7 @@
         <span>Hai în sat</span>
         <h1>{{ propertyName }}</h1>
         <hr>
-        <p class="property-description">{{ propertyDescription }}</p>
+        <p class="property-description" [innerHTML]="propertyDescription | phoneLink"></p>
       </div>
       <div class="back-button back-button--header">
         <p-button icon="pi pi-arrow-left" label="Înapoi la lista de proprietăți" (onClick)="goBackToProperties()" styleClass="p-button-text"></p-button>

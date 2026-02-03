@@ -132,7 +132,7 @@ export class PropertiesComponent implements OnInit {
   initializeProperties() {
     const cached = this.propertiesState.getCachedPage(this.page, this.size);
     if (cached) {
-      this.properties = cached;
+      this.properties = this.sortPropertiesByOrder(cached);
       this.totalRecords = this.propertiesState.totalRecords || cached.length;
       this.totalPages = this.propertiesState.totalPages || 1;
       this.loadingService.loadingOff();
@@ -144,14 +144,14 @@ export class PropertiesComponent implements OnInit {
       next: (resp) => {
         console.log('Apelul initial (paginat):', resp);
         const content = Array.isArray(resp?.content) ? resp.content : [];
-        this.properties = content;
+        this.properties = this.sortPropertiesByOrder(content);
         this.totalRecords = typeof resp?.totalElements === 'number' ? resp.totalElements : content.length;
         this.totalPages = typeof resp?.totalPages === 'number' ? resp.totalPages : 1;
         this.propertiesState.setPage(this.page);
         this.propertiesState.setSize(this.size);
         this.propertiesState.setTotalRecords(this.totalRecords);
         this.propertiesState.setTotalPages(this.totalPages);
-        this.propertiesState.setCachedPage(this.page, this.size, content);
+        this.propertiesState.setCachedPage(this.page, this.size, this.properties);
         this.loadingService.loadingOff();
       },
       error: (err) => {
@@ -237,6 +237,17 @@ export class PropertiesComponent implements OnInit {
 
   getFilteredProperties() {
     return this.properties.filter(property => property.type === this.propertyType);
+  }
+
+  private sortPropertiesByOrder(properties: PropertyDTO[]): PropertyDTO[] {
+    return [...properties].sort((first, second) => {
+      const firstOrder = first.sortOrder ?? Number.MAX_SAFE_INTEGER;
+      const secondOrder = second.sortOrder ?? Number.MAX_SAFE_INTEGER;
+      if (firstOrder !== secondOrder) {
+        return firstOrder - secondOrder;
+      }
+      return first.name.localeCompare(second.name);
+    });
   }
 
   truncate(text: string, limit: number = 50): string {
