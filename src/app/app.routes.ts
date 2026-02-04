@@ -12,6 +12,8 @@ import { PropertiesComponent } from './properties/properties.component';
 import { PropertyDetailsComponent } from './property-details/property-details.component';
 import { AddPropertyComponent } from './add-property/add-property.component';
 import { NewLandingPageComponent } from './new-landing-page/new-landing-page.component';
+import { LoginComponent } from './login/login.component';
+import { authGuard } from './guards/auth.guard';
 
 export const appRoutes: Routes = [
   { path: 'homes', component: FormPageComponent },
@@ -23,6 +25,7 @@ export const appRoutes: Routes = [
   { path: 'properties', component: PropertiesComponent },
   { path: 'property/:id', component: PropertyDetailsComponent },
   { path: 'village-of-the-month', component: VillageOfTheMonthComponent },
-  { path: 'add-property', component: AddPropertyComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'add-property', component: AddPropertyComponent, canActivate: [authGuard] },
   { path: '**', component: NewLandingPageComponent }
 ];

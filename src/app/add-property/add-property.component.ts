@@ -1,6 +1,8 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Auth, signOut } from '@angular/fire/auth';
 import { PropertyTypeStore } from '../service/property-type.store';
 import { PropertyType } from '../dto/property-type.enum';
 import { PropertyDTO } from '../dto/property.dto';
@@ -68,7 +70,9 @@ export class AddPropertyComponent {
     private propertyFormService: PropertyFormServiceService,
     private photoAdminService: PhotoAdminService,
     private messageService: MessageService,
-    public loadingService: LoadingService
+    public loadingService: LoadingService,
+    private auth: Auth,
+    private router: Router
   ) {}
 
   onUpload(event: any) {
@@ -437,6 +441,29 @@ export class AddPropertyComponent {
     this.replacePreviewUrls = [];
     if (this.replaceGalleryInput?.nativeElement) {
       this.replaceGalleryInput.nativeElement.value = '';
+    }
+  }
+
+  /**
+   * Logout - Deconectează utilizatorul și redirectionează la homepage
+   */
+  async logout() {
+    try {
+      await signOut(this.auth);
+      console.log('[Logout] User signed out successfully');
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Deconectat',
+        detail: 'Ai fost deconectat cu succes.'
+      });
+      this.router.navigate(['/']);
+    } catch (err) {
+      console.error('[Logout] Error signing out:', err);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Eroare',
+        detail: 'Nu s-a putut efectua deconectarea.'
+      });
     }
   }
 }

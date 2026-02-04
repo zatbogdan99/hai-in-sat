@@ -41,6 +41,7 @@
 .features-column {
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   gap: 1rem;
   padding: 1rem 1rem 2rem 1rem;
 }
@@ -363,9 +364,15 @@ img {
   .feature-card {
     width: 100%;
     max-width: 100%;
+    box-sizing: border-box;
   }
   .feature-card .p-card {
     width: 100%;
+    box-sizing: border-box;
+  }
+  :host ::ng-deep .feature-card .p-card .p-card-body {
+    width: 100% !important;
+    box-sizing: border-box;
   }
   .text-style {
     //padding-left: 2rem;

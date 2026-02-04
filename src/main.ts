@@ -1,6 +1,8 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { importProvidersFrom } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http'; // ✅ Importă HttpClientModule
+import { HttpClientModule } from '@angular/common/http';
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { provideAuth, getAuth } from '@angular/fire/auth';
 
 import { appRoutes } from './app/app.routes';
 import { provideRouter, withHashLocation } from '@angular/router';
@@ -11,6 +13,7 @@ import { providePrimeNG } from 'primeng/config';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { AppComponent } from './app/app.component';
 import Lara from '@primeng/themes/lara';
+import { environment } from './environments/environment';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -26,6 +29,9 @@ bootstrapApplication(AppComponent, {
     }),
     provideRouter(appRoutes, withHashLocation()),
     importProvidersFrom(HttpClientModule),
+    // Firebase providers
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideAuth(() => getAuth()),
     MessageService,
     DataService,
     PhotoService
