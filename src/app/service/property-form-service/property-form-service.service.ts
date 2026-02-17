@@ -15,19 +15,17 @@ export interface PageResponse<T> {
   providedIn: 'root'
 })
 export class PropertyFormServiceService {
-  // private savePropertyUrl = 'https://hai-in-sat-api.lm.r.appspot.com/save-property';
-  // private deletePropertyUrl = 'https://hai-in-sat-api.lm.r.appspot.com/delete-property';
+  private savePropertyUrl = 'https://hai-in-sat-api.lm.r.appspot.com/save-property';
+  private deletePropertyUrl = 'https://hai-in-sat-api.lm.r.appspot.com/delete-property';
   private getAllPropertiesUrl = 'https://hai-in-sat-api.lm.r.appspot.com/get-all-properties';
   private getPropertyByIdUrl = 'https://hai-in-sat-api.lm.r.appspot.com/get-by-id';
   private updateSortOrderBaseUrl = 'https://hai-in-sat-api.lm.r.appspot.com/properties';
 
-  private savePropertyUrl = 'http://localhost:8080/save-property';
-  private deletePropertyUrl = 'http://localhost:8080/delete-property';
-  private updateSortOrderBaseLocalUrl = 'http://localhost:8080/properties';
-
-  //Astea pe mediu
+  // private savePropertyUrl = 'http://localhost:8080/save-property';
+  // private deletePropertyUrl = 'http://localhost:8080/delete-property';
   // private getAllPropertiesUrl = 'http://localhost:8080/get-all-properties';
   // private getPropertyByIdUrl = 'http://localhost:8080/get-by-id';
+  // private updateSortOrderBaseUrl = 'http://localhost:8080/properties';
 
   constructor(private http: HttpClient) {}
 
@@ -53,13 +51,12 @@ export class PropertyFormServiceService {
       })
     };
     return this.http.patch<void>(
-      `${this.updateSortOrderBaseLocalUrl}/${encodeURIComponent(id)}/sort-order`,
+      `${this.updateSortOrderBaseUrl}/${encodeURIComponent(id)}/sort-order`,
       { sortOrder },
       httpOptions
     );
   }
 
-  // Legacy method: now returns the first page (backend defaults to size=6)
   getAllProperties(): Observable<PageResponse<PropertyDTO>> {
     return this.http.get<PageResponse<PropertyDTO>>(this.getAllPropertiesUrl);
   }

@@ -136,6 +136,8 @@ export class PropertiesComponent implements OnInit {
       this.totalRecords = this.propertiesState.totalRecords || cached.length;
       this.totalPages = this.propertiesState.totalPages || 1;
       this.loadingService.loadingOff();
+
+      this.prefetchNextPage();
       return;
     }
 
@@ -153,6 +155,8 @@ export class PropertiesComponent implements OnInit {
         this.propertiesState.setTotalPages(this.totalPages);
         this.propertiesState.setCachedPage(this.page, this.size, this.properties);
         this.loadingService.loadingOff();
+
+        this.prefetchNextPage();
       },
       error: (err) => {
         console.error('Failed to fetch properties', err);
@@ -167,7 +171,6 @@ export class PropertiesComponent implements OnInit {
   }
 
   onPageChange(event: any) {
-    // event: { first: number, rows: number, page: number, pageCount: number }
     this.page = event?.page ?? 0;
     if (event?.rows && event.rows !== this.size) {
       this.size = event.rows;
@@ -198,7 +201,6 @@ export class PropertiesComponent implements OnInit {
     this.propertyForm.reset();
     this.displayModal = false;
 
-    // Send DTO to backend service
     this.loadingService.loadingOn();
     this.propertyFormEmailService.sendPropertyForm(dto).subscribe({
       next: () => {
@@ -268,5 +270,30 @@ export class PropertiesComponent implements OnInit {
       return value;
     }
     return fallback;
+  }
+
+  private prefetchNextPage(): void {
+    const nextPage = this.page + 1;
+
+    if (nextPage >= this.totalPages) {
+      return;
+    }
+
+    const cachedNext = this.propertiesState.getCachedPage(nextPage, this.size);
+    if (cachedNext) {
+      return;
+    }
+
+    this.propertyFormService.getPropertiesPage(nextPage, this.size).subscribe({
+      next: (resp) => {
+        const content = Array.isArray(resp?.content) ? resp.content : [];
+        const sorted = this.sortPropertiesByOrder(content);
+        this.propertiesState.setCachedPage(nextPage, this.size, sorted);
+        console.log(`✅ Prefetched page ${nextPage} (${sorted.length} properties)`);
+      },
+      error: (err) => {
+        console.warn(`⚠️ Failed to prefetch page ${nextPage}`, err);
+      }
+    });
   }
 }
