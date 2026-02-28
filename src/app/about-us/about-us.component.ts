@@ -4,6 +4,7 @@ import { faTiktok } from '@fortawesome/free-brands-svg-icons';
 import { faSquareFacebook } from "@fortawesome/free-brands-svg-icons";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { Divider } from 'primeng/divider';
+import { SeoService } from '../service/seo.service';
 
 @Component({
   selector: 'app-about-us',
@@ -17,8 +18,15 @@ export class AboutUsComponent implements OnInit, AfterViewInit{
   faSquareFacebook = faSquareFacebook;
   faInstagram = faInstagram;
 
-  ngOnInit() {
+  constructor(private seo: SeoService) {}
 
+  ngOnInit() {
+    this.seo.updatePageMeta({
+      title: 'Despre noi – Hai în Sat. Misiunea noastră pentru satul românesc',
+      description: 'Hai în Sat conectează oamenii cu viața autentică din Oltenia de sub Munte. Descoperă povestea noastră și cum te putem ajuta să găsești locul ideal la sat.',
+      ogImage: 'https://hai-în-sat.ro/assets/contact.jpg',
+      canonicalPath: '/about-us'
+    });
   }
 
   ngAfterViewInit(): void {

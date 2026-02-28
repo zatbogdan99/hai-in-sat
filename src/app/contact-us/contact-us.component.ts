@@ -3,6 +3,7 @@ import { TweenMax } from 'gsap';
 import {gsap} from "gsap";
 import {TimelineLite} from 'gsap';
 import {Power2} from "gsap";
+import {SeoService} from "../service/seo.service";
 
 @Component({
   selector: 'app-contact-us',
@@ -20,11 +21,17 @@ export class ContactUsComponent implements OnInit{
   tweens = {};
   tween: any;
 
-  constructor() {
+  constructor(private seo: SeoService) {
 
   }
 
   ngOnInit(): void {
+    this.seo.updatePageMeta({
+      title: 'Contact - Hai în Sat. Contactează-ne pentru case și terenuri',
+      description: 'Contactează echipa Hai în Sat pentru informații despre case și terenuri de vânzare în Oltenia de sub Munte. Telefon: 0728140650, email: contact@hai-în-sat.ro.',
+      canonicalPath: '/contact-us'
+    });
+
     const elements = document.querySelectorAll('.text');
 
     elements.forEach(element => {

@@ -147,7 +147,9 @@
     <ng-template #list let-items>
       <div class="property-list">
         <div *ngFor="let property of items; let first = first" class="property-list-item">
-          <img [src]="property.thumbnail" [alt]="property.name" loading="lazy" />
+          <img [src]="property.thumbnail"
+               [alt]="getImageAlt(property)"
+               loading="lazy" />
           <div class="property-list-content">
             <h2>{{ truncate(property.name, 40) }}</h2>
             <p>{{ truncate(property.description, 50) }}</p>
@@ -160,7 +162,9 @@
     <ng-template #grid let-items>
       <div class="property-grid">
         <div *ngFor="let property of items" class="property-card">
-          <img [src]="property.thumbnail" [alt]="property.name" loading="lazy" />
+          <img [src]="property.thumbnail"
+               [alt]="getImageAlt(property)"
+               loading="lazy" />
           <h2>{{ truncate(property.name, 40) }}</h2>
           <p>{{ truncate(property.description, 50) }}</p>
           <p-button severity="info" label="Detalii" (click)="viewPropertyDetails(property)"></p-button>

@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, AfterViewInit, ElementRef, ViewChild, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
 import {gsap} from "gsap";
 import {DataDto} from "../dto/data.dto";
@@ -9,6 +9,7 @@ import {YoutubePlayerComponent} from "../youtube-player/youtube-player.component
 import { NgFor } from '@angular/common';
 import { register } from 'swiper/element/bundle';
 import {PrimeTemplate} from "primeng/api";
+import { SeoService } from "../service/seo.service";
 
 register();
 
@@ -22,7 +23,7 @@ register();
   styleUrls: ['./under-the-mountain.component.scss'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class UnderTheMountainComponent implements AfterViewInit {
+export class UnderTheMountainComponent implements AfterViewInit, OnInit {
 
   currentNum: number = 0;
   maxNum: number = 7;
@@ -33,7 +34,7 @@ export class UnderTheMountainComponent implements AfterViewInit {
   @ViewChild('nextNav') nextNav?: ElementRef<HTMLElement>;
 
 
-  constructor(private router: Router, private service: DataService) {
+  constructor(private router: Router, private service: DataService, private seo: SeoService) {
     let dataDto = new DataDto(
       1,
       "Horezu",
@@ -121,6 +122,15 @@ export class UnderTheMountainComponent implements AfterViewInit {
     this.data.push(dataDto);
   }
 
+  ngOnInit(): void {
+    this.seo.updatePageMeta({
+      title: 'Oltenia de sub Munte – Sate autentice, tradiții și natură',
+      description: 'Descoperă Oltenia de sub Munte: Horezu, Polovragi, Baia de Fier, Vaideeni, Costești, Slătioara, Bărbătești. Sate pitorești, tradiții ancestrale și peisaje montane spectaculoase.',
+      ogImage: 'https://hai-în-sat.ro/assets/poza1_oltenia.jpeg',
+      canonicalPath: '/under-the-mountain'
+    });
+  }
+
   nextButton() {
     this.nextCard();
   }
@@ -135,9 +145,7 @@ export class UnderTheMountainComponent implements AfterViewInit {
     this.router.navigateByUrl("/info-page");
   }
 
-  // Permite activarea navigării cu tasta Space pe card, prevenind scrollul paginii
   onCardKeyDown(event: KeyboardEvent, id: number) {
-    // Activăm doar pentru Space; Enter este legat direct în template
     if (event.code === 'Space' || event.key === ' ') {
       event.preventDefault();
       this.goToVillage(id);

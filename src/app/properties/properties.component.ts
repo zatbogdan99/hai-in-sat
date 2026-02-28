@@ -1,7 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Swiper } from 'swiper';
-import { PhotoService } from "../service/photo-service";
-import { BuyEnum } from "../dto/buy.enum";
 import { LoadingService } from "../service/loading-service/loading-service.service";
 import { GalleriaModule } from "primeng/galleria";
 import { Divider } from "primeng/divider";
@@ -24,6 +21,7 @@ import {PaginatorModule} from "primeng/paginator";
 import { PropertyFormDTO } from "../dto/property-form.dto";
 import { PropertyFormEmailServiceService } from "../service/property-form-email-service/property-form-email-service.service";
 import { PropertiesStateService, PropertyTypeFilter } from "../service/properties-state-service/properties-state.service";
+import { SeoService } from "../service/seo.service";
 
 @Component({
   selector: 'app-properties',
@@ -93,7 +91,8 @@ export class PropertiesComponent implements OnInit {
     private propertyFormService: PropertyFormServiceService,
     private propertyFormEmailService: PropertyFormEmailServiceService,
     private propertiesState: PropertiesStateService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private seo: SeoService
   ) {
     this.propertyForm = this.fb.group({
       firstName: [''],
@@ -109,6 +108,12 @@ export class PropertiesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.seo.updatePageMeta({
+      title: 'Case și terenuri de vânzare în Oltenia de sub Munte',
+      description: 'Explorează proprietăți de vânzare: case tradiționale și terenuri în sate din Oltenia de sub Munte, județul Vâlcea. Prețuri accesibile, locuri autentice.',
+      canonicalPath: '/properties'
+    });
+
     const queryParams = this.route.snapshot.queryParamMap;
     const pageParam = queryParams.get('page');
     const sizeParam = queryParams.get('size');
@@ -255,6 +260,12 @@ export class PropertiesComponent implements OnInit {
   truncate(text: string, limit: number = 50): string {
     if (!text) return '';
     return text.length > limit ? text.slice(0, limit) + '...' : text;
+  }
+
+  getImageAlt(property: PropertyDTO): string {
+    const type = property.type === 'land' ? 'Teren' : 'Casă';
+    const truncatedDesc = this.truncate(property.description, 60);
+    return `${type} de vânzare: ${property.name} - ${truncatedDesc}`;
   }
 
   private parseNumberParam(value: string | null, fallback: number): number {

@@ -32,7 +32,7 @@
             (onItemChange)="onGalleryItemChange($event)"
           >
             <ng-template pTemplate="item" let-item>
-              <img (click)="openFullScreen(activeIndex)" [src]="item.itemImageSrc" style="width: 45rem; height: 33.5rem; cursor: pointer;" />
+              <img (click)="openFullScreen(activeIndex)" [src]="item.itemImageSrc" [alt]="item.alt || data[villageId].title" style="width: 45rem; height: 33.5rem; cursor: pointer;" />
             </ng-template>
           </p-galleria>
         </div>
@@ -62,7 +62,7 @@
       <div class="polovragi-section">
         <div class="polovragi-row">
           @if (getPolovragiSecondImage()) {
-            <img class="polovragi-image polovragi-image--float" [src]="getPolovragiSecondImage()" alt="Polovragi" />
+            <img class="polovragi-image polovragi-image--float" [src]="getPolovragiSecondImage()" alt="Peisaj din zona Polovragi - Oltenia de sub Munte" />
           }
           <div class="polovragi-left">
             <p class="m-0 text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
@@ -77,7 +77,7 @@
         <div class="polovragi-section baia-section">
           <div class="polovragi-row">
             @if (getBaiaSecondImage()) {
-              <img class="polovragi-image polovragi-image--float" [src]="getBaiaSecondImage()" alt="Baia de Fier" />
+              <img class="polovragi-image polovragi-image--float" [src]="getBaiaSecondImage()" alt="Peisaj din zona Baia de Fier - Oltenia de sub Munte" />
             }
             <div class="polovragi-left">
               <p class="m-0 text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
@@ -90,7 +90,7 @@
         <div class="polovragi-section vaideeni-section">
           <div class="polovragi-row">
             @if (getVaideeniSecondImage()) {
-              <img class="polovragi-image polovragi-image--float" [src]="getVaideeniSecondImage()" alt="Vaideeni" />
+              <img class="polovragi-image polovragi-image--float" [src]="getVaideeniSecondImage()" alt="Peisaj din zona Vaideeni - Oltenia de sub Munte" />
             }
             <div class="polovragi-left">
               <p class="m-0 text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
@@ -103,7 +103,7 @@
         <div class="polovragi-section slatioara-section">
           <div class="polovragi-row">
             @if (getSlatioaraSecondImage()) {
-              <img class="polovragi-image polovragi-image--float" [src]="getSlatioaraSecondImage()" alt="Slătioara" />
+              <img class="polovragi-image polovragi-image--float" [src]="getSlatioaraSecondImage()" alt="Peisaj din zona Slătioara - Oltenia de sub Munte" />
             }
             <div class="polovragi-left">
               <p class="m-0 text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
@@ -116,7 +116,7 @@
         <div class="polovragi-section costesti-section">
           <div class="polovragi-row">
             @if (getCostestiSecondImage()) {
-              <img class="polovragi-image polovragi-image--float" [src]="getCostestiSecondImage()" alt="Costești" />
+              <img class="polovragi-image polovragi-image--float" [src]="getCostestiSecondImage()" alt="Peisaj din zona Costești - Oltenia de sub Munte" />
             }
             <div class="polovragi-left">
               <p class="m-0 text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
@@ -129,7 +129,7 @@
         <div class="polovragi-section barbatesti-section">
           <div class="polovragi-row">
             @if (getBarbatestiSecondImage()) {
-              <img class="polovragi-image polovragi-image--float" [src]="getBarbatestiSecondImage()" alt="Bărbătești" />
+              <img class="polovragi-image polovragi-image--float" [src]="getBarbatestiSecondImage()" alt="Peisaj din zona Bărbătești - Oltenia de sub Munte" />
             }
             <div class="polovragi-left">
               <div class="header-wrap">
@@ -144,7 +144,7 @@
           <div class="horezu-section">
             <div class="horezu-row">
               @if (getHorezuSecondImage()) {
-                <img class="horezu-image horezu-image--float" [src]="getHorezuSecondImage()" alt="Horezu" />
+                <img class="horezu-image horezu-image--float" [src]="getHorezuSecondImage()" alt="Ceramică tradițională Horezu - Patrimoniu UNESCO" />
               }
               <div class="horezu-left">
                 <h1 class="horezu-title">Ceramica Horezu</h1>
@@ -251,7 +251,7 @@
           (onItemChange)="onGalleryItemChange($event)"
         >
         <ng-template pTemplate="item" let-item>
-          <img (click)="openFullScreen(activeIndex)" [src]="item.itemImageSrc" style="width: 18rem; height: 18rem; cursor: pointer;" />
+          <img (click)="openFullScreen(activeIndex)" [src]="item.itemImageSrc" [alt]="item.alt || data[villageId].title" style="width: 18rem; height: 18rem; cursor: pointer;" />
         </ng-template>
       </p-galleria>
       </div>
@@ -330,6 +330,6 @@
   [activeIndex]="activeIndex"
 >
   <ng-template pTemplate="item" let-item>
-    <img [src]="item.itemImageSrc" style="width: 100%; height: auto; display: block;" />
+    <img [src]="item.itemImageSrc" [alt]="item.alt || data[villageId].title" style="width: 100%; height: auto; display: block;" />
   </ng-template>
 </p-galleria>

@@ -1,6 +1,5 @@
 // src/app/app.routes.ts
 import { Routes } from '@angular/router';
-import { LandingPageComponent } from './landing-page/landing-page.component';
 import { FormPageComponent } from './home-form-page/form-page.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { InfoPageComponent } from './info-page/info-page.component';

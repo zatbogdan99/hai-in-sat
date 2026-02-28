@@ -11,6 +11,7 @@ import {Button} from "primeng/button";
 import {YoutubePlayerComponent} from "../youtube-player/youtube-player.component";
 import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
 import {PhoneLinkPipe} from "../pipes/phone-link.pipe";
+import {SeoService} from "../service/seo.service";
 
 @Component({
   selector: 'app-property-details',
@@ -40,7 +41,8 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
     private router: Router,
     private propertyService: PropertyFormServiceService,
     public loadingService: LoadingService,
-    private propertiesState: PropertiesStateService
+    private propertiesState: PropertiesStateService,
+    private seo: SeoService
   ) {}
 
   ngOnInit(): void {
@@ -69,12 +71,27 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
         this.propertyName = prop.name;
         this.propertyDescription = prop.description;
 
+        const propertyTypeLabel = prop.type === 'land' ? 'Teren' : 'Casă';
+        this.seo.updatePageMeta({
+          title: `${propertyTypeLabel} de vânzare: ${prop.name} | Hai în Sat`,
+          description: `${propertyTypeLabel} de vânzare în Oltenia de sub Munte: ${prop.name}. ${(prop.description || '').replace(/<[^>]*>/g, '').substring(0, 150)}`,
+          ogImage: prop.thumbnail || (prop.photos && prop.photos.length ? prop.photos[0] : undefined),
+          canonicalPath: `/property/${this.propertyId}`
+        });
+
         const imgs: any[] = [];
+        const propertyType = prop.type === 'land' ? 'Teren' : 'Casă';
         if (prop.photos && prop.photos.length) {
-          prop.photos.forEach((src, idx) => imgs.push({ itemImageSrc: src, alt: `${prop.name} ${idx + 1}` }));
+          prop.photos.forEach((src, idx) => imgs.push({
+            itemImageSrc: src,
+            alt: `${propertyType}: ${prop.name} - Imagine ${idx + 1}`
+          }));
         }
         if (!imgs.length && prop.thumbnail) {
-          imgs.push({ itemImageSrc: prop.thumbnail, alt: prop.name });
+          imgs.push({
+            itemImageSrc: prop.thumbnail,
+            alt: `${propertyType} de vânzare: ${prop.name}`
+          });
         }
         this.images = imgs;
 

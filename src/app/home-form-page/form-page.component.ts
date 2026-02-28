@@ -18,6 +18,7 @@ import {FloatLabel} from "primeng/floatlabel";
 import {RadioButton} from "primeng/radiobutton";
 import { PropertyType } from "../dto/property-type.enum";
 import { DataService } from "../service/data-service";
+import { SeoService } from "../service/seo.service";
 
 @Component({
   selector: 'app-form-page',
@@ -52,10 +53,17 @@ export class FormPageComponent implements OnInit, AfterViewInit{
               private homeFormService: HomeFormServiceService,
               public loadingService: LoadingService,
               private formBuilder: FormBuilder,
-              private dataService: DataService) {
+              private dataService: DataService,
+              private seo: SeoService) {
   }
 
   ngOnInit(): void {
+    this.seo.updatePageMeta({
+      title: 'Găsește-ți casa sau terenul ideal în Oltenia de sub Munte',
+      description: 'Completează formularul și echipa noastră te ajută să găsești casa tradițională sau terenul perfect în sate din Oltenia de sub Munte, județul Vâlcea.',
+      canonicalPath: '/homes'
+    });
+
     this.formGroup = this.formBuilder.group(
       {
         name: ['', Validators.required],

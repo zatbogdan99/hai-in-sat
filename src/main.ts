@@ -5,7 +5,7 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 
 import { appRoutes } from './app/app.routes';
-import { provideRouter, withHashLocation } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { PhotoService } from './app/service/photo-service';
 import { DataService } from './app/service/data-service';
 import { MessageService } from 'primeng/api';
@@ -27,7 +27,7 @@ bootstrapApplication(AppComponent, {
         }
       }
     }),
-    provideRouter(appRoutes, withHashLocation()),
+    provideRouter(appRoutes),
     importProvidersFrom(HttpClientModule),
     // Firebase providers
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
@@ -37,3 +37,4 @@ bootstrapApplication(AppComponent, {
     PhotoService
   ]
 });
+

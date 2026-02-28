@@ -14,6 +14,7 @@ import {VgOverlayPlayModule} from "@videogular/ngx-videogular/overlay-play";
 import {ProgressSpinner} from "primeng/progressspinner";
 import {AsyncPipe, NgIf, NgStyle} from "@angular/common";
 import {Divider} from "primeng/divider";
+import {SeoService} from "../service/seo.service";
 
 @Component({
   selector: 'app-village-of-the-month',
@@ -61,7 +62,8 @@ export class VillageOfTheMonthComponent implements OnInit {
 
 
   constructor(private photoService: PhotoService,
-              public loadingService: LoadingService) {
+              public loadingService: LoadingService,
+              private seo: SeoService) {
     this.checkScreenSize();
 
     this.photoService.getHorezuImages().then((images) => {
@@ -124,7 +126,12 @@ export class VillageOfTheMonthComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.loadingService.loadingOn();
+    this.seo.updatePageMeta({
+      title: `Satul ${this.data[this.villageId].title} – Sate în Oltenia de sub Munte | Hai în Sat`,
+      description: `Descoperă satul ${this.data[this.villageId].title} din Oltenia de sub Munte. Locuri care spun povești, tradiții autentice și peisaje montane spectaculoase în județul Vâlcea.`,
+      canonicalPath: '/village-of-the-month'
+    });
+
     gsap.registerPlugin(ScrollTrigger);
 
     let revealContainers = document.querySelectorAll(".reveal");
@@ -163,7 +170,6 @@ export class VillageOfTheMonthComponent implements OnInit {
       }
     ];
 
-    // Ensure neighbors are in sync on init
     this.updateNeighbors();
   }
 

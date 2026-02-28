@@ -1,21 +1,108 @@
 <!doctype html>
-<html lang="en" style="color-scheme: light; background-color: #ffffff;">
+<html lang="ro" style="color-scheme: light; background-color: #ffffff;">
 <head>
   <meta charset="utf-8">
-  <title>Hai în sat</title>
+  <title>Hai în Sat – Case și terenuri de vânzare în Oltenia de sub Munte</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Descoperă viața autentică din Oltenia de sub Munte. Terenuri și case în locuri unde munții întâlnesc satul, iar timpul curge mai încet.">
-  <!-- Force light color scheme across browsers (including Safari) -->
+  <meta name="author" content="S.C. CORUXMAN IMPEX S.R.L.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://hai-în-sat.ro/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://hai-în-sat.ro/">
+  <meta property="og:title" content="Hai în Sat – Case și terenuri de vânzare în Oltenia de sub Munte">
+  <meta property="og:description" content="Descoperă case și terenuri de vânzare în Oltenia de sub Munte, județul Vâlcea. Proprietăți în sate autentice: Horezu, Polovragi, Costești, Vaideeni.">
+  <meta property="og:image" content="https://hai-în-sat.ro/assets/poza_landing1.jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="ro_RO">
+  <meta property="og:site_name" content="Hai în Sat">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Hai în Sat – Case și terenuri de vânzare în Oltenia de sub Munte">
+  <meta name="twitter:description" content="Descoperă case și terenuri de vânzare în Oltenia de sub Munte, județul Vâlcea. Proprietăți în sate autentice.">
+  <meta name="twitter:image" content="https://hai-în-sat.ro/assets/poza_landing1.jpeg">
+
+  <meta name="geo.region" content="RO-VL">
+  <meta name="geo.placename" content="Horezu, Vâlcea">
+  <meta name="geo.position" content="45.1472;24.0033">
+  <meta name="ICBM" content="45.1472, 24.0033">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "RealEstateAgent",
+    "name": "Hai în Sat",
+    "url": "https://hai-în-sat.ro",
+    "logo": "https://hai-în-sat.ro/assets/Hai%20in%20sat.png",
+    "image": "https://hai-în-sat.ro/assets/poza_landing1.jpeg",
+    "description": "Descoperă case și terenuri de vânzare în Oltenia de sub Munte, județul Vâlcea. Proprietăți în sate autentice românești.",
+    "telephone": "+40728140650",
+    "email": "contact@hai-în-sat.ro",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Str. Tudor Vladimirescu",
+      "addressLocality": "Horezu",
+      "addressRegion": "Vâlcea",
+      "addressCountry": "RO"
+    },
+    "areaServed": [
+      {
+        "@type": "Place",
+        "name": "Oltenia de sub Munte, Vâlcea",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 45.1472,
+          "longitude": 24.0033
+        }
+      },
+      {
+        "@type": "Place",
+        "name": "București",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 44.4268,
+          "longitude": 26.1025
+        }
+      },
+      {
+        "@type": "Place",
+        "name": "România"
+      }
+    ],
+    "sameAs": [
+      "https://www.facebook.com/profile.php?id=61560478122728",
+      "https://www.instagram.com/hai.in.sat",
+      "https://www.tiktok.com/@hai.in.sat"
+    ],
+    "priceRange": "€€"
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Hai în Sat",
+    "url": "https://hai-în-sat.ro",
+    "description": "Platformă de case și terenuri de vânzare în Oltenia de sub Munte, județul Vâlcea",
+    "inLanguage": "ro",
+    "publisher": {
+      "@type": "Organization",
+      "name": "S.C. CORUXMAN IMPEX S.R.L.",
+      "url": "https://hai-în-sat.ro"
+    }
+  }
+  </script>
+
   <meta name="color-scheme" content="light">
   <meta name="supported-color-schemes" content="light">
   <meta name="theme-color" content="#ffffff">
-  <!-- iOS Safari: status bar in light/default (PWA context) -->
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <!-- Hint for Dark Reader extension (Safari iOS/macOS supports extensions) -->
   <meta name="darkreader-lock">
-  <!-- Force light immediately (prevents iOS Safari auto-darkening before CSS loads) -->
   <style id="force-light-scheme">
     :root, html, body {
       color-scheme: light !important;
@@ -27,15 +114,12 @@
     }
   </style>
   <script>
-    // Reinforce light scheme as early as possible
     (function() {
       try {
         var de = document.documentElement;
         var bd = document.body || null;
-        // Force light scheme on the root element
         de.style.colorScheme = 'light';
         de.style.backgroundColor = '#ffffff';
-        // Remove any dark theme classes/attributes that might be injected by libraries or extensions
         de.classList.remove('dark');
         de.setAttribute('data-theme', 'light');
         if (bd) {
@@ -45,7 +129,6 @@
           bd.setAttribute('data-theme', 'light');
         }
 
-        // Ensure meta declarations exist and are set to light
         var m1 = document.querySelector('meta[name="color-scheme"]');
         if (!m1) { m1 = document.createElement('meta'); m1.setAttribute('name', 'color-scheme'); document.head.appendChild(m1); }
         m1.setAttribute('content', 'light');
@@ -54,7 +137,6 @@
         if (!m2) { m2 = document.createElement('meta'); m2.setAttribute('name', 'supported-color-schemes'); document.head.appendChild(m2); }
         m2.setAttribute('content', 'light');
 
-        // Runtime guard: keep forcing light when OS theme changes (Safari/macOS)
         if (typeof window !== 'undefined' && 'matchMedia' in window) {
           var mql = window.matchMedia('(prefers-color-scheme: dark)');
           var enforceLight = function() {
@@ -74,7 +156,6 @@
             } catch (e2) { /* no-op */ }
           };
 
-          // Apply immediately and on any future changes to OS theme
           enforceLight();
           if (mql && typeof mql.addEventListener === 'function') {
             mql.addEventListener('change', enforceLight);
@@ -92,6 +173,15 @@
   <link rel="icon" type="image/x-icon" href="assets/favicon.png">
 </head>
 <body>
+  <script>
+    (function() {
+      var hash = window.location.hash;
+      if (hash && hash.indexOf('#/') === 0) {
+        var newPath = hash.substring(1);
+        window.location.replace(window.location.origin + newPath);
+      }
+    })();
+  </script>
   <app-root></app-root>
   <script src="https://www.youtube.com/iframe_api"></script>
 </body>

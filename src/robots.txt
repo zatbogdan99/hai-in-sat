@@ -1,0 +1,16 @@
+# robots.txt - Hai în Sat
+# https://hai-în-sat.ro
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://hai-în-sat.ro/sitemap.xml
+
+# Disallow admin/login pages
+Disallow: /login
+Disallow: /add-property
+
+# Allow all crawlers to access assets
+Allow: /assets/
+
