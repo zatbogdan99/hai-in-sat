@@ -6,9 +6,11 @@ env_variables:
   BUCKET_NAME: "hai-in-sat-bucket"
 
 handlers:
+  # Fișiere statice din /assets
   - url: /assets
     static_dir: dist/hai-in-sat/assets
 
+  # robots.txt și sitemap.xml (SEO)
   - url: /robots.txt
     static_files: dist/hai-in-sat/robots.txt
     upload: dist/hai-in-sat/robots.txt
@@ -17,16 +19,17 @@ handlers:
     static_files: dist/hai-in-sat/sitemap.xml
     upload: dist/hai-in-sat/sitemap.xml
 
+  # Favicon
   - url: /favicon.ico
     static_files: dist/hai-in-sat/favicon.ico
     upload: dist/hai-in-sat/favicon.ico
 
+  # Fișiere statice (JS, CSS, fonturi, imagini)
   - url: /(.*\.(js|css|map|ico|png|jpg|jpeg|avif|svg|woff|woff2|ttf|eot|xml|txt|json))$
     static_files: dist/hai-in-sat/\1
     upload: dist/hai-in-sat/.*\.(js|css|map|ico|png|jpg|jpeg|avif|svg|woff|woff2|ttf|eot|xml|txt|json)$
 
+  # Orice altă rută → index.html (Angular CSR fallback)
   - url: /.*
     static_files: dist/hai-in-sat/index.html
     upload: dist/hai-in-sat/index.html
-
-

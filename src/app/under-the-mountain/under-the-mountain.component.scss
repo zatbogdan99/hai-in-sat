@@ -6,7 +6,7 @@
 
 .hero-banner {
   height: 50vh; /* Doubled height as requested */
-  background-image: url('../../assets/poza-temporara.png');
+  background-image: url('../../assets/poza-temporara.avif');
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover; /* Changed to cover to fill the entire width */
@@ -473,7 +473,7 @@ section {
 /* Discover section under Why */
 .discover-odsm {
   position: relative;
-  background-image: url('../../assets/poza_landing1.jpeg');
+  background-image: url('../../assets/poza_landing1.avif');
   background-size: cover;
   background-position: center;
   padding: clamp(2rem, 6vw, 5rem) 1.25rem 4rem;

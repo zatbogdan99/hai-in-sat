@@ -175,12 +175,12 @@ export class PhotoService {
   private static getBaiaTerenData() {
     return [
       {
-        itemImageSrc: 'assets/teren_baia1.jpg',
+        itemImageSrc: 'assets/teren_baia1.avif',
         alt: 'Teren Baia',
         title: 'Teren Baia 1'
       },
       {
-        itemImageSrc: 'assets/teren_baia2.jpg',
+        itemImageSrc: 'assets/teren_baia2.avif',
         alt: 'Teren Baia',
         title: 'Teren Baia2 2'
       }

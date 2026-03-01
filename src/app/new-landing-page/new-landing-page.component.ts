@@ -14,7 +14,7 @@ export class NewLandingPageComponent implements OnInit {
     this.seo.updatePageMeta({
       title: 'Hai în Sat – Case și terenuri de vânzare în Oltenia de sub Munte',
       description: 'Descoperă viața autentică din Oltenia de sub Munte. Terenuri și case în locuri unde munții întâlnesc satul, iar timpul curge mai încet.',
-      ogImage: 'https://hai-în-sat.ro/assets/poza_landing1.jpeg',
+      ogImage: 'https://hai-în-sat.ro/assets/poza_landing1.avif',
       canonicalPath: '/'
     });
   }

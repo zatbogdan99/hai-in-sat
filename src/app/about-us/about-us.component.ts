@@ -24,7 +24,7 @@ export class AboutUsComponent implements OnInit, AfterViewInit{
     this.seo.updatePageMeta({
       title: 'Despre noi – Hai în Sat. Misiunea noastră pentru satul românesc',
       description: 'Hai în Sat conectează oamenii cu viața autentică din Oltenia de sub Munte. Descoperă povestea noastră și cum te putem ajuta să găsești locul ideal la sat.',
-      ogImage: 'https://hai-în-sat.ro/assets/contact.jpg',
+      ogImage: 'https://hai-în-sat.ro/assets/contact.avif',
       canonicalPath: '/about-us'
     });
   }

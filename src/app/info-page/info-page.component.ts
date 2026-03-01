@@ -207,7 +207,7 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
       "\n" +
       "\n" +
       "Polovragi, cu bogata sa istorie și peștera sa misterioasă, reprezintă o fereastră în timp care ne permite să contemplăm și să onorăm strămoșii noștri și istoria acestui loc. Este un altar al trecutului și o mărturie a perenității vieții umane în inima naturii.\n",
-      "assets/polovragi1.jpg"
+      "assets/polovragi1.avif"
     );
     this.data.push(dataDto);
 
@@ -241,7 +241,7 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
       "În centrul sătucului se înalță cu mândrie Biserica Potecașilor, o bijuterie arhitecturală cu o istorie bogată și adânc înrădăcinată în tradiția locului. Cu turla sa elegantă și frescele pictate cu măiestrie, biserica emană o atmosferă de liniște și smerenie. Picturile vechi, ce îmbracă pereții interiori, înfățișează scene din viața lui Isus și a sfinților, aducând la viață credința și spiritualitatea comunității locale.",
       "În jurul bisericii, peisajul rural se desfășoară într-o paletă variată de culori. Casele tradiționale din lemn se întind pe ulițele liniștite, iar grădinile pline de flori adaugă un farmec aparte acestui loc. În timpul primăverii și al verii, Slătioara se transformă într-o explozie de culoare, iar parfumul florilor înmiresmează aerul.",
       "Slătioara din Vâlcea nu este doar un loc geografic, ci și un loc al inimilor călduroase și o comunitate ce împărtășește tradiții și valori. Biserica Potecașilor, cu trecutul său venerabil și frumusețea sa sublimă, este punctul de convergență al acestui mic colț de paradis, unde trecutul și prezentul se împletesc într-o armonie perfectă.",
-      "assets/slatioara1.jpg"
+      "assets/slatioara1.avif"
     );
     this.data.push(dataDto);
 
@@ -252,7 +252,7 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
       "În acest sanctuar al pietrelor, liniștea și misterul vremurilor îndepărtate îi însoțesc pe cei ce pășesc printre trovanți, oferindu-le o experiență unică și memorabilă. În plus, muzeul adăpostește o colecție impresionantă de artefacte arheologice și exponate ce ilustrează viața tradițională din regiune, completând astfel povestea bogată a patrimoniului cultural vâlcean.",
       "În împrejurimile comunei Costești se găsesc și alte atracții naturale deosebite, cum ar fi Cheile Bistriței și Peștera Bistrița, care încântă privirile cu peisaje pitorești și formațiuni carstice spectaculoase. Aceste locuri sunt ideale pentru iubitorii de natură și aventură, oferind ocazia de a explora frumusețea sălbatică a Carpaților și de a descoperi misterele ascunse ale regiunii.",
       "În concluzie, Costești este o destinație fascinantă și diversificată, care îmbină armonios frumusețea naturală cu patrimoniul cultural și spiritual al zonei. O vizită în această comună este o călătorie în trecut și în prezent, ce oferă o experiență autentică și memorabilă pentru toți cei ce îi trec pragul.",
-      "assets/costesti1.jpg"
+      "assets/costesti1.avif"
     );
     this.data.push(dataDto);
 
@@ -263,7 +263,7 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
       "Unul dintre comorile ce definesc această localitate este Schitul Pătrunsa, un adevărat simbol de spiritualitate și liniște. Schitul, situat în mijlocul pădurii, se înalță ca o comoară a credinței și meditației. Aici, pelerinii și credincioșii se adună în căutarea păcii interioare și a armoniei cu natura. Picturile murale care împodobesc biserica schitului spun povești de credință și smerenie, amintindu-ne de rădăcinile noastre religioase și de înțelepciunea celor care au trăit și au slujit aici de-a lungul secolelor.",
       "",
       "",
-      "assets/barbatesti1.JPEG"
+      "assets/barbatesti1.avif"
     );
     this.data.push(dataDto);
   }
