@@ -112,6 +112,6 @@ describe('PropertiesComponent', () => {
 
     const telLink = document.querySelector('a.contact-item[href^="tel:"]') as HTMLAnchorElement | null;
     expect(telLink).toBeTruthy();
-    expect(telLink!.getAttribute('href')).toBe('tel:+40728140650');
+    expect(telLink!.getAttribute('href')).toBe('tel:+40728140628');
   });
 });

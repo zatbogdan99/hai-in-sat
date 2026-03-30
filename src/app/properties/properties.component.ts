@@ -226,7 +226,7 @@ export class PropertiesComponent implements OnInit {
 
   callPhone(event: Event): void {
     event.preventDefault();
-    window.location.href = 'tel:+40728140650';
+    window.location.href = 'tel:+40728140628';
   }
 
   viewPropertyDetails(property: PropertyDTO) {

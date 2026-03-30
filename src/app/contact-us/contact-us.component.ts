@@ -28,7 +28,7 @@ export class ContactUsComponent implements OnInit{
   ngOnInit(): void {
     this.seo.updatePageMeta({
       title: 'Contact - Hai în Sat. Contactează-ne pentru case și terenuri',
-      description: 'Contactează echipa Hai în Sat pentru informații despre case și terenuri de vânzare în Oltenia de sub Munte. Telefon: 0728140650, email: contact@hai-în-sat.ro.',
+      description: 'Contactează echipa Hai în Sat pentru informații despre case și terenuri de vânzare în Oltenia de sub Munte. Telefon: 0728140628, email: contact@hai-în-sat.ro.',
       canonicalPath: '/contact-us'
     });
 
