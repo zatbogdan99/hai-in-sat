@@ -5,10 +5,19 @@ import { Divider } from "primeng/divider";
 import { Dialog } from "primeng/dialog";
 import { ProgressSpinner } from "primeng/progressspinner";
 import { Button } from "primeng/button";
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup } from "@angular/forms";
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from "@angular/forms";
 import { DataViewModule } from "primeng/dataview";
 import { ActivatedRoute, Router } from "@angular/router";
-import { PropertyFormServiceService, PageResponse } from "../service/property-form-service/property-form-service.service";
+import { PropertyFormServiceService } from "../service/property-form-service/property-form-service.service";
 import { PropertyDTO } from "../dto/property.dto";
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { TagModule } from "primeng/tag";
@@ -22,6 +31,22 @@ import { PropertyFormDTO } from "../dto/property-form.dto";
 import { PropertyFormEmailServiceService } from "../service/property-form-email-service/property-form-email-service.service";
 import { PropertiesStateService, PropertyTypeFilter } from "../service/properties-state-service/properties-state.service";
 import { SeoService } from "../service/seo.service";
+import { FormStatesUtil } from "../utils/form-states-util";
+
+const trimControlValue = (control: AbstractControl | null | undefined): string => {
+  const value = control?.value;
+  return typeof value === 'string' ? value.trim() : '';
+};
+
+const requiredTrimmedValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  return trimControlValue(control) ? null : { required: true };
+};
+
+const atLeastOneContactValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  const email = trimControlValue(control.get('email'));
+  const phone = trimControlValue(control.get('phone'));
+  return email || phone ? null : { contactRequired: true };
+};
 
 @Component({
   selector: 'app-properties',
@@ -95,12 +120,14 @@ export class PropertiesComponent implements OnInit {
     private seo: SeoService
   ) {
     this.propertyForm = this.fb.group({
-      firstName: [''],
-      email: [''],
-      phone: [''],
-      village: [''],
+      firstName: ['', [requiredTrimmedValidator]],
+      email: ['', [Validators.email]],
+      phone: ['', [Validators.pattern(/^\d+$/), Validators.minLength(10)]],
+      village: ['', [requiredTrimmedValidator]],
       propertyType: [''],
       propertyDescription: ['']
+    }, {
+      validators: [atLeastOneContactValidator]
     });
     this.filteredPropertyTypeOptions = this.propertyTypeOptions.slice();
 
@@ -190,6 +217,15 @@ export class PropertiesComponent implements OnInit {
   }
 
   saveProperty() {
+    this.normalizePropertyFormValues();
+    this.propertyForm.updateValueAndValidity();
+
+    if (this.propertyForm.invalid) {
+      this.propertyForm.markAllAsTouched();
+      FormStatesUtil.markAllAsDirty(this.propertyForm);
+      return;
+    }
+
     const formValue = this.propertyForm.value;
 
     const dto: PropertyFormDTO = {
@@ -217,6 +253,28 @@ export class PropertiesComponent implements OnInit {
         this.loadingService.loadingOff();
       }
     });
+  }
+
+  shouldShowControlError(controlName: string, errorCode: string): boolean {
+    const control = this.propertyForm.get(controlName);
+    if (!control) {
+      return false;
+    }
+
+    return (control.touched || control.dirty) && control.hasError(errorCode);
+  }
+
+  shouldShowContactError(): boolean {
+    const emailControl = this.propertyForm.get('email');
+    const phoneControl = this.propertyForm.get('phone');
+    const interacted = !!emailControl && !!phoneControl && (
+      emailControl.touched ||
+      emailControl.dirty ||
+      phoneControl.touched ||
+      phoneControl.dirty
+    );
+
+    return interacted && this.propertyForm.hasError('contactRequired');
   }
 
   filterPropertyType(event: any) {
@@ -281,6 +339,17 @@ export class PropertiesComponent implements OnInit {
       return value;
     }
     return fallback;
+  }
+
+  private normalizePropertyFormValues(): void {
+    this.propertyForm.patchValue({
+      firstName: trimControlValue(this.propertyForm.get('firstName')),
+      email: trimControlValue(this.propertyForm.get('email')),
+      phone: trimControlValue(this.propertyForm.get('phone')),
+      village: trimControlValue(this.propertyForm.get('village')),
+      propertyType: trimControlValue(this.propertyForm.get('propertyType')),
+      propertyDescription: trimControlValue(this.propertyForm.get('propertyDescription'))
+    }, { emitEvent: false });
   }
 
   private prefetchNextPage(): void {

@@ -24,60 +24,90 @@
     </ng-template>
     <div class="property-dialog-content">
       <div class="property-dialog-left" [formGroup]="propertyForm">
-        <div class="field-with-icon">
-          <i class="pi pi-user field-icon" aria-hidden="true"></i>
-          <p-float-label style="width: 100%">
-            <input style="width: 100%" type="text" pInputText id="firstName" formControlName="firstName" />
-            <label for="firstName">Nume complet</label>
-          </p-float-label>
+        <div class="form-field">
+          <div class="field-with-icon">
+            <i class="pi pi-user field-icon" aria-hidden="true"></i>
+            <p-float-label style="width: 100%">
+              <input style="width: 100%" type="text" pInputText id="firstName" formControlName="firstName" />
+              <label for="firstName">Nume complet</label>
+            </p-float-label>
+          </div>
+          <small class="field-error" *ngIf="shouldShowControlError('firstName', 'required')">
+            Numele este obligatoriu.
+          </small>
         </div>
 
-        <div class="field-with-icon">
-          <i class="pi pi-envelope field-icon" aria-hidden="true"></i>
-          <p-float-label style="width: 100%">
-            <input style="width: 100%" type="email" pInputText id="email" formControlName="email" />
-            <label for="email">E-mail</label>
-          </p-float-label>
+        <div class="form-field">
+          <div class="field-with-icon">
+            <i class="pi pi-envelope field-icon" aria-hidden="true"></i>
+            <p-float-label style="width: 100%">
+              <input style="width: 100%" type="email" pInputText id="email" formControlName="email" />
+              <label for="email">E-mail</label>
+            </p-float-label>
+          </div>
+          <small class="field-error" *ngIf="shouldShowControlError('email', 'email')">
+            Adresa de email nu este validă.
+          </small>
         </div>
 
-        <div class="field-with-icon">
-          <i class="pi pi-phone field-icon" aria-hidden="true"></i>
-          <p-float-label style="width: 100%">
-            <input style="width: 100%" type="tel" pInputText id="phone" formControlName="phone" />
-            <label for="phone">Telefon</label>
-          </p-float-label>
+        <div class="form-field">
+          <div class="field-with-icon">
+            <i class="pi pi-phone field-icon" aria-hidden="true"></i>
+            <p-float-label style="width: 100%">
+              <input style="width: 100%" type="tel" pInputText id="phone" formControlName="phone" />
+              <label for="phone">Telefon</label>
+            </p-float-label>
+          </div>
+          <small class="field-error" *ngIf="shouldShowControlError('phone', 'pattern')">
+            Numărul de telefon trebuie să conțină doar cifre.
+          </small>
+          <small class="field-error" *ngIf="!shouldShowControlError('phone', 'pattern') && shouldShowControlError('phone', 'minlength')">
+            Numărul de telefon trebuie să aibă minimum 10 cifre.
+          </small>
+          <small class="field-error" *ngIf="shouldShowContactError()">
+            Completați cel putin telefonul sau e-mailul.
+          </small>
         </div>
 
-        <div class="field-with-icon">
-          <i class="pi pi-map-marker field-icon" aria-hidden="true"></i>
-          <p-float-label style="width: 100%">
-            <input style="width: 100%" type="text" pInputText id="village" formControlName="village" />
-            <label for="village">Localitate</label>
-          </p-float-label>
+        <div class="form-field">
+          <div class="field-with-icon">
+            <i class="pi pi-map-marker field-icon" aria-hidden="true"></i>
+            <p-float-label style="width: 100%">
+              <input style="width: 100%" type="text" pInputText id="village" formControlName="village" />
+              <label for="village">Localitate</label>
+            </p-float-label>
+          </div>
+          <small class="field-error" *ngIf="shouldShowControlError('village', 'required')">
+            Localitatea este obligatorie.
+          </small>
         </div>
 
-        <div class="field-with-icon">
-          <i class="pi pi-home field-icon" aria-hidden="true"></i>
-          <p-float-label style="width: 100%">
-            <p-autoComplete
-              inputId="propertyType"
-              formControlName="propertyType"
-              [dropdown]="true"
-              [forceSelection]="true"
-              [suggestions]="filteredPropertyTypeOptions"
-              (completeMethod)="filterPropertyType($event)"
-              [style]="{ width: '100%' }">
-            </p-autoComplete>
-            <label for="propertyType">Tip proprietate</label>
-          </p-float-label>
+        <div class="form-field">
+          <div class="field-with-icon">
+            <i class="pi pi-home field-icon" aria-hidden="true"></i>
+            <p-float-label style="width: 100%">
+              <p-autoComplete
+                inputId="propertyType"
+                formControlName="propertyType"
+                [dropdown]="true"
+                [forceSelection]="true"
+                [suggestions]="filteredPropertyTypeOptions"
+                (completeMethod)="filterPropertyType($event)"
+                [style]="{ width: '100%' }">
+              </p-autoComplete>
+              <label for="propertyType">Tip proprietate</label>
+            </p-float-label>
+          </div>
         </div>
 
-        <div class="field-with-icon">
-          <i class="pi pi-info-circle field-icon" aria-hidden="true"></i>
-          <p-float-label style="width: 100%">
-            <textarea style="width: 100%" rows="4" pInputTextarea id="propertyDescription" formControlName="propertyDescription"></textarea>
-            <label for="propertyDescription">Descriere proprietate</label>
-          </p-float-label>
+        <div class="form-field">
+          <div class="field-with-icon">
+            <i class="pi pi-info-circle field-icon" aria-hidden="true"></i>
+            <p-float-label style="width: 100%">
+              <textarea style="width: 100%" rows="4" pInputTextarea id="propertyDescription" formControlName="propertyDescription"></textarea>
+              <label for="propertyDescription">Descriere proprietate</label>
+            </p-float-label>
+          </div>
         </div>
       </div>
 

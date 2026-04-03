@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
@@ -14,14 +14,20 @@ describe('PropertiesComponent', () => {
   let component: PropertiesComponent;
   let fixture: ComponentFixture<PropertiesComponent>;
   let propertyFormService: jasmine.SpyObj<PropertyFormServiceService>;
+  let propertyFormEmailService: jasmine.SpyObj<PropertyFormEmailServiceService>;
+  let router: jasmine.SpyObj<Router>;
   let propertiesState: PropertiesStateService;
 
   const createComponent = (queryParams: Record<string, string> = {}) => {
     TestBed.resetTestingModule();
     propertyFormService = jasmine.createSpyObj<PropertyFormServiceService>('PropertyFormServiceService', ['getPropertiesPage']);
+    propertyFormEmailService = jasmine.createSpyObj<PropertyFormEmailServiceService>('PropertyFormEmailServiceService', ['sendPropertyForm']);
+    router = jasmine.createSpyObj<Router>('Router', ['navigate']);
+
     propertyFormService.getPropertiesPage.and.returnValue(
       of({ content: [], totalElements: 0, totalPages: 0, size: 6, number: 0 })
     );
+    propertyFormEmailService.sendPropertyForm.and.returnValue(of(void 0));
 
     TestBed.configureTestingModule({
       imports: [PropertiesComponent],
@@ -35,9 +41,7 @@ describe('PropertiesComponent', () => {
         },
         {
           provide: PropertyFormEmailServiceService,
-          useValue: {
-            sendPropertyForm: () => of(null)
-          }
+          useValue: propertyFormEmailService
         },
         {
           provide: ActivatedRoute,
@@ -46,6 +50,10 @@ describe('PropertiesComponent', () => {
               queryParamMap: convertToParamMap(queryParams)
             }
           }
+        },
+        {
+          provide: Router,
+          useValue: router
         }
       ]
     });
@@ -110,8 +118,79 @@ describe('PropertiesComponent', () => {
 
     fixture.detectChanges();
 
-    const telLink = document.querySelector('a.contact-item[href^="tel:"]') as HTMLAnchorElement | null;
+    const telLink = fixture.nativeElement.querySelector('a.contact-item[href^="tel:"]') as HTMLAnchorElement | null;
     expect(telLink).toBeTruthy();
     expect(telLink!.getAttribute('href')).toBe('tel:+40728140628');
+  });
+
+  it('should require name, village and at least one contact method before submit', () => {
+    createComponent();
+
+    component.saveProperty();
+
+    expect(component.propertyForm.get('firstName')?.hasError('required')).toBeTrue();
+    expect(component.propertyForm.get('village')?.hasError('required')).toBeTrue();
+    expect(component.propertyForm.hasError('contactRequired')).toBeTrue();
+    expect(propertyFormEmailService.sendPropertyForm).not.toHaveBeenCalled();
+  });
+
+  it('should validate phone as digits only and minimum 10 digits', () => {
+    createComponent();
+
+    component.propertyForm.patchValue({
+      firstName: 'Ion Popescu',
+      village: 'Malaia',
+      phone: '07123abc'
+    });
+
+    component.saveProperty();
+
+    expect(component.propertyForm.get('phone')?.hasError('pattern')).toBeTrue();
+    expect(propertyFormEmailService.sendPropertyForm).not.toHaveBeenCalled();
+
+    component.propertyForm.patchValue({ phone: '071234567' });
+
+    component.saveProperty();
+
+    expect(component.propertyForm.get('phone')?.hasError('minlength')).toBeTrue();
+    expect(propertyFormEmailService.sendPropertyForm).not.toHaveBeenCalled();
+  });
+
+  it('should validate email format when email is used as contact method', () => {
+    createComponent();
+
+    component.propertyForm.patchValue({
+      firstName: 'Ion Popescu',
+      village: 'Malaia',
+      email: 'email-invalid'
+    });
+
+    component.saveProperty();
+
+    expect(component.propertyForm.get('email')?.hasError('email')).toBeTrue();
+    expect(propertyFormEmailService.sendPropertyForm).not.toHaveBeenCalled();
+  });
+
+  it('should submit when required fields are completed and phone is valid', () => {
+    createComponent();
+
+    component.propertyForm.patchValue({
+      firstName: 'Ion Popescu',
+      village: 'Malaia',
+      phone: '0728140628'
+    });
+
+    component.saveProperty();
+
+    expect(propertyFormEmailService.sendPropertyForm).toHaveBeenCalled();
+
+    const sentDto = propertyFormEmailService.sendPropertyForm.calls.mostRecent().args[0];
+
+    expect(sentDto.firstName).toBe('Ion Popescu');
+    expect(sentDto.email).toBe('');
+    expect(sentDto.phone).toBe('0728140628');
+    expect(sentDto.village).toBe('Malaia');
+    expect(sentDto.propertyType as any).toBe('');
+    expect(sentDto.propertyDescription).toBe('');
   });
 });

@@ -44,6 +44,7 @@ import { forkJoin } from 'rxjs';
 })
 export class AddPropertyComponent {
   @ViewChild('replaceGalleryInput') replaceGalleryInput?: ElementRef<HTMLInputElement>;
+  @ViewChild('replaceThumbnailInput') replaceThumbnailInput?: ElementRef<HTMLInputElement>;
 
   PropertyType = PropertyType;
   propertyTypeOptions = [
@@ -64,6 +65,11 @@ export class AddPropertyComponent {
   replaceGalleryFiles: File[] = [];
   replacePreviewUrls: string[] = [];
   selectedReplaceProperty: PropertyDTO | null = null;
+
+  thumbnailDialogVisible = false;
+  replaceThumbnailFile: File | null = null;
+  replaceThumbnailPreviewUrl: string | null = null;
+  selectedThumbnailProperty: PropertyDTO | null = null;
 
   constructor(
     public store: PropertyTypeStore,
@@ -310,6 +316,104 @@ export class AddPropertyComponent {
     this.clearReplaceSelection();
   }
 
+  openReplaceThumbnail(property: PropertyDTO) {
+    this.selectedThumbnailProperty = property;
+    this.replaceThumbnailInput?.nativeElement.click();
+  }
+
+  onReplaceThumbnailSelected(event: Event) {
+    const input = event.target as HTMLInputElement | null;
+    const file = input?.files?.[0] ?? null;
+    if (!file) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Nicio poză selectată',
+        detail: 'Selectează o poză pentru poza principală.'
+      });
+      if (input) {
+        input.value = '';
+      }
+      return;
+    }
+    this.replaceThumbnailFile = file;
+    if (this.replaceThumbnailPreviewUrl) {
+      URL.revokeObjectURL(this.replaceThumbnailPreviewUrl);
+    }
+    this.replaceThumbnailPreviewUrl = URL.createObjectURL(file);
+    this.thumbnailDialogVisible = true;
+  }
+
+  async confirmReplaceThumbnail() {
+    if (!this.selectedThumbnailProperty?.id) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Lipsă proprietate',
+        detail: 'Nu este selectată nicio proprietate.'
+      });
+      return;
+    }
+    if (!this.replaceThumbnailFile) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Nicio poză selectată',
+        detail: 'Selectează o poză înainte de a confirma.'
+      });
+      return;
+    }
+
+    try {
+      this.loadingService.loadingOn();
+      const thumbnailBase64 = await this.fileToBase64(this.replaceThumbnailFile);
+      const existingPhotos = this.selectedThumbnailProperty.photos ?? [];
+      const payload: ReplacePhotosRequest = {
+        propertyId: this.selectedThumbnailProperty.id,
+        thumbnail: thumbnailBase64,
+        photos: existingPhotos
+      };
+      this.photoAdminService.replacePhotos(payload).subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Poză principală actualizată',
+            detail: 'Poza principală a fost înlocuită.'
+          });
+          this.closeThumbnailDialog();
+          this.loadPropertiesPage(this.currentPage);
+          this.loadingService.loadingOff();
+        },
+        error: (err) => {
+          console.error('Eroare la înlocuirea pozei principale:', err);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Eroare',
+            detail: 'Nu s-a putut înlocui poza principală.'
+          });
+          this.loadingService.loadingOff();
+        }
+      });
+    } catch (e) {
+      console.error('Eroare la pregătirea pozei principale:', e);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Eroare',
+        detail: 'Nu s-a putut procesa poza selectată.'
+      });
+      this.loadingService.loadingOff();
+    }
+  }
+
+  closeThumbnailDialog() {
+    this.thumbnailDialogVisible = false;
+    this.replaceThumbnailFile = null;
+    if (this.replaceThumbnailPreviewUrl) {
+      URL.revokeObjectURL(this.replaceThumbnailPreviewUrl);
+      this.replaceThumbnailPreviewUrl = null;
+    }
+    if (this.replaceThumbnailInput?.nativeElement) {
+      this.replaceThumbnailInput.nativeElement.value = '';
+    }
+  }
+
   onDeleteAllPhotos() {
     this.photoAdminService.deleteAllPhotos().subscribe({
       next: () => {
@@ -365,7 +469,7 @@ export class AddPropertyComponent {
       if (firstOrder !== secondOrder) {
         return firstOrder - secondOrder;
       }
-      return first.name.localeCompare(second.name);
+      return (first.name ?? '').localeCompare(second.name ?? '');
     });
   }
 

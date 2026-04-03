@@ -97,6 +97,13 @@
     class="hidden-input"
     (change)="onReplaceGallerySelected($event)" />
 
+  <input
+    #replaceThumbnailInput
+    type="file"
+    accept="image/*"
+    class="hidden-input"
+    (change)="onReplaceThumbnailSelected($event)" />
+
   <div class="properties-section" *ngIf="showPropertiesTable">
     <h3>Proprietăți</h3>
     <p-table [value]="properties" [tableStyle]="{ 'min-width': '60rem' }">
@@ -106,6 +113,7 @@
           <th>Nume</th>
           <th>Descriere</th>
           <th>Tip</th>
+          <th>Poză principală</th>
           <th>Acțiuni</th>
         </tr>
       </ng-template>
@@ -115,11 +123,16 @@
           <td>{{ property.name }}</td>
           <td>{{ property.description }}</td>
           <td>{{ property.type }}</td>
+          <td>
+            <img *ngIf="property.thumbnail" [src]="property.thumbnail" alt="Thumbnail" style="max-width: 80px; max-height: 60px; border-radius: 4px;" />
+            <span *ngIf="!property.thumbnail" style="color: #999;">Lipsă</span>
+          </td>
           <td class="actions-cell">
             <button pButton type="button" label="Muta sus" class="p-button-secondary" (click)="movePropertyUp(rowIndex)" [disabled]="rowIndex === 0"></button>
             <button pButton type="button" label="Muta jos" class="p-button-secondary" (click)="movePropertyDown(rowIndex)" [disabled]="rowIndex === properties.length - 1"></button>
             <button pButton type="button" label="Sterge casa/teren" class="p-button-danger" (click)="onDeleteProperty(property)"></button>
             <button pButton type="button" label="Inlocuieste pozele" class="p-button-help" (click)="openReplacePhotos(property)"></button>
+            <button pButton type="button" label="Schimbă poza principală" class="p-button-warning" (click)="openReplaceThumbnail(property)"></button>
           </td>
         </tr>
       </ng-template>
@@ -152,6 +165,34 @@
     <div class="dialog-actions">
       <button pButton type="button" label="Da" (click)="confirmReplacePhotos()"></button>
       <button pButton type="button" label="Renunță" class="p-button-secondary" (click)="closeReplaceDialog()"></button>
+    </div>
+  </p-dialog>
+
+  <p-dialog
+    header="Schimbă poza principală"
+    [modal]="true"
+    [(visible)]="thumbnailDialogVisible"
+    [style]="{ width: '35rem' }"
+    [breakpoints]="{ '1199px': '60vw', '575px': '90vw' }">
+    <p class="dialog-text">
+      Sunteți sigur că vreți să schimbați poza principală a proprietății
+      <b>{{ selectedThumbnailProperty?.name || selectedThumbnailProperty?.id }}</b>?
+    </p>
+    <div class="preview-section" *ngIf="selectedThumbnailProperty?.thumbnail">
+      <div class="preview-label">Poza principală actuală</div>
+      <div class="preview-item">
+        <img [src]="selectedThumbnailProperty!.thumbnail" alt="Poza principală actuală" />
+      </div>
+    </div>
+    <div class="preview-section" *ngIf="replaceThumbnailPreviewUrl">
+      <div class="preview-label">Poza principală nouă</div>
+      <div class="preview-item">
+        <img [src]="replaceThumbnailPreviewUrl" alt="Poza principală nouă" />
+      </div>
+    </div>
+    <div class="dialog-actions">
+      <button pButton type="button" label="Da, schimbă" (click)="confirmReplaceThumbnail()"></button>
+      <button pButton type="button" label="Renunță" class="p-button-secondary" (click)="closeThumbnailDialog()"></button>
     </div>
   </p-dialog>
 </div>

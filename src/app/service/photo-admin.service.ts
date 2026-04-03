@@ -12,7 +12,7 @@ export interface ReplacePhotosRequest {
 export class PhotoAdminService {
   // Align with local backend like other services in the app
   private readonly deleteAllPhotosUrl = 'http://localhost:8080/delete-all-photos';
-  private readonly replacePhotosUrl = 'http://localhost:8080/replace-photos';
+  private readonly replacePhotosUrl = 'https://hai-in-sat-api.lm.r.appspot.com/replace-photos';
 
   constructor(private http: HttpClient) {}
 

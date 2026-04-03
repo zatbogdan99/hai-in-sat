@@ -396,7 +396,13 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
+}
+
+:host ::ng-deep .centered-dialog-header .property-dialog-left .form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
 }
 
 :host ::ng-deep .centered-dialog-header .property-dialog-left .field-with-icon .field-icon {
@@ -410,6 +416,18 @@
 :host ::ng-deep .centered-dialog-header .property-dialog-left .field-with-icon p-float-label,
 :host ::ng-deep .centered-dialog-header .property-dialog-left .field-with-icon p-floatlabel {
   flex: 1 1 auto;
+}
+
+:host ::ng-deep .centered-dialog-header .property-dialog-left input.ng-invalid.ng-touched,
+:host ::ng-deep .centered-dialog-header .property-dialog-left textarea.ng-invalid.ng-touched {
+  border-color: #b42318;
+}
+
+:host ::ng-deep .centered-dialog-header .property-dialog-left .field-error {
+  margin-left: 2rem;
+  color: #b42318;
+  font-size: 0.85rem;
+  line-height: 1.3;
 }
 
 :host ::ng-deep .centered-dialog-header .dialog-footer {
