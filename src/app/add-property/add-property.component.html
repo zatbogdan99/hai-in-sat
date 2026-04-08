@@ -87,6 +87,16 @@
       <button pButton type="button" label="Show properties" class="p-button-secondary" (click)="onShowProperties()"></button>
       <button pButton type="button" label="Șterge toate pozele" class="p-button-danger" (click)="onDeleteAllPhotos()"></button>
     </div>
+
+    <div class="thumbnail-regen-section">
+      <div class="thumbnail-regen-label">Regenerare thumbnailuri (localhost)</div>
+      <div class="thumbnail-regen-controls">
+        <input type="number" [(ngModel)]="thumbWidth" [ngModelOptions]="{standalone: true}" placeholder="Lățime" min="1" class="thumb-input" />
+        <span>x</span>
+        <input type="number" [(ngModel)]="thumbHeight" [ngModelOptions]="{standalone: true}" placeholder="Înălțime" min="1" class="thumb-input" />
+        <button pButton type="button" label="Regenerează thumbnailuri" class="p-button-info" (click)="onRegenerateThumbnails()"></button>
+      </div>
+    </div>
   </form>
 
   <input
@@ -104,6 +114,13 @@
     class="hidden-input"
     (change)="onReplaceThumbnailSelected($event)" />
 
+  <input
+    #addPhotoInput
+    type="file"
+    accept="image/*"
+    class="hidden-input"
+    (change)="onAddPhotoSelected($event)" />
+
   <div class="properties-section" *ngIf="showPropertiesTable">
     <h3>Proprietăți</h3>
     <p-table [value]="properties" [tableStyle]="{ 'min-width': '60rem' }">
@@ -119,7 +136,20 @@
       </ng-template>
       <ng-template pTemplate="body" let-property let-rowIndex="rowIndex">
         <tr>
-          <td>{{ property.sortOrder ?? '-' }}</td>
+          <td class="order-cell">
+            <input type="number"
+                   [value]="property.sortOrder ?? ''"
+                   (input)="onSortOrderInput(property, $event)"
+                   class="order-input"
+                   min="1"
+                   placeholder="#" />
+            <button pButton type="button"
+                    label="Salvează"
+                    class="p-button-sm p-button-success"
+                    (click)="onSaveSortOrder(property)"
+                    [disabled]="property._pendingSortOrder == null">
+            </button>
+          </td>
           <td>{{ property.name }}</td>
           <td>{{ property.description }}</td>
           <td>{{ property.type }}</td>
@@ -131,8 +161,11 @@
             <button pButton type="button" label="Muta sus" class="p-button-secondary" (click)="movePropertyUp(rowIndex)" [disabled]="rowIndex === 0"></button>
             <button pButton type="button" label="Muta jos" class="p-button-secondary" (click)="movePropertyDown(rowIndex)" [disabled]="rowIndex === properties.length - 1"></button>
             <button pButton type="button" label="Sterge casa/teren" class="p-button-danger" (click)="onDeleteProperty(property)"></button>
+            <button pButton type="button" label="Șterge pozele" class="p-button-danger p-button-outlined" (click)="onDeletePropertyPhotos(property)"></button>
             <button pButton type="button" label="Inlocuieste pozele" class="p-button-help" (click)="openReplacePhotos(property)"></button>
+            <button pButton type="button" label="Adaugă o poză" class="p-button-success" (click)="openAddPhoto(property)"></button>
             <button pButton type="button" label="Schimbă poza principală" class="p-button-warning" (click)="openReplaceThumbnail(property)"></button>
+            <button pButton type="button" label="Regen. thumbnail" class="p-button-info p-button-outlined" (click)="onRegenerateThumbnailForProperty(property)"></button>
           </td>
         </tr>
       </ng-template>

@@ -139,3 +139,48 @@
 .hidden-input {
   display: none;
 }
+
+.order-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.thumbnail-regen-section {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #f9f9f9;
+}
+
+.thumbnail-regen-label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #1f2a44;
+}
+
+.thumbnail-regen-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.thumb-input {
+  width: 80px;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.order-input {
+  width: 60px;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  text-align: center;
+}

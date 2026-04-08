@@ -57,6 +57,11 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
     setTimeout(() => this.goToSlide(0));
   }
 
+  private totalPhotos = 0;
+  private loadedPhotosCount = 0;
+  private readonly INITIAL_BATCH = 2;
+  private readonly NEXT_BATCH = 3;
+
   loadPropertyDetails(): void {
     this.propertyType = BuyEnum.BAIA;
 
@@ -75,35 +80,69 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
         this.seo.updatePageMeta({
           title: `${propertyTypeLabel} de vânzare: ${prop.name} | Hai în Sat`,
           description: `${propertyTypeLabel} de vânzare în Oltenia de sub Munte: ${prop.name}. ${(prop.description || '').replace(/<[^>]*>/g, '').substring(0, 150)}`,
-          ogImage: prop.thumbnail || (prop.photos && prop.photos.length ? prop.photos[0] : undefined),
+          ogImage: prop.thumbnail,
           canonicalPath: `/property/${this.propertyId}`
         });
 
-        const imgs: any[] = [];
-        const propertyType = prop.type === 'land' ? 'Teren' : 'Casă';
-        if (prop.photos && prop.photos.length) {
-          prop.photos.forEach((src, idx) => imgs.push({
-            itemImageSrc: src,
-            alt: `${propertyType}: ${prop.name} - Imagine ${idx + 1}`
-          }));
-        }
-        if (!imgs.length && prop.thumbnail) {
-          imgs.push({
-            itemImageSrc: prop.thumbnail,
-            alt: `${propertyType} de vânzare: ${prop.name}`
-          });
-        }
-        this.images = imgs;
-
-        this.loadingService.loadingOff();
-        if (this.images.length) {
-          this.goToSlide(0);
-        }
+        this.images = [];
+        this.loadedPhotosCount = 0;
+        this.loadPhotosBatch(0, this.INITIAL_BATCH, prop);
       },
       error: (err) => {
         console.error('Failed to load property details', err);
         this.loadingService.loadingOff();
         this.router.navigate(['/properties']);
+      }
+    });
+  }
+
+  private loadPhotosBatch(offset: number, limit: number, prop?: PropertyDTO): void {
+    const propertyType = (prop?.type ?? this.images[0]?.propertyType) === 'land' ? 'Teren' : 'Casă';
+    const name = prop?.name ?? this.propertyName;
+
+    console.log(`[Photos] Cerere batch: offset=${offset}, limit=${limit}`);
+
+    this.propertyService.getPhotos(this.propertyId, offset, limit).subscribe({
+      next: (resp) => {
+        this.totalPhotos = resp.total;
+        console.log(`[Photos] Răspuns: ${resp.photos.length} poze primite, total în DB: ${resp.total}`);
+
+        const newImages = resp.photos
+          .filter(src => src && src.trim())
+          .map((src, idx) => ({
+            itemImageSrc: src.trim(),
+            alt: `${propertyType}: ${name} - Imagine ${offset + idx + 1}`
+          }));
+
+        this.images = [...this.images, ...newImages];
+        this.loadedPhotosCount += resp.photos.length;
+        console.log(`[Photos] Imagini în galerie: ${this.images.length}, încărcate total: ${this.loadedPhotosCount}/${this.totalPhotos}`);
+
+        if (offset === 0) {
+          this.loadingService.loadingOff();
+          if (this.images.length) {
+            this.goToSlide(0);
+          }
+          if (this.loadedPhotosCount < this.totalPhotos) {
+            console.log(`[Photos] Încărcare background: mai sunt ${this.totalPhotos - this.loadedPhotosCount} poze`);
+            this.loadPhotosBatch(this.loadedPhotosCount, this.NEXT_BATCH);
+          } else {
+            console.log(`[Photos] Toate pozele au fost încărcate.`);
+          }
+        } else {
+          if (this.loadedPhotosCount < this.totalPhotos) {
+            console.log(`[Photos] Încărcare background: mai sunt ${this.totalPhotos - this.loadedPhotosCount} poze`);
+            this.loadPhotosBatch(this.loadedPhotosCount, this.NEXT_BATCH);
+          } else {
+            console.log(`[Photos] Toate pozele au fost încărcate.`);
+          }
+        }
+      },
+      error: (err) => {
+        console.error(`[Photos] Eroare la batch offset=${offset}:`, err);
+        if (offset === 0) {
+          this.loadingService.loadingOff();
+        }
       }
     });
   }
@@ -185,3 +224,4 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
     return fallback;
   }
 }
+

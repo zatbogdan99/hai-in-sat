@@ -69,6 +69,13 @@ export class PropertyFormServiceService {
     return this.http.get<PropertyDTO>(`${this.getPropertyByIdUrl}?id=${encodeURIComponent(id)}`);
   }
 
+  getPhotos(propertyId: string, offset: number, limit: number): Observable<{ photos: string[]; total: number }> {
+    const baseUrl = this.getPropertyByIdUrl.replace('/get-by-id', '');
+    return this.http.get<{ photos: string[]; total: number }>(
+      `${baseUrl}/get-photos?propertyId=${encodeURIComponent(propertyId)}&offset=${offset}&limit=${limit}`
+    );
+  }
+
   deleteProperty(id: string): Observable<any> {
     return this.http.delete(`${this.deletePropertyUrl}?id=${encodeURIComponent(id)}`);
   }

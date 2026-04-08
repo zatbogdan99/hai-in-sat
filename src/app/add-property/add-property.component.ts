@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Auth, signOut } from '@angular/fire/auth';
 import { PropertyTypeStore } from '../service/property-type.store';
@@ -20,7 +20,8 @@ import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { PaginatorModule } from 'primeng/paginator';
-import { forkJoin } from 'rxjs';
+import { forkJoin, firstValueFrom } from 'rxjs';
+import { PropertiesStateService } from '../service/properties-state-service/properties-state.service';
 
 @Component({
   selector: 'app-add-property',
@@ -30,6 +31,7 @@ import { forkJoin } from 'rxjs';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    FormsModule,
     InputText,
     DropdownModule,
     FileUpload,
@@ -45,6 +47,7 @@ import { forkJoin } from 'rxjs';
 export class AddPropertyComponent {
   @ViewChild('replaceGalleryInput') replaceGalleryInput?: ElementRef<HTMLInputElement>;
   @ViewChild('replaceThumbnailInput') replaceThumbnailInput?: ElementRef<HTMLInputElement>;
+  @ViewChild('addPhotoInput') addPhotoInput?: ElementRef<HTMLInputElement>;
 
   PropertyType = PropertyType;
   propertyTypeOptions = [
@@ -66,6 +69,11 @@ export class AddPropertyComponent {
   replacePreviewUrls: string[] = [];
   selectedReplaceProperty: PropertyDTO | null = null;
 
+  thumbWidth = 300;
+  thumbHeight = 300;
+
+  selectedAddPhotoProperty: PropertyDTO | null = null;
+
   thumbnailDialogVisible = false;
   replaceThumbnailFile: File | null = null;
   replaceThumbnailPreviewUrl: string | null = null;
@@ -77,6 +85,7 @@ export class AddPropertyComponent {
     private photoAdminService: PhotoAdminService,
     private messageService: MessageService,
     public loadingService: LoadingService,
+    private propertiesState: PropertiesStateService,
     private auth: Auth,
     private router: Router
   ) {}
@@ -232,6 +241,84 @@ export class AddPropertyComponent {
     this.swapProperties(index, index + 1);
   }
 
+  onSortOrderInput(property: any, event: Event) {
+    const input = event.target as HTMLInputElement;
+    const val = parseInt(input.value, 10);
+    property._pendingSortOrder = isNaN(val) ? null : val;
+  }
+
+  onSaveSortOrder(property: any) {
+    const newOrder = property._pendingSortOrder;
+    if (newOrder == null || !property.id) {
+      return;
+    }
+    this.propertyFormService.updateSortOrder(property.id, newOrder).subscribe({
+      next: () => {
+        property.sortOrder = newOrder;
+        property._pendingSortOrder = null;
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Ordine actualizată',
+          detail: `Ordinea proprietății "${property.name}" a fost schimbată la ${newOrder}.`
+        });
+        this.loadPropertiesPage(this.currentPage);
+      },
+      error: (err) => {
+        console.error('Eroare la actualizarea ordinii:', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Eroare',
+          detail: 'Nu s-a putut actualiza ordinea.'
+        });
+      }
+    });
+  }
+
+  openAddPhoto(property: PropertyDTO) {
+    this.selectedAddPhotoProperty = property;
+    if (this.addPhotoInput?.nativeElement) {
+      this.addPhotoInput.nativeElement.value = '';
+    }
+    this.addPhotoInput?.nativeElement.click();
+  }
+
+  async onAddPhotoSelected(event: Event) {
+    const input = event.target as HTMLInputElement | null;
+    const file = input?.files?.[0] ?? null;
+    if (!file || !this.selectedAddPhotoProperty?.id) {
+      if (input) input.value = '';
+      return;
+    }
+    try {
+      this.loadingService.loadingOn();
+      const base64 = await this.fileToBase64(file);
+      this.photoAdminService.addPhoto(this.selectedAddPhotoProperty.id, base64).subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Poză adăugată',
+            detail: `Poza a fost adăugată la "${this.selectedAddPhotoProperty?.name}".`
+          });
+          this.propertiesState.clearCache();
+          this.loadPropertiesPage(this.currentPage);
+        },
+        error: (err) => {
+          console.error('Eroare la adăugarea pozei:', err);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Eroare',
+            detail: 'Nu s-a putut adăuga poza.'
+          });
+          this.loadingService.loadingOff();
+        }
+      });
+    } catch (e) {
+      console.error('Eroare la conversia pozei:', e);
+      this.loadingService.loadingOff();
+    }
+    if (input) input.value = '';
+  }
+
   openReplacePhotos(property: PropertyDTO) {
     this.selectedReplaceProperty = property;
     this.replaceGalleryInput?.nativeElement.click();
@@ -275,13 +362,19 @@ export class AddPropertyComponent {
     }
 
     try {
+      this.loadingService.loadingOn();
+      const currentProperty = await firstValueFrom(
+        this.propertyFormService.getPropertyById(this.selectedReplaceProperty.id)
+      );
       const photosBase64 = await Promise.all(
         this.replaceGalleryFiles.map((file) => this.fileToBase64(file))
       );
+      const existingThumbnail = (currentProperty?.thumbnail ?? '').trim();
+      const [fallbackThumbnail, ...fallbackGalleryPhotos] = photosBase64;
       const payload: ReplacePhotosRequest = {
         propertyId: this.selectedReplaceProperty.id,
-        thumbnail: photosBase64[0],
-        photos: photosBase64
+        thumbnail: existingThumbnail || fallbackThumbnail,
+        photos: existingThumbnail ? photosBase64 : fallbackGalleryPhotos
       };
       this.photoAdminService.replacePhotos(payload).subscribe({
         next: () => {
@@ -290,7 +383,9 @@ export class AddPropertyComponent {
             summary: 'Poze înlocuite',
             detail: 'Pozele au fost actualizate.'
           });
+          this.propertiesState.clearCache();
           this.closeReplaceDialog();
+          this.loadPropertiesPage(this.currentPage);
         },
         error: (err) => {
           console.error('Eroare la înlocuirea pozelor:', err);
@@ -299,6 +394,7 @@ export class AddPropertyComponent {
             summary: 'Eroare',
             detail: 'Nu s-au putut înlocui pozele.'
           });
+          this.loadingService.loadingOff();
         }
       });
     } catch (e) {
@@ -308,6 +404,7 @@ export class AddPropertyComponent {
         summary: 'Eroare',
         detail: 'Nu s-au putut procesa pozele selectate.'
       });
+      this.loadingService.loadingOff();
     }
   }
 
@@ -364,11 +461,9 @@ export class AddPropertyComponent {
     try {
       this.loadingService.loadingOn();
       const thumbnailBase64 = await this.fileToBase64(this.replaceThumbnailFile);
-      const existingPhotos = this.selectedThumbnailProperty.photos ?? [];
       const payload: ReplacePhotosRequest = {
         propertyId: this.selectedThumbnailProperty.id,
-        thumbnail: thumbnailBase64,
-        photos: existingPhotos
+        thumbnail: thumbnailBase64
       };
       this.photoAdminService.replacePhotos(payload).subscribe({
         next: () => {
@@ -377,9 +472,9 @@ export class AddPropertyComponent {
             summary: 'Poză principală actualizată',
             detail: 'Poza principală a fost înlocuită.'
           });
+          this.propertiesState.clearCache();
           this.closeThumbnailDialog();
           this.loadPropertiesPage(this.currentPage);
-          this.loadingService.loadingOff();
         },
         error: (err) => {
           console.error('Eroare la înlocuirea pozei principale:', err);
@@ -412,6 +507,103 @@ export class AddPropertyComponent {
     if (this.replaceThumbnailInput?.nativeElement) {
       this.replaceThumbnailInput.nativeElement.value = '';
     }
+  }
+
+  onRegenerateThumbnailForProperty(property: PropertyDTO) {
+    const trimmed = (property.id ?? '').trim();
+    if (!trimmed) {
+      return;
+    }
+    this.loadingService.loadingOn();
+    this.photoAdminService.regenerateThumbnailForProperty(trimmed, this.thumbWidth, this.thumbHeight).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Thumbnail regenerat',
+          detail: `Thumbnailul pentru "${property.name}" a fost regenerat la ${this.thumbWidth}x${this.thumbHeight}.`
+        });
+        this.propertiesState.clearCache();
+        this.loadPropertiesPage(this.currentPage);
+      },
+      error: (err) => {
+        console.error('Eroare la regenerarea thumbnailului:', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Eroare',
+          detail: 'Nu s-a putut regenera thumbnailul.'
+        });
+        this.loadingService.loadingOff();
+      }
+    });
+  }
+
+  onDeletePropertyPhotos(property: PropertyDTO) {
+    const trimmed = (property.id ?? '').trim();
+    if (!trimmed) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Lipsă ID',
+        detail: 'Nu am găsit ID-ul proprietății.'
+      });
+      return;
+    }
+    this.loadingService.loadingOn();
+    this.photoAdminService.deletePhotosForProperty(trimmed).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Poze șterse',
+          detail: `Toate pozele proprietății "${property.name}" au fost șterse.`
+        });
+        this.propertiesState.clearCache();
+        this.loadPropertiesPage(this.currentPage);
+      },
+      error: (err) => {
+        console.error('Eroare la ștergerea pozelor proprietății:', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Eroare',
+          detail: 'Nu s-au putut șterge pozele proprietății.'
+        });
+        this.loadingService.loadingOff();
+      }
+    });
+  }
+
+  onRegenerateThumbnails() {
+    if (!this.thumbWidth || !this.thumbHeight || this.thumbWidth < 1 || this.thumbHeight < 1) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Dimensiuni invalide',
+        detail: 'Introduceți valori pozitive pentru lățime și înălțime.'
+      });
+      return;
+    }
+    this.loadingService.loadingOn();
+    this.photoAdminService.regenerateThumbnails(this.thumbWidth, this.thumbHeight).subscribe({
+      next: (count) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Thumbnailuri regenerate',
+          detail: `${count} thumbnailuri au fost regenerate la ${this.thumbWidth}x${this.thumbHeight}.`
+        });
+        this.propertiesState.clearCache();
+        if (this.showPropertiesTable) {
+          this.loadPropertiesPage(this.currentPage);
+        } else {
+          this.loadingService.loadingOff();
+        }
+      },
+      error: (err) => {
+        console.error('Eroare la regenerarea thumbnailurilor:', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Eroare',
+          detail: 'Nu s-au putut regenera thumbnailurile.'
+        });
+        this.loadingService.loadingOff();
+      }
+    });
   }
 
   onDeleteAllPhotos() {
@@ -571,3 +763,4 @@ export class AddPropertyComponent {
     }
   }
 }
+
