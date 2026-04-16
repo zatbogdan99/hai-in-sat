@@ -12,6 +12,8 @@ import {YoutubePlayerComponent} from "../youtube-player/youtube-player.component
 import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
 import {PhoneLinkPipe} from "../pipes/phone-link.pipe";
 import {SeoService} from "../service/seo.service";
+import {generateSlug} from "../utils/slug.util";
+import {PropertyType} from "../dto/property-type.enum";
 
 @Component({
   selector: 'app-property-details',
@@ -76,13 +78,37 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
         this.propertyName = prop.name;
         this.propertyDescription = prop.description;
 
+        const slug = generateSlug(prop.type as PropertyType, prop.name);
+        const currentSlug = this.route.snapshot.params['slug'];
+        if (!currentSlug || currentSlug !== slug) {
+          this.router.navigate(['/property', this.propertyId, slug], {
+            replaceUrl: true,
+            queryParamsHandling: 'preserve'
+          });
+        }
+
         const propertyTypeLabel = prop.type === 'land' ? 'Teren' : 'Casă';
+        const canonicalPath = `/property/${this.propertyId}/${slug}`;
         this.seo.updatePageMeta({
           title: `${propertyTypeLabel} de vânzare: ${prop.name} | Hai în Sat`,
           description: `${propertyTypeLabel} de vânzare în Oltenia de sub Munte: ${prop.name}. ${(prop.description || '').replace(/<[^>]*>/g, '').substring(0, 150)}`,
           ogImage: prop.thumbnail,
-          canonicalPath: `/property/${this.propertyId}`
+          canonicalPath
         });
+
+        this.seo.setRealEstateListing({
+          name: `${propertyTypeLabel} de vânzare: ${prop.name}`,
+          description: (prop.description || '').replace(/<[^>]*>/g, '').substring(0, 300),
+          url: canonicalPath,
+          image: prop.thumbnail,
+          propertyType: prop.type as 'house' | 'land'
+        });
+
+        this.seo.setBreadcrumbs([
+          { name: 'Acasă', path: '/' },
+          { name: 'Proprietăți', path: '/properties' },
+          { name: prop.name, path: canonicalPath }
+        ]);
 
         this.images = [];
         this.loadedPhotosCount = 0;
@@ -102,6 +128,7 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
 
     console.log(`[Photos] Cerere batch: offset=${offset}, limit=${limit}`);
 
+    console.log('Aduc pozele pentru property id: ', this.propertyId);
     this.propertyService.getPhotos(this.propertyId, offset, limit).subscribe({
       next: (resp) => {
         this.totalPhotos = resp.total;

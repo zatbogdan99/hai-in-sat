@@ -31,6 +31,10 @@ export class ContactUsComponent implements OnInit{
       description: 'Contactează echipa Hai în Sat pentru informații despre case și terenuri de vânzare în Oltenia de sub Munte. Telefon: 0728140628, email: contact@hai-în-sat.ro.',
       canonicalPath: '/contact-us'
     });
+    this.seo.setBreadcrumbs([
+      { name: 'Acasă', path: '/' },
+      { name: 'Contact', path: '/contact-us' }
+    ]);
 
     const elements = document.querySelectorAll('.text');
 

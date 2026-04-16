@@ -129,6 +129,10 @@ export class UnderTheMountainComponent implements AfterViewInit, OnInit {
       ogImage: 'https://hai-în-sat.ro/assets/poza1_oltenia.avif',
       canonicalPath: '/under-the-mountain'
     });
+    this.seo.setBreadcrumbs([
+      { name: 'Acasă', path: '/' },
+      { name: 'Oltenia de sub Munte', path: '/under-the-mountain' }
+    ]);
   }
 
   nextButton() {

@@ -22,6 +22,7 @@ export const appRoutes: Routes = [
   { path: 'under-the-mountain', component: UnderTheMountainComponent },
   { path: 'see-the-area', component: SeeTheAreaComponent },
   { path: 'properties', component: PropertiesComponent },
+  { path: 'property/:id/:slug', component: PropertyDetailsComponent },
   { path: 'property/:id', component: PropertyDetailsComponent },
   { path: 'village-of-the-month', component: VillageOfTheMonthComponent },
   { path: 'login', component: LoginComponent },

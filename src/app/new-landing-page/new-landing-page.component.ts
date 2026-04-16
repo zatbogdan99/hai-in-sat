@@ -17,6 +17,10 @@ export class NewLandingPageComponent implements OnInit {
       ogImage: 'https://hai-în-sat.ro/assets/poza_landing1.avif',
       canonicalPath: '/'
     });
+    this.seo.setBreadcrumbs([
+      { name: 'Acasă', path: '/' }
+    ]);
+    this.seo.removeJsonLd('real-estate-listing');
   }
 
   goToHomeFormPage() {

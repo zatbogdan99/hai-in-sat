@@ -32,6 +32,8 @@ import { PropertyFormEmailServiceService } from "../service/property-form-email-
 import { PropertiesStateService, PropertyTypeFilter } from "../service/properties-state-service/properties-state.service";
 import { SeoService } from "../service/seo.service";
 import { FormStatesUtil } from "../utils/form-states-util";
+import { generateSlug } from "../utils/slug.util";
+import { PropertyType } from "../dto/property-type.enum";
 
 const trimControlValue = (control: AbstractControl | null | undefined): string => {
   const value = control?.value;
@@ -140,6 +142,11 @@ export class PropertiesComponent implements OnInit {
       description: 'Explorează proprietăți de vânzare: case tradiționale și terenuri în sate din Oltenia de sub Munte, județul Vâlcea. Prețuri accesibile, locuri autentice.',
       canonicalPath: '/properties'
     });
+    this.seo.setBreadcrumbs([
+      { name: 'Acasă', path: '/' },
+      { name: 'Proprietăți', path: '/properties' }
+    ]);
+    this.seo.removeJsonLd('real-estate-listing');
 
     const queryParams = this.route.snapshot.queryParamMap;
     const pageParam = queryParams.get('page');
@@ -290,7 +297,8 @@ export class PropertiesComponent implements OnInit {
   viewPropertyDetails(property: PropertyDTO) {
     console.log('Viewing property details:', property);
     if (property && property.id) {
-      this.router.navigate(['/property', property.id], {
+      const slug = generateSlug(property.type as PropertyType, property.name);
+      this.router.navigate(['/property', property.id, slug], {
         queryParams: {
           page: this.page,
           size: this.size,

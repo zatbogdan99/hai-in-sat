@@ -27,6 +27,10 @@ export class AboutUsComponent implements OnInit, AfterViewInit{
       ogImage: 'https://hai-în-sat.ro/assets/contact.avif',
       canonicalPath: '/about-us'
     });
+    this.seo.setBreadcrumbs([
+      { name: 'Acasă', path: '/' },
+      { name: 'Despre noi', path: '/about-us' }
+    ]);
   }
 
   ngAfterViewInit(): void {

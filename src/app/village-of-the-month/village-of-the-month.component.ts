@@ -131,6 +131,11 @@ export class VillageOfTheMonthComponent implements OnInit {
       description: `Descoperă satul ${this.data[this.villageId].title} din Oltenia de sub Munte. Locuri care spun povești, tradiții autentice și peisaje montane spectaculoase în județul Vâlcea.`,
       canonicalPath: '/village-of-the-month'
     });
+    this.seo.setBreadcrumbs([
+      { name: 'Acasă', path: '/' },
+      { name: 'Oltenia de sub Munte', path: '/under-the-mountain' },
+      { name: this.data[this.villageId].title, path: '/village-of-the-month' }
+    ]);
 
     gsap.registerPlugin(ScrollTrigger);
 
