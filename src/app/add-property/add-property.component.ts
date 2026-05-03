@@ -20,7 +20,7 @@ import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { PaginatorModule } from 'primeng/paginator';
-import { forkJoin, firstValueFrom } from 'rxjs';
+import { forkJoin, firstValueFrom, map } from 'rxjs';
 import { PropertiesStateService } from '../service/properties-state-service/properties-state.service';
 
 @Component({
@@ -78,6 +78,15 @@ export class AddPropertyComponent {
   replaceThumbnailFile: File | null = null;
   replaceThumbnailPreviewUrl: string | null = null;
   selectedThumbnailProperty: PropertyDTO | null = null;
+
+  deletePropertyPhotosDialogVisible = false;
+  selectedDeletePhotosProperty: PropertyDTO | null = null;
+
+  deleteAllPhotosDialogVisible = false;
+
+  editDescriptionDialogVisible = false;
+  editDescriptionProperty: PropertyDTO | null = null;
+  editDescriptionValue: string = '';
 
   constructor(
     public store: PropertyTypeStore,
@@ -538,22 +547,23 @@ export class AddPropertyComponent {
   }
 
   onDeletePropertyPhotos(property: PropertyDTO) {
-    const trimmed = (property.id ?? '').trim();
-    if (!trimmed) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Lipsă ID',
-        detail: 'Nu am găsit ID-ul proprietății.'
-      });
-      return;
-    }
+    this.selectedDeletePhotosProperty = property;
+    this.deletePropertyPhotosDialogVisible = true;
+  }
+
+  confirmDeletePropertyPhotos() {
+    const property = this.selectedDeletePhotosProperty;
+    const trimmed = (property?.id ?? '').trim();
+    if (!trimmed) return;
+
+    this.deletePropertyPhotosDialogVisible = false;
     this.loadingService.loadingOn();
     this.photoAdminService.deletePhotosForProperty(trimmed).subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',
           summary: 'Poze șterse',
-          detail: `Toate pozele proprietății "${property.name}" au fost șterse.`
+          detail: `Toate pozele proprietății "${property?.name}" au fost șterse.`
         });
         this.propertiesState.clearCache();
         this.loadPropertiesPage(this.currentPage);
@@ -606,7 +616,49 @@ export class AddPropertyComponent {
     });
   }
 
+  openEditDescription(property: PropertyDTO) {
+    this.editDescriptionProperty = property;
+    this.editDescriptionValue = property.description ?? '';
+    this.editDescriptionDialogVisible = true;
+  }
+
+  saveDescription() {
+    const property = this.editDescriptionProperty;
+    if (!property?.id) return;
+
+    this.propertyFormService.updateDescription(property.id, this.editDescriptionValue).subscribe({
+      next: () => {
+        property.description = this.editDescriptionValue;
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Descriere actualizată',
+          detail: `Descrierea proprietății "${property.name}" a fost salvată.`
+        });
+        this.closeEditDescription();
+      },
+      error: (err) => {
+        console.error('Eroare la actualizarea descrierii:', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Eroare',
+          detail: 'Nu s-a putut salva descrierea.'
+        });
+      }
+    });
+  }
+
+  closeEditDescription() {
+    this.editDescriptionDialogVisible = false;
+    this.editDescriptionProperty = null;
+    this.editDescriptionValue = '';
+  }
+
   onDeleteAllPhotos() {
+    this.deleteAllPhotosDialogVisible = true;
+  }
+
+  confirmDeleteAllPhotos() {
+    this.deleteAllPhotosDialogVisible = false;
     this.photoAdminService.deleteAllPhotos().subscribe({
       next: () => {
         this.messageService.add({
@@ -737,6 +789,121 @@ export class AddPropertyComponent {
     this.replacePreviewUrls = [];
     if (this.replaceGalleryInput?.nativeElement) {
       this.replaceGalleryInput.nativeElement.value = '';
+    }
+  }
+
+  isLocalhost(): boolean {
+    return window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  }
+
+  async onDebugInfo() {
+    if (!this.isLocalhost()) return;
+
+    console.log('%c=== DEBUG: Fetching all properties and photos ===', 'color: #ff6600; font-size: 14px; font-weight: bold;');
+
+    try {
+      // 1. Fetch ALL properties (all pages)
+      const firstPage = await firstValueFrom(this.propertyFormService.getPropertiesPage(0, 100));
+      const allProperties = Array.isArray(firstPage?.content) ? firstPage.content : [];
+      const totalPages = firstPage?.totalPages ?? 1;
+
+      for (let page = 1; page < totalPages; page++) {
+        const resp = await firstValueFrom(this.propertyFormService.getPropertiesPage(page, 100));
+        if (resp?.content) allProperties.push(...resp.content);
+      }
+
+      const propertyIds = new Set(allProperties.map(p => p.id).filter(Boolean));
+
+      console.log(`%c📋 Total proprietăți: ${allProperties.length}`, 'color: #2196F3; font-weight: bold;');
+      console.table(allProperties.map(p => ({
+        id: p.id,
+        name: p.name,
+        type: p.type,
+        hasThumbnail: !!(p.thumbnail && p.thumbnail.trim()),
+        sortOrder: p.sortOrder
+      })));
+
+      // 2. Fetch photo count per property
+      console.log('%c\n📸 Fetching photos per property...', 'color: #4CAF50; font-weight: bold;');
+
+      const photoResults: { propertyId: string; propertyName: string; photoCount: number }[] = [];
+      const propertiesWithNoPhotos: { id: string; name: string; type: string }[] = [];
+
+      for (const prop of allProperties) {
+        if (!prop.id) continue;
+        try {
+          const photosResp = await firstValueFrom(
+            this.propertyFormService.getPhotos(prop.id, 0, 1)
+          );
+          const total = photosResp?.total ?? 0;
+          photoResults.push({
+            propertyId: prop.id,
+            propertyName: prop.name,
+            photoCount: total
+          });
+          if (total === 0) {
+            propertiesWithNoPhotos.push({ id: prop.id, name: prop.name, type: prop.type });
+          }
+        } catch (err) {
+          console.error(`  Error fetching photos for "${prop.name}" (${prop.id}):`, err);
+          photoResults.push({
+            propertyId: prop.id!,
+            propertyName: prop.name,
+            photoCount: -1
+          });
+        }
+      }
+
+      console.log('%c\n📊 Photo count per property:', 'color: #9C27B0; font-weight: bold;');
+      console.table(photoResults);
+
+      if (propertiesWithNoPhotos.length > 0) {
+        console.log(`%c\n⚠️ Proprietăți FĂRĂ poze (${propertiesWithNoPhotos.length}):`, 'color: #FF5722; font-weight: bold; font-size: 13px;');
+        console.table(propertiesWithNoPhotos);
+      } else {
+        console.log('%c\n✅ Toate proprietățile au cel puțin o poză.', 'color: #4CAF50; font-weight: bold;');
+      }
+
+      // 3. Fetch ALL photos from the "photos" table and check orphans
+      console.log('%c\n🗄️ Fetching ALL photos from database (photos table)...', 'color: #E91E63; font-weight: bold;');
+
+      try {
+        const allPhotos = await firstValueFrom(this.photoAdminService.getAllPhotosMetadata());
+        console.log(`%c Total poze în tabela "photos": ${allPhotos.length}`, 'color: #E91E63; font-weight: bold;');
+        console.table(allPhotos.map(p => ({
+          photoId: p.photoId,
+          propertyId: p.propertyId,
+          hasData: p.hasData,
+          propertyExists: propertyIds.has(p.propertyId) ? 'DA' : '⚠️ NU'
+        })));
+
+        const orphanPhotos = allPhotos.filter(p => !propertyIds.has(p.propertyId));
+        if (orphanPhotos.length > 0) {
+          console.log(`%c\n🚨 POZE ORFANE - ${orphanPhotos.length} poze NU sunt legate de nicio proprietate existentă:`, 'color: #F44336; font-weight: bold; font-size: 13px;');
+          console.table(orphanPhotos.map(p => ({
+            photoId: p.photoId,
+            propertyId: p.propertyId,
+            hasData: p.hasData
+          })));
+
+          const orphanPropertyIds = [...new Set(orphanPhotos.map(p => p.propertyId))];
+          console.log(`%c\n Property IDs orfane (${orphanPropertyIds.length} unice):`, 'color: #F44336;');
+          orphanPropertyIds.forEach(id => {
+            const count = orphanPhotos.filter(p => p.propertyId === id).length;
+            console.log(`   ${id} → ${count} poze`);
+          });
+        } else {
+          console.log('%c\n✅ Nicio poză orfană. Toate pozele sunt legate de proprietăți existente.', 'color: #4CAF50; font-weight: bold;');
+        }
+      } catch (err) {
+        console.error('%c\n❌ Nu s-au putut aduce pozele din baza de date. Asigură-te că backend-ul rulează local cu endpoint-ul /debug/all-photos-metadata', 'color: #F44336;');
+        console.error(err);
+      }
+
+      console.log('%c\n=== DEBUG COMPLETE ===', 'color: #ff6600; font-size: 14px; font-weight: bold;');
+
+    } catch (err) {
+      console.error('Debug info failed:', err);
     }
   }
 

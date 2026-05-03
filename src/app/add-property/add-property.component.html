@@ -85,18 +85,19 @@
     <div class="actions">
       <button pButton type="button" label="Save" (click)="onSave()"></button>
       <button pButton type="button" label="Show properties" class="p-button-secondary" (click)="onShowProperties()"></button>
-      <button pButton type="button" label="Șterge toate pozele" class="p-button-danger" (click)="onDeleteAllPhotos()"></button>
+<!--      <button pButton type="button" label="Șterge toate pozele" class="p-button-danger" (click)="onDeleteAllPhotos()"></button>-->
+<!--      <button *ngIf="isLocalhost()" pButton type="button" label="Debug informations" class="p-button-warning p-button-outlined" (click)="onDebugInfo()"></button>-->
     </div>
 
-    <div class="thumbnail-regen-section">
-      <div class="thumbnail-regen-label">Regenerare thumbnailuri (localhost)</div>
-      <div class="thumbnail-regen-controls">
-        <input type="number" [(ngModel)]="thumbWidth" [ngModelOptions]="{standalone: true}" placeholder="Lățime" min="1" class="thumb-input" />
-        <span>x</span>
-        <input type="number" [(ngModel)]="thumbHeight" [ngModelOptions]="{standalone: true}" placeholder="Înălțime" min="1" class="thumb-input" />
-        <button pButton type="button" label="Regenerează thumbnailuri" class="p-button-info" (click)="onRegenerateThumbnails()"></button>
-      </div>
-    </div>
+<!--    <div class="thumbnail-regen-section">-->
+<!--      <div class="thumbnail-regen-label">Regenerare thumbnailuri (localhost)</div>-->
+<!--      <div class="thumbnail-regen-controls">-->
+<!--        <input type="number" [(ngModel)]="thumbWidth" [ngModelOptions]="{standalone: true}" placeholder="Lățime" min="1" class="thumb-input" />-->
+<!--        <span>x</span>-->
+<!--        <input type="number" [(ngModel)]="thumbHeight" [ngModelOptions]="{standalone: true}" placeholder="Înălțime" min="1" class="thumb-input" />-->
+<!--        <button pButton type="button" label="Regenerează thumbnailuri" class="p-button-info" (click)="onRegenerateThumbnails()"></button>-->
+<!--      </div>-->
+<!--    </div>-->
   </form>
 
   <input
@@ -166,6 +167,7 @@
             <button pButton type="button" label="Adaugă o poză" class="p-button-success" (click)="openAddPhoto(property)"></button>
             <button pButton type="button" label="Schimbă poza principală" class="p-button-warning" (click)="openReplaceThumbnail(property)"></button>
             <button pButton type="button" label="Regen. thumbnail" class="p-button-info p-button-outlined" (click)="onRegenerateThumbnailForProperty(property)"></button>
+            <button pButton type="button" label="Edit details" class="p-button-secondary p-button-outlined" (click)="openEditDescription(property)"></button>
           </td>
         </tr>
       </ng-template>
@@ -178,6 +180,39 @@
       (onPageChange)="onPropertiesPageChange($event)">
     </p-paginator>
   </div>
+
+  <p-dialog
+    header="Șterge pozele proprietății"
+    [modal]="true"
+    [(visible)]="deletePropertyPhotosDialogVisible"
+    [style]="{ width: '35rem' }"
+    [breakpoints]="{ '1199px': '60vw', '575px': '90vw' }">
+    <p class="dialog-text">
+      Ești sigur că vrei să ștergi <b>toate pozele</b> proprietății
+      <b>{{ selectedDeletePhotosProperty?.name }}</b>?
+      Această acțiune este <b>ireversibilă</b>.
+    </p>
+    <div class="dialog-actions">
+      <button pButton type="button" label="Da, șterge pozele" class="p-button-danger" (click)="confirmDeletePropertyPhotos()"></button>
+      <button pButton type="button" label="Renunță" class="p-button-secondary" (click)="deletePropertyPhotosDialogVisible = false"></button>
+    </div>
+  </p-dialog>
+
+  <p-dialog
+    header="Șterge TOATE pozele"
+    [modal]="true"
+    [(visible)]="deleteAllPhotosDialogVisible"
+    [style]="{ width: '35rem' }"
+    [breakpoints]="{ '1199px': '60vw', '575px': '90vw' }">
+    <p class="dialog-text">
+      Ești sigur că vrei să ștergi <b>toate pozele din baza de date</b> pentru toate proprietățile?
+      Această acțiune este <b>ireversibilă</b> și afectează <b>toate proprietățile</b>.
+    </p>
+    <div class="dialog-actions">
+      <button pButton type="button" label="Da, șterge tot" class="p-button-danger" (click)="confirmDeleteAllPhotos()"></button>
+      <button pButton type="button" label="Renunță" class="p-button-secondary" (click)="deleteAllPhotosDialogVisible = false"></button>
+    </div>
+  </p-dialog>
 
   <p-dialog
     header="Înlocuire poze"
@@ -198,6 +233,28 @@
     <div class="dialog-actions">
       <button pButton type="button" label="Da" (click)="confirmReplacePhotos()"></button>
       <button pButton type="button" label="Renunță" class="p-button-secondary" (click)="closeReplaceDialog()"></button>
+    </div>
+  </p-dialog>
+
+  <p-dialog
+    header="Editează descrierea"
+    [modal]="true"
+    [(visible)]="editDescriptionDialogVisible"
+    [style]="{ width: '45rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+    (onHide)="closeEditDescription()">
+    <p class="dialog-text">
+      Editează descrierea proprietății <b>{{ editDescriptionProperty?.name }}</b>:
+    </p>
+    <textarea
+      [(ngModel)]="editDescriptionValue"
+      [ngModelOptions]="{ standalone: true }"
+      rows="8"
+      style="width: 100%; resize: vertical; padding: 0.5rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 4px;">
+    </textarea>
+    <div class="dialog-actions">
+      <button pButton type="button" label="Salvează" class="p-button-success" (click)="saveDescription()"></button>
+      <button pButton type="button" label="Renunță" class="p-button-secondary" (click)="closeEditDescription()"></button>
     </div>
   </p-dialog>
 

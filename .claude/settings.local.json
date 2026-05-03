@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -E \"\\\\.\\(html|xml|txt\\)$\")",
+      "Bash(grep -E \"\\\\.\\(ts|html\\)$\")",
+      "Bash(xargs grep:*)",
+      "Bash(grep -r \"thumbnail\\\\|gallery\\\\|photos\" '/c/Users/Bogd/Desktop/Hai in sat/hai-in-sat/hai-in-sat/src/app' --include=*.ts --include=*.html)",
+      "Bash(npx ng:*)",
+      "Bash(ng build *)",
+      "Bash(echo \"---exit:$?---\")",
+      "Bash(tasklist)"
+    ]
+  }
+}

@@ -37,6 +37,7 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
   propertyDescription: string = '';
   images: any[] = [];
   currentIndex: number = 0;
+  private isAnimating = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -148,7 +149,7 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
         if (offset === 0) {
           this.loadingService.loadingOff();
           if (this.images.length) {
-            this.goToSlide(0);
+            setTimeout(() => this.goToSlide(0));
           }
           if (this.loadedPhotosCount < this.totalPhotos) {
             console.log(`[Photos] Încărcare background: mai sunt ${this.totalPhotos - this.loadedPhotosCount} poze`);
@@ -175,36 +176,45 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
   }
 
   goToSlide(index: number): void {
-    const track = this.carouselTrack.nativeElement;
+    const track = this.carouselTrack?.nativeElement;
+    if (!track) return;
+
     const slides = track.querySelectorAll('.gsap-carousel-slide') as NodeListOf<HTMLElement>;
+
+    // Initial setup: make the target slide visible without animation
+    if (this.currentIndex === index) {
+      const slide = slides[index];
+      if (slide) {
+        gsap.set(slide, { xPercent: 0, opacity: 1, pointerEvents: 'auto', zIndex: 2 });
+      }
+      return;
+    }
+
+    if (this.isAnimating) return;
 
     const currentSlide = slides[this.currentIndex];
     const nextSlide = slides[index];
-    if (!currentSlide || !nextSlide || this.currentIndex === index) return;
+    if (!currentSlide || !nextSlide) return;
 
     const direction = index > this.currentIndex ? 1 : -1;
+    this.currentIndex = index;
+    this.isAnimating = true;
 
     const tl = gsap.timeline({
-      defaults: { duration: 0.6, ease: 'power2.inOut' }
+      defaults: { duration: 0.5, ease: 'power2.inOut' },
+      onComplete: () => { this.isAnimating = false; }
     });
 
-    tl.to(currentSlide, {
-      xPercent: -100 * direction,
-      opacity: 0,
-      zIndex: 1,
-      pointerEvents: 'none',
-      onComplete: () => {
-        gsap.set(currentSlide, { clearProps: 'all' });
-      }
-    });
+    tl.fromTo(currentSlide,
+      { xPercent: 0, opacity: 1, pointerEvents: 'auto' },
+      { xPercent: -100 * direction, opacity: 0, pointerEvents: 'none', zIndex: 1 }
+    );
 
-    tl.to(nextSlide, {
-      xPercent: 0,
-      opacity: 1,
-      zIndex: 2
-    }, '<');
-
-    this.currentIndex = index;
+    tl.fromTo(nextSlide,
+      { xPercent: 100 * direction, opacity: 0, pointerEvents: 'none' },
+      { xPercent: 0, opacity: 1, pointerEvents: 'auto', zIndex: 2 },
+      '<'
+    );
   }
 
   prevSlide(): void {

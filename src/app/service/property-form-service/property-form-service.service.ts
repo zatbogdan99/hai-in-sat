@@ -76,6 +76,13 @@ export class PropertyFormServiceService {
     );
   }
 
+  updateDescription(id: string, description: string): Observable<PropertyDTO> {
+    return this.http.patch<PropertyDTO>(
+      `${this.updateSortOrderBaseUrl}/${encodeURIComponent(id)}/description`,
+      { description }
+    );
+  }
+
   deleteProperty(id: string): Observable<any> {
     return this.http.delete(`${this.deletePropertyUrl}?id=${encodeURIComponent(id)}`);
   }

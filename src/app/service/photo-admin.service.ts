@@ -44,6 +44,12 @@ export class PhotoAdminService {
     return this.http.post<void>(`${this.baseUrl}/add-photo`, { propertyId, photo });
   }
 
+  getAllPhotosMetadata(): Observable<{ photoId: string; propertyId: string; hasData: string }[]> {
+    return this.http.get<{ photoId: string; propertyId: string; hasData: string }[]>(
+      `${this.baseUrl}/debug/all-photos-metadata`
+    );
+  }
+
   replacePhotos(request: ReplacePhotosRequest): Observable<void> {
     const httpOptions = {
       headers: new HttpHeaders({
