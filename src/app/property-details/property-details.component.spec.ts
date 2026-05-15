@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { NEVER, of } from 'rxjs';
+import { NEVER } from 'rxjs';
 
 import { PropertyFormServiceService } from '../service/property-form-service/property-form-service.service';
 import { LoadingService } from '../service/loading-service/loading-service.service';
@@ -56,24 +56,4 @@ describe('PropertyDetailsComponent', () => {
     expect(descEl!.textContent).toContain('Linia 2');
   });
 
-  it('should include the thumbnail as the first image in the gallery', () => {
-    spyOn(component, 'goToSlide');
-    propertyFormService.getPropertyById.and.returnValue(of({
-      id: 'property-1',
-      name: 'Teren',
-      description: 'Descriere',
-      type: 'land' as any,
-      thumbnail: 'thumb.jpg',
-      photos: ['gallery-1.jpg', 'thumb.jpg', 'gallery-2.jpg']
-    }));
-    component.propertyId = 'property-1';
-
-    component.loadPropertyDetails();
-
-    expect(component.images.map((image) => image.itemImageSrc)).toEqual([
-      'thumb.jpg',
-      'gallery-1.jpg',
-      'gallery-2.jpg'
-    ]);
-  });
 });

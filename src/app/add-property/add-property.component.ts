@@ -1,4 +1,5 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, DestroyRef, ElementRef, inject, ViewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -57,6 +58,8 @@ export class AddPropertyComponent {
 
   mainPhotoPreviewUrl: string | null = null;
   galleryPreviewUrls: string[] = [];
+
+  private destroyRef = inject(DestroyRef);
 
   properties: PropertyDTO[] = [];
   totalRecords = 0;
@@ -176,7 +179,9 @@ export class AddPropertyComponent {
       photos: gallery
     };
 
-    this.propertyFormService.saveProperty(payload).subscribe({
+    this.propertyFormService.saveProperty(payload)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (resp) => {
         this.messageService.add({
           severity: 'success',
@@ -216,7 +221,9 @@ export class AddPropertyComponent {
       });
       return;
     }
-    this.propertyFormService.deleteProperty(trimmed).subscribe({
+    this.propertyFormService.deleteProperty(trimmed)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',
@@ -261,7 +268,9 @@ export class AddPropertyComponent {
     if (newOrder == null || !property.id) {
       return;
     }
-    this.propertyFormService.updateSortOrder(property.id, newOrder).subscribe({
+    this.propertyFormService.updateSortOrder(property.id, newOrder)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         property.sortOrder = newOrder;
         property._pendingSortOrder = null;
@@ -301,7 +310,9 @@ export class AddPropertyComponent {
     try {
       this.loadingService.loadingOn();
       const base64 = await this.fileToBase64(file);
-      this.photoAdminService.addPhoto(this.selectedAddPhotoProperty.id, base64).subscribe({
+      this.photoAdminService.addPhoto(this.selectedAddPhotoProperty.id, base64)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
         next: () => {
           this.messageService.add({
             severity: 'success',
@@ -385,7 +396,9 @@ export class AddPropertyComponent {
         thumbnail: existingThumbnail || fallbackThumbnail,
         photos: existingThumbnail ? photosBase64 : fallbackGalleryPhotos
       };
-      this.photoAdminService.replacePhotos(payload).subscribe({
+      this.photoAdminService.replacePhotos(payload)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
         next: () => {
           this.messageService.add({
             severity: 'success',
@@ -474,7 +487,9 @@ export class AddPropertyComponent {
         propertyId: this.selectedThumbnailProperty.id,
         thumbnail: thumbnailBase64
       };
-      this.photoAdminService.replacePhotos(payload).subscribe({
+      this.photoAdminService.replacePhotos(payload)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
         next: () => {
           this.messageService.add({
             severity: 'success',
@@ -524,7 +539,9 @@ export class AddPropertyComponent {
       return;
     }
     this.loadingService.loadingOn();
-    this.photoAdminService.regenerateThumbnailForProperty(trimmed, this.thumbWidth, this.thumbHeight).subscribe({
+    this.photoAdminService.regenerateThumbnailForProperty(trimmed, this.thumbWidth, this.thumbHeight)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',
@@ -558,7 +575,9 @@ export class AddPropertyComponent {
 
     this.deletePropertyPhotosDialogVisible = false;
     this.loadingService.loadingOn();
-    this.photoAdminService.deletePhotosForProperty(trimmed).subscribe({
+    this.photoAdminService.deletePhotosForProperty(trimmed)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',
@@ -590,7 +609,9 @@ export class AddPropertyComponent {
       return;
     }
     this.loadingService.loadingOn();
-    this.photoAdminService.regenerateThumbnails(this.thumbWidth, this.thumbHeight).subscribe({
+    this.photoAdminService.regenerateThumbnails(this.thumbWidth, this.thumbHeight)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (count) => {
         this.messageService.add({
           severity: 'success',
@@ -626,7 +647,9 @@ export class AddPropertyComponent {
     const property = this.editDescriptionProperty;
     if (!property?.id) return;
 
-    this.propertyFormService.updateDescription(property.id, this.editDescriptionValue).subscribe({
+    this.propertyFormService.updateDescription(property.id, this.editDescriptionValue)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         property.description = this.editDescriptionValue;
         this.messageService.add({
@@ -659,7 +682,9 @@ export class AddPropertyComponent {
 
   confirmDeleteAllPhotos() {
     this.deleteAllPhotosDialogVisible = false;
-    this.photoAdminService.deleteAllPhotos().subscribe({
+    this.photoAdminService.deleteAllPhotos()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',
@@ -680,7 +705,9 @@ export class AddPropertyComponent {
 
   private loadPropertiesPage(page: number) {
     this.loadingService.loadingOn();
-    this.propertyFormService.getPropertiesPage(page, this.pageSize).subscribe({
+    this.propertyFormService.getPropertiesPage(page, this.pageSize)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (resp) => {
         this.currentPage = page;
         const content = resp?.content ?? [];
@@ -747,7 +774,9 @@ export class AddPropertyComponent {
       return;
     }
 
-    forkJoin(updates).subscribe({
+    forkJoin(updates)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',

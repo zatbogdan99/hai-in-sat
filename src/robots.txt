@@ -7,6 +7,9 @@ Allow: /
 # Sitemap
 Sitemap: https://hai-în-sat.ro/sitemap.xml
 
+# AI policy: see /llms.txt
+# https://hai-în-sat.ro/llms.txt
+
 # Disallow admin/login pages
 Disallow: /login
 Disallow: /add-property

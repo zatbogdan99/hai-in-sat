@@ -1,4 +1,6 @@
-import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, DestroyRef, inject, Input, OnInit, PLATFORM_ID} from '@angular/core';
+import {isPlatformBrowser} from '@angular/common';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {gsap, Power2} from "gsap";
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import SplitType from "split-type";
@@ -46,13 +48,18 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
   displayFullScreen = false;
   activeIndex = 0;
 
+  private destroyRef = inject(DestroyRef);
+  private platformId = inject(PLATFORM_ID);
+
   constructor(private photoService: PhotoService, private service: DataService, private router: Router) {
-    this.service.village$.subscribe(value => {
-      this.villageId = value;
-      if (this.villageId == 0) {
-        this.router.navigateByUrl("/village-of-the-month");
-      }
-    });
+    this.service.village$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(value => {
+        this.villageId = value;
+        if (this.villageId == 0) {
+          this.router.navigateByUrl("/village-of-the-month");
+        }
+      });
 
     // Populate features for villages
     // Horezu (exact texts as in the mock)
@@ -269,28 +276,30 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    gsap.registerPlugin(ScrollTrigger);
+    if (isPlatformBrowser(this.platformId)) {
+      gsap.registerPlugin(ScrollTrigger);
 
-    let revealContainers = document.querySelectorAll(".reveal");
-    revealContainers.forEach((container) => {
-      let image = container.querySelector("img");
-      let t1 = gsap.timeline({
-        scrollTrigger: {
-          trigger: container,
-        }
+      let revealContainers = document.querySelectorAll(".reveal");
+      revealContainers.forEach((container) => {
+        let image = container.querySelector("img");
+        let t1 = gsap.timeline({
+          scrollTrigger: {
+            trigger: container,
+          }
+        });
+        t1.set(container, {autoAlpha: 1});
+        t1.from(container, 1.5, {
+          xPercent: -100,
+          ease: Power2.easeOut
+        });
+        t1.from(image, 1.5, {
+          xPercent: 100,
+          scale: 1.3,
+          delay: -1.5,
+          ease: Power2.easeOut
+        });
       });
-      t1.set(container, {autoAlpha: 1});
-      t1.from(container, 1.5, {
-        xPercent: -100,
-        ease: Power2.easeOut
-      });
-      t1.from(image, 1.5, {
-        xPercent: 100,
-        scale: 1.3,
-        delay: -1.5,
-        ease: Power2.easeOut
-      });
-    })
+    }
 
     this.responsiveOptions = [
       {

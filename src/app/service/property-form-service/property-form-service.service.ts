@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PropertyDTO } from '../../dto/property.dto';
 
@@ -30,30 +30,13 @@ export class PropertyFormServiceService {
   constructor(private http: HttpClient) {}
 
   saveProperty(formData: PropertyDTO): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'
-      })
-    };
-    return this.http.post(this.savePropertyUrl, formData, httpOptions);
+    return this.http.post(this.savePropertyUrl, formData);
   }
 
   updateSortOrder(id: string, sortOrder: number): Observable<void> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'
-      })
-    };
     return this.http.patch<void>(
       `${this.updateSortOrderBaseUrl}/${encodeURIComponent(id)}/sort-order`,
-      { sortOrder },
-      httpOptions
+      { sortOrder }
     );
   }
 

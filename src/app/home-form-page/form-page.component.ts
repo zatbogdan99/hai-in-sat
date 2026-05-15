@@ -1,4 +1,5 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, DestroyRef, inject, OnInit} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MessageService} from "primeng/api";
 import {HomeFormServiceService} from "../service/home-form-service/home-form-service.service";
@@ -49,6 +50,8 @@ export class FormPageComponent implements OnInit, AfterViewInit{
   politica: boolean = false;
   PropertyType = PropertyType;
 
+  private destroyRef = inject(DestroyRef);
+
   constructor(private messageService: MessageService,
               private homeFormService: HomeFormServiceService,
               public loadingService: LoadingService,
@@ -97,7 +100,9 @@ export class FormPageComponent implements OnInit, AfterViewInit{
         formData.details = this.formGroup.get('details')?.value || '';
         formData.propertyType = this.formGroup.get('propertyType')?.value ?? PropertyType.HOUSE;
         this.loadingService.loadingOn();
-        this.homeFormService.sendHomeEmails(formData).subscribe({
+        this.homeFormService.sendHomeEmails(formData)
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe({
           next: () => {
             this.messageService.add({
               severity: 'success',

@@ -1,0 +1,28 @@
+# Hai în Sat
+
+> Platformă de case și terenuri de vânzare în Oltenia de sub Munte, județul Vâlcea, România. Specializată în proprietăți rurale autentice din zonele Horezu, Polovragi, Costești, Vaideeni, Baia de Fier, Cerna.
+
+## Despre
+
+Hai în Sat (operat de S.C. CORUXMAN IMPEX S.R.L.) este o agenție imobiliară regională care listează proprietăți (case bătrânești, terenuri intravilan/extravilan, ferme) în zona montană a Olteniei, județul Vâlcea. Conținut și interfață în română.
+
+## Pagini principale
+
+- [Acasă](https://hai-în-sat.ro/) — landing și introducere brand
+- [Toate proprietățile](https://hai-în-sat.ro/properties) — listare paginată
+- [Sub munte (regiune)](https://hai-în-sat.ro/under-the-mountain) — profil regional
+- [Satul lunii](https://hai-în-sat.ro/village-of-the-month) — focus pe un sat în fiecare lună
+- [Vezi zona](https://hai-în-sat.ro/see-the-area) — galerie foto regională
+- [Despre noi](https://hai-în-sat.ro/about-us)
+- [Contact](https://hai-în-sat.ro/contact-us)
+
+## Contact
+
+- Telefon: +40 728 140 628
+- Email: contact@xn--hai-n-sat-t5a.ro (formă ASCII)
+- Adresă: Str. Tudor Vladimirescu, Horezu, Vâlcea (cod 245800), România
+
+## Crawler policy
+
+GPTBot, ChatGPT-User, ClaudeBot, PerplexityBot, GoogleOther — allow.
+Non-commercial citation cu link-back permis.

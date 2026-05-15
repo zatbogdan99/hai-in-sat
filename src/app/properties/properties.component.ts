@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LoadingService } from "../service/loading-service/loading-service.service";
 import { GalleriaModule } from "primeng/galleria";
 import { Divider } from "primeng/divider";
@@ -87,6 +88,7 @@ export class PropertiesComponent implements OnInit {
   size: number = 6;
   totalRecords: number = 0;
   totalPages: number = 0;
+  private destroyRef = inject(DestroyRef);
 
   options = [
     { label: 'Listă', value: 'list' },
@@ -181,7 +183,9 @@ export class PropertiesComponent implements OnInit {
     }
 
     this.loadingService.loadingOn();
-    this.propertyFormService.getPropertiesPage(this.page, this.size).subscribe({
+    this.propertyFormService.getPropertiesPage(this.page, this.size)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (resp) => {
         console.log('Apelul initial (paginat):', resp);
         const content = Array.isArray(resp?.content) ? resp.content : [];
@@ -250,7 +254,9 @@ export class PropertiesComponent implements OnInit {
     this.displayModal = false;
 
     this.loadingService.loadingOn();
-    this.propertyFormEmailService.sendPropertyForm(dto).subscribe({
+    this.propertyFormEmailService.sendPropertyForm(dto)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         console.log('Property form sent successfully');
         this.loadingService.loadingOff();
@@ -372,7 +378,9 @@ export class PropertiesComponent implements OnInit {
       return;
     }
 
-    this.propertyFormService.getPropertiesPage(nextPage, this.size).subscribe({
+    this.propertyFormService.getPropertiesPage(nextPage, this.size)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (resp) => {
         const content = Array.isArray(resp?.content) ? resp.content : [];
         const sorted = this.sortPropertiesByOrder(content);

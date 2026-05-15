@@ -1,4 +1,5 @@
-import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PropertyFormServiceService } from '../service/property-form-service/property-form-service.service';
 import { PropertiesStateService, PropertyTypeFilter } from '../service/properties-state-service/properties-state.service';
@@ -38,6 +39,7 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
   images: any[] = [];
   currentIndex: number = 0;
   private isAnimating = false;
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private route: ActivatedRoute,
@@ -50,10 +52,12 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.loadingService.loadingOn();
-    this.route.params.subscribe(params => {
-      this.propertyId = params['id'];
-      this.loadPropertyDetails();
-    });
+    this.route.params
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(params => {
+        this.propertyId = params['id'];
+        this.loadPropertyDetails();
+      });
   }
 
   ngAfterViewInit(): void {
@@ -68,7 +72,9 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
   loadPropertyDetails(): void {
     this.propertyType = BuyEnum.BAIA;
 
-    this.propertyService.getPropertyById(this.propertyId).subscribe({
+    this.propertyService.getPropertyById(this.propertyId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (prop: PropertyDTO) => {
         if (!prop) {
           console.warn('Property not found for id', this.propertyId);
@@ -130,7 +136,9 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
     console.log(`[Photos] Cerere batch: offset=${offset}, limit=${limit}`);
 
     console.log('Aduc pozele pentru property id: ', this.propertyId);
-    this.propertyService.getPhotos(this.propertyId, offset, limit).subscribe({
+    this.propertyService.getPhotos(this.propertyId, offset, limit)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (resp) => {
         this.totalPhotos = resp.total;
         console.log(`[Photos] Răspuns: ${resp.photos.length} poze primite, total în DB: ${resp.total}`);

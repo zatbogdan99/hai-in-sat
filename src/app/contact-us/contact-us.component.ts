@@ -1,4 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit, PLATFORM_ID} from '@angular/core';
+import {isPlatformBrowser} from '@angular/common';
 import { TweenMax } from 'gsap';
 import {gsap} from "gsap";
 import {TimelineLite} from 'gsap';
@@ -21,6 +22,8 @@ export class ContactUsComponent implements OnInit{
   tweens = {};
   tween: any;
 
+  private platformId = inject(PLATFORM_ID);
+
   constructor(private seo: SeoService) {
 
   }
@@ -35,6 +38,10 @@ export class ContactUsComponent implements OnInit{
       { name: 'Acasă', path: '/' },
       { name: 'Contact', path: '/contact-us' }
     ]);
+
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
 
     const elements = document.querySelectorAll('.text');
 
@@ -52,23 +59,23 @@ export class ContactUsComponent implements OnInit{
     });
 
     this.svg = <any>document.querySelector("#svg");
-    this.mouse = this.svg.createSVGPoint();
+    if (this.svg) {
+      this.mouse = this.svg.createSVGPoint();
 
-    this.leftEye = this.createEye("#left-eye");
-    this.rightEye = this.createEye("#right-eye");
+      this.leftEye = this.createEye("#left-eye");
+      this.rightEye = this.createEye("#right-eye");
 
-    this.requestId = null;
+      this.requestId = null;
 
-    window.addEventListener("mousemove", (event) => {
-     this.mouse.x = event.clientX;
-     this.mouse.y = event.clientY;
+      window.addEventListener("mousemove", (event) => {
+       this.mouse.x = event.clientX;
+       this.mouse.y = event.clientY;
 
-      if (!this.requestId) {
-        this.requestId = requestAnimationFrame(() => this.onFrame())
-      }
-    });
-
-
+        if (!this.requestId) {
+          this.requestId = requestAnimationFrame(() => this.onFrame())
+        }
+      });
+    }
   }
 
   bindTextAnimation() {

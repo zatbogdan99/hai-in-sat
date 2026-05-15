@@ -1,4 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, DestroyRef, inject, OnInit} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ViewportScroller } from '@angular/common';
 import {MenuItem} from "primeng/api";
 import {Router, RouterOutlet, NavigationEnd} from "@angular/router";
@@ -43,6 +44,8 @@ export class AppComponent implements OnInit {
   termenii: boolean = false;
   politica: boolean = false;
 
+  private destroyRef = inject(DestroyRef);
+
 
   showPolitica() {
     this.politica = true;
@@ -63,7 +66,7 @@ export class AppComponent implements OnInit {
   constructor(private router: Router, private service: DataService, private viewportScroller: ViewportScroller) {
     // Forțează resetarea poziției de scroll la top la fiecare navigare (inclusiv pe aceeași rută)
     this.router.events
-      .pipe(filter((e) => e instanceof NavigationEnd))
+      .pipe(filter((e) => e instanceof NavigationEnd), takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.viewportScroller.scrollToPosition([0, 0]);
       });
@@ -163,21 +166,25 @@ export class AppComponent implements OnInit {
     // });
 
     // Abonare la semnalele globale pentru deschiderea pop-up-urilor
-    this.service.openTerms$.subscribe((open) => {
-      if (open) {
-        this.termenii = true;
-        // resetăm semnalul pentru a evita reaprinderea nedorită
-        this.service.openTerms$.next(false);
-      }
-    });
+    this.service.openTerms$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((open) => {
+        if (open) {
+          this.termenii = true;
+          // resetăm semnalul pentru a evita reaprinderea nedorită
+          this.service.openTerms$.next(false);
+        }
+      });
 
-    this.service.openPrivacy$.subscribe((open) => {
-      if (open) {
-        this.politica = true;
-        // resetăm semnalul pentru a evita reaprinderea nedorită
-        this.service.openPrivacy$.next(false);
-      }
-    });
+    this.service.openPrivacy$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((open) => {
+        if (open) {
+          this.politica = true;
+          // resetăm semnalul pentru a evita reaprinderea nedorită
+          this.service.openPrivacy$.next(false);
+        }
+      });
   }
 
   goToTikTokPage() {

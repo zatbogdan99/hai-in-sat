@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PropertyFormDTO } from '../../dto/property-form.dto';
 
@@ -13,11 +13,6 @@ export class PropertyFormEmailServiceService {
   constructor(private http: HttpClient) {}
 
   sendPropertyForm(dto: PropertyFormDTO): Observable<void> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.http.post<void>(this.propertiesFormUrl, dto, httpOptions);
+    return this.http.post<void>(this.propertiesFormUrl, dto);
   }
 }

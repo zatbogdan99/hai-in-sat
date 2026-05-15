@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 
 const BASE_URL = 'https://hai-în-sat.ro';
 
@@ -12,10 +13,16 @@ export interface BreadcrumbItem {
   providedIn: 'root'
 })
 export class SeoService {
+  private readonly isBrowser: boolean;
+
   constructor(
     private title: Title,
-    private meta: Meta
-  ) {}
+    private meta: Meta,
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(PLATFORM_ID) platformId: object
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
 
   updatePageMeta(config: {
     title: string;
@@ -48,20 +55,20 @@ export class SeoService {
   }
 
   setJsonLd(id: string, data: object): void {
-    const existingScript = document.querySelector(`script[data-seo-id="${id}"]`);
+    const existingScript = this.document.querySelector(`script[data-seo-id="${id}"]`);
     if (existingScript) {
       existingScript.textContent = JSON.stringify(data);
       return;
     }
-    const script = document.createElement('script');
+    const script = this.document.createElement('script');
     script.setAttribute('type', 'application/ld+json');
     script.setAttribute('data-seo-id', id);
     script.textContent = JSON.stringify(data);
-    document.head.appendChild(script);
+    this.document.head.appendChild(script);
   }
 
   removeJsonLd(id: string): void {
-    document.querySelector(`script[data-seo-id="${id}"]`)?.remove();
+    this.document.querySelector(`script[data-seo-id="${id}"]`)?.remove();
   }
 
   setBreadcrumbs(items: BreadcrumbItem[]): void {
@@ -109,14 +116,12 @@ export class SeoService {
   }
 
   private updateCanonicalUrl(url: string): void {
-    let link: HTMLLinkElement | null = document.querySelector('link[rel="canonical"]');
+    let link: HTMLLinkElement | null = this.document.querySelector('link[rel="canonical"]');
     if (!link) {
-      link = document.createElement('link');
+      link = this.document.createElement('link');
       link.setAttribute('rel', 'canonical');
-      document.head.appendChild(link);
+      this.document.head.appendChild(link);
     }
     link.setAttribute('href', url);
   }
 }
-
-

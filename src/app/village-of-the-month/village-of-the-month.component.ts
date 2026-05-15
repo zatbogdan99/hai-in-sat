@@ -1,4 +1,5 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, HostListener, inject, OnInit, PLATFORM_ID} from '@angular/core';
+import {isPlatformBrowser} from '@angular/common';
 import {DataDto} from "../dto/data.dto";
 import {VgApiService, VgCoreModule} from "@videogular/ngx-videogular/core";
 import {PhotoService} from "../service/photo-service";
@@ -60,6 +61,7 @@ export class VillageOfTheMonthComponent implements OnInit {
 
   isMobile: boolean | undefined;
 
+  private platformId = inject(PLATFORM_ID);
 
   constructor(private photoService: PhotoService,
               public loadingService: LoadingService,
@@ -122,7 +124,9 @@ export class VillageOfTheMonthComponent implements OnInit {
   }
 
   private checkScreenSize() {
-    this.isMobile = window.innerWidth <= 500;
+    if (isPlatformBrowser(this.platformId)) {
+      this.isMobile = window.innerWidth <= 500;
+    }
   }
 
   ngOnInit(): void {
@@ -137,28 +141,30 @@ export class VillageOfTheMonthComponent implements OnInit {
       { name: this.data[this.villageId].title, path: '/village-of-the-month' }
     ]);
 
-    gsap.registerPlugin(ScrollTrigger);
+    if (isPlatformBrowser(this.platformId)) {
+      gsap.registerPlugin(ScrollTrigger);
 
-    let revealContainers = document.querySelectorAll(".reveal");
-    revealContainers.forEach((container) => {
-      let image = container.querySelector("img");
-      let t1 = gsap.timeline({
-        scrollTrigger: {
-          trigger: container,
-        }
+      let revealContainers = document.querySelectorAll(".reveal");
+      revealContainers.forEach((container) => {
+        let image = container.querySelector("img");
+        let t1 = gsap.timeline({
+          scrollTrigger: {
+            trigger: container,
+          }
+        });
+        t1.set(container, {autoAlpha: 1});
+        t1.from(container, 1.5, {
+          xPercent: -100,
+          ease: Power2.easeOut
+        });
+        t1.from(image, 1.5, {
+          xPercent: 100,
+          scale: 1.3,
+          delay: -1.5,
+          ease: Power2.easeOut
+        });
       });
-      t1.set(container, {autoAlpha: 1});
-      t1.from(container, 1.5, {
-        xPercent: -100,
-        ease: Power2.easeOut
-      });
-      t1.from(image, 1.5, {
-        xPercent: 100,
-        scale: 1.3,
-        delay: -1.5,
-        ease: Power2.easeOut
-      });
-    })
+    }
 
     this.responsiveOptions = [
       {

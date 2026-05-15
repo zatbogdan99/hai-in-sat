@@ -1,4 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, DestroyRef, inject, OnInit} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MessageService} from "primeng/api";
 import {TerrainFormServiceService} from "../service/terrain-form-service/terrain-form-service.service";
@@ -49,6 +50,8 @@ export class TerrainFormPageComponent implements OnInit{
   termenii: boolean = false;
   politica: boolean = false;
 
+  private destroyRef = inject(DestroyRef);
+
   constructor(private messageService: MessageService,
               private terrainFormService: TerrainFormServiceService,
               public loadingService: LoadingService,
@@ -81,7 +84,9 @@ export class TerrainFormPageComponent implements OnInit{
         formData.price = 'între ' + this.priceRangeValues[0] + '€ și ' + this.priceRangeValues[1] + '€';
         formData.surface = 'între ' + this.ariaRangeValues[0] + 'km și ' + this.ariaRangeValues[1] + 'km';
         this.loadingService.loadingOn();
-        this.terrainFormService.sendTerrainEmails(formData).subscribe({
+        this.terrainFormService.sendTerrainEmails(formData)
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe({
           next: (response) => {
             this.messageService.add({
               severity: 'success',
