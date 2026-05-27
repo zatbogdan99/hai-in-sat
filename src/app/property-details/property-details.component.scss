@@ -1,15 +1,74 @@
-.carousel-wrapper {
-  position: relative;
-  height: 500px;
-  overflow: hidden;
-  max-width: 80%;
+$beige: #F4EFE5;
+$beige-hover: #E9DFC9;
+$green-dark: #1b3a2a;
+$accent-blue: #005baa;
+$text-strong: #1e1e1e;
+
+.property-details-container {
+  max-width: 1080px;
   margin: 0 auto;
+  padding: 2rem 1rem;
 }
 
-.carousel-track {
+.category-chip {
+  display: inline-block;
+  background: $beige;
+  color: $green-dark;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  margin-bottom: 14px;
+}
+
+.title-row {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.property-title {
+  font-family: var(--font-base);
+  font-size: clamp(2rem, 7vw, 2.5rem);
+  margin: 0.5rem 0;
+  color: $text-strong;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.accent-line {
+  width: 80px;
+  height: 4px;
+  background-color: $accent-blue;
+  border: none;
+  margin: 1rem 0;
+}
+
+.content-section {
+  &::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+}
+
+.media-column {
+  margin-bottom: 24px;
+}
+
+.gallery {
   position: relative;
-  width: 100%;
-  height: 100%;
+  aspect-ratio: 4 / 3;
+  background: #f0f0f0;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 20px 0 10px;
+}
+
+.gallery-track {
+  position: absolute;
+  inset: 0;
 }
 
 .gsap-carousel-slide {
@@ -20,151 +79,380 @@
   height: 100%;
   opacity: 0;
   pointer-events: none;
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
 }
 
-.carousel-controls {
-  display: flex;
-  justify-content: center;
-  margin-top: 1rem;
-  gap: 1rem;
-  max-width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.carousel-button {
-  font-size: 2rem;
-  border: none;
-  background: #fff;
-  border-radius: 50%;
-  width: 3rem;
-  height: 3rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  color: #005baa;
-  transition: all 0.3s ease;
-}
-
-.carousel-button:hover {
-  transform: scale(1.1);
-}
-
-.video-container {
-  max-width: 80%;
-  margin: 0 auto;
-  padding-top: 2rem;
-  height: 30rem;
-}
-
-.small-screen {
-  max-width: 80%;
-  margin: 0 auto;
-  padding-top: 2rem;
-}
-
-.property-details-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-}
-
-.property-content {
-  flex-direction: column;
+.slide-media {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-.property-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-  gap: 1rem;
+.slide-video {
+  background: #000;
+  object-fit: contain;
 }
 
-.property-info {
-  flex: 1;
-  min-width: 280px;
+.gallery-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  border: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  font-size: 20px;
+  color: $accent-blue;
+  display: grid;
+  place-items: center;
+  line-height: 1;
+  padding: 0;
+  z-index: 3;
+  transition: transform 0.2s ease;
 
-  span {
-    color: #555;
+  &:active {
+    transform: translateY(-50%) scale(0.95);
   }
 
-  h1 {
-    font-size: clamp(2rem, 5vw, 3rem);
-    margin: 0.5rem 0;
-    color: #1e1e1e;
-  }
+  &.prev { left: 10px; }
+  &.next { right: 10px; }
+}
 
-  hr {
-    width: 80px;
-    height: 4px;
-    background-color: #005baa;
-    border: none;
-    margin: 1rem 0;
-  }
+.gallery-counter {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.62);
+  color: #fff;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  padding: 5px 10px;
+  border-radius: 9999px;
+  z-index: 3;
+}
 
-  p {
-    max-width: 40rem;
-    color: #444;
-    line-height: 1.6;
+.thumb-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-bottom: 22px;
+
+  .thumb {
+    aspect-ratio: 1 / 1;
+    background: #e8e8e8;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    position: relative;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &.active {
+      opacity: 1;
+      outline: 2px solid $accent-blue;
+      outline-offset: 1px;
+    }
+
+    &.video-thumb::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35);
+    }
+
+    &.video-thumb::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 0;
+      height: 0;
+      border-left: 10px solid #fff;
+      border-top: 7px solid transparent;
+      border-bottom: 7px solid transparent;
+      z-index: 2;
+    }
   }
 }
 
 .property-description {
+  color: #111;
+  line-height: 1.7;
+  font-size: 1rem;
+  overflow-wrap: anywhere;
   white-space: pre-wrap;
   tab-size: 4;
-  overflow-wrap: anywhere;
+  max-width: 40rem;
+  margin: 0 0 28px;
+
+  ul {
+    list-style: disc;
+    padding-left: 1.4rem;
+    margin: 0;
+  }
+
+  li {
+    margin: 0 0 0.35em;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  a.phone {
+    color: $accent-blue;
+    text-decoration: none;
+  }
 }
 
-.back-button {
+.back-action {
   display: flex;
-  align-items: center;
-}
-
-.back-button--mobile {
-  display: none;
   justify-content: center;
-  margin-top: 1rem;
+  margin-top: 12px;
 }
 
-@media (max-width: 56.25rem) {
-  .property-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-    margin-bottom: 0.75rem;
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: $beige;
+  color: $green-dark;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 9999px;
+  font-family: var(--font-base);
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+
+  &:hover,
+  &:active {
+    background: $beige-hover;
+  }
+}
+
+.back-btn--inline {
+  display: none;
+}
+
+/* ─── Branch CU VIDEO ─── */
+
+/* Pe mobil, carusel cu video ca prim slide (vizibil); ascuns pe desktop */
+.mobile-with-video {
+  display: block;
+}
+
+/* Pe mobil, structura desktop (media-row + thumb-strip) este ascunsă.
+   .below-media-row rămâne block pe mobil (doar descrierea în el; thumb-urile sunt ascunse). */
+.media-row,
+.thumb-strip--video-desktop {
+  display: none;
+}
+
+/* Descrierea pentru branch-ul cu video — pe mobil moștenește stilul default;
+   pe desktop primește overrides mai jos */
+.property-description--video {
+  /* moștenește totul din .property-description; setări desktop în media query */
+}
+
+/* Video wrapper (desktop standalone) */
+.video-wrapper {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: #1a1a1a;
+  border-radius: 10px;
+  overflow: hidden;
+
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+}
+
+/* ─── Desktop ≥ 900px ─── */
+@media (min-width: 56.25rem) {
+  .property-details-container {
+    padding: 40px 32px 56px;
   }
 
-  .back-button {
-    order: -1;
+  .category-chip {
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    padding: 7px 16px;
+    margin-bottom: 18px;
   }
 
-  .back-button--header {
+  .title-row {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .property-title {
+    flex: 1 1 auto;
+    font-size: clamp(2rem, 3.5vw, 2.75rem);
+    margin: 0;
+    letter-spacing: -0.005em;
+  }
+
+  .back-btn--inline {
+    display: inline-flex;
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .back-action--bottom {
     display: none;
   }
 
-  .back-button--mobile {
-    display: flex;
+  .accent-line {
+    margin: 22px 0 28px;
   }
 
-  .carousel-wrapper {
-    height: min(70vw, 360px);
-    max-width: 100%;
+  /* ─── No-video desktop: float layout (TASK-44) ─── */
+  .media-column {
+    float: right;
+    width: 55%;
+    margin-left: 32px;
+    margin-bottom: 24px;
   }
 
-  .carousel-controls {
-    max-width: 100%;
+  /* Galeria default pe desktop fără video: 16:10 (TASK-44) */
+  .gallery {
+    aspect-ratio: 16 / 10;
+    border-radius: 10px;
+    margin: 0;
   }
 
-  .gsap-carousel-slide img {
-    object-fit: cover;
+  .gallery-nav {
+    width: 42px;
+    height: 42px;
+    font-size: 22px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.18);
+
+    &:hover {
+      transform: translateY(-50%) scale(1.08);
+    }
+
+    &.prev { left: 14px; }
+    &.next { right: 14px; }
+  }
+
+  .gallery-counter {
+    bottom: 14px;
+    right: 14px;
+    font-size: 12px;
+    padding: 5px 12px;
+  }
+
+  .thumb-strip {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-top: 10px;
+    margin-bottom: 0;
+
+    .thumb {
+      aspect-ratio: 4 / 3;
+      border-radius: 5px;
+
+      &.active {
+        outline-offset: 2px;
+      }
+
+      &:hover {
+        opacity: 1;
+        transform: translateY(-2px);
+      }
+    }
+  }
+
+  .property-description {
+    line-height: 1.75;
+    font-size: 1.0625rem;
+    max-width: none;
+    margin: 0;
+
+    ul {
+      padding-left: 1.6rem;
+    }
+
+    li {
+      margin: 0 0 0.5em;
+    }
+
+    a.phone {
+      border-bottom: 1px solid currentColor;
+      padding-bottom: 1px;
+    }
+  }
+
+  .back-btn {
+    &:hover {
+      background: $beige-hover;
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  /* ─── With-video desktop: grid 2 coloane (TASK-45) ─── */
+  .mobile-with-video {
+    display: none;
+  }
+
+  .media-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 28px;
+  }
+
+  /* Galeria din .media-row trebuie să fie 16:9 (override față de 16:10 default desktop) */
+  .media-row .gallery {
+    aspect-ratio: 16 / 9;
+    margin: 0;
+  }
+
+  /* Sub media-row: grid 2 coloane aliniat cu el (descriere stânga sub video, thumbs dreapta sub galerie) */
+  .below-media-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+    margin-bottom: 48px;
+  }
+
+  .thumb-strip--video-desktop {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 0;
+
+    .thumb {
+      aspect-ratio: 4 / 3;
+      border-radius: 6px;
+    }
+  }
+
+  .property-description--video {
+    max-width: none;
+    margin: 0;
+    line-height: 1.8;
   }
 }
-

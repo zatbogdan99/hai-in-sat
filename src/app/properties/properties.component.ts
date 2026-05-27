@@ -96,8 +96,14 @@ export class PropertiesComponent implements OnInit {
   ];
 
   setPropertyType(type: PropertyTypeFilter) {
+    if (this.propertyType === type) {
+      return;
+    }
     this.propertyType = type;
+    this.page = 0;
     this.propertiesState.setPropertyType(type);
+    this.propertiesState.setPage(0);
+    this.initializeProperties();
   }
 
 
@@ -171,7 +177,7 @@ export class PropertiesComponent implements OnInit {
   }
 
   initializeProperties() {
-    const cached = this.propertiesState.getCachedPage(this.page, this.size);
+    const cached = this.propertiesState.getCachedPage(this.page, this.size, this.propertyType);
     if (cached) {
       this.properties = this.sortPropertiesByOrder(cached);
       this.totalRecords = this.propertiesState.totalRecords || cached.length;
@@ -183,7 +189,7 @@ export class PropertiesComponent implements OnInit {
     }
 
     this.loadingService.loadingOn();
-    this.propertyFormService.getPropertiesPage(this.page, this.size)
+    this.propertyFormService.getPropertiesPage(this.page, this.size, this.propertyType)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: (resp) => {
@@ -196,7 +202,7 @@ export class PropertiesComponent implements OnInit {
         this.propertiesState.setSize(this.size);
         this.propertiesState.setTotalRecords(this.totalRecords);
         this.propertiesState.setTotalPages(this.totalPages);
-        this.propertiesState.setCachedPage(this.page, this.size, this.properties);
+        this.propertiesState.setCachedPage(this.page, this.size, this.propertyType, this.properties);
         this.loadingService.loadingOff();
 
         this.prefetchNextPage();
@@ -315,7 +321,8 @@ export class PropertiesComponent implements OnInit {
   }
 
   getFilteredProperties() {
-    return this.properties.filter(property => property.type === this.propertyType);
+    // Backend-ul filtrează după type; returnăm direct lista deja filtrată.
+    return this.properties;
   }
 
   private sortPropertiesByOrder(properties: PropertyDTO[]): PropertyDTO[] {
@@ -373,18 +380,19 @@ export class PropertiesComponent implements OnInit {
       return;
     }
 
-    const cachedNext = this.propertiesState.getCachedPage(nextPage, this.size);
+    const currentType = this.propertyType;
+    const cachedNext = this.propertiesState.getCachedPage(nextPage, this.size, currentType);
     if (cachedNext) {
       return;
     }
 
-    this.propertyFormService.getPropertiesPage(nextPage, this.size)
+    this.propertyFormService.getPropertiesPage(nextPage, this.size, currentType)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: (resp) => {
         const content = Array.isArray(resp?.content) ? resp.content : [];
         const sorted = this.sortPropertiesByOrder(content);
-        this.propertiesState.setCachedPage(nextPage, this.size, sorted);
+        this.propertiesState.setCachedPage(nextPage, this.size, currentType, sorted);
         console.log(`✅ Prefetched page ${nextPage} (${sorted.length} properties)`);
       },
       error: (err) => {

@@ -54,13 +54,13 @@ export class PropertiesStateService {
     this.propertyTypeSignal.set(type);
   }
 
-  getCachedPage(page: number, size: number): PropertyDTO[] | null {
-    return this.pageCacheSignal().get(this.getCacheKey(page, size)) ?? null;
+  getCachedPage(page: number, size: number, type: PropertyTypeFilter): PropertyDTO[] | null {
+    return this.pageCacheSignal().get(this.getCacheKey(page, size, type)) ?? null;
   }
 
-  setCachedPage(page: number, size: number, properties: PropertyDTO[]): void {
+  setCachedPage(page: number, size: number, type: PropertyTypeFilter, properties: PropertyDTO[]): void {
     const updatedCache = new Map(this.pageCacheSignal());
-    updatedCache.set(this.getCacheKey(page, size), properties);
+    updatedCache.set(this.getCacheKey(page, size, type), properties);
     this.pageCacheSignal.set(updatedCache);
   }
 
@@ -68,7 +68,7 @@ export class PropertiesStateService {
     this.pageCacheSignal.set(new Map());
   }
 
-  private getCacheKey(page: number, size: number): string {
-    return `${page}:${size}`;
+  private getCacheKey(page: number, size: number, type: PropertyTypeFilter): string {
+    return `${page}:${size}:${type}`;
   }
 }

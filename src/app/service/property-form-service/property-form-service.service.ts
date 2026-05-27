@@ -44,8 +44,12 @@ export class PropertyFormServiceService {
     return this.http.get<PageResponse<PropertyDTO>>(this.getAllPropertiesUrl);
   }
 
-  getPropertiesPage(page: number, size: number): Observable<PageResponse<PropertyDTO>> {
-    return this.http.get<PageResponse<PropertyDTO>>(`${this.getAllPropertiesUrl}?page=${encodeURIComponent(page)}&size=${encodeURIComponent(size)}`);
+  getPropertiesPage(page: number, size: number, type?: string | null): Observable<PageResponse<PropertyDTO>> {
+    let url = `${this.getAllPropertiesUrl}?page=${encodeURIComponent(page)}&size=${encodeURIComponent(size)}`;
+    if (type) {
+      url += `&type=${encodeURIComponent(type)}`;
+    }
+    return this.http.get<PageResponse<PropertyDTO>>(url);
   }
 
   getPropertyById(id: string): Observable<PropertyDTO> {

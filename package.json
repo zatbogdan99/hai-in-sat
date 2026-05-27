@@ -13,6 +13,9 @@
     "serve:ssr": "node dist/hai-in-sat/server/main.js",
     "prerender": "ng run hai-in-sat:prerender"
   },
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "^19.2.19",
@@ -56,7 +59,7 @@
     "@types/core-js": "^2.5.8",
     "@types/express": "^4.17.17",
     "@types/jasmine": "~4.3.0",
-    "@types/node": "^18.18.0",
+    "@types/node": "^22.0.0",
     "browser-sync": "^3.0.0",
     "css-loader": "^6.9.1",
     "file-loader": "^6.2.0",

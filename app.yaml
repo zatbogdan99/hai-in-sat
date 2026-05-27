@@ -1,4 +1,8 @@
-runtime: nodejs20
+# DEPLOY EXCLUSIV ÎN PROIECTUL `phrasal-period-415315`:
+#   gcloud app deploy app.yaml --project=phrasal-period-415315
+# (sau setezi gcloud config set project phrasal-period-415315 înainte de deploy)
+# Acesta este proiectul la care e mapat domeniul `hai-în-sat.ro`.
+runtime: nodejs22
 
 instance_class: F2
 

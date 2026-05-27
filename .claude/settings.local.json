@@ -8,7 +8,26 @@
       "Bash(npx ng:*)",
       "Bash(ng build *)",
       "Bash(echo \"---exit:$?---\")",
-      "Bash(tasklist)"
+      "Bash(tasklist)",
+      "WebFetch(domain:www.anthropic.com)",
+      "Bash(npm run *)",
+      "Bash(npx backlog.md --help)",
+      "Bash(npx backlog.md task --help)",
+      "Bash(npx backlog.md task edit --help)",
+      "Bash(npx backlog.md config list)",
+      "Bash(npx backlog.md task list --plain)",
+      "Bash(cd \"../../java.hai-in-sat/hai-in-sat\" && ls 2>&1 | head -20)",
+      "Bash(npx backlog.md task list -s \"Done\" --plain)",
+      "Bash(git mv *)",
+      "Bash(npx backlog.md task edit task-7 -s \"Done\" --check-ac 1 --check-ac 2 --check-ac 3 --check-ac 4 --check-ac 5 --final-summary \"Re-encodat poza_landing1.avif via sharp \\(libvips\\): de la 3352x2235 / 952 KB la 1920x1280 / 580 KB \\(q60 effort 6\\) — reducere ~39%. Generat în plus poza_landing1_mobile.avif \\(768x512 / 94 KB\\) pentru viewports < 768px. AC#1 target original 300 KB ajustat la 600 KB cu acordul user-ului \\(q mai jos ar fi vizibil pe hero la 1920px\\). index.html: două <link rel=preload as=image fetchpriority=high> condiționate de media query, ca să nu descarce ambele variante. SCSS în new-landing-page.component.scss și under-the-mountain.component.scss \\(discover-odsm\\) folosesc varianta mobilă via @media \\(max-width: 767px\\). AC#4 marcat N/A: hero-ul e CSS background-image, nu <img>; CLS-ul e prevenit prin min-height: 100vh pe container. Build:browser OK.\" --plain)",
+      "WebFetch(domain:cresabistrita.ro)",
+      "Bash(ls \"C:/Users/Bogd/Desktop/site cresa/\")",
+      "Bash(mkdir -p \"C:/Users/Bogd/Desktop/site cresa/mockups\")",
+      "Bash(npm list *)",
+      "Bash(npm install *)",
+      "Bash(npm root *)",
+      "Bash(NODE_PATH=\"C:/nvm4w/nodejs/node_modules\" node generate-docx.js)",
+      "Bash(python \"C:/Users/Bogd/AppData/Roaming/Claude/local-agent-mode-sessions/skills-plugin/e3f8fd68-ce69-4427-a0ea-18cba7e07a85/ff1de194-56d3-4297-acee-90f361780d6e/skills/docx/scripts/office/validate.py\" \"C:/Users/Bogd/Desktop/site cresa/files/intrebari.docx\")"
     ]
   }
 }

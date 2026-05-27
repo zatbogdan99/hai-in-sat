@@ -1,0 +1,86 @@
+# =============================================================
+# Hai în Sat — frontend deploy ignore list
+# Strategie: urcă STRICT ce are nevoie GAE la runtime + npm install.
+# Totul restul rămâne local.
+#
+# Ce TREBUIE să ajungă pe GAE:
+#   - app.yaml
+#   - package.json
+#   - yarn.lock
+#   - dist/hai-in-sat/browser/...
+#   - dist/hai-in-sat/server/main.js
+# =============================================================
+
+# Git
+.git/
+.gitignore
+
+# Auto-generated de gcloud
+.gcloudignore
+
+# Dependențe — GAE reinstalează din yarn.lock
+node_modules/
+.npm/
+.yarn/
+
+# IDE — cauza SHA mismatch din build anterior (IntelliJ scrie .idea/workspace.xml constant)
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Angular build cache (poate fi mare și auto-modificat)
+.angular/
+
+# Lockfile alternativ — yarn.lock e sursa de adevăr (vezi CLAUDE.md)
+package-lock.json
+
+# Cod sursă — la runtime serverul folosește doar dist/, nu src/
+src/
+
+# Build & tooling configs — nu sunt necesare la runtime
+angular.json
+tsconfig.json
+tsconfig.app.json
+tsconfig.spec.json
+tsconfig.server.json
+proxy.conf.json
+karma.conf.js
+extra-webpack.config.js
+
+# Scripturi de dev (sitemap rulat local înainte de build)
+scripts/
+
+# Backlog / task management
+backlog/
+
+# Output-uri de audit / explorare
+seo-audit-output/
+
+# Documentație
+*.md
+README*
+LICENSE*
+
+# Variabile sensibile
+.env
+.env.*
+*service-account*.json
+firebase-service-account.json
+
+# Test files
+*.spec.ts
+*.test.ts
+e2e/
+coverage/
+
+# Logs și temp
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.tmp/
+tmp/

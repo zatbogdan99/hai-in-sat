@@ -19,7 +19,7 @@ Production budgets (see `angular.json`): initial bundle warns at 4 MB / errors a
 
 ## Deployment
 
-Deployed to Google App Engine (Node.js 20, F2). `app.yaml` serves `dist/hai-in-sat/` statically and falls back any unmatched route to `index.html` (Angular CSR). Build output must exist at `dist/hai-in-sat/` before deploy.
+Deployed to Google App Engine Standard, runtime `nodejs22`, instance class F2. `app.yaml` `entrypoint: node dist/hai-in-sat/server/main.js` runs the Express SSR server. Static handlers serve `dist/hai-in-sat/browser/...` directly without invoking Node. `automatic_scaling: min_instances: 0` — instances scale to zero on idle (cold start ~1-3s). Both bundles must exist before `gcloud app deploy app.yaml`: `dist/hai-in-sat/browser/` AND `dist/hai-in-sat/server/main.js`.
 
 ## Architecture
 

@@ -477,6 +477,10 @@ section {
   background-size: cover;
   background-position: center;
   padding: clamp(2rem, 6vw, 5rem) 1.25rem 4rem;
+
+  @media (max-width: 767px) {
+    background-image: url('../../assets/poza_landing1_mobile.avif');
+  }
 }
 
 .discover__overlay {

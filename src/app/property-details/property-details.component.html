@@ -3,49 +3,130 @@
 </div>
 
 <main class="property-details-container">
-  <div class="property-content">
-    <div class="property-header">
-      <div class="property-info">
-        <span>Hai în sat</span>
-        <h1>{{ propertyName }}</h1>
-        <hr>
-        <p class="property-description" [innerHTML]="propertyDescription | phoneLink"></p>
-      </div>
-      <div class="back-button back-button--header">
-        <p-button icon="pi pi-arrow-left" label="Înapoi la lista de proprietăți" (onClick)="goBackToProperties()" styleClass="p-button-text"></p-button>
-      </div>
-    </div>
+  <span class="category-chip" *ngIf="propertyKind">{{ categoryLabel }}</span>
 
-    <div class="carousel-wrapper">
-      <div #carouselTrack class="carousel-track">
-        <div *ngFor="let item of images; let i = index"
-             class="gsap-carousel-slide"
-             [class.active]="i === currentIndex">
-          <img [src]="item.itemImageSrc" [alt]="item.alt" />
+  <div class="title-row">
+    <h1 class="property-title">{{ propertyName }}</h1>
+    <button type="button" class="back-btn back-btn--inline" (click)="goBackToProperties()">
+      <span aria-hidden="true">←</span> Înapoi la lista de proprietăți
+    </button>
+  </div>
+
+  <hr class="accent-line" />
+
+  <!-- LAYOUT FĂRĂ VIDEO (TASK-42 mobile + TASK-44 desktop float) -->
+  <section *ngIf="!propertyVideoUrl" class="content-section">
+    <aside class="media-column">
+      <div class="gallery">
+        <div #photoTrack class="gallery-track">
+          <div *ngFor="let slide of photoSlides; let i = index"
+               class="gsap-carousel-slide"
+               [class.active]="i === currentIndex">
+            <img [src]="slide.src" [alt]="slide.alt" class="slide-media" />
+          </div>
+        </div>
+        <button type="button" class="gallery-nav prev" (click)="prevSlide()" aria-label="Imagine anterioară">‹</button>
+        <button type="button" class="gallery-nav next" (click)="nextSlide()" aria-label="Imagine următoare">›</button>
+        <div class="gallery-counter" *ngIf="photoSlides.length">{{ currentIndex + 1 }} / {{ photoSlides.length }}</div>
+      </div>
+
+      <div class="thumb-strip" *ngIf="photoSlides.length > 1">
+        <div *ngFor="let slide of photoSlides.slice(0, 4); let i = index"
+             class="thumb"
+             [class.active]="i === currentIndex"
+             (click)="goToSlide(i)">
+          <img [src]="slide.src" alt="" />
+        </div>
+      </div>
+    </aside>
+
+    <div class="property-description" [innerHTML]="propertyDescription | phoneLink"></div>
+  </section>
+
+  <!-- LAYOUT CU VIDEO (TASK-43 mobile + TASK-45 desktop) -->
+  <ng-container *ngIf="propertyVideoUrl">
+    <!-- Mobil: video integrat ca prim slide în carusel (ascuns pe desktop via CSS) -->
+    <section class="mobile-with-video">
+      <div class="gallery">
+        <div #mobileTrack class="gallery-track">
+          <div *ngFor="let slide of mobileSlides; let i = index"
+               class="gsap-carousel-slide"
+               [class.active]="i === mobileIndex">
+            <img *ngIf="slide.type === 'image'"
+                 [src]="slide.src"
+                 [alt]="slide.alt"
+                 class="slide-media" />
+            <video *ngIf="slide.type === 'video'" #mobileVideoEl
+                   class="slide-media slide-video"
+                   [src]="slide.src"
+                   [poster]="slide.poster || null"
+                   preload="none"
+                   playsinline
+                   controls
+                   [attr.aria-label]="slide.alt"></video>
+          </div>
+        </div>
+        <button type="button" class="gallery-nav prev" (click)="mobilePrev()" aria-label="Anterior">‹</button>
+        <button type="button" class="gallery-nav next" (click)="mobileNext()" aria-label="Următor">›</button>
+        <div class="gallery-counter" *ngIf="mobileSlides.length">{{ mobileIndex + 1 }} / {{ mobileSlides.length }}</div>
+      </div>
+
+      <div class="thumb-strip" *ngIf="mobileSlides.length > 1">
+        <div *ngFor="let slide of mobileSlides.slice(0, 4); let i = index"
+             class="thumb"
+             [class.active]="i === mobileIndex"
+             [class.video-thumb]="slide.type === 'video'"
+             (click)="goToMobileSlide(i)">
+          <img [src]="(slide.type === 'video' ? slide.poster : slide.src) || ''" alt="" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Desktop: video standalone stânga + galerie foto dreapta (ascunse pe mobil via CSS) -->
+    <section class="media-row">
+      <aside class="video-column">
+        <div class="video-wrapper">
+          <video [src]="propertyVideoUrl"
+                 [poster]="propertyVideoPoster || null"
+                 preload="none"
+                 playsinline
+                 controls
+                 [attr.aria-label]="'Tur video — ' + propertyName"></video>
+        </div>
+      </aside>
+
+      <div class="gallery desktop-photo-gallery">
+        <div #photoTrack class="gallery-track">
+          <div *ngFor="let slide of photoSlides; let i = index"
+               class="gsap-carousel-slide"
+               [class.active]="i === currentIndex">
+            <img [src]="slide.src" [alt]="slide.alt" class="slide-media" />
+          </div>
+        </div>
+        <button type="button" class="gallery-nav prev" (click)="prevSlide()" aria-label="Imagine anterioară">‹</button>
+        <button type="button" class="gallery-nav next" (click)="nextSlide()" aria-label="Imagine următoare">›</button>
+        <div class="gallery-counter" *ngIf="photoSlides.length">{{ currentIndex + 1 }} / {{ photoSlides.length }}</div>
+      </div>
+    </section>
+
+    <!-- Sub media-row: grid 2 coloane (descriere stânga sub video, thumbs dreapta sub galerie) -->
+    <div class="below-media-row">
+      <div class="property-description property-description--video" [innerHTML]="propertyDescription | phoneLink"></div>
+
+      <div class="thumb-strip thumb-strip--video-desktop" *ngIf="photoSlides.length > 1">
+        <div *ngFor="let slide of photoSlides.slice(0, 4); let i = index"
+             class="thumb"
+             [class.active]="i === currentIndex"
+             (click)="goToSlide(i)">
+          <img [src]="slide.src" alt="" />
         </div>
       </div>
     </div>
+  </ng-container>
 
-    <div class="carousel-controls">
-      <button class="carousel-button" (click)="prevSlide()">
-        ‹
-      </button>
-      <button class="carousel-button" (click)="nextSlide()">
-        ›
-      </button>
-    </div>
-
-    <div class="back-button back-button--mobile">
-      <p-button icon="pi pi-arrow-left" label="Înapoi la lista de proprietăți" (onClick)="goBackToProperties()" styleClass="p-button-text"></p-button>
-    </div>
-
-    <!-- YouTube video for Milostea property -->
-    <div *ngIf="propertyType === 0" class="video-container large-screen">
-      <app-youtube-player [videoId]="'rhuyNfSvz0s'" [height]="'100%'"></app-youtube-player>
-    </div>
-
-    <div *ngIf="propertyType === 0" class="small-screen">
-      <app-youtube-player [videoId]="'rhuyNfSvz0s'" [height]="'100%'"></app-youtube-player>
-    </div>
+  <div class="back-action back-action--bottom">
+    <button type="button" class="back-btn back-btn--bottom" (click)="goBackToProperties()">
+      <span aria-hidden="true">←</span> Înapoi la lista de proprietăți
+    </button>
   </div>
 </main>
