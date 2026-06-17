@@ -1,0 +1,68 @@
+---
+id: TASK-8
+title: Înregistrează domeniul ASCII hai-in-sat.ro și redirect 301
+status: To Do
+assignee: []
+created_date: '2026-05-07 07:57'
+updated_date: '2026-06-17 15:03'
+labels:
+  - seo
+  - domain
+  - brand-protection
+dependencies: []
+documentation:
+  - ../../seo-audit-output/ACTION-PLAN.md
+priority: high
+---
+
+## Description
+
+<!-- SECTION:DESCRIPTION:BEGIN -->
+## De ce
+
+Domeniul curent este IDN: `hai-în-sat.ro` (Unicode), serializat ca `xn--hai-n-sat-t5a.ro` (punycode). Forma ASCII `hai-in-sat.ro` NU se rezolvă DNS (NXDOMAIN). Mulți utilizatori români tastează fără diacritice (mai ales pe tastaturi mobile setate pe English layout) — acești utilizatori NU pot ajunge pe site.
+
+În plus:
+- **Brand protection**: oricine poate cumpăra `hai-in-sat.ro` și impersona brandul.
+- **SEO marginal**: Google poate trata cele două domenii separat dacă cineva le cumpără; canonicalizare incertă.
+
+## Cum
+
+1. Înregistrează `hai-in-sat.ro` la rotld.ro (registrar oficial .ro) sau intermediar (Hostico, GoDaddy.ro etc.). Cost: ~25 EUR/an.
+2. Configurează DNS: A/AAAA records către IP App Engine sau CNAME către `ghs.googlehosted.com` (dacă folosești App Engine custom domain).
+3. În Google Cloud Console (App Engine → Custom Domains), adaugă `hai-in-sat.ro` ca domeniu mapped la același service. Verifică DNS challenge.
+4. Configurează 301 redirect:
+   - **Variantă A**: în `app.yaml`, adaugă handler care detectează `Host` header == `"hai-in-sat.ro"` și 301 → `"https://xn--hai-n-sat-t5a.ro/<path>"` (păstrează path).
+   - **Variantă B**: două servicii App Engine separate, unul (`hai-in-sat.ro`) doar redirect.
+5. Decide direcția canonică: păstrează `xn--hai-n-sat-t5a.ro` (IDN) ca formă canonică (cum e acum) și redirect dinspre ASCII. SAU schimbă canonicul la ASCII (recomandat pentru consistență internațională, dar necesită update peste tot — JSON-LD, sitemap.xml, OG, `scripts/generate-sitemap.js` `BASE_URL`, `src/app/service/seo.service.ts` `BASE_URL`).
+
+## Recomandare
+
+Păstrează IDN ca formă canonică (rebranding ar fi muncă mai mare), redirectează ASCII → IDN.
+
+## Fișiere afectate
+
+- (nimic în repo dacă păstrezi IDN; tot lucru pe DNS și App Engine console)
+- Dacă schimbi canonical pe ASCII: `src/app/service/seo.service.ts`, `scripts/generate-sitemap.js`, `src/index.html` JSON-LD, `src/sitemap.xml` (regenerat).
+
+## Efort
+
+2 ore (achiziție domeniu, DNS, redirect) + 1-2 zile timp de propagare DNS.
+<!-- SECTION:DESCRIPTION:END -->
+
+## Acceptance Criteria
+<!-- AC:BEGIN -->
+- [ ] #1 DNS lookup pe `hai-in-sat.ro` returnează IP valid (App Engine)
+- [ ] #2 `curl -I https://hai-in-sat.ro/` returnează HTTP 301 cu `Location: https://xn--hai-n-sat-t5a.ro/`
+- [ ] #3 `curl -I https://hai-in-sat.ro/properties` returnează 301 cu `Location: https://xn--hai-n-sat-t5a.ro/properties` (path păstrat)
+- [ ] #4 Certificat SSL valid pe `hai-in-sat.ro` (managed prin App Engine)
+- [ ] #5 Google Search Console: `hai-in-sat.ro` adăugat ca proprietate și verificat (pentru a urmări dacă apar impresii pe forma ASCII)
+<!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Verificare 2026-06-08: Inca valid (tine de DNS/registrar, nu de cod). Nota: CORS-ul backend (SecurityConfig.java:69-77) accepta deja pattern-urile https://hai-in-sat.ro si *.hai-in-sat.ro, deci forma ASCII e pregatita server-side; lipseste doar inregistrarea domeniului + redirect 301. Canonical ramane IDN peste tot in cod.
+
+Cross-ref: redirectul efectiv e tratat de noul TASK-49 (acelasi middleware server.ts) - TASK-49 spune explicit ca preia si ASCII->IDN cand domeniul ASCII exista. TASK-8 ramane pentru inregistrarea domeniului ASCII (DNS/registrar) + GSC. De facut dupa/impreuna cu TASK-49.
+<!-- SECTION:NOTES:END -->
