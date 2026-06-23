@@ -3,7 +3,7 @@ id: TASK-63
 title: >-
   TEST agentflow: adauga 'Test indeplinit cu succes' langa titlul de pe pagina
   principala
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-06-12 19:42'
 labels:
