@@ -27,3 +27,9 @@ You MUST read the overview resource to understand the complete workflow. The inf
 </CRITICAL_INSTRUCTION>
 
 <!-- BACKLOG.MD MCP GUIDELINES END -->
+
+---
+
+## NU face deploy (regulă pentru agenți)
+
+NU rula `gcloud app deploy` (nici `app.yaml --project=phrasal-period-415315`, nici orice alt deploy/publicare în producție). Te oprești la **modificările pe branch-ul `ticket/...` + Pull Request**. Deploy-ul în producție îl face **omul, manual**, după ce aprobă PR-ul. Comenzile de deploy din `CLAUDE.md` sunt doar referință pentru om, nu un pas de executat. (Vezi și `AGENTS.md` din rădăcina workspace-ului.)
