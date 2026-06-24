@@ -1,7 +1,7 @@
 ---
 id: TASK-50
 title: Repară meta tag-urile pe /see-the-area (title, canonical, breadcrumbs)
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-06-12 16:08'
 updated_date: '2026-06-12 16:08'
