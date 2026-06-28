@@ -9,8 +9,7 @@ labels:
   - seo
   - schema
   - ux
-dependencies:
-  - TASK-2
+dependencies: []
 documentation:
   - ../../seo-audit-output/ACTION-PLAN.md
 priority: medium

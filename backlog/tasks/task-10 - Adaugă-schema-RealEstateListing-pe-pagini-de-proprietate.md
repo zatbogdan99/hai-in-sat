@@ -9,8 +9,7 @@ labels:
   - seo
   - schema
   - structured-data
-dependencies:
-  - TASK-2
+dependencies: []
 documentation:
   - ../../seo-audit-output/ACTION-PLAN.md
 priority: medium

@@ -10,8 +10,7 @@ labels:
   - social
   - images
   - schema
-dependencies:
-  - TASK-2
+dependencies: []
 documentation:
   - ../../seo-audit-output/ACTION-PLAN.md
 priority: high

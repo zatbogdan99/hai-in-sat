@@ -18,6 +18,8 @@ priority: high
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
+> ⚠️ **TASK MANUAL (owner) — fără cod în repo.** Constă în acțiuni externe: achiziție domeniu la registrar, configurare DNS, mapare custom domain în GCP Console, verificare în GSC. Redirectul efectiv ASCII→IDN NU se face aici — îl tratează middleware-ul de canonicalizare host din `src/server.ts` (TASK-49), care preia automat orice host non-canonic odată ce domeniul ASCII e mapat. Pipeline-ul de cod NU poate „implementa" acest task; rămâne pentru owner. De rulat după/împreună cu TASK-49.
+
 ## De ce
 
 Domeniul curent este IDN: `hai-în-sat.ro` (Unicode), serializat ca `xn--hai-n-sat-t5a.ro` (punycode). Forma ASCII `hai-in-sat.ro` NU se rezolvă DNS (NXDOMAIN). Mulți utilizatori români tastează fără diacritice (mai ales pe tastaturi mobile setate pe English layout) — acești utilizatori NU pot ajunge pe site.
@@ -31,10 +33,8 @@ Domeniul curent este IDN: `hai-în-sat.ro` (Unicode), serializat ca `xn--hai-n-s
 1. Înregistrează `hai-in-sat.ro` la rotld.ro (registrar oficial .ro) sau intermediar (Hostico, GoDaddy.ro etc.). Cost: ~25 EUR/an.
 2. Configurează DNS: A/AAAA records către IP App Engine sau CNAME către `ghs.googlehosted.com` (dacă folosești App Engine custom domain).
 3. În Google Cloud Console (App Engine → Custom Domains), adaugă `hai-in-sat.ro` ca domeniu mapped la același service. Verifică DNS challenge.
-4. Configurează 301 redirect:
-   - **Variantă A**: în `app.yaml`, adaugă handler care detectează `Host` header == `"hai-in-sat.ro"` și 301 → `"https://xn--hai-n-sat-t5a.ro/<path>"` (păstrează path).
-   - **Variantă B**: două servicii App Engine separate, unul (`hai-in-sat.ro`) doar redirect.
-5. Decide direcția canonică: păstrează `xn--hai-n-sat-t5a.ro` (IDN) ca formă canonică (cum e acum) și redirect dinspre ASCII. SAU schimbă canonicul la ASCII (recomandat pentru consistență internațională, dar necesită update peste tot — JSON-LD, sitemap.xml, OG, `scripts/generate-sitemap.js` `BASE_URL`, `src/app/service/seo.service.ts` `BASE_URL`).
+4. **Redirect 301 ASCII→IDN: NU se configurează aici.** Middleware-ul de canonicalizare host din `src/server.ts` (TASK-49) redirectează deja orice host non-canonic (inclusiv `hai-in-sat.ro`) spre `https://xn--hai-n-sat-t5a.ro`, păstrând path-ul — odată ce domeniul ASCII e mapat în GCP, redirectul funcționează automat. NU adăuga un handler separat în `app.yaml`.
+5. Direcția canonică rămâne IDN (`xn--hai-n-sat-t5a.ro`) — vezi Recomandare. (A schimba canonicul pe ASCII ar însemna update în tot codul — JSON-LD, sitemap.xml, OG, `BASE_URL` din `seo.service.ts` și `generate-sitemap.js` — și NU se face în acest task.)
 
 ## Recomandare
 

@@ -10,8 +10,7 @@ labels:
   - critical
   - technical
   - indexability
-dependencies:
-  - TASK-2
+dependencies: []
 documentation:
   - ../../seo-audit-output/ACTION-PLAN.md
 priority: high
@@ -38,7 +37,7 @@ Google penalizează soft 404 (poate de-indexa URL-uri). Login UI și add-propert
    ```
 2. Pentru rute necunoscute, decide:
    - **Variantă A**: route guard în SPA care detectează rute invalide și injectează `<meta name="robots" content="noindex">` dynamic + setează status 404 prin server-side când e SSR.
-   - **Variantă B (mai bună)**: în middleware/SSR (TASK-2), validează path-ul împotriva listei: rutele statice cunoscute + verificare UUID pe `/property/`. Dacă nu match, returnează HTTP 404 cu pagină 404 reală (`NewLandingPageComponent` în prezent este wildcard — schimbă la `NotFoundComponent` dedicat).
+   - **Variantă B (mai bună)**: în middleware-ul SSR din `src/server.ts` (SSR-ul există deja, prin CommonEngine), validează path-ul împotriva listei: rutele statice cunoscute + verificare UUID pe `/property/`. Dacă nu match, returnează HTTP 404 cu pagină 404 reală (`NewLandingPageComponent` în prezent este wildcard — schimbă la `NotFoundComponent` dedicat).
 3. Component nou: `src/app/components/not-found/not-found.component.ts` cu mesaj prietenos în română și link spre `/properties`.
 
 ## Fișiere afectate
@@ -47,7 +46,7 @@ Google penalizează soft 404 (poate de-indexa URL-uri). Login UI și add-propert
 - `hai-in-sat/hai-in-sat/src/app/app.routes.ts` (înlocuiește wildcard de la `NewLandingPageComponent` → `NotFoundComponent`; mută homepage pe `path: ''`)
 - `hai-in-sat/hai-in-sat/src/app/components/not-found/not-found.component.ts` (de creat)
 - `hai-in-sat/hai-in-sat/src/app/service/seo.service.ts` (adaugă `setNoindex()` helper dacă lipsește)
-- (Combinat cu TASK-2): `server.ts` validează path-ul și răspunde 404 înainte de a servi index.html pentru paths necunoscute
+- `src/server.ts` (SSR existent): validează path-ul și răspunde 404 înainte de a servi index.html pentru paths necunoscute (același `server.ts` e atins și de TASK-47 și TASK-49 — coordonează modificările ca să nu se calce reciproc)
 
 ## Efort
 
