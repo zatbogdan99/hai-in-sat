@@ -43,3 +43,4 @@ Thumbs.db
 /package-lock.json
 
 .claude/worktrees/
+/.dev-pipeline/tmp/

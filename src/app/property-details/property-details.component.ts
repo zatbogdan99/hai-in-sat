@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, ViewChildren, QueryList, DestroyRef, inject } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, ViewChildren, QueryList, DestroyRef, inject, PLATFORM_ID } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PropertyFormServiceService } from '../service/property-form-service/property-form-service.service';
@@ -7,11 +7,12 @@ import { PropertyDTO } from '../dto/property.dto';
 import { LoadingService } from '../service/loading-service/loading-service.service';
 import { gsap } from 'gsap';
 import {ProgressSpinner} from "primeng/progressspinner";
-import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
+import {AsyncPipe, isPlatformServer, NgForOf, NgIf} from "@angular/common";
 import {PhoneLinkPipe} from "../pipes/phone-link.pipe";
 import {SeoService} from "../service/seo.service";
 import {generateSlug} from "../utils/slug.util";
 import {PropertyType} from "../dto/property-type.enum";
+import {SSR_RENDER_STATE} from "../ssr-render-state";
 
 export interface GallerySlide {
   type: 'image' | 'video';
@@ -52,6 +53,8 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
 
   private isAnimating = false;
   private destroyRef = inject(DestroyRef);
+  private platformId = inject(PLATFORM_ID);
+  private ssrRenderState = inject(SSR_RENDER_STATE, { optional: true });
   private totalPhotos = 0;
   private loadedPhotosCount = 0;
   private readonly INITIAL_BATCH = 2;
@@ -150,11 +153,57 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
         this.loadPhotosBatch(0, this.INITIAL_BATCH, prop);
       },
       error: (err) => {
+        if (this.shouldMarkSsrUnavailable(err)) {
+          this.markSsrUnavailable(err);
+          return;
+        }
+
         console.error('Failed to load property details', err);
         this.loadingService.loadingOff();
         this.router.navigate(['/properties']);
       }
     });
+  }
+
+  private shouldMarkSsrUnavailable(err: unknown): boolean {
+    return isPlatformServer(this.platformId) && this.isTransientUpstreamError(err);
+  }
+
+  private markSsrUnavailable(err: unknown): void {
+    if (!this.ssrRenderState) {
+      console.error('Failed to load property details during SSR', err);
+      return;
+    }
+
+    this.ssrRenderState.serviceUnavailable = true;
+    this.ssrRenderState.error = err;
+  }
+
+  private isTransientUpstreamError(err: unknown): boolean {
+    const status = this.getErrorStatus(err);
+
+    return status === 0 || (status !== null && status >= 500) || this.isTimeoutError(err);
+  }
+
+  private getErrorStatus(err: unknown): number | null {
+    const candidate = err as { status?: unknown; statusCode?: unknown };
+
+    if (typeof candidate.status === 'number') {
+      return candidate.status;
+    }
+
+    if (typeof candidate.statusCode === 'number') {
+      return candidate.statusCode;
+    }
+
+    return null;
+  }
+
+  private isTimeoutError(err: unknown): boolean {
+    const candidate = err as { name?: unknown; message?: unknown };
+
+    return candidate.name === 'TimeoutError'
+      || (typeof candidate.message === 'string' && candidate.message.toLowerCase().includes('timeout'));
   }
 
   private loadPhotosBatch(offset: number, limit: number, prop?: PropertyDTO): void {
@@ -186,7 +235,7 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
             });
           }
         }
-        if (this.loadedPhotosCount < this.totalPhotos) {
+        if (this.shouldLoadNextPhotoBatch()) {
           this.loadPhotosBatch(this.loadedPhotosCount, this.NEXT_BATCH);
         }
       },
@@ -197,6 +246,10 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
         }
       }
     });
+  }
+
+  private shouldLoadNextPhotoBatch(): boolean {
+    return !isPlatformServer(this.platformId) && this.loadedPhotosCount < this.totalPhotos;
   }
 
   private rebuildMobileSlides(): void {
