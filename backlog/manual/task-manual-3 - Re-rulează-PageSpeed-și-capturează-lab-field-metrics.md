@@ -22,7 +22,7 @@ priority: low
 
 În auditul SEO inițial (2026-05-07) PageSpeed Insights API a returnat 429 (cota zilnică globală a proiectului anonim Google epuizată). Secțiunea Performance din `FULL-AUDIT-REPORT.md` a fost completată inferential pe baza dimensiunii resurselor, fără date Lighthouse efective sau CrUX field data.
 
-E necesar să capturăm un baseline real ca să măsurăm impactul TASK-2 / TASK-4 / TASK-7 / TASK-14 / TASK-15 (cele cu impact perf).
+E necesar să capturăm un baseline real ca să măsurăm impactul TASK-2 / TASK-5 / TASK-7 / TASK-14 / TASK-12 (cele cu impact perf).
 
 ## Cum
 

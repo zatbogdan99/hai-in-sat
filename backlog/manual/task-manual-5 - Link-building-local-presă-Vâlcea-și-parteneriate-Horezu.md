@@ -25,11 +25,11 @@ priority: low
 
 Auditul de backlinks (2026-06-12): domeniul e **complet absent din graful web Common Crawl** (ambele forme, două release-uri) — profil de backlinks practic zero. Pentru ranking local și autoritate de domeniu, după citations (TASK-59) urmează link-urile editoriale locale. Lista completă cu 12 idei prioritizate + anchor text recomandat: `findings/backlinks.md`.
 
-**Depinde de TASK-59** (profilurile de bază întâi) și merge mână în mână cu conținutul (TASK-55/19 — e nevoie de ceva spre care să merite linkuit).
+**Depinde de TASK-59** (profilurile de bază întâi) și merge mână în mână cu conținutul (TASK-32/19 — e nevoie de ceva spre care să merite linkuit).
 
 ## Cum (primele 3 acțiuni din raport, în ordine)
 
-1. **Pitch presă locală Vâlcea** — Vocea Vâlcii, Curierul de Vâlcea: unghi editorial „povestea caselor bătrânești din Horezu / orășenii care se mută la țară" (subiect uman, nu reclamă). Oferă date reale (prețuri pe sat — tabelul din TASK-55), fotografii, un interviu. Țintă: 1 articol cu link în primele 2 luni.
+1. **Pitch presă locală Vâlcea** — Vocea Vâlcii, Curierul de Vâlcea: unghi editorial „povestea caselor bătrânești din Horezu / orășenii care se mută la țară" (subiect uman, nu reclamă). Oferă date reale (prețuri pe sat — tabelul din TASK-32), fotografii, un interviu. Țintă: 1 articol cu link în primele 2 luni.
 2. **Parteneriate locale Horezu** — Ceramica de Horezu (UNESCO), pensiuni din zonă, primăriile comunale (paginile „utile"/„turism"): schimb de vizibilitate onest (ei au pagini despre zonă, site-ul are ghiduri despre mutat/cumpărat în zonă). Țintă: 2 link-uri din domenii locale .ro.
 3. **Comunități** — grupuri Facebook „mutat la țară"/diaspora: prezență utilă (nu spam), distribuie ghidurile și paginile de sat; brand signals chiar dacă nofollow.
 

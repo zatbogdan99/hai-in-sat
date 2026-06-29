@@ -1,4 +1,4 @@
-﻿---
+---
 id: TASK-47
 title: Elimină erorile 5xx de pe paginile de proprietate (timeout și error handler SSR)
 status: Done
@@ -31,12 +31,12 @@ Mecanismul (confirmat de audit):
 3. La render-ul SSR al unei pagini de proprietate, fetch-ul server-side din `property-details.component.ts` (via `PropertyFormServiceService.getPropertyById`) așteaptă backend-ul; lanțul CommonEngine/GAE expiră înainte → Express aruncă → GAE răspunde 500/502/503.
 4. `src/server.ts` NU are error handler `(err, req, res, next)` și NICIUN timeout explicit pe `commonEngine.render()`.
 
-Agravant: payload-ul de proprietate conține pozele base64 (MB întregi) → transferul SSR↔backend e și el lent (se rezolvă definitiv în TASK-48, dar fix-ul de aici e necesar oricum pentru orice incident viitor de upstream).
+Agravant: payload-ul de proprietate conține pozele base64 (MB întregi) → transferul SSR↔backend e și el lent (se rezolvă definitiv în TASK-3, dar fix-ul de aici e necesar oricum pentru orice incident viitor de upstream).
 
 ## Cum
 
 1. **`src/server.ts` — timeout pe render**: înfășoară `commonEngine.render(...)` într-un `Promise.race` cu un timeout de 20–25 s. La timeout → `res.status(503).set('Retry-After', '60')` cu o pagină minimă de eroare (HTML static mic, în română). 503+Retry-After îi spune lui Googlebot „revino mai târziu, nu șterge pagina" — exact ce vrem la cold start.
-2. **`src/server.ts` — error handler global**: middleware `(err, req, res, next)` după ruta catch-all: loghează eroarea (cu URL) și răspunde 503 (NU 500 generic) pentru erori de upstream/render. Atenție: 404-urile reale rămân pe fluxul TASK-3 (nu transforma totul în 503).
+2. **`src/server.ts` — error handler global**: middleware `(err, req, res, next)` după ruta catch-all: loghează eroarea (cu URL) și răspunde 503 (NU 500 generic) pentru erori de upstream/render. Atenție: 404-urile reale rămân pe fluxul TASK-10 (nu transforma totul în 503).
 3. **Timeout + retry pe fetch-ul SSR**: în `property-details` / serviciu, adaugă pe apelul HTTP `timeout({ each: 8000 })` + `retry({ count: 1, delay: 1500 })` (RxJS) DOAR pe server (`isPlatformBrowser` check sau interceptor cu `PLATFORM_ID`), ca un singur backend lent să nu consume tot bugetul de render.
 4. **Infra cold-start — ÎN AFARA acestui task (o face owner-ul MANUAL).** Backend-ul primește `min_instances: 1` (F2, ~$30/lună) + fix de heap (`-Xmx512m` scos), schimbate de owner direct în `app-backend.yaml` din Cloud Shell (proiect `hai-in-sat-api`) + deploy manual. Config-ul corect e salvat ca referință în repo la `java.hai-in-sat/hai-in-sat/app-backend.yaml`. Frontend-ul rămâne `min_instances: 0` (decizie de cost). **Acest task acoperă DOAR codul (pașii 1–3)** — codul oprește 5xx-urile oricum (503+Retry-After + error handler), iar min_instances:1 doar reduce frecvența cold start-ului.
 5. **Verificare end-to-end (owner, după ce s-au deployat ȘI codul, ȘI infra):** re-testează TOATE cele 14 URL-uri de proprietate din sitemap, secvențial, de 2 ori (rece + cald).

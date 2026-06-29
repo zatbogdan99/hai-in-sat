@@ -26,7 +26,7 @@ Crawl-ul auditului 2026-06-12 arată că `/see-the-area` e singura pagină din s
 - **canonical greșit**: `<link rel="canonical" href="https://hai-în-sat.ro/">` → pagina se declară singură duplicat al homepage-ului; **Google nu o va indexa pe URL-ul propriu** (pagină SEO-moartă),
 - meta description duplicată cu homepage,
 - **fără BreadcrumbList** (singura pagină fără — restul au),
-- bonus din audit conținut: are și 2× H1 (se tratează unitar în TASK-53).
+- bonus din audit conținut: are și 2× H1 (se tratează unitar în TASK-21).
 
 Pagina e o galerie foto regională („Vezi zona") — exact genul de pagină care poate prinde căutări de tip „Oltenia de sub Munte imagini/peisaje".
 

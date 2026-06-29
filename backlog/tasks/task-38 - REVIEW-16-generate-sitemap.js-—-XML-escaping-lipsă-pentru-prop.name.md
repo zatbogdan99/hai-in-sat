@@ -93,7 +93,7 @@ Decide canonical: punycode (`xn--hai-n-sat-t5a.ro`) vs Unicode (`hai-în-sat.ro`
 - Pentru sitemap.xml, recomandare RFC: `<loc>` trebuie URL-encoded și ASCII pentru host. Folosește punycode.
 - Schimbă BASE_URL la `https://xn--hai-n-sat-t5a.ro` și update și canonical/og:url în SeoService și `index.html` să fie consistent.
 
-(Notă: canonical-ul a fost DECIS ca IDN — vezi TASK-49 și TASK-MANUAL-1. Aliniază `BASE_URL`/escaping-ul cu forma canonică IDN; nu re-decide aici.)
+(Notă: canonical-ul a fost DECIS ca IDN — vezi TASK-4 și TASK-MANUAL-1. Aliniază `BASE_URL`/escaping-ul cu forma canonică IDN; nu re-decide aici.)
 
 ### Phase 3 — Test
 
