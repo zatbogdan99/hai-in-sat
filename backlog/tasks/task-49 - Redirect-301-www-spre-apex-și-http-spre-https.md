@@ -44,7 +44,7 @@ server.use((req, res, next) => {
 Note:
 - Pe GAE Standard, TLS se termină la Google Frontend — folosește `x-forwarded-proto`, nu `req.secure`.
 - Verifică în GCP Console că `www.hai-în-sat.ro` e mapat ca custom domain (altfel www nu ajunge deloc la aplicație — dacă nu e mapat și totuși răspunde 200, vine de pe certificat wildcard + mapare implicită; după mapare corectă middleware-ul îl normalizează).
-- Același middleware va prelua și redirectul ASCII→IDN din TASK-8 când domeniul ASCII va exista (un singur loc pentru canonicalizarea de host).
+- Același middleware va prelua și redirectul ASCII→IDN din TASK-MANUAL-1 când domeniul ASCII va exista (un singur loc pentru canonicalizarea de host).
 - Sinergie cu TASK-6: HSTS cu `includeSubDomains` are sens DOAR după ce www redirecționează corect.
 
 ## Fișiere afectate

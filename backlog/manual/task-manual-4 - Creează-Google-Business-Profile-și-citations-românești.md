@@ -1,5 +1,5 @@
 ---
-id: TASK-59
+id: TASK-MANUAL-4
 title: Creează Google Business Profile și citations românești
 status: To Do
 assignee: []

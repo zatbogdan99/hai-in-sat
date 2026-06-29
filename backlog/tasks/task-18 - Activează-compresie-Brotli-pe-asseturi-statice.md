@@ -41,25 +41,23 @@ App Engine standard NU face Brotli automat. Trebuie precompresie + servire `.br`
        Cache-Control: "public, max-age=31536000, immutable"
        Content-Encoding: br
    ```
-   Notă: App Engine static handlers nu pot citi `Accept-Encoding` direct. Soluții:
-   - **Mai simplu**: migrează la App Engine Flexible / Cloud Run cu Nginx/Express care face content negotiation.
-   - **Combinat cu SSR (TASK-2)**: dacă oricum migrezi la Node.js runtime, folosește middleware `express-static-gzip` care servește .br/.gz dynamic.
+   Notă: App Engine static handlers nu pot citi `Accept-Encoding` direct — DAR site-ul rulează deja pe runtime Node (SSR/Express), deci calea curată e middleware **`express-static-gzip`** în `src/server.ts`, care servește `.br`/`.gz` cu content negotiation automat (pe baza `Accept-Encoding`). Nu mai e nevoie de handler-e `.br` în `app.yaml` și nici de migrare la Flexible/Cloud Run.
 
 3. Verifică: `curl -H "Accept-Encoding: br" -I https://xn--hai-n-sat-t5a.ro/main.<hash>.js` → `Content-Encoding: br` + Content-Length redus față de gzip.
 
-## Trade-off
+## Trade-off / dependențe
 
-Dacă TASK-2 livrează SSR via Node.js runtime, brotli e ușor de adăugat (`express-static-gzip`). Dacă rămânem pe App Engine static, e mai complicat. Recomandare: leagă de TASK-2 sau task de migrare runtime.
+SSR-ul pe Node există deja → servirea brotli e simplă (`express-static-gzip` în `server.ts`). ⚠️ Partea de GENERARE a fișierelor `.br`/`.gz` depinde de builder: `compression-webpack-plugin` merge DOAR cu builder-ul webpack (`:browser`). Dacă se face TASK-35 (migrare la `:application`/esbuild), webpack dispare → generează `.br`/`.gz` cu un **post-build script** (Node + `zlib`/brotli pe `dist/.../browser/**`) în loc de plugin webpack. Coordonează cu TASK-35.
 
 ## Fișiere afectate
 
-- `hai-in-sat/hai-in-sat/extra-webpack.config.js` sau `angular.json` (build pipeline)
-- `hai-in-sat/hai-in-sat/app.yaml` (handlers)
-- (eventual) `server.ts` (dacă SSR) — middleware `express-static-gzip`
+- `src/server.ts` — middleware `express-static-gzip` (servire .br/.gz cu content negotiation)
+- Generarea `.br`/`.gz` la build: post-build script Node (dacă pe `:application`/esbuild — vezi TASK-35) SAU `compression-webpack-plugin` (doar dacă rămâi pe `:browser`)
+- `package.json` (dependența `express-static-gzip` + scriptul de compresie)
 
 ## Efort
 
-4 ore (combinat cu TASK-2); 1 zi standalone.
+4 ore (SSR/Node există deja → express-static-gzip + script de compresie la build).
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria

@@ -1,5 +1,5 @@
 ---
-id: TASK-62
+id: TASK-MANUAL-5
 title: Link building local — presă Vâlcea și parteneriate Horezu
 status: To Do
 assignee: []
@@ -12,7 +12,7 @@ labels:
   - marketing
   - long-term
 dependencies:
-  - TASK-59
+  - TASK-MANUAL-4
 documentation:
   - ../../../../seo-audit-2026-06-12/findings/backlinks.md
 priority: low

@@ -22,7 +22,7 @@ priority: medium
 
 - Google poate folosi `BreadcrumbList` pentru a afișa breadcrumb-uri în SERP în loc de URL plain (ex: `hai-în-sat.ro › proprietăți › cerna`).
 - UX win pentru deep links — utilizatori care intră direct pe o proprietate înțeleg ierarhia și pot naviga înapoi.
-- `SeoService.setBreadcrumbs()` pare să existe (per CLAUDE.md), dar trebuie verificat că este apelat în paginile relevante și că redă HTML brut (post-SSR din TASK-2).
+- `SeoService.setBreadcrumbs()` există și e deja apelat + redat în HTML brut SSR (per notes). JSON-LD-ul e gata; ce LIPSEȘTE e breadcrumb-ul VIZIBIL (componenta `app-breadcrumbs`, AC#1) + confirmarea că TOATE paginile non-homepage cheamă `setBreadcrumbs` (AC#2).
 
 ## Cum
 

@@ -25,9 +25,8 @@ Schema `RealEstateAgent` din `src/index.html` este 80% bună, dar are:
 
 1. **areaServed prea larg**: include „România" — diluează semnalul de relevanță locală pentru o agenție regională.
 2. **postalCode lipsă**: `PostalAddress` nu are `postalCode` (Horezu = 245800).
-3. **openingHours lipsă**: câmp standard `LocalBusiness`; ajută Google Knowledge Panel.
-4. **priceRange = `€€`**: două caractere euro non-standard. Google preferă `$$` / `$$$` (1-4 simboluri $) sau range numeric (`€500,000-€2,000,000`).
-5. **email cu IDN**: `contact@hai-în-sat.ro` este invalid per RFC pentru clienți care nu suportă SMTPUTF8/EAI. Folosește forma ASCII: `contact@xn--hai-n-sat-t5a.ro`.
+3. **priceRange = `€€`**: două caractere euro non-standard. Google preferă `$$` / `$$$` (1-4 simboluri $) sau range numeric (`€500,000-€2,000,000`).
+4. **email cu IDN**: `contact@hai-în-sat.ro` este invalid per RFC pentru clienți care nu suportă SMTPUTF8/EAI. Folosește forma ASCII: `contact@xn--hai-n-sat-t5a.ro`.
 
 ## Cum
 
@@ -48,14 +47,6 @@ Schema `RealEstateAgent` din `src/index.html` este 80% bună, dar are:
     "postalCode": "245800",
     "addressCountry": "RO"
   },
-  "openingHoursSpecification": [
-    {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
-      "opens": "09:00",
-      "closes": "18:00"
-    }
-  ],
   "areaServed": [
     {"@type":"Place","name":"Horezu, Vâlcea","geo":{"@type":"GeoCoordinates","latitude":45.1472,"longitude":24.0033}},
     {"@type":"Place","name":"Polovragi, Gorj"},
@@ -69,32 +60,28 @@ Schema `RealEstateAgent` din `src/index.html` este 80% bună, dar are:
 ```
 
 Notă: drop „București" și „România" — acestea diluează semnalul. Dacă serviți București ca audiență sursă (cumpărători din capitală), păstrați-l ca `areaServed` dar nu adăugați „România" generic.
-
-Confirmă programul real cu utilizatorul (probabil Lu-Vi 09:00-18:00, dar să nu inventez).
-
 ## Fișiere afectate
 
 - `hai-in-sat/hai-in-sat/src/index.html` (bloc JSON-LD `RealEstateAgent`)
 
 ## Efort
 
-30 min + confirmare program de la utilizator.
+30 min.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [ ] #1 JSON-LD validator (validator.schema.org) confirmă schema `RealEstateAgent` fără erori critice
 - [ ] #2 `address.postalCode = "245800"`
-- [ ] #3 `openingHoursSpecification` prezent cu zilele și orele reale (confirmate cu utilizatorul)
-- [ ] #4 `priceRange` folosește format acceptat de Google (`$$` - `$$$$` sau range numeric cu valută)
-- [ ] #5 `email` folosește formă ASCII (xn--hai-n-sat-t5a.ro)
-- [ ] #6 `areaServed` nu mai conține entry generic „România"
+- [ ] #3 `priceRange` folosește format acceptat de Google (`$$` - `$$$$` sau range numeric cu valută)
+- [ ] #4 `email` folosește formă ASCII (xn--hai-n-sat-t5a.ro)
+- [ ] #5 `areaServed` nu mai conține entry generic „România"
 <!-- AC:END -->
 
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
-Verificare 2026-06-08: Inca valid, neimplementat. index.html:36-81 RealEstateAgent inca are: priceRange '€€' (nestandard), fara postalCode, fara openingHoursSpecification, areaServed inca include 'Bucuresti' si 'Romania' generic, email contact@hai-în-sat.ro (IDN, nu ASCII). Necesita confirmarea programului real de la utilizator (AC#3).
+Verificare 2026-06-08: Inca valid, neimplementat. index.html:36-81 RealEstateAgent inca are: priceRange '€€' (nestandard), fara postalCode, areaServed inca include 'Bucuresti' si 'Romania' generic, email contact@hai-în-sat.ro (IDN, nu ASCII). (openingHours scos din scope 2026-06-28 — nu exista program bine definit.)
 
-Cross-ref: se completeaza cu noul TASK-52 (unificare NAP/telefon) si TASK-56 (E-E-A-T about-us, cod postal 245800 vizibil in body). TASK-12 = curatenia campurilor schema RealEstateAgent (priceRange/postalCode/openingHours/areaServed/email ASCII); de aliniat telefonul oficial cu decizia din TASK-52.
+Cross-ref: se completeaza cu TASK-52 (unificare NAP/telefon). (TASK-56 — E-E-A-T about-us, cod postal vizibil in body — a fost mutat in wont-do.) TASK-12 = curatenia campurilor schema RealEstateAgent (priceRange/postalCode/areaServed/email ASCII); de aliniat telefonul oficial cu decizia din TASK-52.
 <!-- SECTION:NOTES:END -->

@@ -1,5 +1,5 @@
 ---
-id: TASK-21
+id: TASK-MANUAL-2
 title: 'Verifică domeniul în GSC și Bing Webmaster, submitează sitemap'
 status: To Do
 assignee: []

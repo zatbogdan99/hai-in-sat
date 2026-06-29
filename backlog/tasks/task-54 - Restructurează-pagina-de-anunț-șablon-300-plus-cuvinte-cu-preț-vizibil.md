@@ -44,7 +44,7 @@ Sinergie: după acest task, meta description se generează din paragraful-rezuma
 ## Fișiere afectate
 
 - `src/app/property-details/*` (template + componentă)
-- `src/app/add-property/*` (câmmpuri noi formular)
+- `src/app/add-property/*` (câmpuri noi formular)
 - Backend: `PropertyDTO` + model Mongo (câmpuri noi) — repo java
 - `src/app/service/seo.service.ts` (meta description din rezumat)
 

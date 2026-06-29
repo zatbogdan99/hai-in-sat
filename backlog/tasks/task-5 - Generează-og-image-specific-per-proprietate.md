@@ -29,7 +29,7 @@ Două variante:
 
 1. **Tactic (rapid, 30 min)**: în componenta de detaliu proprietate (probabil `src/app/components/property-details` sau similar), apelează `SeoService.updatePageMeta()` cu prima imagine a proprietății. `SeoService.ts` deja există și gestionează `og:image`. Doar trebuie ca `PropertyDetailComponent.ngOnInit()` să facă `seoService.updatePageMeta({...ogImage: property.photos[0]})`. Funcționează pe Facebook (care face JS render parțial) și pe Google.
 
-2. **Strategic (combinat cu TASK-2 SSR)**: la SSR, randează `og:image` direct pe server din `property.photos[0]`. Pentru OG image consistentă brand-wise, generează un compozit 1200x630 cu logo + prima poză + preț în footer (worker pe Cloud Run sau pe upload via `PhotoAdminService`).
+2. **Strategic (SSR — deja în loc):** SSR-ul randează deja `og:image` pe server din `property.thumbnail` (mecanism implementat: `property-details` apelează `updatePageMeta`). Ce rămâne de fapt: (a) valoarea să fie un **URL public real**, nu `data:URI` base64 — depinde de TASK-48; (b) opțional, un compozit 1200×630 brand-wise (logo + prima poză + preț) generat la upload via `PhotoAdminService`.
 
 ## Fișiere afectate
 
@@ -48,7 +48,7 @@ Două variante:
 - [ ] #2 Facebook Sharing Debugger pe URL de proprietate afișează prima poză a proprietății, nu landing-ul
 - [x] #3 `twitter:image` este și el actualizat similar la `og:image`
 - [ ] #4 Imaginea folosită are minimum 1200x630px (recomandat OG); fallback la landing dacă fotografia sursă e mai mică
-- [x] #5 După implementarea TASK-2 SSR: HTML brut al paginii de proprietate (fără JS) conține deja `og:image` specific
+- [x] #5 HTML-ul brut SSR al paginii de proprietate (fără JS) conține deja `og:image` specific (SSR existent, mecanism implementat)
 - [ ] #6 og:image si twitter:image folosesc un URL public real al pozei (nu data:URI base64) - depinde de TASK-48 (migrare poze base64 -> URL-uri reale)
 <!-- AC:END -->
 

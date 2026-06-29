@@ -59,7 +59,7 @@ Apoi `htmlToText(prop.description).substring(0, 150)`.
 
 Avantaj: browserul parsează corect HTML-ul (toate edge cases), iar `textContent` returnează doar text. Inclusiv decodează entități (`&amp;` → `&`). Pentru meta description e ideal.
 
-Dar pentru SSR (TASK-2), `document` nu există. Variantă safe:
+Dar la SSR (care există deja), `document` nu există. Variantă safe:
 
 ```typescript
 import { Injectable, inject, PLATFORM_ID } from '@angular/core';
@@ -104,7 +104,7 @@ Dacă template-ul folosește `[innerHTML]="prop.description"`, Angular sanitize-
 - [ ] #2 Există un `HtmlTextService` (sau utility function) folosit pentru convertire HTML→text plain
 - [ ] #3 Pentru o descriere cu HTML real (ex: `<p>Casa <strong>frumoasă</strong> &amp; aproape</p>`), output-ul este: `Casa frumoasă & aproape`
 - [ ] #4 Util-ul gestionează `null`/`undefined` întoarce string gol
-- [ ] #5 Cu SSR (TASK-2), service-ul nu crash-uiește (folosește `isPlatformBrowser`)
+- [ ] #5 La SSR (existent), service-ul nu crash-uiește (folosește `isPlatformBrowser`)
 <!-- AC:END -->
 
 ## Implementation Notes

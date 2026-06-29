@@ -1,5 +1,5 @@
 ---
-id: TASK-22
+id: TASK-MANUAL-3
 title: Re-rulează PageSpeed și capturează lab + field metrics
 status: To Do
 assignee: []

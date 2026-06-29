@@ -29,7 +29,7 @@ Avantaje schema `RealEstateListing`:
 
 ## Cum
 
-Combinat cu TASK-2 (SSR/prerender): randează JSON-LD per proprietate direct în HTML brut.
+SSR-ul există deja, iar schema de BAZĂ se randează deja în HTML brut (per notes: `setRealEstateListing` e apelat în `property-details` și redat SSR). Munca rămasă = completarea câmpurilor care lipsesc (vezi mai jos) + URL real de imagine (TASK-48) + description fără telefon (TASK-52).
 
 Structură per `/property/:id/:slug`:
 
@@ -78,11 +78,11 @@ Google Rich Results Test (https://search.google.com/test/rich-results) pe URL de
 
 - `src/app/service/seo.service.ts` — verifică `setRealEstateListing()`, extinde dacă lipsesc câmpuri
 - `src/app/components/property-details/property-details.component.ts` (sau echivalent — apel în `ngOnInit`)
-- Combinat cu SSR (TASK-2): `server.ts` trebuie să apeleze API-ul backend pentru property data și să injecteze schema înainte de servire
+- Backend Java (`PropertyDTO`/endpoint): expune câmpurile lipsă pentru schema completă — `datePosted`, `geo` (lat/lng), `price`/currency, `floorSize`/area (azi DTO-ul nu le are; necesită extindere DTO + formular). Schema se randează deja SSR din componentă — nu e nevoie de injectare separată în `server.ts`.
 
 ## Efort
 
-4 ore (excluse cele de SSR — depinde de TASK-2).
+4 ore frontend (extindere `setRealEstateListing`) + extindere DTO/backend pentru câmpurile lipsă; image real depinde de TASK-48.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria

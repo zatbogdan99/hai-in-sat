@@ -8,9 +8,9 @@ updated_date: '2026-06-17 14:24'
 labels:
   - review
   - build
-  - prerequisite-ssr
+  - ssr-migration
 dependencies: []
-priority: high
+priority: medium
 ---
 
 ## Description
@@ -26,7 +26,7 @@ priority: high
 
 Angular 17+ a introdus builder-ul nou `:application` bazat pe esbuild care:
 - Builduri **5-10x mai rapide** (cold ~25s → ~3s pentru proiectul ăsta probabil).
-- Suportă SSR/Hybrid Rendering nativ (`prerender`, `ssr` options) — necesar pentru TASK-2.
+- Folosește noul API SSR (`@angular/ssr` / `AngularNodeAppEngine`). ⚠️ Dar SSR-ul EXISTĂ deja aici, pe API-ul vechi (CommonEngine + builder `:server`) — deci migrarea înseamnă **rescrierea `src/server.ts`** la noul API, NU adăugarea SSR-ului de la zero.
 - Mai bun tree-shaking → bundle mai mic (parțial address TASK-15).
 - Suport mai bun pentru modul Standalone (deja folosit aici).
 - Default în Angular 19 pentru proiecte noi (`ng new`).
@@ -54,11 +54,7 @@ Builder-ul `:browser` (webpack-based) este în maintenance mode și va fi deprec
    - Update `package.json` `start` script dacă necesar.
    - Update `.gitignore` dacă pattern-ul de output e diferit.
 
-4. **Pentru SSR (TASK-2)**:
-   ```powershell
-   ng add @angular/ssr
-   ```
-   Acum funcționează nativ pentru că ai `:application` builder.
+4. **Migrarea SSR-ului EXISTENT (nu adăugare de la zero):** SSR-ul rulează acum pe `CommonEngine` + builder `:server`. După `use-application-builder`, trebuie rescris `src/server.ts` de la `CommonEngine` la `AngularNodeAppEngine` (`@angular/ssr`). ⚠️ `ng add @angular/ssr` / schematic-ul **îți poate SUPRASCRIE `server.ts`** — fă backup și RE-APLICĂ manual middleware-ul custom existent (vezi avertismentul din „Risc / efecte").
 
 5. **Test**:
    - `ng build` — verifică output structure
@@ -68,6 +64,7 @@ Builder-ul `:browser` (webpack-based) este în maintenance mode și va fi deprec
 
 ## Risc / efecte
 
+- **⚠️ CONFLICT pe `src/server.ts` — ordinea contează.** Migrarea rescrie `server.ts` (CommonEngine → AngularNodeAppEngine), dar `server.ts` e atins și de TASK-47 (timeout/error handler), TASK-49 (redirect 301), TASK-3 (404/noindex) și TASK-51 (cache SSR). Dacă acelea se fac ÎNTÂI (pe CommonEngine), migrarea le va clobber-a → middleware-ul lor trebuie RE-APLICAT manual pe noul `server.ts`. Decizie de secvențiere: ori faci TASK-35 ÎNAINTEA lor (foundation curată), ori accepți re-aplicarea după. Cum TASK-47 (5xx) e urgent, calea pragmatică: 47/3/49/51 acum pe CommonEngine, iar la migrare re-aplici middleware-ul (e portabil conceptual).
 - **Lara theme PrimeNG + esbuild**: a fost raportat un edge case unde anumite teme PrimeNG cu CSS variables nu erau procesate corect — verifică Lara după migrate.
 - **Custom webpack config (`extra-webpack.config.js`)**: nu mai funcționează cu `:application`. Bun pentru ștergere (vezi REVIEW-14).
 - **Plugin-uri webpack (compression-webpack-plugin etc.)** dacă sunt — necesită alt path (esbuild plugin sau post-build script).
@@ -75,7 +72,7 @@ Builder-ul `:browser` (webpack-based) este în maintenance mode și va fi deprec
 ## Beneficii imediate
 
 - Build rapid în CI.
-- Deblocheze SSR (TASK-2) care e critical issue #1 din SEO audit.
+- Aliniază SSR-ul la API-ul modern, suportat (`CommonEngine` e legacy / maintenance).
 - Bundle mai mic (parțial atinge TASK-15).
 - Path către brotli precompresie (TASK-18).
 
@@ -99,7 +96,7 @@ Builder-ul `:browser` (webpack-based) este în maintenance mode și va fi deprec
 - [ ] #3 Site-ul deployat funcționează identic post-migrate (test manual: toate rutele, login, formulare)
 - [ ] #4 Timpul de build (cold) este vizibil mai mic (>50% reducere)
 - [ ] #5 PrimeNG Lara theme se randează corect post-migrate
-- [ ] #6 Comanda `ng add @angular/ssr` rulează fără erori (chiar dacă nu o invocăm încă — verificare premise pentru TASK-2)
+- [ ] #6 SSR-ul existent migrat la noul API: `src/server.ts` rescris de la `CommonEngine` la `AngularNodeAppEngine`, iar `prerender`/`ssr` funcționează cu builder-ul `:application` (build + serve SSR OK); middleware-ul custom (timeout/redirect/404/cache, dacă era deja adăugat) e re-aplicat și funcțional
 <!-- AC:END -->
 
 ## Implementation Notes

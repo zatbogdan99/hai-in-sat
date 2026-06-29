@@ -1,5 +1,5 @@
 ---
-id: TASK-8
+id: TASK-MANUAL-1
 title: Înregistrează domeniul ASCII hai-in-sat.ro și redirect 301
 status: To Do
 assignee: []
