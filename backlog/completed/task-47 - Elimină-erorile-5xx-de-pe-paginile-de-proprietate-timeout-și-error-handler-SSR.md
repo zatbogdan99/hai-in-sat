@@ -1,7 +1,7 @@
----
+﻿---
 id: TASK-47
 title: Elimină erorile 5xx de pe paginile de proprietate (timeout și error handler SSR)
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-06-12 16:05'
 updated_date: '2026-06-12 16:05'
@@ -61,3 +61,4 @@ Cod: ~0,5–1 zi (server.ts timeout/handler + retry pe fetch SSR). Deploy + veri
 - [ ] #5 (verificare post-deploy, owner) După 7 zile de la deploy: zero erori 5xx pe `/property/*` în Cloud Logging (excluzând incidente reale de backend) și GSC Crawl Stats fără spike de „Server error (5xx)"
 - [ ] #6 Pagina de eroare 503 e în română, mică (<10 KB), cu link spre `/properties` și NU e indexabilă (noindex)
 <!-- AC:END -->
+
