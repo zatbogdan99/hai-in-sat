@@ -4,7 +4,7 @@ title: Re-rulează PageSpeed și capturează lab + field metrics
 status: To Do
 assignee: []
 created_date: '2026-05-07 08:06'
-updated_date: '2026-06-17 15:04'
+updated_date: '2026-07-06'
 labels:
   - seo
   - performance
@@ -18,6 +18,8 @@ priority: low
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
+> ⛔ **WONT-DO / SUPERSEDED (confirmat de owner, 2026-07-06).** Scopul principal — un baseline real de performanță — a fost îndeplinit de auditul din 2026-06-12 (`seo-audit-2026-06-12/findings/performance.md` + `crawl/`): metrici lab reale (LCP 7,1 s anunț mobil, 29,6 s /properties; TTFB warm 1,4 s / cold 5–29 s). Actualizarea vechiului `FULL-AUDIT-REPORT.md` rămâne opțională și nu justifică un task. Dacă vei dori o RE-măsurare după livrarea fix-urilor de performanță (TASK-3/5/11/12), deschide un task nou de măsurare — nu-l redeschide pe acesta.
+
 ## De ce
 
 În auditul SEO inițial (2026-05-07) PageSpeed Insights API a returnat 429 (cota zilnică globală a proiectului anonim Google epuizată). Secțiunea Performance din `FULL-AUDIT-REPORT.md` a fost completată inferential pe baza dimensiunii resurselor, fără date Lighthouse efective sau CrUX field data.
