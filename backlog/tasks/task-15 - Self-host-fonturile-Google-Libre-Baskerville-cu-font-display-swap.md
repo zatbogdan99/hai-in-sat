@@ -4,7 +4,7 @@ title: Self-host fonturile Google (Libre Baskerville) cu font-display swap
 status: To Do
 assignee: []
 created_date: '2026-06-12 16:19'
-updated_date: '2026-06-12 16:19'
+updated_date: '2026-07-06'
 labels:
   - seo
   - performance
@@ -36,13 +36,14 @@ priority: low
 }
 /* + 700 și italic */
 ```
-3. Șterge `<link>`-urile spre fonts.googleapis.com/fonts.gstatic.com (și preconnect-urile) din `index.html`.
+3. Șterge `<link>`-urile spre fonts.googleapis.com/fonts.gstatic.com (și preconnect-urile) din `index.html` — verificate 2026-07-06: sunt la liniile 170–172 (2× preconnect + 1× stylesheet cu `family=Libre+Baskerville:ital,wght@0,400;0,700;1,400`; exact seturile 400/700/italic-400 de descărcat).
 4. `<link rel="preload" as="font" type="font/woff2" crossorigin href="/assets/fonts/...-400.woff2">` pentru varianta folosită above-fold.
 5. Verifică diacriticele (ă â î ș ț) — de aceea e obligatoriu subsetul latin-ext.
+6. Sinergie TASK-6 (CSP): după self-host, domeniile fonts.googleapis.com/fonts.gstatic.com se pot scoate din `style-src`/`font-src`.
 
 ## Fișiere afectate
 
-- `src/index.html`, `src/styles.scss` (sau echivalent global), `src/assets/fonts/` (nou)
+- `src/index.html` (liniile 170–172), `src/styles.scss` (există — e în `angular.json` la styles), `src/assets/fonts/` (nou)
 
 ## Efort
 

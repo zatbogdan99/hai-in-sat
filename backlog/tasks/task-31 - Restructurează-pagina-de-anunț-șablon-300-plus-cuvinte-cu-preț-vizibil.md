@@ -4,7 +4,7 @@ title: Restructurează pagina de anunț — șablon 300+ cuvinte cu preț vizibi
 status: To Do
 assignee: []
 created_date: '2026-06-12 16:12'
-updated_date: '2026-06-12 16:12'
+updated_date: '2026-07-06'
 labels:
   - seo
   - content
@@ -35,17 +35,18 @@ Există model complet rescris (title + meta + H1 + structură H2 + text exemplu)
 - Hartă (embed static sau leaflet) cu locația aproximativă.
 - CTA sticky pe mobil (buton „Sună acum").
 
-**2. Date noi (backend + formular admin):** câmpuri structurate pentru: utilități (apă/curent/gaz/canalizare — checkbox-uri), situație juridică (CF, intravilan/extravilan), front stradal, acces (asfalt/pietruit), distanțe cheie, text descriptiv liber (minim încurajat 150 cuvinte). Formularul `/add-property` le cere la creare; pentru cele 14 existente se completează manual retroactiv.
+**2. Date noi (backend + formular admin):** câmpuri structurate pentru: **preț (+ valută)**, **suprafață (mp)**, **localitate/sat (`village`)**, utilități (apă/curent/gaz/canalizare — checkbox-uri), situație juridică (CF, intravilan/extravilan), front stradal, acces (asfalt/pietruit), distanțe cheie, coordonate aproximative (lat/lng, pentru hartă + schema `geo`), text descriptiv liber (minim încurajat 150 cuvinte). Formularul `/add-property` le cere la creare; pentru cele 14 existente se completează manual retroactiv. **ACEST task e proprietarul câmpurilor noi de model** — TASK-29 (schema: price/geo/floorSize/addressLocality) și TASK-32 (filtrare anunțuri pe sat) doar le CONSUMĂ; nu se definesc de două ori.
 
 **3. Fallback inteligent:** anunțurile fără câmpurile noi încă completate afișează ce există, fără secțiuni goale.
 
-Sinergie: după acest task, meta description se generează din paragraful-rezumat (fără telefoane — TASK-19), iar schema primește câmpurile structurate (TASK-29).
+Sinergie: după acest task, meta description se generează din paragraful-rezumat (fără telefoane — TASK-19, care adaugă și strip-ul de telefon în `property-details.component.ts:~131`), iar schema primește câmpurile structurate (TASK-29). Notă tehnică: descrierea e azi randată prin `[innerHTML]="propertyDescription | phoneLink"` (`property-details.component.html:43/114`) — la refacerea template-ului, ține cont de TASK-36 (sanitizarea HTML-ului descrierii).
 
 ## Fișiere afectate
 
 - `src/app/property-details/*` (template + componentă)
 - `src/app/add-property/*` (câmpuri noi formular)
-- Backend: `PropertyDTO` + model Mongo (câmpuri noi) — repo java
+- Backend (branch `master`): `src/main/java/com/haiinsat/dto/PropertyDTO.java` + modelul/colecția Mongo (câmpuri noi) + `HaiInSatService`
+- `src/app/dto/property.dto.ts` (aceleași câmpuri, tipate în frontend)
 - `src/app/service/seo.service.ts` (meta description din rezumat)
 
 ## Efort

@@ -4,7 +4,7 @@ title: Setează cache imutabil pe bundle-urile cu hash
 status: To Do
 assignee: []
 created_date: '2026-05-07 07:54'
-updated_date: '2026-06-17 15:03'
+updated_date: '2026-07-06'
 labels:
   - seo
   - performance
@@ -27,19 +27,24 @@ Cea mai mare îmbunătățire de performance la cel mai mic efort.
 
 ## Cum
 
-În `hai-in-sat/hai-in-sat/app.yaml`, adaugă handler dedicat pentru fișiere cu hash de 16 hex înainte de catch-all:
+**Context verificat (2026-07-06):** în producție, JS/CSS/imaginile sunt servite STATIC de App Engine prin handlerele din `app.yaml` (bypass Node) — deci headerele de cache se setează în `app.yaml`, pe handlere. (`express.static(distFolder, {maxAge: '1y'})` din `server.ts:37` contează doar la rulare locală prin Node; nu-l folosi ca soluție de producție. Poți adăuga `immutable: true` acolo doar pentru consistență locală.)
+
+În `hai-in-sat/hai-in-sat/app.yaml`, adaugă handler dedicat pentru fișiere cu hash de 16 hex **ÎNAINTE de handler-ul generic de asseturi existent** (cel cu `url: /(.*\.(js|css|map|...))$` — ordinea handlerelor contează, primul match câștigă):
 
 ```yaml
-- url: /(.+\.[0-9a-f]{16}\.(?:js|css))
-  static_files: dist/hai-in-sat/\1
-  upload: dist/hai-in-sat/.+\.[0-9a-f]{16}\.(?:js|css)
+- url: /(.+\.[0-9a-f]{16}\.(?:js|css))$
+  static_files: dist/hai-in-sat/browser/\1
+  upload: dist/hai-in-sat/browser/.+\.[0-9a-f]{16}\.(?:js|css)$
+  secure: always
   http_headers:
     Cache-Control: "public, max-age=31536000, immutable"
 ```
 
-Pentru imagini din `/assets` cu nume stabile (`poza_landing1.avif`, etc.), adaugă cache de 30 zile (`max-age=2592000`) sau implementează versionare în nume (recomandat la modificări viitoare).
+(Atenție la cale: output-ul build-ului e `dist/hai-in-sat/browser/`, ca la handlerele existente.)
 
-`index.html` trebuie să rămână cu cache scurt (`max-age=600` sau `no-cache`) — altfel update-urile Angular nu ajung niciodată la utilizatorii recurenți.
+Pentru imaginile din `/assets` (nume stabile: `poza_landing1.avif` etc.), adaugă `http_headers` cu cache de 30 zile (`max-age=2592000`) pe handler-ul `static_dir: dist/hai-in-sat/browser/assets` existent.
+
+HTML-ul (randat SSR de Node) NU e atins de acest task — politica lui de cache o stabilește TASK-11 (azi nu are niciun `Cache-Control`). Important e ca HTML-ul să NU primească din greșeală cache lung.
 
 ## Verificare
 
@@ -59,8 +64,8 @@ Pentru imagini din `/assets` cu nume stabile (`poza_landing1.avif`, etc.), adaug
 - [ ] #1 `curl -I` pe `runtime.<hash>.js` returnează `Cache-Control: public, max-age=31536000, immutable`
 - [ ] #2 `curl -I` pe `main.<hash>.js` returnează același header
 - [ ] #3 `curl -I` pe `styles.<hash>.css` returnează același header
-- [ ] #4 `curl -I` pe `/` (index.html) păstrează cache scurt (`max-age=600` sau `no-cache`)
-- [ ] #5 App Engine handlers ordonate corect: hashed assets înainte de fallback la `index.html`
+- [ ] #4 `curl -I` pe `/` (HTML-ul SSR) NU are `Cache-Control` cu max-age lung (fie lipsește, fie ≤600s; politica finală e a TASK-11)
+- [ ] #5 App Engine handlers ordonate corect: handler-ul cu hash + immutable apare ÎNAINTE de handler-ul generic de asseturi din `app.yaml`, iar asseturile ne-hash-uite își păstrează comportamentul
 <!-- AC:END -->
 
 ## Implementation Notes

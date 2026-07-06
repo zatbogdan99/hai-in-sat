@@ -4,7 +4,7 @@ title: 'REVIEW-17: AuthGuard cu take(1) — race condition la cold start Firebas
 status: To Do
 assignee: []
 created_date: '2026-05-07 08:47'
-updated_date: '2026-06-17 14:24'
+updated_date: '2026-07-06'
 labels:
   - review
   - bug
@@ -138,4 +138,5 @@ export const authGuard = async () => {
 
 <!-- SECTION:NOTES:BEGIN -->
 Verificare 2026-06-08: Inca valid. auth.guard.ts:17 foloseste tot authState(auth).pipe(take(1)) - nu auth.authStateReady(). Inca prezent console.log('[AuthGuard] Access denied') la :25. Recomandarea (Optiunea C, authStateReady) ramane.
+Verificare 2026-07-06: neschimbat — auth.guard.ts:17 authState(auth).pipe(take(1)), console.log la :25. Recomandarea C (await auth.authStateReady() + auth.currentUser) ramane cea corecta. Nota SSR: guard-ul ruleaza si la render-ul server pe /add-property (authState e null pe server -> redirect /login la SSR) — comportament acceptabil (pagina e noindex prin TASK-10), doar nu-l "repara" accidental.
 <!-- SECTION:NOTES:END -->

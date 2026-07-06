@@ -4,7 +4,7 @@ title: 'REVIEW-19: AppComponent — goToLandingPage cu reload + metode social go
 status: To Do
 assignee: []
 created_date: '2026-05-07 08:47'
-updated_date: '2026-06-17 14:24'
+updated_date: '2026-07-06'
 labels:
   - review
   - bug
@@ -121,4 +121,5 @@ Acoperit de REVIEW-5. Aplică pattern-ul `takeUntilDestroyed` sau acceptă expli
 
 <!-- SECTION:NOTES:BEGIN -->
 Verificare 2026-06-08: Partial. Fix 3 (subscriptions) e DEJA facut - AppComponent foloseste takeUntilDestroyed peste tot (app.component.ts:69,170,180). RAMAN: Fix 1 - goToLandingPage() (:87-92) inca face navigateByUrl('/landing-page') + window.location.reload(), iar ruta /landing-page nici nu exista. Fix 2 - goToTikTokPage/Facebook/Instagram (:190-200) inca goale; openLink() exista (:202). Plus cod comentat (:151-166) si campuri boolean neutilizate.
+Verificare 2026-07-06: goToLandingPage (app.component.ts:87-92) neschimbat — navigateByUrl('/landing-page') + window.location.reload(), iar ruta /landing-page NU exista (cade pe wildcard). CORECTIE la Fix 2: metodele sociale goale (goToTikTokPage/goToFacebookPage/goToInstagramPage, :190-200) NU sunt legate nicaieri in template — app.component.html foloseste DIRECT openLink(...) cu URL-urile corecte pe toate iconitele sociale. Fix-ul corect = STERGEREA metodelor goale, nu popularea lor. COD MORT suplimentar in AppComponent (coordoneaza cu TASK-64): campul items (MenuItem[], construit in ngOnInit dar nerandat nicaieri — meniul real e din p-chips), goToTerrainFormPage (tinteste ruta inexistenta /terrain-form-page), goToInfoPage/goToSeeTheArea/goToAddProperty neapelate din template, campul visible neutilizat, cod comentat la :151-166. Fix 3 (takeUntilDestroyed) ramane rezolvat.
 <!-- SECTION:NOTES:END -->

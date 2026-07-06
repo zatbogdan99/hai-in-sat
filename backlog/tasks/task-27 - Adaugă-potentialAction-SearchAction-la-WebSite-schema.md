@@ -4,7 +4,7 @@ title: Adaugă potentialAction SearchAction la WebSite schema
 status: To Do
 assignee: []
 created_date: '2026-05-07 08:02'
-updated_date: '2026-06-17 08:47'
+updated_date: '2026-07-06'
 labels:
   - seo
   - schema
@@ -26,8 +26,8 @@ Precondiție: trebuie să existe o rută reală de căutare care primește un qu
 
 ## Cum
 
-1. Verifică/implementează că `/properties` poate filtra după query param (ex: `?q=horezu`, sau `?location=horezu&type=teren`). Backend Java are deja logica de filtrare? Dacă nu, e o muncă separată mai mare. Începe cu un filter simplu pe nume/locație.
-2. În `src/index.html`, blocul `WebSite` JSON-LD, adaugă:
+1. **Implementează filtrul `?q=` pe `/properties` — plan concret (stare verificată 2026-07-06):** componenta citește deja `page`/`size`/`type` din queryParams (`properties.component.ts:159-176`), iar backend-ul filtrează după `type` — dar NU există căutare text (nici în backend). La ~14 anunțuri, NU are rost un endpoint nou: când `q` e prezent, adu TOATE proprietățile (endpoint public existent `GET /get-all-properties`, folosit deja de generate-sitemap) și filtrează client-side, case-insensitive și fără diacritice, pe `name` + `description` (refolosește `removeDiacritics` din `src/app/utils/slug.util.ts`); combină cu filtrul `type` existent și afișează fără paginare (sau paginare client-side). Fără `q`, comportamentul actual rămâne neschimbat.
+2. În `src/index.html`, blocul `WebSite` JSON-LD (liniile 84–98), adaugă:
 
 ```json
 "potentialAction": {
@@ -40,7 +40,7 @@ Precondiție: trebuie să existe o rută reală de căutare care primește un qu
 }
 ```
 
-3. Pe componenta `/properties`, citește `activatedRoute.queryParams` și aplică filtru pe `propertiesStateService`.
+3. (Opțional, UX) Un input mic de căutare pe `/properties` care setează `?q=` — utile și vizitatorilor, nu doar schemei.
 
 ## Verificare
 
@@ -48,9 +48,9 @@ Google Rich Results Test pe homepage — confirmă `SearchAction` valid. Sitelin
 
 ## Fișiere afectate
 
-- `hai-in-sat/hai-in-sat/src/index.html` (JSON-LD `WebSite`)
-- `src/app/components/properties/properties.component.ts` (read query params, filter)
-- `src/app/service/properties-state-service/*` (eventual extinde `fetchPage` cu filter)
+- `hai-in-sat/hai-in-sat/src/index.html` (JSON-LD `WebSite`, liniile 84–98)
+- `src/app/properties/properties.component.ts` (calea REALĂ — nu există folder `components/`; citește `queryParams.q`, filtrare client-side)
+- `src/app/service/property-form-service/property-form-service.service.ts` (metodă de fetch-all dacă lipsește în frontend)
 
 ## Efort
 

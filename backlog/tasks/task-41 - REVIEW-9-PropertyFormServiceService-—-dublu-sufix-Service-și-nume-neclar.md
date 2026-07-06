@@ -4,7 +4,7 @@ title: 'REVIEW-9: PropertyFormServiceService — dublu sufix Service și nume ne
 status: To Do
 assignee: []
 created_date: '2026-05-07 08:46'
-updated_date: '2026-06-17 14:24'
+updated_date: '2026-07-06'
 labels:
   - review
   - refactor
@@ -77,4 +77,5 @@ Mare număr de touch points. Fă într-un PR separat dedicat (nu mixa cu alte sc
 
 <!-- SECTION:NOTES:BEGIN -->
 Verificare 2026-06-08: Inca valid. 4 clase cu dublu sufix confirmate: PropertyFormServiceService, PropertyFormEmailServiceService, HomeFormServiceService, TerrainFormServiceService. PropertyFormServiceService inca importat in property-details.component.ts:4 si in spec-uri. Niciun rename facut.
+Verificare 2026-07-06: neschimbat — 4 clase cu dublu sufix confirmate. NOTA IMPORTANTA: TerrainFormServiceService e cod MORT (folosit doar de terrain-form-page, componenta nerutata — vezi TASK-64); daca TASK-64 se livreaza intai, scoate-l din tabelul de rename (raman 3 clase de redenumit).
 <!-- SECTION:NOTES:END -->

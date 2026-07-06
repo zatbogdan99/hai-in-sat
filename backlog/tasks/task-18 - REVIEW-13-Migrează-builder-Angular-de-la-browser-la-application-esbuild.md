@@ -4,7 +4,7 @@ title: 'REVIEW-13: Migrează builder Angular de la :browser la :application (esb
 status: To Do
 assignee: []
 created_date: '2026-05-07 08:46'
-updated_date: '2026-06-17 14:24'
+updated_date: '2026-07-06'
 labels:
   - review
   - build
@@ -103,4 +103,6 @@ Builder-ul `:browser` (webpack-based) este în maintenance mode și va fi deprec
 
 <!-- SECTION:NOTES:BEGIN -->
 Verificare 2026-06-08: Inca valid. angular.json:18 tot @angular-devkit/build-angular:browser, :122 :server (legacy webpack). server.ts foloseste CommonEngine. Update-ul din 2026-05-09 ramane corect: migrarea la :application implica rescrierea server.ts la AngularNodeAppEngine. Recomandare: dupa intarirea testelor (task-28).
+
+Verificare 2026-07-06: neschimbat. IMPORTANT — inventarul de „re-aplicat manual" dupa rescrierea server.ts a CRESCUT: TASK-47 (LIVRAT) a adaugat in server.ts timeout de render 25s + raspuns 503 cu pagina dedicata + mecanismul SSR_RENDER_STATE (src/app/ssr-render-state.ts, injectat ca provider per-request in commonEngine.render — la AngularNodeAppEngine providerul se paseaza diferit, verifica API-ul). La momentul migrarii, adauga pe lista si ce va mai fi intre timp in server.ts din TASK-4 (redirect), TASK-6 (headers), TASK-10 (404), TASK-11 (cache). Nota: output-ul build-ului e deja in dist/hai-in-sat/browser/ (app.yaml e aliniat), deci pasul 3 din descriere e partial rezolvat de la sine.
 <!-- SECTION:NOTES:END -->

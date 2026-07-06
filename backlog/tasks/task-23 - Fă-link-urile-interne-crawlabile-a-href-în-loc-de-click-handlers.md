@@ -4,7 +4,7 @@ title: Fă link-urile interne crawlabile — <a href> în loc de click handlers
 status: To Do
 assignee: []
 created_date: '2026-06-12 16:16'
-updated_date: '2026-06-12 16:16'
+updated_date: '2026-07-06'
 labels:
   - seo
   - technical
@@ -29,20 +29,23 @@ Consecințe:
 - orice pagină nouă (TASK-32 pagini de sat, TASK-33 articole) pornește fără susținere internă;
 - accesibilitate: fără href nu funcționează „open in new tab", middle-click, etc.
 
-## Cum
+## Cum — inventar COMPLET al punctelor de navigare (verificat în cod, 2026-07-06)
 
-1. **Inventariere**: grep în template-uri după `(click)=".*navigate` și `routerLink` — listează toate elementele de navigare.
-2. **Cardurile de proprietate** din `/properties` (+ orice listă): învelește cardul în `<a [routerLink]="['/property', p.id, slug(p)]">` (routerLink pe `<a>` randează `href` în SSR) sau adaugă link explicit pe titlul cardului. Click handler-ul existent poate rămâne pentru UX, dar elementul trebuie să fie `<a href>`.
-3. **Meniu/navigație/footer**: toate intrările → `<a routerLink>`; verifică și logo-ul (→ `/`).
-4. **Link-uri contextuale**: din anunț → `/properties` („Înapoi la listă" să fie `<a>`) și → pagina satului (după TASK-32); din paginile statice → `/properties`.
-5. **Footer sitewide**: bloc de link-uri (Proprietăți, Sate, Despre noi, Contact) — cel mai ieftin mod de a da fiecărei pagini link-uri interne.
-6. Verificare: re-rulează crawler-ul de audit — coloana internal_links trebuie să devină >0 peste tot.
+Singurul `<a routerLink>` real de pe tot site-ul e „Înapoi la pagina principală" din `login.component.html:72`. Restul:
 
-Notă tehnică: `routerLink` pe elemente non-`<a>` NU produce href — folosiți întotdeauna `<a>` pentru navigare.
+1. **Meniul principal** (`app.component.html:9-21`): 4 `p-chip (click)` (Oltenia de sub Munte, Sate, Proprietăți, Găsește-mi locul) + aceleași 4 în popover-ul mobil. → fiecare chip devine (sau se învelește în) `<a routerLink>`. Logo-ul (linia 5, `(click)="goToLandingPage()"`) → `<a routerLink="/">`. ATENȚIE: meniul NU leagă deloc `/about-us`, `/contact-us`, `/see-the-area` — azi sunt pagini aproape orfane; le acoperă blocul de footer (pct. 5).
+2. **Cardurile de proprietate** (`properties.component.html:186` și `:200` — butonul „Detalii" cu `(click)="viewPropertyDetails(property)"`): învelește cardul (sau titlul + butonul) în `<a [routerLink]="['/property', property.id, slug]">` cu `[queryParams]` pentru page/size/type (logica de queryParams există în `viewPropertyDetails`, properties.component.ts:309-321 — mut-o în template ca binding). Anchor text = numele anunțului.
+3. **Homepage** (`new-landing-page.component.html:9`): CTA „Completează formularul" `(click)="goToHomeFormPage()"` → `<a routerLink="/homes">` stilizat ca buton.
+4. **Link-uri contextuale**: din anunț → `/properties` („Înapoi la listă" — azi `goBackToProperties()` cu click; fă-l `<a>` cu queryParams) și → pagina satului (după TASK-32); din paginile statice → `/properties`.
+5. **Footer sitewide NOU**: bloc de link-uri `<a routerLink>` (Proprietăți, Despre noi, Contact, Vezi zona, + Sate după TASK-32) în `app.component.html`, lângă chips-urile legale — cel mai ieftin mod de a da fiecărei pagini link-uri interne și de a dez-orfaniza about-us/contact-us/see-the-area. (Chips-urile legale deschid dialoguri — pot rămâne așa.)
+6. **Bonus găsit la verificare**: în `contact-us.component.html`, link-urile sociale de pe desktop au `href="#"` (liniile ~15, 29, 40) — înlocuiește cu URL-urile reale (există în varianta mobilă a aceleiași pagini) + `target="_blank" rel="noopener"`.
+7. Verificare: re-rulează crawler-ul de audit — coloana internal_links trebuie să devină >0 peste tot.
+
+Notă tehnică: `routerLink` pe elemente non-`<a>` NU produce href — folosiți întotdeauna `<a>` pentru navigare. `p-chip` nu acceptă să fie `<a>` — învelește-l sau înlocuiește-l cu un element `<a>` stilizat identic.
 
 ## Fișiere afectate
 
-- Template-urile: carduri properties, meniu/navbar, footer, property-details, paginile statice
+- `src/app/app.component.html` (meniu + logo + footer nou), `src/app/properties/properties.component.html` (+ .ts pentru slug în template), `src/app/new-landing-page/new-landing-page.component.html`, `src/app/property-details/property-details.component.html` („Înapoi la listă"), `src/app/contact-us/contact-us.component.html` (href="#")
 
 ## Efort
 

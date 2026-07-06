@@ -4,7 +4,7 @@ title: Migrează fotografiile din base64 inline la URL-uri reale
 status: To Do
 assignee: []
 created_date: '2026-06-12 16:06'
-updated_date: '2026-06-12 16:06'
+updated_date: '2026-07-06'
 labels:
   - seo
   - critical
@@ -40,11 +40,14 @@ Dimensiuni măsurate (crawl 2026-06-12): pagini de anunț **3,7–42,5 MB HTML**
 
 ## Cum
 
-**Backend (repo `java.hai-in-sat/hai-in-sat/`, deploy `--project=hai-in-sat-api`):**
-1. Stocare poze în **Google Cloud Storage** (bucket nou sau cel existent folosit la video — vezi task-46 completat, care deja detectează video din GCS bucket) SAU endpoint de streaming `GET /photos/{propertyId}/{n}` care servește binarul din MongoDB.
-2. La upload (`/save-property`, `/replace-photos`, `/add-photo`): generează 3 variante — thumbnail ~400 px, medium ~1200 px, og-image JPG 1200×630 — cu nume descriptive (`teren-cerna-valcea-9600mp-1.jpg`).
-3. Servire cu `Cache-Control: public, max-age=31536000, immutable` și `Content-Type` corect.
-4. DTO: `thumbnail`/`photos` devin URL-uri; expune și `ogImageUrl`. Pentru tranziție, păstrează temporar câmpurile vechi sau fă migrare one-shot a datelor existente (script care decodează base64 din Mongo → upload GCS → update document).
+**Backend (repo `java.hai-in-sat/hai-in-sat/`, branch `master` — NU `main`; deploy `--project=hai-in-sat-api`):**
+
+> **DECIS de owner (2026-07-06): endpoint de streaming din MongoDB** (NU Google Cloud Storage). Binarul rămâne în Mongo; backend-ul îl servește ca imagine normală, cu cache agresiv.
+
+1. **Endpoint nou de servire**: `GET /photos/{propertyId}/{photoIndex}/{varianta}/{slug}.jpg` (controller nou `PhotoController` sau în `HaiInSatController.java`) — citește binarul din colecția de poze (vezi `PhotoRepository`/`PhotoDTO`) și îl scrie în răspuns ca bytes. `{varianta}` ∈ `thumb|medium|og`; `{slug}` e doar cosmetic/SEO (numele descriptiv, ex. `teren-cerna-valcea-9600mp-1.jpg`) — serverul se uită doar la id+index+variantă. **Adaugă ruta în `SecurityConfig.java` la `permitAll` pe GET** (azi doar `/get-all-properties`, `/get-by-id`, `/get-photos` sunt publice — linia ~49).
+2. **Stocare variante în Mongo**: la upload (`/save-property`, `/replace-photos`, `/add-photo`), generează și persistă ca **bytes binari (nu base64)** 3 variante per poză — thumbnail ~400 px, medium ~1200 px, og JPG 1200×630 (doar pentru prima poză/thumbnail e necesar og). `ThumbnailService` există deja pentru redimensionare — extinde-l.
+3. **Servire cu headere corecte**: `Content-Type: image/jpeg` (sau ce format alegi), `Cache-Control: public, max-age=31536000, immutable` (conținutul unei variante nu se schimbă; la înlocuirea pozelor se schimbă indexul/numărul lor, iar riscul de cache stale la scara actuală e acceptabil — dacă vrei perfect, include un hash scurt în slug). Suport pentru `HEAD` și răspuns 404 curat la poze inexistente.
+4. **DTO**: `thumbnail`/`photos` din `PropertyDTO` devin URL-uri absolute către endpoint (ex. `https://hai-in-sat-api.lm.r.appspot.com/photos/<id>/0/thumb/<slug>.jpg`); expune și `ogImageUrl`. Migrare one-shot a datelor existente: script/endpoint temporar admin care decodează base64 din Mongo → scrie variantele binare → actualizează documentele. **Atenție la memoria instanței F2 (512 MB)** la migrare — procesează poză cu poză, nu toată colecția în memorie.
 
 **Frontend:**
 5. `property-details`, `properties` (carduri), `add-property` (preview): `<img [src]="url">` + `srcset` (thumbnail/medium) în loc de data:URI.
@@ -54,10 +57,12 @@ Dimensiuni măsurate (crawl 2026-06-12): pagini de anunț **3,7–42,5 MB HTML**
 
 **Notă de migrare a datelor:** există ~14 proprietăți — migrarea one-shot e mică; scrie scriptul idempotent și păstrează backup-ul colecției înainte.
 
+**Trade-off asumat (streaming din Mongo):** fiecare afișare de imagine consumă instanța F2 a backend-ului. La traficul actual e OK; `Cache-Control` de 1 an face ca vizitatorii recurenți și crawlerele să nu re-descarce. Dacă traficul crește semnificativ, mutarea pe GCS rămâne o optimizare ulterioară — URL-urile din DTO ascund implementarea, deci schimbarea nu va atinge frontend-ul.
+
 ## Fișiere afectate
 
-- Backend: controller foto + serviciu GCS + DTO (`PropertyDTO`), script de migrare date
-- Frontend: `src/app/property-details/*`, `src/app/properties/*` (carduri), `src/app/service/property-form-service/*`, `src/app/service/seo.service.ts`, `src/app/app.config.ts` (transfer cache options)
+- Backend (branch `master`): `src/main/java/com/haiinsat/controller/HaiInSatController.java` (sau `PhotoController` nou), `src/main/java/com/haiinsat/service/ThumbnailService.java`, `src/main/java/com/haiinsat/service/HaiInSatService.java`, `src/main/java/com/haiinsat/dto/PropertyDTO.java` (+`PhotoDTO`), `src/main/java/com/haiinsat/security/SecurityConfig.java` (permitAll GET `/photos/**`), script/endpoint temporar de migrare
+- Frontend: `src/app/property-details/*`, `src/app/properties/*` (carduri), `src/app/add-property/*` (preview), `src/app/service/property-form-service/*`, `src/app/dto/property.dto.ts`, `src/app/service/seo.service.ts`, `src/app/app.config.ts` (transfer cache options)
 - `scripts/generate-sitemap.js` (image sitemap — după)
 
 ## Efort

@@ -6,7 +6,7 @@ title: >-
 status: To Do
 assignee: []
 created_date: '2026-05-07 08:46'
-updated_date: '2026-06-17 14:24'
+updated_date: '2026-07-06'
 labels:
   - review
   - cleanup
@@ -95,10 +95,12 @@ Plus în package.json: `"convert-images": "node scripts/convert-to-avif.js"`. Ut
 - [ ] #2 `extra-webpack.config.js` șters SAU clar documentat că rămâne intenționat (cu motiv)
 - [ ] #3 CLAUDE.md actualizat fără mențiunea fișierelor stub
 - [ ] #4 `npm run build` continuă să funcționeze
+- [ ] #5 Dependentele moarte din package.json (yarn, schematics-scss-migrate, css-loader, style-loader, file-loader, sass-loader, browser-sync) sunt sterse dupa verificare cu grep; `yarn install` + `npm run build:browser` + `npm test` trec
 <!-- AC:END -->
 
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 Verificare 2026-06-08: Inca valid. scripts/ contine inca convert-to-avif.js si replace-image-refs.js (stub-uri 0 bytes) pe langa generate-sitemap.js. extra-webpack.config.js inca exista. De sters + actualizat CLAUDE.md (mentiunea 'empty stub files').
+Verificare 2026-07-06: neschimbat (ambele stub-uri 0 bytes din 2026-02-28; extra-webpack.config.js prezent si nereferentiat in angular.json). EXTINDERE SCOPE (aceeasi igiena, acelasi PR): package.json contine dependente moarte/gresite, de sters dupa verificare cu git grep + build: in dependencies — 'yarn' (managerul de pachete nu se instaleaza ca dependenta a aplicatiei) si 'schematics-scss-migrate' (unealta one-shot de migrare); in devDependencies — toolchain webpack nefolosit de builderul Angular CLI (css-loader, style-loader, file-loader, sass-loader, browser-sync), folosit doar de extra-webpack.config.js inactiv. Verifica fiecare cu grep inainte; ruleaza build + test dupa.
 <!-- SECTION:NOTES:END -->

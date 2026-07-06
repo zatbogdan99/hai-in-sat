@@ -4,7 +4,7 @@ title: 'REVIEW-11: Type cast unsafe pe prop.type în PropertyDetailsComponent'
 status: To Do
 assignee: []
 created_date: '2026-05-07 08:46'
-updated_date: '2026-06-17 14:24'
+updated_date: '2026-07-06'
 labels:
   - review
   - types
@@ -102,4 +102,5 @@ Dacă `prop.type` nu match: `logger.warn(\`Unknown property type: ${prop.type} f
 
 <!-- SECTION:NOTES:BEGIN -->
 Verificare 2026-06-08: Inca valid. Cast-urile sunt acum la property-details.component.ts:104 (prop.type as PropertyType), :116 (generateSlug(prop.type as PropertyType)), :138 (as house|land); plus :107 prop.type==='land' (erau 82/91/105). NOTA: PropertyDTO.type e DEJA tipat ca enum PropertyType (property.dto.ts:7), iar enum-ul are valorile 'house'/'land' (property-type.enum.ts) - deci Phase 2 (aliniere DTO) e in mare parte facuta; ramane Phase 1 (type guard + fallback).
+Verificare 2026-07-06: cast-urile sunt la property-details.component.ts:107 (prop.type as PropertyType), :119 (generateSlug(prop.type as PropertyType, ...)), :141 (as 'house' | 'land'); comparatia stringly la :110 (prop.type === 'land' ? 'Teren' : 'Casă'). PropertyDTO.type ramane tipat enum (dto/property.dto.ts:7). Ramane Phase 1 (type guard + fallback + warning — logat prin LoggerService din TASK-35 daca exista deja).
 <!-- SECTION:NOTES:END -->

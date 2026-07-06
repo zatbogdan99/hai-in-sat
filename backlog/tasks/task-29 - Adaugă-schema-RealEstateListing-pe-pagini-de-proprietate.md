@@ -4,7 +4,7 @@ title: Adaugă schema RealEstateListing pe pagini de proprietate
 status: To Do
 assignee: []
 created_date: '2026-05-07 07:58'
-updated_date: '2026-06-17 15:04'
+updated_date: '2026-07-06'
 labels:
   - seo
   - schema
@@ -29,7 +29,11 @@ Avantaje schema `RealEstateListing`:
 
 ## Cum
 
-SSR-ul există deja, iar schema de BAZĂ se randează deja în HTML brut (per notes: `setRealEstateListing` e apelat în `property-details` și redat SSR). Munca rămasă = completarea câmpurilor care lipsesc (vezi mai jos) + URL real de imagine (TASK-3) + description fără telefon (TASK-19).
+SSR-ul există deja, iar schema de BAZĂ se randează deja în HTML brut (re-verificat 2026-07-06: `seo.service.ts:87-116` `setRealEstateListing`, apelat din `property-details.component.ts:136-142`). Munca rămasă = completarea câmpurilor care lipsesc + URL real de imagine (TASK-3) + description fără telefon (TASK-19).
+
+**Fazare recomandată (după disponibilitatea datelor — verificat în backend, branch `master`):**
+- **Faza A (se poate ACUM, fără backend):** `datePosted` — backend-ul expune DEJA `createdAt` (Instant) în `PropertyDTO`; frontend-ul doar nu-l are tipat în `src/app/dto/property.dto.ts` → adaugă câmpul + folosește-l ca `datePosted`. Tot în faza A: `address` cu `addressRegion`/`addressCountry` există deja în schema generată; `url`/`name`/`description` există.
+- **Faza B (cere backend + formular admin — câmpuri NOI în model):** `offers.price` + `priceCurrency`, `geo` (lat/lng), `floorSize` (suprafață), `addressLocality` (satul). ATENȚIE: câmpurile `price`/`suprafață`/`village`/`utilități` sunt introduse de **TASK-31** (restructurarea anunțului) — NU le adăuga de două ori; dacă TASK-31 se face primul, aici doar le mapezi în schema. `addressLocality` = câmpul `village` din TASK-31.
 
 Structură per `/property/:id/:slug`:
 
@@ -76,9 +80,9 @@ Google Rich Results Test (https://search.google.com/test/rich-results) pe URL de
 
 ## Fișiere afectate
 
-- `src/app/service/seo.service.ts` — verifică `setRealEstateListing()`, extinde dacă lipsesc câmpuri
-- `src/app/components/property-details/property-details.component.ts` (sau echivalent — apel în `ngOnInit`)
-- Backend Java (`PropertyDTO`/endpoint): expune câmpurile lipsă pentru schema completă — `datePosted`, `geo` (lat/lng), `price`/currency, `floorSize`/area (azi DTO-ul nu le are; necesită extindere DTO + formular). Schema se randează deja SSR din componentă — nu e nevoie de injectare separată în `server.ts`.
+- `src/app/service/seo.service.ts` — extinde `setRealEstateListing()` (liniile 87-116) cu câmpurile noi (opționale, ca să meargă și fără datele din faza B)
+- `src/app/property-details/property-details.component.ts` (calea reală — apelul există la :136-142) + `src/app/dto/property.dto.ts` (câmpul `createdAt`, faza A)
+- Backend Java (branch `master`), doar faza B: `src/main/java/com/haiinsat/dto/PropertyDTO.java` + model + formular admin — coordonat cu TASK-31 (câmpurile sunt ale lui). Schema se randează deja SSR din componentă — nu e nevoie de injectare separată în `server.ts`.
 
 ## Efort
 
@@ -88,7 +92,7 @@ Google Rich Results Test (https://search.google.com/test/rich-results) pe URL de
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [x] #1 Pe pagina `/property/<uuid>/<slug>`, există un `<script type="application/ld+json">` cu `@type RealEstateListing` în HTML brut
-- [ ] #2 Schema include: name, url, description, image (array), datePosted, address (cu addressLocality), geo (cu lat/lng), offers (cu price și priceCurrency EUR), floorSize
+- [ ] #2 (Faza A) Schema include `datePosted` (din `createdAt`, disponibil deja în API); (Faza B, după câmpurile din TASK-31) include și: image (array), address cu addressLocality, geo (lat/lng), offers (price + priceCurrency EUR), floorSize — câmpurile lipsă din date se omit din JSON-LD, nu se pun goale
 - [ ] #3 Google Rich Results Test pe URL-ul de proprietate raportează schema validă, fără erori critice (warnings acceptabile)
 - [ ] #4 Schema validator (validator.schema.org) confirmă tipul `RealEstateListing` și sub-tipuri `PostalAddress`/`GeoCoordinates`/`Offer`/`QuantitativeValue` corecte
 - [ ] #5 image din schema RealEstateListing = URL public real al pozei (nu data:URI) - dupa TASK-3

@@ -4,7 +4,7 @@ title: Creează pagini de sat — hub-uri locale cu inventar, prețuri și Q&A
 status: To Do
 assignee: []
 created_date: '2026-06-12 16:13'
-updated_date: '2026-06-12 16:13'
+updated_date: '2026-07-06'
 labels:
   - seo
   - content
@@ -47,9 +47,13 @@ Wireframe complet pentru pagina-sat ideală: în `findings/sxo.md`.
 
 ## Fișiere afectate
 
-- `src/app/app.routes.ts` + componente noi `src/app/sate/*`
-- Backend: filtrare proprietăți după localitate (sau filtrare client-side la 14 anunțuri, pragmatic pentru început)
-- `scripts/generate-sitemap.js`, `src/app/service/seo.service.ts`
+- `src/app/app.routes.ts` + componente noi `src/app/sate/*` (convenția repo-ului: componentele stau direct în `src/app/<nume>/`)
+- Filtrarea anunțurilor pe sat: cere câmpul `village` pe proprietate — **definit de TASK-31** (nu-l re-defini aici); până există, filtrare client-side la 14 anunțuri e pragmatică (heuristic pe nume, marcat explicit ca provizoriu)
+- `scripts/generate-sitemap.js` — adaugă `/sate` + paginile de sat în `STATIC_PAGES` (liniile 14-23)
+- `src/app/service/seo.service.ts`
+- Foto per sat: EXISTĂ deja liste statice de imagini per localitate în `src/app/service/photo-service.ts` (Horezu, Costești etc., din `assets/`) — refolosește-le pentru galeria paginii de sat
+
+Verificat 2026-07-06: afirmațiile din task despre starea curentă sunt corecte — nu există nicio rută/pagină de localitate, iar `village-of-the-month`/`info-page` nu țin loc de pagini-sat (conținut narativ, fără inventar/prețuri/Q&A).
 
 ## Efort
 

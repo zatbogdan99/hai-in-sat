@@ -4,7 +4,7 @@ title: 'REVIEW-2: Endpoint debug expus în producție'
 status: To Do
 assignee: []
 created_date: '2026-05-07 08:45'
-updated_date: '2026-06-17 08:44'
+updated_date: '2026-07-06'
 labels:
   - review
   - security
@@ -73,4 +73,5 @@ Risk: information disclosure, prep pentru atac scripted (după ce ai toate ID-ur
 
 <!-- SECTION:NOTES:BEGIN -->
 Verificare 2026-06-08: Expunerea publica NU mai exista - dupa task-23, SecurityConfig.java:54 protejeaza /debug/** cu hasRole(ADMIN), deci fara token admin -> 401 (efectiv Optiunea B e deja in vigoare; riscul critic de enumerare publica e rezolvat). Ramane doar curatenie optionala (Optiunea A): endpoint-ul exista la HaiInSatController.java:124, apelat din PhotoAdminService.getAllPhotosMetadata() (photo-admin.service.ts:47) folosit in add-property.component.ts:900. Prioritate redusa high->low.
+Verificare 2026-07-06: neschimbat. ATENTIE branch: sursele backend traiesc pe MASTER (main e o linie goala — vezi project.md). Endpoint: HaiInSatController.java:124 (@GetMapping /debug/all-photos-metadata), protejat de SecurityConfig.java:54 (hasRole ADMIN pe /debug/**). Frontend: photo-admin.service.ts:47-51, apelat din add-property.component.ts:900. Prioritatea low ramane corecta — doar curatenie (Optiunea A).
 <!-- SECTION:NOTES:END -->

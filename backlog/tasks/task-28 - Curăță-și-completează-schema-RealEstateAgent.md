@@ -4,7 +4,7 @@ title: Curăță și completează schema RealEstateAgent
 status: To Do
 assignee: []
 created_date: '2026-05-07 07:59'
-updated_date: '2026-06-17 15:03'
+updated_date: '2026-07-06'
 labels:
   - seo
   - schema
@@ -60,9 +60,16 @@ Schema `RealEstateAgent` din `src/index.html` este 80% bună, dar are:
 ```
 
 Notă: drop „București" și „România" — acestea diluează semnalul. Dacă serviți București ca audiență sursă (cumpărători din capitală), păstrați-l ca `areaServed` dar nu adăugați „România" generic.
+
+Note suplimentare (verificare 2026-07-06, blocul e la `index.html:33-82`):
+- `telephone` e deja corect (`+40728140628`, linia 42) — nu-l atinge; doar aliniat cu TASK-19.
+- `sameAs` există (Facebook/Instagram/TikTok, liniile 75-79) — după TASK-MANUAL-4 (GBP) se va adăuga acolo și URL-ul profilului Google Business.
+- **Consecvența email-ului în restul site-ului**: `mailto:contact@hai-în-sat.ro` (forma IDN) apare în `contact-us.component.html:91` și în dialogul Contact din `app.component.html`. Cele două forme sunt ACELAȘI domeniu (unicode vs punycode), dar unii clienți de mail eșuează pe forma unicode. La schimbarea email-ului din schema pe forma ASCII, schimbă și `mailto:`-urile pe ASCII (textul AFIȘAT poate rămâne cu diacritice).
+
 ## Fișiere afectate
 
-- `hai-in-sat/hai-in-sat/src/index.html` (bloc JSON-LD `RealEstateAgent`)
+- `hai-in-sat/hai-in-sat/src/index.html` (bloc JSON-LD `RealEstateAgent`, liniile 33-82)
+- `src/app/contact-us/contact-us.component.html` + `src/app/app.component.html` (doar `mailto:` → forma ASCII)
 
 ## Efort
 
@@ -74,7 +81,7 @@ Notă: drop „București" și „România" — acestea diluează semnalul. Dac�
 - [ ] #1 JSON-LD validator (validator.schema.org) confirmă schema `RealEstateAgent` fără erori critice
 - [ ] #2 `address.postalCode = "245800"`
 - [ ] #3 `priceRange` folosește format acceptat de Google (`$$` - `$$$$` sau range numeric cu valută)
-- [ ] #4 `email` folosește formă ASCII (xn--hai-n-sat-t5a.ro)
+- [ ] #4 `email` folosește formă ASCII (xn--hai-n-sat-t5a.ro) — în schema ȘI în link-urile `mailto:` de pe site
 - [ ] #5 `areaServed` nu mai conține entry generic „România"
 <!-- AC:END -->
 

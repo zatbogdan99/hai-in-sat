@@ -4,7 +4,7 @@ title: Activează compresie Brotli pe asseturi statice
 status: To Do
 assignee: []
 created_date: '2026-05-07 08:04'
-updated_date: '2026-06-17 08:47'
+updated_date: '2026-07-06'
 labels:
   - seo
   - performance
@@ -18,6 +18,8 @@ priority: low
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
+> ⛔ **WONT-DO / AMÂNAT (decizie owner, 2026-07-06).** Motivul: în producție, bundle-urile JS/CSS sunt servite STATIC de App Engine prin handlerele din `app.yaml` (bypass Node, gzip automat de la Google Frontend) — deci soluția `express-static-gzip` din acest task NU s-ar aplica deloc în producție. Singura cale reală ar fi scoaterea handler-ului static din `app.yaml` și rutarea bundle-urilor prin Node (mai lent per request, consumă instanța F2, pierde servirea din edge-ul Google) — cost care nu se justifică pentru ~150–200 KB câștig pe main.js, câștig care se micșorează oricum după TASK-12 (lazy-loading) și TASK-18 (esbuild). **De redeschis doar dacă**, după livrarea TASK-12 + TASK-18, bundle-ul inițial gzip rămâne >400 KB și există motive de performanță măsurate — caz în care designul corect e varianta „prin Node" descrisă mai jos.
+
 ## De ce
 
 Response curent pentru `main.js` folosește `Content-Encoding: gzip` (verificat — 684 KB gzip dintr-un original de 2.23 MB). Brotli (q=11) ar reduce tipic cu încă 20-30% pe JS bundles → estimat 480-540 KB pe `main.js`. Cu LCP/TTFB sensibil, fiecare 100KB economisit contează pe mobile.

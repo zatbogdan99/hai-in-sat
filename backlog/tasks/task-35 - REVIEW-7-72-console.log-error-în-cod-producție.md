@@ -4,7 +4,7 @@ title: 'REVIEW-7: console.log/error în cod producție (≈59 apariții, 11 fiș
 status: To Do
 assignee: []
 created_date: '2026-05-07 08:46'
-updated_date: '2026-06-17 14:23'
+updated_date: '2026-07-06'
 labels:
   - review
   - quality
@@ -113,4 +113,6 @@ Toate cele 16+ fișiere identificate prin grep. Lista completă: `git grep -l "c
 
 <!-- SECTION:NOTES:BEGIN -->
 Verificare 2026-06-08: Inca valid; numarul a SCAZUT de la 72 la 59 console.* in 11 fisiere din src/app. Concentrate in add-property.component.ts (37). LEAK PII inca prezent: console.log('PropertyFormDTO:', dto) la properties.component.ts:257. Nu exista LoggerService. property-details are acum doar 3 (warn/error). auth.guard.ts:25 inca are console.log('[AuthGuard] Access denied').
+
+Verificare 2026-07-06: 65 console.* in 11 fisiere: add-property 42, properties 8, property-details 4, contact-us 3, login 2, auth.guard 1, form-page 1, under-the-mountain 1, youtube-player 1 + home-page 1 si terrain-form-page 1 (ultimele doua sunt COD MORT — TASK-64; se sterg cu tot cu componentele, nu se refactorizeaza). Cazuri de tratat explicit in properties.component.ts: :257 PropertyFormDTO (PII — nume/email/telefon din formular), :310 'Viewing property details:' logheaza OBIECTUL COMPLET al proprietatii (inclusiv thumbnail base64 — spam de megabytes in consola la fiecare click pe card), :196 logheaza raspunsul API paginat complet (acelasi base64). LoggerService tot inexistent.
 <!-- SECTION:NOTES:END -->

@@ -4,7 +4,7 @@ title: Cache pentru HTML-ul SSR pe rutele publice
 status: To Do
 assignee: []
 created_date: '2026-06-12 16:09'
-updated_date: '2026-06-12 16:09'
+updated_date: '2026-07-06'
 labels:
   - seo
   - performance
@@ -25,15 +25,16 @@ Fiecare request re-randează pagina prin CommonEngine + fetch spre backend, deș
 
 Un cache SSR în memorie + un `Cache-Control` scurt pe HTML taie TTFB-ul warm la <200 ms și absoarbe o parte din cold start-uri (instanța nouă servește din cache imediat ce a randat o dată).
 
-**Depinde de TASK-47**: fără error handling întâi, riști să cache-uiești pagini de eroare.
+**TASK-47 e LIVRAT (PR #3, 2026-06-28)** — `server.ts` are deja timeout de render (25 s) + handler 503 prin `SSR_RENDER_STATE`, deci precondiția e îndeplinită: se poate cache-ui în siguranță DOAR ce nu e marcat `serviceUnavailable`.
 
 ## Cum
 
 1. În `src/server.ts`, înainte de `commonEngine.render()`: cache LRU în memorie (ex. `lru-cache`, max ~100 intrări) cu cheia = path-ul normalizat (fără query nesemnificativ), TTL 5–15 min.
-2. Cache DOAR pentru: GET, rute publice (exclude `/login`, `/add-property`, orice path cu autentificare) și DOAR răspunsuri 200. NU cache-ui 404/503.
+2. Cache DOAR pentru: GET, rute publice (exclude `/login`, `/add-property`, orice path cu autentificare) și DOAR răspunsuri 200 — adică NU salva în cache când `ssrRenderState.serviceUnavailable` (503, TASK-47) sau `ssrRenderState.notFound` (404, TASK-10) sunt setate.
 3. Header pe HTML-ul randat: `Cache-Control: public, max-age=300` (5 min) — permite și CDN-ului Google Frontend / browserului să rețină puțin, fără să blocheze actualizările de anunțuri (TTL-ul scurt e compromisul corect pentru un site cu listinguri).
 4. Invalidare: TTL-ul + restart la deploy (instanță nouă = cache gol) sunt suficiente la scara actuală; nu construi invalidare activă acum.
 5. Loghează hit/miss (un header de debug `X-Cache: HIT|MISS`) ca să poți verifica AC-urile.
+6. **Ordinea în lanțul de middleware** (dacă TASK-4/TASK-6 sunt deja făcute): redirect host (TASK-4) → security headers (TASK-6) → cache SSR (acesta) → render. Dacă TASK-4 NU e încă făcut, cheia pe path e totuși sigură: www și apex produc HTML identic (canonical-ul vine din constanta BASE_URL, nu din host-ul cererii).
 
 ## Fișiere afectate
 

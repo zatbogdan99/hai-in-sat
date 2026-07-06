@@ -4,7 +4,7 @@ title: Redirect 301 www→apex și http→https
 status: To Do
 assignee: []
 created_date: '2026-06-12 16:07'
-updated_date: '2026-06-12 16:07'
+updated_date: '2026-07-06'
 labels:
   - seo
   - technical
@@ -42,10 +42,13 @@ server.use((req, res, next) => {
 ```
 
 Note:
-- Pe GAE Standard, TLS se termină la Google Frontend — folosește `x-forwarded-proto`, nu `req.secure`.
+- Pe GAE Standard, TLS se termină la Google Frontend — folosește `x-forwarded-proto`, nu `req.secure`. Atenție: header-ul poate fi teoretic `string | string[]` — normalizează cu `String(...)` sau ia primul element.
+- **Unde exact în `server.ts` (verificat 2026-07-06):** structura curentă e `server.get('*.*', express.static(...))` (linia ~37) urmată de catch-all-ul SSR `server.get('*', ...)` (linia ~42, cu timeout + error handler din TASK-47 — LIVRAT). Middleware-ul de redirect se pune cu `server.use(...)` ÎNAINTE de amândouă. Nu atinge logica de timeout/503 existentă.
+- În PRODUCȚIE, asseturile statice (js/css/imagini) sunt servite direct de GAE prin handlerele din `app.yaml` și NU trec prin Node — deci redirectul de host se aplică efectiv doar rutelor HTML (exact ce contează pentru SEO). Nu încerca să acoperi asseturile.
 - Verifică în GCP Console că `www.hai-în-sat.ro` e mapat ca custom domain (altfel www nu ajunge deloc la aplicație — dacă nu e mapat și totuși răspunde 200, vine de pe certificat wildcard + mapare implicită; după mapare corectă middleware-ul îl normalizează).
-- Același middleware va prelua și redirectul ASCII→IDN din TASK-MANUAL-1 când domeniul ASCII va exista (un singur loc pentru canonicalizarea de host).
+- Același middleware ar prelua automat și redirectul ASCII→IDN dacă domeniul ASCII ar fi vreodată înregistrat (TASK-MANUAL-1 — mutat în **wont-do**, decizie owner 2026-07-06: cost neasumat momentan). **TASK-4 NU depinde de acel task** — normalizează orice host non-canonic care ajunge la aplicație.
 - Sinergie cu TASK-6: HSTS cu `includeSubDomains` are sens DOAR după ce www redirecționează corect.
+- Ordinea middleware-urilor când se vor implementa și TASK-6/TASK-11 (toate în `server.ts`): 1) redirect host/proto (acesta), 2) security headers (TASK-6), 3) cache SSR (TASK-11), 4) render.
 
 ## Fișiere afectate
 

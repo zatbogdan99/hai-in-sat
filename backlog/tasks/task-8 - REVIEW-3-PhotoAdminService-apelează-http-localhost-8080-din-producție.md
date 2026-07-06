@@ -4,7 +4,7 @@ title: 'REVIEW-3: PhotoAdminService apelează http://localhost:8080 din producț
 status: To Do
 assignee: []
 created_date: '2026-05-07 08:45'
-updated_date: '2026-06-17 14:23'
+updated_date: '2026-07-06'
 labels:
   - review
   - bug
@@ -89,4 +89,6 @@ Opțiunea B pe termen scurt (1 oră), Opțiunea A când se face și REVIEW-1 (au
 
 <!-- SECTION:NOTES:BEGIN -->
 Verificare 2026-06-08: Inca valid. photo-admin.service.ts:31,38 regenerateThumbnails(ForProperty) tot hardcodeaza http://localhost:8080 (mixed-content pe prod HTTPS). Apelate in add-property.component.ts:542,612. NOU: backend-ul are deja endpoint-urile protejate admin (SecurityConfig.java:54), deci Optiunea A (muta pe baseUrl HTTPS cu auth) e acum fezabila; alternativ Optiunea B (ascunde butoanele pe prod).
+
+Verificare 2026-07-06: neschimbat (aceleasi linii). DOUA precizari utile: (1) add-property.component.ts are DEJA un helper de detectie localhost la linia ~825 (window.location.hostname === 'localhost' || '127.0.0.1') — Optiunea B se implementeaza refolosind acel helper intr-un *ngIf pe butoane, fara environment nou. (2) Backend-ul: sursele traiesc pe branch-ul MASTER (nu main — vezi project.md); endpoint-urile /regenerate-thumbnail(s) exista in HaiInSatController.java:129/136, protejate ADMIN in SecurityConfig.java:54 — Optiunea A = schimbi cele doua URL-uri pe `${this.baseUrl}` existent (linia 13) si mergi cu tokenul de admin deja atasat de authInterceptor.
 <!-- SECTION:NOTES:END -->

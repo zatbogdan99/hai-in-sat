@@ -4,7 +4,7 @@ title: 'REVIEW-18: TypeScript dev/preview version în package.json'
 status: To Do
 assignee: []
 created_date: '2026-05-07 08:47'
-updated_date: '2026-06-17 14:24'
+updated_date: '2026-07-06'
 labels:
   - review
   - deps
@@ -87,4 +87,5 @@ Minor — Angular CI/CD ține TypeScript compatibility tight. Dacă build-ul cad
 
 <!-- SECTION:NOTES:BEGIN -->
 Verificare 2026-06-08: Inca valid. package.json:76 tot 'typescript': '^5.5.0-dev.20240603' (dev nightly) - linia s-a mutat (era 64). De trecut la stable ~5.6.x compatibil Angular 19.
+Verificare 2026-07-06: neschimbat — package.json are tot 'typescript': '^5.5.0-dev.20240603'. La alegerea versiunii stable NU hardcoda ~5.6.0 fara verificare: consulta matricea de compatibilitate Angular 19.2 (accepta si 5.6–5.8) si ia cea mai noua versiune acceptata, fixata cu tilda (~).
 <!-- SECTION:NOTES:END -->

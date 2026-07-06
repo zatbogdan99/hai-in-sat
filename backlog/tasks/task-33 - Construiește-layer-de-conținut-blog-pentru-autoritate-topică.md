@@ -4,7 +4,7 @@ title: Construiește layer de conținut/blog pentru autoritate topică
 status: To Do
 assignee: []
 created_date: '2026-05-07 08:04'
-updated_date: '2026-06-17 15:03'
+updated_date: '2026-07-06'
 labels:
   - seo
   - content
@@ -32,9 +32,7 @@ Site-ul deja are paginile statice `/under-the-mountain`, `/village-of-the-month`
    - `/articole/:slug` — pagină articol individuală
    - Componente standalone, similar cu `/property/:id/:slug`. Folosește `SeoService` pentru meta + `Article` schema.
 
-2. Decide unde stochezi articolele:
-   - **Markdown în repo** (cel mai simplu): `src/assets/articles/*.md`, parser `ngx-markdown`, build sitemap dinamic.
-   - **Backend Java cu MongoDB** (consistent cu restul aplicației): collection nouă `articles` cu `id/slug/title/body/datePublished/author`. Componenta fetch-uiește la fel ca la properties.
+2. **Stocare — DECIS de owner (2026-07-06): Markdown în repo** (NU backend/Mongo): `src/assets/articles/*.md`, fiecare cu front matter (`title`, `slug`, `description`, `datePublished`, `dateModified`, `author`, `image`, `villages: []` pentru linking). Parser: `ngx-markdown` (sau `marked` direct, mai mic). Fluxul de publicare = adaugi un fișier .md + regenerezi sitemap + deploy. Un fișier index (`src/assets/articles/index.json` sau citirea front matter-ului la build) alimentează lista din `/articole` și sitemap-ul. ATENȚIE SSR: fetch-ul .md-ului să meargă și pe server (URL absolut sau citire din disc pe server), altfel articolele nu apar în HTML brut — verifică cu `curl` pe HTML-ul SSR.
 
 3. Plan editorial inițial (12 articole / an, 1/lună):
    - „Ghid pentru cumpărarea unui teren extravilan în Oltenia de sub Munte" (legal/PUG/notar)
@@ -51,12 +49,11 @@ Site-ul deja are paginile statice `/under-the-mountain`, `/village-of-the-month`
 
 ## Fișiere afectate
 
-- `src/app/components/articles/*` (de creat)
-- `src/app/components/article-detail/*` (de creat)
-- `src/app/app.routes.ts` (rute noi)
-- (dacă MD-driven) `src/assets/articles/*.md`
-- (dacă API-driven) java backend: `ArticleEntity`, `ArticleController`, etc.
-- `scripts/generate-sitemap.js` (include `/articole` + `/articole/:slug`)
+- `src/app/articole/*` + `src/app/articol/*` (index + detaliu — de creat; convenția repo-ului: componentele stau direct în `src/app/<nume>/`, fără folder `components/`)
+- `src/app/app.routes.ts` (rute noi — lazy, conform TASK-12)
+- `src/assets/articles/*.md` + index-ul lor
+- `package.json` (dependența de parser Markdown)
+- `scripts/generate-sitemap.js` (include `/articole` + `/articole/:slug`, cu `lastmod` din front matter — sinergie TASK-25)
 
 ## Efort
 

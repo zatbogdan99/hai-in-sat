@@ -4,7 +4,7 @@ title: Reduce dimensiunea main.js (curent 2.23 MB / 684 KB gzip)
 status: To Do
 assignee: []
 created_date: '2026-05-07 08:02'
-updated_date: '2026-06-17 08:47'
+updated_date: '2026-07-06'
 labels:
   - seo
   - performance
@@ -20,10 +20,12 @@ priority: medium
 <!-- SECTION:DESCRIPTION:BEGIN -->
 ## De ce
 
-`main.<hash>.js` este 2.23 MB necomprimat / 684 KB gzip. Pragul Angular budget-ul curent (`angular.json`) = 4 MB warn / 6 MB error, deci nu zgâlțâie build-ul, dar e prea mare pentru un site cu 8 pagini statice + ~14 listări. Cauze probabile:
-- Toate componentele PrimeNG importate eager (nu doar cele folosite)
-- Firebase Auth bundlat complet în main
-- Componente de pagină (`property-details`, `add-property`, `login`) NU sunt în route-level lazy chunks
+`main.<hash>.js` este 2.23 MB necomprimat / 684 KB gzip (cifră din auditul pre-SSR — RE-MĂSOARĂ întâi cu un build curent, ca baseline). Pragul Angular budget-ul curent (`angular.json`) = 4 MB warn / 6 MB error, deci nu zgâlțâie build-ul, dar e prea mare pentru un site cu 8 pagini statice + ~14 listări.
+
+Cauze VERIFICATE în cod (2026-07-06):
+- **Toate rutele sunt eager** — `src/app/app.routes.ts` importă direct toate cele ~10 componente de pagină; zero `loadComponent`/lazy chunks. Asta e cauza principală adresabilă.
+- **Dependențe grele bundlate în main**: `firebase`/`@angular/fire` (auth), `gsap`, `swiper`, `@videogular/ngx-videogular` (+ CSS-ul lui în styles!), 4 pachete `@fortawesome`, PrimeNG + primeflex + primeicons.
+- PrimeNG e importat CORECT per-componentă (`primeng/<modul>` — verificat, ex. app.component.ts) — deci NU căuta probleme la barrel imports; câștigul vine din lazy routes care izolează modulele PrimeNG folosite doar de admin (add-property e cel mai greu).
 
 Impact: LCP/TBT/INP pe mobile, mai ales pe rețele 3G/4G slabe (zonele rurale, vizat-ul tău).
 
@@ -41,13 +43,11 @@ Impact: LCP/TBT/INP pe mobile, mai ales pe rețele 3G/4G slabe (zonele rurale, v
          .then(m => m.PropertyDetailsComponent)
      }
      ```
-     Aplică pentru: `/properties` (listing), `/property/...`, `/add-property`, `/login`, `/under-the-mountain`, `/village-of-the-month`, `/see-the-area`, `/about-us`, `/contact-us`. Wildcard `NewLandingPageComponent` rămâne eager.
+     Aplică pentru toate rutele din `app.routes.ts` (căile REALE ale componentelor sunt `./<nume>/<nume>.component`, ex. `./property-details/property-details.component` — NU `./components/...`): `/properties`, `/property/:id/:slug` + `/property/:id`, `/add-property`, `/login`, `/under-the-mountain`, `/village-of-the-month`, `/see-the-area`, `/about-us`, `/contact-us`, `/homes` (FormPageComponent), `/info-page`. `NewLandingPageComponent` (homepage/wildcard) rămâne eager.
 
-   - **PrimeNG per-component imports**: confirmă că toate import-urile sunt din `primeng/<modul>` nu din `primeng` index.
+   - **Firebase**: cel mai mare câștig e că `@angular/fire`/auth ajunge doar în chunk-urile lazy de login/add-property, nu în main — verifică în analyzer după lazy-loading. Atenție: `authInterceptor` (înregistrat global în app.config) injectează `Auth` — poate ține Firebase în main; dacă da, fă inject-ul lazy (`Injector.get` la nevoie) sau acceptă costul și documentează.
 
-   - **Firebase tree-shaking**: în `AuthGuard` și auth services, importă doar funcțiile necesare (`getAuth`, `onAuthStateChanged`) nu obiectul complet.
-
-   - **Verifică zone.js**: dacă deja folosești experimental zoneless change detection (Angular 19), elimină zone.js (~70KB).
+   - **Nu pierde timp pe**: PrimeNG barrel imports (deja per-componentă) și zoneless (proiectul folosește zone.js standard; nu e scope-ul acestui task).
 
 ## Verificare
 
@@ -68,8 +68,8 @@ După optimizare: `ls -lh dist/hai-in-sat/main.*.js` — `main.js` sub 1 MB neco
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [ ] #1 `main.<hash>.js` sub 1 MB necomprimat (sub ~350 KB gzip)
-- [ ] #2 Cel puțin 6 din cele 9 rute sunt lazy-loaded (chunks separate per rută)
-- [ ] #3 Webpack bundle analyzer arată că PrimeNG e importat per-componentă, nu la barrel
+- [ ] #2 Cel puțin 9 din cele ~11 rute non-wildcard sunt lazy-loaded (chunks separate per rută); obligatoriu lazy: `add-property`, `login`, `property-details`
+- [ ] #3 Webpack bundle analyzer confirmă că Firebase/@angular/fire NU mai e în bundle-ul inițial (doar în chunk-urile de login/add-property) — sau devierea e documentată în implementation notes
 - [ ] #4 Site-ul rămâne funcțional: navigare prin toate rutele, login, formulare — fără regresii
 - [ ] #5 Lighthouse mobile pe `/` arată LCP, TBT și INP îmbunătățite vs baseline (raportează valori before/after în implementation notes)
 <!-- AC:END -->

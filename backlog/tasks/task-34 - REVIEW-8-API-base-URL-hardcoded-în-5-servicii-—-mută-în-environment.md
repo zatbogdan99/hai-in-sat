@@ -4,7 +4,7 @@ title: 'REVIEW-8: API base URL hardcoded în 5 servicii — mută în environmen
 status: To Do
 assignee: []
 created_date: '2026-05-07 08:46'
-updated_date: '2026-06-17 14:23'
+updated_date: '2026-07-06'
 labels:
   - review
   - refactor
@@ -120,4 +120,6 @@ Apoi în CI/build script: `SITEMAP_API_URL=... npm run generate-sitemap`.
 
 <!-- SECTION:NOTES:BEGIN -->
 Verificare 2026-06-08: Inca valid. URL API hardcodat in 6 locuri: property-form-service, photo-admin, property-form-email-service, terrain-form-service, home-form-service + interceptors/auth.interceptor.ts (API_ORIGIN + LOCAL_API_ORIGIN) + scripts/generate-sitemap.js:9. environment.ts NU are inca apiBaseUrl. Variantele localhost:8080 raman comentate adiacent. Nimic refactorizat.
+
+Verificare 2026-07-06: neschimbat. Linii exacte: property-form-service.service.ts:19-23 (+ variante localhost comentate :25-29), photo-admin.service.ts:13-14, property-form-email-service.service.ts:10-11, home-form-service.service.ts:10, interceptors/auth.interceptor.ts:7-8, scripts/generate-sitemap.js:9. environments/ exista cu fileReplacements configurat corect in angular.json — lipseste doar campul apiBaseUrl (environment.ts si .prod.ts sunt azi identice cu exceptia flagului production). DOUA nuante la refactor: (1) terrain-form-service e candidat de STERGERE ca cod mort (TASK-64) — daca TASK-64 se face intai, nu-l mai refactoriza; (2) in auth.interceptor.ts, conditia isApiRequest include si prefixul relativ '/home-form' — dupa mutarea pe environment.apiBaseUrl, actualizeaza conditia ca sa ramana corecta pentru dev cu proxy si prod.
 <!-- SECTION:NOTES:END -->

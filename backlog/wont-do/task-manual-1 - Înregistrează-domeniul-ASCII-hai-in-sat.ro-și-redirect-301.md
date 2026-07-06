@@ -4,7 +4,7 @@ title: Înregistrează domeniul ASCII hai-in-sat.ro și redirect 301
 status: To Do
 assignee: []
 created_date: '2026-05-07 07:57'
-updated_date: '2026-06-17 15:03'
+updated_date: '2026-07-06'
 labels:
   - seo
   - domain
@@ -18,7 +18,9 @@ priority: high
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-> ⚠️ **TASK MANUAL (owner) — fără cod în repo.** Constă în acțiuni externe: achiziție domeniu la registrar, configurare DNS, mapare custom domain în GCP Console, verificare în GSC. Redirectul efectiv ASCII→IDN NU se face aici — îl tratează middleware-ul de canonicalizare host din `src/server.ts` (TASK-4), care preia automat orice host non-canonic odată ce domeniul ASCII e mapat. Pipeline-ul de cod NU poate „implementa" acest task; rămâne pentru owner. De rulat după/împreună cu TASK-4.
+> ⛔ **WONT-DO (decizie owner, 2026-07-06):** amânat — costul înregistrării domeniului ASCII la rotld nu se justifică momentan. De reevaluat când bugetul permite. **Notă tehnică:** TASK-4 (redirect 301 www→apex și http→https) NU depinde de acest task — middleware-ul lui normalizează ORICE host non-canonic, deci merge înainte fără nicio modificare; dacă domeniul ASCII va fi cumpărat vreodată, redirectul ASCII→IDN va funcționa automat prin același middleware, fără muncă suplimentară.
+
+> ⚠️ **TASK MANUAL (owner) — fără cod în repo.** Constă în acțiuni externe: achiziție domeniu la registrar, configurare DNS, mapare custom domain în GCP Console, verificare în GSC. Redirectul efectiv ASCII→IDN NU se face aici — l-ar trata middleware-ul de canonicalizare host din `src/server.ts` (TASK-4 — planificat, încă NEIMPLEMENTAT la 2026-07-06), care va prelua automat orice host non-canonic odată ce domeniul ASCII e mapat. Pipeline-ul de cod NU poate „implementa" acest task; rămâne pentru owner. De rulat după/împreună cu TASK-4.
 
 ## De ce
 

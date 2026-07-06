@@ -6,7 +6,7 @@ title: >-
 status: To Do
 assignee: []
 created_date: '2026-05-07 08:46'
-updated_date: '2026-06-17 14:23'
+updated_date: '2026-07-06'
 labels:
   - review
   - tests
@@ -109,4 +109,5 @@ Phase 3 (coverage real): 2-5 zile.
 
 <!-- SECTION:NOTES:BEGIN -->
 Verificare 2026-06-08: Partial (Phase 1 inceput in task-27). app.component.spec.ts si property-details.component.spec.ts au fost deja curatate de assertion-uri stale; login.component.spec.ts a primit provideri DI. RAMANE: audit pe restul spec-urilor placeholder (about-us, home-page, info-page, village-of-the-month, under-the-mountain, see-the-area*, *form-page, service/*), Phase 2 (CI gate) si Phase 3 (coverage). 'npm test' nu ruleaza inca in CI.
+Verificare 2026-07-06: 22 fisiere .spec.ts in src/app. Starea curatarii anterioare se mentine (app.component.spec si property-details.spec curatate, login.spec cu provideri); restul de auditat conform listei. NOTA: spec-urile componentelor moarte (home-page, terrain-form-page — vezi TASK-64) se STERG odata cu componentele, nu se repara. npm test tot fara gate CI.
 <!-- SECTION:NOTES:END -->

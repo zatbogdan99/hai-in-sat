@@ -4,7 +4,7 @@ title: 'REVIEW-16: generate-sitemap.js — XML escaping lipsă pentru prop.name'
 status: To Do
 assignee: []
 created_date: '2026-05-07 08:47'
-updated_date: '2026-06-17 14:24'
+updated_date: '2026-07-06'
 labels:
   - review
   - bug
@@ -122,4 +122,5 @@ Decide canonical: punycode (`xn--hai-n-sat-t5a.ro`) vs Unicode (`hai-în-sat.ro`
 
 <!-- SECTION:NOTES:BEGIN -->
 Verificare 2026-06-08: Inca valid. generate-sitemap.js nu are functie xmlEscape; buildUrlEntry (liniile 48-55) interpoleaza direct. BASE_URL = https://hai-în-sat.ro (IDN Unicode, nu punycode). Slug-urile sunt deja stripuite de slugify, deci nu e bug critic acum, dar lipseste escaping-ul defensiv + decizia IDN vs punycode.
+Verificare 2026-07-06: neschimbat — generate-sitemap.js fara xmlEscape (buildUrlEntry liniile 48-55, interpolare directa), BASE_URL = forma unicode (linia 10). Reamintire: canonicalul DECIS ramane IDN (TASK-MANUAL-1 e acum in wont-do — domeniul ASCII nu se cumpara momentan, ceea ce intareste decizia: canonical IDN); aici doar aliniezi si escapezi defensiv, nu re-decizi forma.
 <!-- SECTION:NOTES:END -->
