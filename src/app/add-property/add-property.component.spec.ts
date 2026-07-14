@@ -174,7 +174,7 @@ describe('AddPropertyComponent', () => {
 
   it('should replace only the thumbnail without sending gallery photos', async () => {
     spyOn<any>(component, 'fileToBase64').and.resolveTo('base64:new-thumb');
-    propertiesState.setCachedPage(0, 6, [
+    propertiesState.setCachedPage(0, 6, 'land', [
       {
         id: 'land-3',
         name: 'Land',
@@ -198,6 +198,6 @@ describe('AddPropertyComponent', () => {
       propertyId: 'land-3',
       thumbnail: 'base64:new-thumb'
     });
-    expect(propertiesState.getCachedPage(0, 6)).toBeNull();
+    expect(propertiesState.getCachedPage(0, 6, 'land')).toBeNull();
   });
 });

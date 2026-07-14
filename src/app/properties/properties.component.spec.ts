@@ -76,7 +76,7 @@ describe('PropertiesComponent', () => {
       } as PropertyDTO
     ];
 
-    propertiesState.setCachedPage(2, 6, cachedProperties);
+    propertiesState.setCachedPage(2, 6, 'house', cachedProperties);
     propertiesState.setTotalRecords(10);
     propertiesState.setTotalPages(2);
 
@@ -107,9 +107,9 @@ describe('PropertiesComponent', () => {
 
     fixture.detectChanges();
 
-    expect(propertyFormService.getPropertiesPage).toHaveBeenCalledWith(1, 6);
+    expect(propertyFormService.getPropertiesPage).toHaveBeenCalledWith(1, 6, 'land');
     expect(component.properties).toEqual(responseProperties);
-    expect(propertiesState.getCachedPage(1, 6)).toEqual(responseProperties);
+    expect(propertiesState.getCachedPage(1, 6, 'land')).toEqual(responseProperties);
   });
 
   it('should render the phone link with tel scheme in the contact dialog', () => {
@@ -192,5 +192,31 @@ describe('PropertiesComponent', () => {
     expect(sentDto.village).toBe('Malaia');
     expect(sentDto.propertyType as any).toBe('');
     expect(sentDto.propertyDescription).toBe('');
+  });
+
+  it('renders decoded plain-text descriptions and image alt text on property cards', () => {
+    const plainDescription = 'Casa frumoasă & aproape de pădure, cu o priveliște foarte liniștită';
+    const propertyWithHtml = {
+      id: '3',
+      name: 'Casa cu vedere',
+      description: `<p>Casa <strong>frumoasă</strong> &amp; aproape de pădure, cu o priveliște foarte liniștită</p>`,
+      type: 'house',
+      thumbnail: 'thumb-3.jpg'
+    } as PropertyDTO;
+
+    createComponent();
+    propertyFormService.getPropertiesPage.and.returnValue(
+      of({ content: [propertyWithHtml], totalElements: 1, totalPages: 1, size: 6, number: 0 })
+    );
+
+    fixture.detectChanges();
+
+    const card = fixture.nativeElement.querySelector('.property-card') as HTMLElement | null;
+    const description = card?.querySelector('p');
+    const image = card?.querySelector('img');
+    expect(description?.textContent?.trim()).toBe(component.truncate(plainDescription, 50));
+    expect(description?.textContent).not.toContain('<p>');
+    expect(description?.textContent).not.toContain('<strong>');
+    expect(image?.getAttribute('alt')).toBe(`Casă de vânzare: Casa cu vedere - ${component.truncate(plainDescription, 60)}`);
   });
 });
