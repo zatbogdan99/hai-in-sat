@@ -35,6 +35,7 @@ import { SeoService } from "../service/seo.service";
 import { FormStatesUtil } from "../utils/form-states-util";
 import { generateSlug } from "../utils/slug.util";
 import { PropertyType } from "../dto/property-type.enum";
+import { HtmlTextService } from "../service/html-text.service";
 
 const trimControlValue = (control: AbstractControl | null | undefined): string => {
   const value = control?.value;
@@ -127,7 +128,8 @@ export class PropertiesComponent implements OnInit {
     private propertyFormEmailService: PropertyFormEmailServiceService,
     private propertiesState: PropertiesStateService,
     private fb: FormBuilder,
-    private seo: SeoService
+    private seo: SeoService,
+    private htmlText: HtmlTextService
   ) {
     this.propertyForm = this.fb.group({
       firstName: ['', [requiredTrimmedValidator]],
@@ -341,9 +343,13 @@ export class PropertiesComponent implements OnInit {
     return text.length > limit ? text.slice(0, limit) + '...' : text;
   }
 
+  truncateDescription(description: string | null | undefined, limit: number = 50): string {
+    return this.truncate(this.htmlText.htmlToText(description), limit);
+  }
+
   getImageAlt(property: PropertyDTO): string {
     const type = property.type === 'land' ? 'Teren' : 'Casă';
-    const truncatedDesc = this.truncate(property.description, 60);
+    const truncatedDesc = this.truncateDescription(property.description, 60);
     return `${type} de vânzare: ${property.name} - ${truncatedDesc}`;
   }
 

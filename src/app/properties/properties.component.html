@@ -182,7 +182,7 @@
                loading="lazy" />
           <div class="property-list-content">
             <h2>{{ truncate(property.name, 40) }}</h2>
-            <p>{{ truncate(property.description, 50) }}</p>
+            <p>{{ truncateDescription(property.description, 50) }}</p>
             <p-button severity="info" label="Detalii" (click)="viewPropertyDetails(property)"></p-button>
           </div>
         </div>
@@ -196,7 +196,7 @@
                [alt]="getImageAlt(property)"
                loading="lazy" />
           <h2>{{ truncate(property.name, 40) }}</h2>
-          <p>{{ truncate(property.description, 50) }}</p>
+          <p>{{ truncateDescription(property.description, 50) }}</p>
           <p-button severity="info" label="Detalii" (click)="viewPropertyDetails(property)"></p-button>
         </div>
       </div>

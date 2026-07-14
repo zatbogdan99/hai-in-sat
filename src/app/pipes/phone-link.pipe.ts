@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform, SecurityContext } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Pipe({
@@ -8,13 +8,15 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 export class PhoneLinkPipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer) {}
 
-  transform(value: string): SafeHtml {
-    if (!value) return value;
+  transform(value: string | null | undefined): SafeHtml | string {
+    if (!value) return '';
+
+    const sanitizedValue = this.sanitizer.sanitize(SecurityContext.HTML, value) ?? '';
 
     // Regex pentru a detecta pattern-ul "Telefon: [număr]"
     const phoneRegex = /(Telefon:\s*)(0\d{9})/g;
 
-    const transformed = value.replace(phoneRegex, (match, prefix, phone) => {
+    const transformed = sanitizedValue.replace(phoneRegex, (match, prefix, phone) => {
       return `${prefix}<a href="tel:${phone}" style="color: #1a73e8; text-decoration: none;">${phone}</a>`;
     });
 

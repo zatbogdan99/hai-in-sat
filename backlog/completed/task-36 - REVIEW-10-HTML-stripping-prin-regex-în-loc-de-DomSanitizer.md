@@ -1,10 +1,10 @@
 ---
 id: TASK-36
 title: 'REVIEW-10: HTML stripping prin regex în loc de DomSanitizer'
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-05-07 08:46'
-updated_date: '2026-07-06'
+updated_date: '2026-07-14'
 labels:
   - review
   - security
@@ -121,4 +121,14 @@ Sau folosește o lib mică: `striptags` (~3KB) sau `html-to-text` (heavier).
 Verificare 2026-06-08: Inca valid. Regex-ul de strip HTML e acum la property-details.component.ts:128 (meta description) si :135 (RealEstateListing description) - liniile s-au mutat (erau 95/102). Niciun HtmlTextService creat. Template-ul foloseste [innerHTML] cu pipe phoneLink pentru descriere - de verificat sanitizarea separat.
 
 Verificare 2026-07-06: SCOPE EXTINS — sanitizarea "de verificat separat" a fost verificata si e problema reala: PhoneLinkPipe face bypassSecurityTrustHtml pe descrierea bruta (vezi sectiunea noua din descriere). Liniile regex-urilor de strip sunt acum :131 (meta) si :138 (JSON-LD). Severitate urcata: security/xss confirmat pe fluxul de randare, nu doar fragilitate de meta tags.
+
+Implementare 2026-07-14:
+
+- Creat `src/app/service/html-text.service.ts`, cu conversie HTML→text, ramuri explicite browser/SSR prin `isPlatformBrowser`, parser inert în browser și fallback fără DOM pe server.
+- Înlocuite regex-urile de strip din `property-details.component.ts`; meta description și JSON-LD folosesc acum text plain decodat.
+- Securizat `PhoneLinkPipe`: conținutul este sanitizat înainte de generarea linkurilor `tel:` și înainte de bypass; adăugate teste XSS.
+- Cardurile listă/grid și textele `alt` folosesc descrieri plain-text; adăugate/actualizate testele componentelor și semnăturile cache din spec-uri.
+- Review: 3 cicluri. Ciclul 1 a remediat parsarea activă și compilarea spec-urilor; ciclul 2 a restaurat ramura explicită de platformă și decodarea entităților; ciclul 3 a fost curat.
+- Verify: `allCriteriaMet: true`; toate cele 7 criterii sunt îndeplinite. TypeScript spec compilează, 16/16 teste relevante trec și `npm run build:browser` trece.
+- Nit-uri amânate: niciunul.
 <!-- SECTION:NOTES:END -->

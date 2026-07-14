@@ -11,6 +11,7 @@ import { PropertyDetailsComponent } from './property-details.component';
 import { PropertyDTO } from '../dto/property.dto';
 import { PropertyType } from '../dto/property-type.enum';
 import { createSsrRenderState, SSR_RENDER_STATE, SsrRenderState } from '../ssr-render-state';
+import { SeoService } from '../service/seo.service';
 
 describe('PropertyDetailsComponent', () => {
   let component: PropertyDetailsComponent;
@@ -151,5 +152,29 @@ describe('PropertyDetailsComponent', () => {
     expect(propertyFormService.getPhotos).toHaveBeenCalledWith('prop-1', 0, 2);
     expect(propertyFormService.getPhotos).toHaveBeenCalledWith('prop-1', 2, 3);
     expect(component.photoSlides.length).toBe(5);
+  });
+
+  it('uses decoded plain text for meta and JSON-LD descriptions', () => {
+    configure('browser');
+    const seo = TestBed.inject(SeoService);
+    const updatePageMetaSpy = spyOn(seo, 'updatePageMeta');
+    const setRealEstateListingSpy = spyOn(seo, 'setRealEstateListing');
+    propertyFormService.getPropertyById.and.returnValue(of({
+      ...property,
+      name: 'Casa test',
+      description: '<p>Casa <strong>frumoasă</strong> &amp; aproape</p>'
+    }));
+    propertyFormService.getPhotos.and.returnValue(of({ photos: [], total: 0 }));
+    component.propertyId = 'prop-1';
+
+    component.loadPropertyDetails();
+
+    expect(updatePageMetaSpy).toHaveBeenCalledWith(jasmine.objectContaining({
+      description: 'Teren de vânzare în Oltenia de sub Munte: Casa test. Casa frumoasă & aproape'
+    }));
+    expect(setRealEstateListingSpy).toHaveBeenCalledWith(jasmine.objectContaining({
+      description: 'Casa frumoasă & aproape'
+    }));
+    expect(component.propertyDescription).toBe('<p>Casa <strong>frumoasă</strong> &amp; aproape</p>');
   });
 });

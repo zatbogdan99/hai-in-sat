@@ -13,6 +13,7 @@ import {SeoService} from "../service/seo.service";
 import {generateSlug} from "../utils/slug.util";
 import {PropertyType} from "../dto/property-type.enum";
 import {SSR_RENDER_STATE} from "../ssr-render-state";
+import {HtmlTextService} from "../service/html-text.service";
 
 export interface GallerySlide {
   type: 'image' | 'video';
@@ -71,7 +72,8 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
     private propertyService: PropertyFormServiceService,
     public loadingService: LoadingService,
     private propertiesState: PropertiesStateService,
-    private seo: SeoService
+    private seo: SeoService,
+    private htmlText: HtmlTextService
   ) {}
 
   ngOnInit(): void {
@@ -126,16 +128,17 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
         }
 
         const canonicalPath = `/property/${this.propertyId}/${slug}`;
+        const plainDescription = this.htmlText.htmlToText(prop.description);
         this.seo.updatePageMeta({
           title: `${this.propertyTypeLabel} de vânzare: ${prop.name} | Hai în Sat`,
-          description: `${this.propertyTypeLabel} de vânzare în Oltenia de sub Munte: ${prop.name}. ${(prop.description || '').replace(/<[^>]*>/g, '').substring(0, 150)}`,
+          description: `${this.propertyTypeLabel} de vânzare în Oltenia de sub Munte: ${prop.name}. ${plainDescription.substring(0, 150)}`,
           ogImage: prop.thumbnail,
           canonicalPath
         });
 
         this.seo.setRealEstateListing({
           name: `${this.propertyTypeLabel} de vânzare: ${prop.name}`,
-          description: (prop.description || '').replace(/<[^>]*>/g, '').substring(0, 300),
+          description: plainDescription.substring(0, 300),
           url: canonicalPath,
           image: prop.thumbnail,
           propertyType: prop.type as 'house' | 'land'
