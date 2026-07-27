@@ -18,7 +18,7 @@ priority: low
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-> ⛔ **WONT-DO / AMÂNAT (decizie owner, 2026-07-06).** Motivul: în producție, bundle-urile JS/CSS sunt servite STATIC de App Engine prin handlerele din `app.yaml` (bypass Node, gzip automat de la Google Frontend) — deci soluția `express-static-gzip` din acest task NU s-ar aplica deloc în producție. Singura cale reală ar fi scoaterea handler-ului static din `app.yaml` și rutarea bundle-urilor prin Node (mai lent per request, consumă instanța F2, pierde servirea din edge-ul Google) — cost care nu se justifică pentru ~150–200 KB câștig pe main.js, câștig care se micșorează oricum după TASK-12 (lazy-loading) și TASK-18 (esbuild). **De redeschis doar dacă**, după livrarea TASK-12 + TASK-18, bundle-ul inițial gzip rămâne >400 KB și există motive de performanță măsurate — caz în care designul corect e varianta „prin Node" descrisă mai jos.
+> ⛔ **WONT-DO / AMÂNAT (decizie owner, 2026-07-06).** Motivul: în producție, bundle-urile JS/CSS sunt servite STATIC de App Engine prin handlerele din `app.yaml` (bypass Node, gzip automat de la Google Frontend) — deci soluția `express-static-gzip` din acest task NU s-ar aplica deloc în producție. Singura cale reală ar fi scoaterea handler-ului static din `app.yaml` și rutarea bundle-urilor prin Node (mai lent per request, consumă instanța F2, pierde servirea din edge-ul Google) — cost care nu se justifică pentru ~150–200 KB câștig pe main.js, câștig care se micșorează oricum după TASK-130 (lazy-loading) și TASK-131 (esbuild). **De redeschis doar dacă**, după livrarea TASK-130 + TASK-131, bundle-ul inițial gzip rămâne >400 KB și există motive de performanță măsurate — caz în care designul corect e varianta „prin Node" descrisă mai jos.
 
 ## De ce
 
@@ -49,12 +49,12 @@ App Engine standard NU face Brotli automat. Trebuie precompresie + servire `.br`
 
 ## Trade-off / dependențe
 
-SSR-ul pe Node există deja → servirea brotli e simplă (`express-static-gzip` în `server.ts`). ⚠️ Partea de GENERARE a fișierelor `.br`/`.gz` depinde de builder: `compression-webpack-plugin` merge DOAR cu builder-ul webpack (`:browser`). Dacă se face TASK-18 (migrare la `:application`/esbuild), webpack dispare → generează `.br`/`.gz` cu un **post-build script** (Node + `zlib`/brotli pe `dist/.../browser/**`) în loc de plugin webpack. Coordonează cu TASK-18.
+SSR-ul pe Node există deja → servirea brotli e simplă (`express-static-gzip` în `server.ts`). ⚠️ Partea de GENERARE a fișierelor `.br`/`.gz` depinde de builder: `compression-webpack-plugin` merge DOAR cu builder-ul webpack (`:browser`). Dacă se face TASK-131 (migrare la `:application`/esbuild), webpack dispare → generează `.br`/`.gz` cu un **post-build script** (Node + `zlib`/brotli pe `dist/.../browser/**`) în loc de plugin webpack. Coordonează cu TASK-131.
 
 ## Fișiere afectate
 
 - `src/server.ts` — middleware `express-static-gzip` (servire .br/.gz cu content negotiation)
-- Generarea `.br`/`.gz` la build: post-build script Node (dacă pe `:application`/esbuild — vezi TASK-18) SAU `compression-webpack-plugin` (doar dacă rămâi pe `:browser`)
+- Generarea `.br`/`.gz` la build: post-build script Node (dacă pe `:application`/esbuild — vezi TASK-131) SAU `compression-webpack-plugin` (doar dacă rămâi pe `:browser`)
 - `package.json` (dependența `express-static-gzip` + scriptul de compresie)
 
 ## Efort

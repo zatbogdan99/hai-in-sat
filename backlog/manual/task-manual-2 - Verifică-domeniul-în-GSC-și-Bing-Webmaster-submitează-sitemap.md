@@ -71,5 +71,5 @@ Nu necesită modificări în repo decât pentru IndexNow (opțional). Restul e c
 <!-- SECTION:NOTES:BEGIN -->
 Verificare 2026-06-08: Inca valid (config in consolele Google/Bing, nu cod). Nu exista metoda notifyIndexNow in SeoService si niciun ping IndexNow in backend. Restul = actiuni externe (verificare GSC/Bing, submit sitemap).
 
-Cross-ref: complementar cu noul TASK-59 - TASK-21 = Search Console (Google/Bing Webmaster) + submit sitemap + IndexNow; TASK-59 = Google Business Profile + Bing PLACES + citations. Produse Bing diferite (Webmaster vs Places).
+Cross-ref: complementar cu noul TASK-59 - TASK-119 = Search Console (Google/Bing Webmaster) + submit sitemap + IndexNow; TASK-59 = Google Business Profile + Bing PLACES + citations. Produse Bing diferite (Webmaster vs Places).
 <!-- SECTION:NOTES:END -->

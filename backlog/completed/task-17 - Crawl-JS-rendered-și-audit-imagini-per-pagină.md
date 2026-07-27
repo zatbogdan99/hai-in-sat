@@ -66,10 +66,10 @@ Auditul complet din 2026-06-12 a livrat exact acest deliverable (locație diferi
 
 - Raport: `seo-audit-2026-06-12/FULL-AUDIT-REPORT.md` + `findings/visual.md` (imagini) + `findings/content.md` (headings) — echivalentul lui RENDERED-CRAWL-FINDINGS.md
 - Inventar per pagină (h1/h2 count, img, alt lipsă, lazy, internal links, word count): `seo-audit-2026-06-12/crawl/inventory.csv` + `inventory.json` + `jsonld-summary.json`
-- H1: lipsă pe /under-the-mountain și /contact-us; multiplu pe /homes, /see-the-area, /about-us, /village-of-the-month → TASK-21
+- H1: lipsă pe /under-the-mountain și /contact-us; multiplu pe /homes, /see-the-area, /about-us, /village-of-the-month → TASK-119
 - Alt lipsă: ~40% din imaginile anunțurilor → TASK-24
 - Descoperire majoră neanticipată: imaginile sunt data:URI base64 (HTML 3,7–42,5 MB) → TASK-3
-- Task-uri create pentru toate finding-urile high/medium: TASK-47…TASK-16 (AC #5 ✓)
+- Task-uri create pentru toate finding-urile high/medium: TASK-47…TASK-127 (AC #5 ✓)
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->

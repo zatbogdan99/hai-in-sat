@@ -11,7 +11,7 @@ labels:
   - external
   - marketing
 dependencies:
-  - TASK-19
+  - TASK-118
 documentation:
   - ../../../../seo-audit-2026-06-12/findings/local.md
   - ../../../../seo-audit-2026-06-12/findings/backlinks.md
@@ -25,7 +25,7 @@ priority: medium
 
 Auditul local (findings/local.md, scor 28/100): **niciun semn de Google Business Profile** — zero embed Maps, zero link „direcții", zero recenzii. Fără GBP verificat, „Hai în Sat" e invizibilă în Local Pack (primele 3 rezultate cu hartă) pentru „agenție imobiliară Horezu", „case de vânzare Horezu" etc. — factorul #1 de ranking local. Profilul de backlinks e și el inexistent (Common Crawl: domeniu absent din graful web) — profilurile pe portaluri sunt cele mai rapide link-uri + citations simultan.
 
-**Depinde de TASK-19** (NAP unificat): NU începe înscrierile cu două telefoane în circulație — fiecare citation greșit e de 10× mai greu de corectat decât de creat.
+**Depinde de TASK-118** (NAP unificat): NU începe înscrierile cu două telefoane în circulație — fiecare citation greșit e de 10× mai greu de corectat decât de creat.
 
 Task non-cod (extern), dar trackuit aici ca să nu se piardă. Pașii detaliați + lista completă prioritizată: `findings/local.md` și `findings/backlinks.md`.
 
@@ -51,7 +51,7 @@ M ca timp de lucru (3–4 ore inițial) + așteptare verificare GBP (zile–săp
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 GBP creat și VERIFICAT, categorie „Agenție imobiliară", cu NAP identic cu site-ul (TASK-19), program, descriere și ≥10 fotografii reale
+- [ ] #1 GBP creat și VERIFICAT, categorie „Agenție imobiliară", cu NAP identic cu site-ul (TASK-118), program, descriere și ≥10 fotografii reale
 - [ ] #2 Căutarea „Hai în Sat Horezu" pe Google arată profilul în panoul lateral/hartă
 - [ ] #3 Bing Places activ (importat din GBP)
 - [ ] #4 Profiluri de agenție active pe minimum 2 portaluri (Storia/Imobiliare.ro/OLX) cu link spre site și NAP corect

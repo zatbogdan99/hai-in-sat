@@ -31,8 +31,8 @@ Bonus AI (findings/geo.md G6): LLM-urile ponderează autorul/entitatea — un �
 2. **Date de firmă vizibile în text**: S.C. CORUXMAN IMPEX S.R.L., CUI, nr. Reg. Com., adresa Str. Tudor Vladimirescu, Horezu — în body-ul paginii (nu doar JSON-LD) și în footer sitewide.
 3. **Povestea** (200–300 cuvinte): de când, de ce, ce face diferit agenția (specializare exclusivă pe rural Oltenia de sub Munte = unghiul unic).
 4. **Dovezi**: cifre reale dacă există („X proprietăți intermediate din 2024", „prezenți în 6 comune"), presă/parteneriate când apar (TASK-59 / link building).
-5. **Cross-link**: secțiune contact cu telefonul oficial (TASK-19) + link spre GBP/social.
-6. Țintă: pagina ajunge la 500+ cuvinte cu substanță, H1 unic (TASK-21 repară dublura).
+5. **Cross-link**: secțiune contact cu telefonul oficial (TASK-118) + link spre GBP/social.
+6. Țintă: pagina ajunge la 500+ cuvinte cu substanță, H1 unic (TASK-119 repară dublura).
 
 Notă: conținutul cere input de la owner (nume, poze, poveste, CUI public) — blochează pe colectarea materialelor, nu pe cod.
 
@@ -52,7 +52,7 @@ M (2-3 ore cod + materialele de la owner).
 - [ ] #1 /about-us conține minim o persoană reală cu nume, fotografie și rol
 - [ ] #2 Datele firmei (denumire, CUI, Reg. Com., adresă completă cu cod poștal 245800) sunt vizibile ca TEXT în pagină și în footer-ul sitewide
 - [ ] #3 Pagina are ≥500 cuvinte cu poveste/diferențiator, fără umplutură generică
-- [ ] #4 Telefonul afișat = cel oficial din TASK-19; link-uri funcționale spre profilurile sociale și (după TASK-59) spre GBP
+- [ ] #4 Telefonul afișat = cel oficial din TASK-118; link-uri funcționale spre profilurile sociale și (după TASK-59) spre GBP
 - [ ] #5 H1 unic pe pagină; title/meta description actualizate să reflecte „agenție imobiliară în Horezu / Oltenia de sub Munte"
 - [ ] #6 Orice cifră publicată („X tranzacții") e reală și confirmată de owner — nimic inventat
 <!-- AC:END -->
