@@ -2,7 +2,7 @@
 id: TASK-101
 updated_date: '2026-07-27'
 title: 'REVIEW-20: Curăță codul mort din frontend (componente nerutate, servicii, config)'
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-07-06'
 labels:
@@ -69,17 +69,17 @@ S (1-2 ore + decizia owner-ului pe terrain).
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 `src/app/home-page/` nu mai exista (componenta nerutata, cu H1-ul de test „Alte minciuni pe care o sa le scrie Guci"), impreuna cu spec-ul ei
-- [ ] #2 `src/app/service/productservice.ts` si `src/app/dto/product.ts` (resturi de demo PrimeNG) nu mai exista
-- [ ] #3 `src/app/dto/area.dto.ts` nu mai exista
-- [ ] #4 `src/app/terrain-form-page/`, `src/app/service/terrain-form-service/` si `src/app/dto/terrain-form.dto.ts` nu mai exista — DECIZIE owner 2026-07-27: stergere completa, nu reactivare
-- [ ] #5 `git grep -l "HomePageComponent\|productservice\|dto/product\|area.dto\|TerrainFormPageComponent\|TerrainFormServiceService\|terrain-form.dto" src/` returneaza 0 rezultate
-- [ ] #6 `app.yaml` nu mai contine `BUCKET_NAME`; cheia `env_variables:` e stearsa si ea (ar ramane fara valoare), iar fisierul ramane YAML valid
-- [ ] #7 Repo-ul backend NU e atins: endpoint-ul `/terrain-form` ramane in `HaiInSatController`
-- [ ] #8 Componentele care NU sunt moarte raman neatinse: `see-the-area-buy`, `see-the-area-rent` (embedate in `/see-the-area`), `youtube-player`, `dto/buy.enum`, `dto/data.dto`, `dto/text-data.model`, `info-page` (rutata si navigata din `under-the-mountain`)
-- [ ] #9 Niciun spec orfan: nu exista `*.spec.ts` care importa fisiere sterse
-- [ ] #10 `npx ng test --watch=false --browsers=ChromeHeadless` trece; totalul de teste SCADE fata de 52 (baseline 2026-07-27), fiindca spec-urile componentelor sterse dispar — asta e asteptat
-- [ ] #11 Implementatorul a rulat `npm run build:browser` si a lipit rezultatul in `## Implementation Notes`
+- [x] #1 `src/app/home-page/` nu mai exista (componenta nerutata, cu H1-ul de test „Alte minciuni pe care o sa le scrie Guci"), impreuna cu spec-ul ei
+- [x] #2 `src/app/service/productservice.ts` si `src/app/dto/product.ts` (resturi de demo PrimeNG) nu mai exista
+- [x] #3 `src/app/dto/area.dto.ts` nu mai exista
+- [x] #4 `src/app/terrain-form-page/`, `src/app/service/terrain-form-service/` si `src/app/dto/terrain-form.dto.ts` nu mai exista — DECIZIE owner 2026-07-27: stergere completa, nu reactivare
+- [x] #5 `git grep -l "HomePageComponent\|productservice\|dto/product\|area.dto\|TerrainFormPageComponent\|TerrainFormServiceService\|terrain-form.dto" src/` returneaza 0 rezultate
+- [x] #6 `app.yaml` nu mai contine `BUCKET_NAME`; cheia `env_variables:` e stearsa si ea (ar ramane fara valoare), iar fisierul ramane YAML valid
+- [x] #7 Repo-ul backend NU e atins: endpoint-ul `/terrain-form` ramane in `HaiInSatController`
+- [x] #8 Componentele care NU sunt moarte raman neatinse: `see-the-area-buy`, `see-the-area-rent` (embedate in `/see-the-area`), `youtube-player`, `dto/buy.enum`, `dto/data.dto`, `dto/text-data.model`, `info-page` (rutata si navigata din `under-the-mountain`)
+- [x] #9 Niciun spec orfan: nu exista `*.spec.ts` care importa fisiere sterse
+- [x] #10 `npx ng test --watch=false --browsers=ChromeHeadless` trece; totalul de teste SCADE fata de 52 (baseline 2026-07-27), fiindca spec-urile componentelor sterse dispar — asta e asteptat
+- [x] #11 Implementatorul a rulat `npm run build:browser` si a lipit rezultatul in `## Implementation Notes`
 <!-- AC:END -->
 
 ## Implementation Notes
@@ -90,4 +90,19 @@ Revizuire 2026-07-27 (pregatire pentru pipeline). DECIZIE owner pe punctul 6: **
 Alte precizari adaugate: stergerea cheii `env_variables:` odata cu `BUCKET_NAME` (altfel ramane cheie fara valoare), regula de verificare cu `git grep` inainte de fiecare stergere, si asteptarea explicita ca numarul de teste sa SCADA (altfel un verificator ar putea semnala asta ca regresie).
 
 Acest task simplifica TASK-107 (nu mai refactorizezi `terrain-form-service`), TASK-109 (doua fisiere mai putin de curatat de `console.*`), TASK-106 (raman 3 clase de redenumit, nu 4) si TASK-105 (`goToTerrainFormPage` dispare). De rulat inaintea lor.
+
+Implementare 2026-07-27:
+
+- Au fost sterse cele 14 fisiere planificate: componenta `home-page` (inclusiv spec-ul), resturile demo `productservice.ts`, `dto/product.ts` si `dto/area.dto.ts`, plus intregul flux frontend `terrain-form-page`, serviciul lui (inclusiv spec-ul) si `dto/terrain-form.dto.ts`. Nu a fost necesara pastrarea vreunui fisier din cauza unor referinte noi.
+- Din `AppComponent` a fost eliminata metoda moarta `goToTerrainFormPage()`. Din `app.yaml` au fost eliminate `BUCKET_NAME` si cheia ramasa goala `env_variables:`.
+- Verificarea AC #5 cu `git grep` nu a returnat rezultate (exit code 1, asteptat cand nu exista potriviri). Nici cautarea `goToTerrainFormPage|terrain-form-page` nu a returnat rezultate, iar spec-urile ramase nu importa fisierele sterse.
+- `app.yaml` a fost incarcat cu parserul `js-yaml`: YAML valid, fara cheia `env_variables`.
+- `npm run build:browser`: **exit code 0**. Angular build a fost finalizat cu hash `f491ce55a3248b27` in `14476ms` (`main` 2.22 MB, total initial 2.63 MB). Au ramas doar avertismentele de budget SCSS pentru `info-page` (9.10 kB), `properties` (7.54 kB) si `under-the-mountain` (9.35 kB).
+- `npx ng test --watch=false --browsers=ChromeHeadless`: **exit code 0, TOTAL: 49 SUCCESS**. Totalul a scazut de la baseline-ul 52 conform asteptarii, dupa eliminarea celor trei spec-uri moarte.
+
+Finalizare pipeline 2026-07-27:
+
+- Review: 2 cicluri; blockerul documentar din primul ciclu a fost rezolvat, iar al doilea review a returnat `issues: []`.
+- Verify: `allCriteriaMet: true`; toate cele 11 criterii au fost confirmate.
+- Nit-uri amanate: niciunul.
 <!-- SECTION:NOTES:END -->
