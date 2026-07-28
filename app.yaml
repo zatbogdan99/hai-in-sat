@@ -14,9 +14,6 @@ automatic_scaling:
   min_instances: 0
   max_instances: 10
 
-env_variables:
-  BUCKET_NAME: "hai-in-sat-bucket"
-
 handlers:
   # Asseturi statice — App Engine le servește direct fără să spună Node-ului.
   - url: /assets

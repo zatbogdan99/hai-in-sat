@@ -95,10 +95,6 @@ export class AppComponent implements OnInit {
     this.router.navigateByUrl("/homes");
   }
 
-  goToTerrainFormPage() {
-    this.router.navigateByUrl("/terrain-form-page");
-  }
-
   goToContactUsPage() {
     this.router.navigateByUrl("/contact-us");
   }
