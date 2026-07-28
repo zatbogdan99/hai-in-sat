@@ -21,7 +21,7 @@ import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { PaginatorModule } from 'primeng/paginator';
-import { forkJoin, firstValueFrom, map } from 'rxjs';
+import { firstValueFrom, map } from 'rxjs';
 import { PropertiesStateService } from '../service/properties-state-service/properties-state.service';
 
 @Component({
@@ -244,17 +244,73 @@ export class AddPropertyComponent {
   }
 
   movePropertyUp(index: number) {
-    if (index <= 0 || index >= this.properties.length) {
+    const position = this.globalPosition(index);
+    if (position <= 1) {
       return;
     }
-    this.swapProperties(index, index - 1);
+    this.moveToPosition(this.properties[index], position - 1);
   }
 
   movePropertyDown(index: number) {
-    if (index < 0 || index >= this.properties.length - 1) {
+    const position = this.globalPosition(index);
+    if (position >= this.totalCount()) {
       return;
     }
-    this.swapProperties(index, index + 1);
+    this.moveToPosition(this.properties[index], position + 1);
+  }
+
+  /**
+   * Numărul total de proprietăți. `totalRecords` vine de la server, dar dacă e
+   * încă 0 (pagina nu s-a încărcat prin flux normal) cădem pe ce avem în pagină,
+   * ca mutarea în jos să nu fie blocată tăcut.
+   */
+  private totalCount(): number {
+    return Math.max(this.totalRecords, this.currentPage * this.pageSize + this.properties.length);
+  }
+
+  /**
+   * Poziția 1-based în lista COMPLETĂ, nu în pagina curentă.
+   * Lista de admin e paginată, iar `index` e relativ la pagină — folosirea lui
+   * directă ca poziție ar muta elementele de pe pagina 2 în capul listei.
+   */
+  private globalPosition(index: number): number {
+    return this.currentPage * this.pageSize + index + 1;
+  }
+
+  /**
+   * Trimite o singură cerere; serverul mută proprietatea și împinge restul listei,
+   * atomic. Frontend-ul nu mai calculează și nu mai salvează poziții individual —
+   * exact asta producea duplicate și găuri când o parte din apeluri eșua.
+   */
+  private moveToPosition(property: PropertyDTO | undefined, position: number) {
+    if (!property?.id) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Lipsă date',
+        detail: 'Nu pot muta o proprietate fără ID.'
+      });
+      return;
+    }
+    this.propertyFormService.updateSortOrder(property.id, position)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Ordine salvată',
+            detail: `"${property.name}" a fost mutată pe poziția ${position}.`
+          });
+          this.loadPropertiesPage(this.currentPage);
+        },
+        error: (err) => {
+          console.error('Eroare la salvarea ordinii:', err);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Eroare',
+            detail: 'Nu s-a putut salva ordinea.'
+          });
+        }
+      });
   }
 
   onSortOrderInput(property: any, event: Event) {
@@ -740,58 +796,9 @@ export class AddPropertyComponent {
       if (firstOrder !== secondOrder) {
         return firstOrder - secondOrder;
       }
-      return (first.name ?? '').localeCompare(second.name ?? '');
-    });
-  }
-
-  private swapProperties(currentIndex: number, targetIndex: number) {
-    const updated = [...this.properties];
-    [updated[currentIndex], updated[targetIndex]] = [updated[targetIndex], updated[currentIndex]];
-    this.properties = updated;
-    this.updateLocalSortOrders();
-    const changed = [this.properties[currentIndex], this.properties[targetIndex]].filter(Boolean);
-    this.persistSortOrderChanges(changed);
-  }
-
-  private updateLocalSortOrders() {
-    this.properties = this.properties.map((property, index) => ({
-      ...property,
-      sortOrder: index + 1
-    }));
-  }
-
-  private persistSortOrderChanges(properties: PropertyDTO[]) {
-    const updates = properties
-      .filter((property) => property?.id && typeof property.sortOrder === 'number')
-      .map((property) => this.propertyFormService.updateSortOrder(property.id!, property.sortOrder!));
-
-    if (!updates.length) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Lipsă date',
-        detail: 'Nu pot salva ordinea fără ID sau sortOrder.'
-      });
-      return;
-    }
-
-    forkJoin(updates)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-      next: () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Ordine salvată',
-          detail: 'Ordinea a fost actualizată.'
-        });
-      },
-      error: (err) => {
-        console.error('Eroare la salvarea ordinii:', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Eroare',
-          detail: 'Nu s-a putut salva ordinea.'
-        });
-      }
+      // La egalitate departajăm ca backend-ul (id descrescător), nu după nume —
+      // altfel admin-ul afișa altă ordine decât site-ul public.
+      return (second.id ?? '').localeCompare(first.id ?? '');
     });
   }
 

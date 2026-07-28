@@ -334,7 +334,9 @@ export class PropertiesComponent implements OnInit {
       if (firstOrder !== secondOrder) {
         return firstOrder - secondOrder;
       }
-      return first.name.localeCompare(second.name);
+      // La egalitate departajăm ca backend-ul (id descrescător), ca re-sortarea
+      // din client să nu schimbe ordinea deja stabilită de server.
+      return (second.id ?? '').localeCompare(first.id ?? '');
     });
   }
 

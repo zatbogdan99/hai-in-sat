@@ -103,8 +103,52 @@ describe('AddPropertyComponent', () => {
 
     component.movePropertyDown(0);
 
-    expect(propertyFormService.updateSortOrder).toHaveBeenCalledWith('b', 1);
-    expect(propertyFormService.updateSortOrder).toHaveBeenCalledWith('a', 2);
+    // Un SINGUR apel: serverul mută proprietatea pe poziția cerută și împinge
+    // restul listei, atomic. Varianta veche trimitea câte un apel per element
+    // mutat, iar un eșec parțial lăsa poziții duplicate sau găuri.
+    expect(propertyFormService.updateSortOrder).toHaveBeenCalledOnceWith('a', 2);
+  });
+
+  it('should move a property up to the previous global position', () => {
+    component.currentPage = 1;
+    component.pageSize = 20;
+    component.totalRecords = 40;
+    component.properties = [
+      {
+        id: 'x',
+        name: 'X',
+        description: 'X desc',
+        type: 'land' as any,
+        thumbnail: 'thumb-x',
+        sortOrder: 21
+      }
+    ];
+
+    component.movePropertyUp(0);
+
+    // Poziția se calculează pe lista COMPLETĂ (pagina 1 × 20 + index 0 + 1 = 21),
+    // nu pe indexul din pagina curentă — altfel elementele de pe pagina a doua
+    // ar sări în capul listei.
+    expect(propertyFormService.updateSortOrder).toHaveBeenCalledOnceWith('x', 20);
+  });
+
+  it('should not move the last property further down', () => {
+    component.currentPage = 0;
+    component.totalRecords = 1;
+    component.properties = [
+      {
+        id: 'only',
+        name: 'Only',
+        description: 'desc',
+        type: 'land' as any,
+        thumbnail: 'thumb',
+        sortOrder: 1
+      }
+    ];
+
+    component.movePropertyDown(0);
+
+    expect(propertyFormService.updateSortOrder).not.toHaveBeenCalled();
   });
 
   it('should keep the existing thumbnail when replacing gallery photos', async () => {
