@@ -31,9 +31,9 @@ it('should render title', () => {
 });
 ```
 
-**STARE REALA, masurata 2026-07-27:** suita e **VERDE — 52/52 SUCCESS** (`npx ng test --watch=false --browsers=ChromeHeadless`). Assertion-ul stale citat mai sus a fost deja curatat (vezi verificarea din 2026-06-08). Premisa initiala a task-ului — „testul ar trebui sa esueze" — nu mai e valabila.
+**STARE REALA, remasurata 2026-07-28:** suita e **VERDE — 49/49 SUCCESS** (`npx ng test --watch=false --browsers=ChromeHeadless`). Assertion-ul stale citat mai sus a fost deja curatat (vezi verificarea din 2026-06-08). Premisa initiala a task-ului — „testul ar trebui sa esueze" — nu mai e valabila.
 
-Ce ramane deci real de facut nu e repararea unei suite rosii, ci **curatarea spec-urilor placeholder** care raporteaza 52 de teste verzi fara sa verifice nimic — dand o impresie falsa de acoperire. Plus lipsa unei comenzi dedicate de CI.
+Ce ramane deci real de facut nu e repararea unei suite rosii, ci **curatarea spec-urilor placeholder** care raporteaza 49 de teste verzi fara sa verifice nimic — dand o impresie falsa de acoperire. Plus lipsa unei comenzi dedicate de CI.
 
 Plus suspect: aproape toate componentele au `*.spec.ts` cu nume default — probabil o mare parte sunt boilerplate ne-implementat real.
 
@@ -117,7 +117,7 @@ Nu e cazul: task-ul atinge doar spec-uri si scripturi de test, nimic din codul l
 - [ ] #7 `package.json` are scriptul `"test:ci": "ng test --watch=false --browsers=ChromeHeadless"`, FARA `--code-coverage`
 - [ ] #8 NU exista `.github/workflows/` in repo dupa acest task (decizie owner: CI-ul e task separat)
 - [ ] #9 `CLAUDE.md`, sectiunea „Commands", documenteaza `npm run test:ci` si conventia de rulare a testelor
-- [ ] #10 Implementatorul a lipit in `## Implementation Notes` linia finala de rezultat a suitei (`TOTAL: N SUCCESS`); numarul poate diferi de 52 daca s-au sters assertion-uri, si asta e in regula
+- [ ] #10 Implementatorul a lipit in `## Implementation Notes` linia finala de rezultat a suitei (`TOTAL: N SUCCESS`); numarul poate diferi de 49 daca s-au sters assertion-uri, si asta e in regula
 <!-- AC:END -->
 
 ## Implementation Notes
@@ -125,7 +125,7 @@ Nu e cazul: task-ul atinge doar spec-uri si scripturi de test, nimic din codul l
 <!-- SECTION:NOTES:BEGIN -->
 Verificare 2026-06-08: Partial (Phase 1 inceput intr-un task din numerotarea VECHE — referinta istorica, nu cauta un task cu acel numar). app.component.spec.ts si property-details.component.spec.ts au fost deja curatate de assertion-uri stale; login.component.spec.ts a primit provideri DI. RAMANE: audit pe restul spec-urilor placeholder (about-us, home-page, info-page, village-of-the-month, under-the-mountain, see-the-area*, *form-page, service/*), Phase 2 (CI gate) si Phase 3 (coverage). 'npm test' nu ruleaza inca in CI.
 Verificare 2026-07-06: 22 fisiere .spec.ts in src/app. Starea curatarii anterioare se mentine (app.component.spec si property-details.spec curatate, login.spec cu provideri); restul de auditat conform listei. NOTA: spec-urile componentelor moarte (home-page, terrain-form-page — vezi TASK-101) se STERG odata cu componentele, nu se repara. npm test tot fara gate CI.
-Revizuire 2026-07-27 (pregatire pentru pipeline). Premisa task-ului era DEPASITA: descrierea sustinea ca suita e rosie („testul ar trebui sa esueze"). Masurat la 2026-07-27: **52/52 SUCCESS**. Curatarea din 2026-06-08 rezolvase deja assertion-ul stale din `app.component.spec.ts`. Descrierea a fost corectata, altfel un agent ar fi pornit sa caute o defectiune inexistenta.
+Revizuire 2026-07-27 (pregatire pentru pipeline). Premisa task-ului era DEPASITA: descrierea sustinea ca suita e rosie („testul ar trebui sa esueze"). Masurat la 2026-07-28: **49/49 SUCCESS**. Curatarea din 2026-06-08 rezolvase deja assertion-ul stale din `app.component.spec.ts`. Descrierea a fost corectata, altfel un agent ar fi pornit sa caute o defectiune inexistenta.
 
 DECIZII owner:
 1. **Phase 2 redusa la scriptul `test:ci`** — fara `.github/workflows/`. Repo-ul nu are CI, iar adaugarea unuia e alta discutie. Pipeline-ul de agenti ruleaza oricum suita la fiecare task.

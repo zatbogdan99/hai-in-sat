@@ -105,7 +105,7 @@ Dupa deploy, deschide cateva anunturi de ambele tipuri si confirma ca eticheta (
 - [ ] #6 `src/app/dto/property.dto.ts` NU e modificat — `type` e deja tipat ca enum `PropertyType` (Phase 2 era deja rezolvata)
 - [ ] #7 Exista spec pentru noile functii, cu exact aceste trei cazuri: `toPropertyType('land')` → `PropertyType.LAND`; `toPropertyType('farm', PropertyType.HOUSE)` → `PropertyType.HOUSE`; `toPropertyType(null)` → fallback-ul implicit `PropertyType.LAND`
 - [ ] #8 `properties.component.ts` primeste acelasi tratament acolo unde deriva tipul din raspunsul API (`propertyType: PropertyTypeFilter`) — fara cast-uri nesigure
-- [ ] #9 `npx ng test --watch=false --browsers=ChromeHeadless` trece, iar totalul de teste creste fata de 52 (baseline verificat 2026-07-27)
+- [ ] #9 `npx ng test --watch=false --browsers=ChromeHeadless` trece, iar totalul de teste creste fata de 49 (baseline remasurat 2026-07-28)
 <!-- AC:END -->
 
 ## Implementation Notes

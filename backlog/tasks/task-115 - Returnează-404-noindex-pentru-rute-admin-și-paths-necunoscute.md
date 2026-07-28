@@ -82,7 +82,7 @@ In Google Search Console, dupa 2-4 saptamani: raportul **Pages** trebuie sa arat
 - [ ] #10 `property-details.component.ts`: pe ramura „proprietate negasita / eroare non-tranzitorie", cand ruleaza pe server seteaza `notFound = true` in loc sa apeleze `router.navigate(['/properties'])`; in browser redirectul actual poate ramane
 - [ ] #11 `scripts/generate-sitemap.js`: lista `STATIC_PAGES` nu contine `/login` si nici `/add-property` (verificare prin lectura)
 - [ ] #12 Implementatorul a rulat protocolul SSR local (`backlog/docs/verificare-locala-ssr.md`) si a lipit iesirile in `## Implementation Notes`: `curl -sI http://localhost:4000/this-page-does-not-exist` → **404**; `curl -sI http://localhost:4000/login` → contine `X-Robots-Tag`; `curl -sI http://localhost:4000/` → **200**, fara `X-Robots-Tag`; `curl -s http://localhost:4000/random-string-12345` → HTML-ul contine `href="/properties"`; `curl -sI http://localhost:4000/property/00000000-0000-0000-0000-000000000000/orice-slug` → **404**
-- [ ] #13 `npx ng test --watch=false --browsers=ChromeHeadless` trece (suita e verde azi: 52/52 — orice esec nou e regresie introdusa de acest task)
+- [ ] #13 `npx ng test --watch=false --browsers=ChromeHeadless` trece (suita e verde pe master: 49/49, remasurat 2026-07-28 — orice esec nou e regresie introdusa de acest task)
 <!-- AC:END -->
 
 ## Implementation Notes

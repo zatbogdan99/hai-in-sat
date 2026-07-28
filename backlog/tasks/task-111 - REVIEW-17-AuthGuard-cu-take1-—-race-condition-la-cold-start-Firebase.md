@@ -98,7 +98,7 @@ NU fac parte din criteriile de acceptare — pipeline-ul se opreste la PR, fara 
 - [ ] #3 Pe ramura nelogat, guard-ul apeleaza `router.navigate(['/login'])` si returneaza `false`; pe ramura logat returneaza `true` fara navigare
 - [ ] #4 `console.log('[AuthGuard] Access denied')` (azi linia ~25) e sters sau inlocuit cu `logger.log(...)` daca TASK-109 e deja livrat
 - [ ] #5 Exista `src/app/guards/auth.guard.spec.ts` cu exact cele doua cazuri descrise (logat → `true` fara navigare; nelogat → `false` + `navigate(['/login'])`), cu `Auth` mock-uit (`authStateReady` + `currentUser`) si apel prin `TestBed.runInInjectionContext`
-- [ ] #6 `npx ng test --watch=false --browsers=ChromeHeadless` trece, iar noul spec apare in numarul total de teste executate (azi 52 — dupa acest task trebuie sa fie ≥54)
+- [ ] #6 `npx ng test --watch=false --browsers=ChromeHeadless` trece, iar noul spec apare in numarul total de teste executate (azi 49 — dupa acest task trebuie sa fie ≥51)
 - [ ] #7 Comportamentul la SSR ramane cel documentat: pe server `currentUser` e `null`, deci `/add-property` redirectioneaza la `/login` la randarea pe server — asta e ACCEPTABIL (pagina e noindex prin TASK-115) si NU se „repara"
 <!-- AC:END -->
 
@@ -112,5 +112,5 @@ Revizuire 2026-07-27 (pregatire pentru pipeline). Ambiguitati eliminate:
 2. AC-ul vechi #2 („F5 ramane pe pagina in 100% din incercari, pe Slow 3G") si #5 („console fara «Access denied» sub niciun rng de timing") sunt neverificabile de un agent — race condition-ul cere browser real si throttling → mutate in `## Verificare post-deploy (owner)`.
 3. AC-ul vechi #4 cerea „test unit cu mock pe Auth", fara sa spuna cum se mock-uieste ceva ce e acum o promisiune → sectiunea „Test automat" descrie exact structura specului.
 
-AC #6 fixeaza numarul de referinta: suita e verde azi la 52/52 (verificat 2026-07-27), deci noul spec trebuie sa se vada in total.
+AC #6 fixeaza numarul de referinta: suita e verde la 49/49 pe master (remasurat 2026-07-28), deci noul spec trebuie sa se vada in total.
 <!-- SECTION:NOTES:END -->

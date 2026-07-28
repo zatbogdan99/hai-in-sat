@@ -84,7 +84,7 @@ Nu e cazul: schimbarea e strict la compilare. Daca build-ul si testele trec, com
 - [ ] #2 `yarn.lock` e regenerat prin `yarn install`; NU exista `package-lock.json` in repo
 - [ ] #3 Implementatorul a rulat `npx tsc --version` si a lipit iesirea in `## Implementation Notes` — nu contine `-dev`
 - [ ] #4 Implementatorul a rulat `npm run build:browser` si a lipit iesirea in `## Implementation Notes`: build reusit, zero erori de tip
-- [ ] #5 `npx ng test --watch=false --browsers=ChromeHeadless` trece (baseline 52/52, verificat 2026-07-27)
+- [ ] #5 `npx ng test --watch=false --browsers=ChromeHeadless` trece (baseline 49/49 pe master, remasurat 2026-07-28)
 - [ ] #6 `CLAUDE.md` mentioneaza versiunea de TypeScript suportata si politica de fixare cu tilda (`~`) — sectiunea „Conventions" spune azi doar „TypeScript ~5.5", de aliniat cu realitatea
 <!-- AC:END -->
 
@@ -96,5 +96,5 @@ Verificare 2026-07-06: neschimbat — package.json are tot 'typescript': '^5.5.0
 Revizuire 2026-07-27 (pregatire pentru pipeline). Ambiguitati eliminate:
 1. Nota din verificarea 2026-07-06 spunea „NU hardcoda ~5.6.0 fara verificare: consulta matricea de compatibilitate Angular 19.2" — adica cerea agentului sa consulte o pagina web, ceea ce intr-un sandbox fara retea inseamna fie esec, fie inventare. FIXAT: `~5.8.0`, cu justificarea intervalului (`>=5.5.0 <5.9.0` pentru Angular 19.2) scrisa in task si cu ruta de retragere explicita.
 2. Managerul de pachete era ambiguu (`yarn add` in descriere, `npm run` in AC) → clarificat: yarn pentru instalare, npm run pentru scripturi.
-3. AC-ul vechi #4 zicea „npm test (sau ce exista post-REVIEW-6)" → concretizat, cu baseline-ul 52/52.
+3. AC-ul vechi #4 zicea „npm test (sau ce exista post-REVIEW-6)" → concretizat, cu baseline-ul 49/49.
 <!-- SECTION:NOTES:END -->

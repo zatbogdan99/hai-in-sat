@@ -93,7 +93,7 @@ Ruleaza PageSpeed Insights (mobil) pe `https://hai-în-sat.ro/` si compara **LCP
 - [ ] #6 Dupa optimizare, `main.<hash>.js` e sub **1 MB** necomprimat — dovada e listarea de fisiere din criteriul precedent
 - [ ] #7 Build-ul produce chunk-uri lazy separate: numarul de fisiere `.js` din `dist/hai-in-sat/browser/` creste fata de baseline
 - [ ] #8 Situatia Firebase e documentata explicit in `## Implementation Notes`: daca `authInterceptor` (inregistrat global in `app.config`) tine `@angular/fire` in bundle-ul initial, se scrie asta ca deviere acceptata; daca a fost mutat in chunk-uri lazy, se scrie cum. NU se lasa nedocumentat
-- [ ] #9 `npx ng test --watch=false --browsers=ChromeHeadless` trece (baseline 52/52, verificat 2026-07-27)
+- [ ] #9 `npx ng test --watch=false --browsers=ChromeHeadless` trece (baseline 49/49 pe master, remasurat 2026-07-28)
 <!-- AC:END -->
 
 ## Implementation Notes
