@@ -3,10 +3,10 @@ id: TASK-104
 title: >-
   REVIEW-6: Test app.component.spec.ts conține assertions stale (boilerplate ng
   new)
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-05-07 08:46'
-updated_date: '2026-07-27'
+updated_date: '2026-07-29'
 labels:
   - review
   - tests
@@ -108,16 +108,16 @@ Nu e cazul: task-ul atinge doar spec-uri si scripturi de test, nimic din codul l
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 `npx ng test --watch=false --browsers=ChromeHeadless` trece, fara teste esuate si fara teste marcate `xit`/`xdescribe`/`fdescribe`/`fit`
-- [ ] #2 `git grep "hai-in-sat app is running" src/` returneaza 0 rezultate
-- [ ] #3 `git grep -n "fdescribe\|fit(\|xdescribe\|xit(" src/` returneaza 0 rezultate — niciun test focalizat sau dezactivat lasat in urma
-- [ ] #4 Implementatorul a parcurs FIECARE dintre cele 22 de fisiere `.spec.ts` din `src/app` si a notat in `## Implementation Notes`, pe cate un rand, verdictul: `pastrat ca atare` / `assertion stale corectat` / `assertion stale sters` / `se sterge in TASK-101`
-- [ ] #5 Niciun spec nu contine assertion-uri care verifica text sau structura inexistenta in template-ul curent (cauza clasica: boilerplate `ng new` ramas)
-- [ ] #6 NU se scriu teste noi de comportament in acest task — spec-urile `should create` de pe componentele VII raman cum sunt
-- [ ] #7 `package.json` are scriptul `"test:ci": "ng test --watch=false --browsers=ChromeHeadless"`, FARA `--code-coverage`
-- [ ] #8 NU exista `.github/workflows/` in repo dupa acest task (decizie owner: CI-ul e task separat)
-- [ ] #9 `CLAUDE.md`, sectiunea „Commands", documenteaza `npm run test:ci` si conventia de rulare a testelor
-- [ ] #10 Implementatorul a lipit in `## Implementation Notes` linia finala de rezultat a suitei (`TOTAL: N SUCCESS`); numarul poate diferi de 49 daca s-au sters assertion-uri, si asta e in regula
+- [x] #1 `npx ng test --watch=false --browsers=ChromeHeadless` trece, fara teste esuate si fara teste marcate `xit`/`xdescribe`/`fdescribe`/`fit`
+- [x] #2 `git grep "hai-in-sat app is running" src/` returneaza 0 rezultate
+- [x] #3 `git grep -n "fdescribe\|fit(\|xdescribe\|xit(" src/` returneaza 0 rezultate — niciun test focalizat sau dezactivat lasat in urma
+- [x] #4 Implementatorul a parcurs FIECARE dintre cele 22 de fisiere `.spec.ts` din `src/app` si a notat in `## Implementation Notes`, pe cate un rand, verdictul: `pastrat ca atare` / `assertion stale corectat` / `assertion stale sters` / `se sterge in TASK-101`
+- [x] #5 Niciun spec nu contine assertion-uri care verifica text sau structura inexistenta in template-ul curent (cauza clasica: boilerplate `ng new` ramas)
+- [x] #6 NU se scriu teste noi de comportament in acest task — spec-urile `should create` de pe componentele VII raman cum sunt
+- [x] #7 `package.json` are scriptul `"test:ci": "ng test --watch=false --browsers=ChromeHeadless"`, FARA `--code-coverage`
+- [x] #8 NU exista `.github/workflows/` in repo dupa acest task (decizie owner: CI-ul e task separat)
+- [x] #9 `CLAUDE.md`, sectiunea „Commands", documenteaza `npm run test:ci` si conventia de rulare a testelor
+- [x] #10 Implementatorul a lipit in `## Implementation Notes` linia finala de rezultat a suitei (`TOTAL: N SUCCESS`); numarul poate diferi de 49 daca s-au sters assertion-uri, si asta e in regula
 <!-- AC:END -->
 
 ## Implementation Notes
@@ -132,4 +132,43 @@ DECIZII owner:
 2. **Phase 3 (prag de coverage) scoasa din scope.**
 
 Ambiguitatea cea mai costisitoare era „spec-uri boilerplate care nu adauga valoare au fost sterse sau inlocuite cu test real" (AC vechi #3): un agent ar fi putut sterge 20 de spec-uri sau scrie 20 de teste noi, ambele „conforme". Inlocuita cu o regula de decizie binara per fisier si cu cerinta de a raporta verdictul pentru fiecare din cele 22 de spec-uri.
+
+Audit final 2026-07-29: `22 - 3 sterse de TASK-101 + 2 adaugate ulterior prin TASK-36 = 21 spec-uri actuale`. Toate assertion-urile de text si structura ramase corespund codului si template-urilor curente; nu au fost necesare modificari in spec-uri si nu au fost adaugate teste noi de comportament.
+
+Verdicte pentru cele 21 de spec-uri actuale:
+- `src/app/about-us/about-us.component.spec.ts` — pastrat ca atare
+- `src/app/add-property/add-property.component.spec.ts` — pastrat ca atare
+- `src/app/app.component.spec.ts` — pastrat ca atare
+- `src/app/background-image.service.spec.ts` — pastrat ca atare
+- `src/app/contact-us/contact-us.component.spec.ts` — pastrat ca atare
+- `src/app/home-form-page/form-page.component.spec.ts` — pastrat ca atare
+- `src/app/info-page/info-page.component.spec.ts` — pastrat ca atare
+- `src/app/login/login.component.spec.ts` — pastrat ca atare
+- `src/app/pipes/phone-link.pipe.spec.ts` (adaugat ulterior prin TASK-36) — pastrat ca atare
+- `src/app/properties/properties.component.spec.ts` — pastrat ca atare
+- `src/app/property-details/property-details.component.spec.ts` — pastrat ca atare
+- `src/app/see-the-area/see-the-area.component.spec.ts` — pastrat ca atare
+- `src/app/see-the-area-buy/see-the-area-buy.component.spec.ts` — pastrat ca atare
+- `src/app/see-the-area-rent/see-the-area-rent.component.spec.ts` — pastrat ca atare
+- `src/app/service/home-form-service/home-form-service.service.spec.ts` — pastrat ca atare
+- `src/app/service/html-text.service.spec.ts` (adaugat ulterior prin TASK-36) — pastrat ca atare
+- `src/app/service/loading-service/loading-service.service.spec.ts` — pastrat ca atare
+- `src/app/service/property-form-service/property-form-service.service.spec.ts` — pastrat ca atare
+- `src/app/under-the-mountain/under-the-mountain.component.spec.ts` — pastrat ca atare
+- `src/app/village-of-the-month/village-of-the-month.component.spec.ts` — pastrat ca atare
+- `src/app/youtube-player/youtube-player.component.spec.ts` — pastrat ca atare
+
+Verdicte pentru cele 3 spec-uri din baseline eliminate odata cu codul mort:
+- `src/app/home-page/home-page.component.spec.ts` — se sterge in TASK-101
+- `src/app/terrain-form-page/terrain-form-page.component.spec.ts` — se sterge in TASK-101
+- `src/app/service/terrain-form-service/terrain-form-service.service.spec.ts` — se sterge in TASK-101
+
+Rezultat final al suitei: `TOTAL: 51 SUCCESS`
+
+Rezumat dev-pipeline 2026-07-29:
+- Implementat in `package.json`: scriptul `test:ci`; in `CLAUDE.md`: comenzile si conventiile pentru teste; in acest task: auditul individual al spec-urilor.
+- Review independent: 1 ciclu, fara blocker, major sau nit.
+- Verify independent: `allCriteriaMet: true`, toate cele 10 criterii indeplinite.
+- Validare orchestrator: `npm run build:browser` si `npm run test:ci` au iesit cu cod 0; `TOTAL: 51 SUCCESS`.
+- Nit-uri amanate: niciunul.
 <!-- SECTION:NOTES:END -->
