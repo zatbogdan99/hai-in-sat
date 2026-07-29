@@ -132,6 +132,7 @@
           <th>Descriere</th>
           <th>Tip</th>
           <th>Poză principală</th>
+          <th>Video</th>
           <th>Acțiuni</th>
         </tr>
       </ng-template>
@@ -158,9 +159,16 @@
             <img *ngIf="property.thumbnail" [src]="property.thumbnail" alt="Thumbnail" style="max-width: 80px; max-height: 60px; border-radius: 4px;" />
             <span *ngIf="!property.thumbnail" style="color: #999;">Lipsă</span>
           </td>
+          <td class="video-cell">
+            <code class="video-path" (click)="copyVideoPath(property)" title="Click pentru a copia calea">{{ videoFolderPath(property) }}</code>
+            <button pButton type="button"
+                    label="Verifică video"
+                    class="p-button-sm p-button-info p-button-outlined"
+                    (click)="onRefreshVideo(property)"></button>
+          </td>
           <td class="actions-cell">
-            <button pButton type="button" label="Muta sus" class="p-button-secondary" (click)="movePropertyUp(rowIndex)" [disabled]="rowIndex === 0"></button>
-            <button pButton type="button" label="Muta jos" class="p-button-secondary" (click)="movePropertyDown(rowIndex)" [disabled]="rowIndex === properties.length - 1"></button>
+            <button pButton type="button" label="Muta sus" class="p-button-secondary" (click)="movePropertyUp(rowIndex)" [disabled]="globalPosition(rowIndex) === 1"></button>
+            <button pButton type="button" label="Muta jos" class="p-button-secondary" (click)="movePropertyDown(rowIndex)" [disabled]="globalPosition(rowIndex) >= totalRecords"></button>
             <button pButton type="button" label="Sterge casa/teren" class="p-button-danger" (click)="onDeleteProperty(property)"></button>
             <button pButton type="button" label="Șterge pozele" class="p-button-danger p-button-outlined" (click)="onDeletePropertyPhotos(property)"></button>
             <button pButton type="button" label="Inlocuieste pozele" class="p-button-help" (click)="openReplacePhotos(property)"></button>

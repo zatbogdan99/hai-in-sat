@@ -268,12 +268,68 @@ export class AddPropertyComponent {
     return Math.max(this.totalRecords, this.currentPage * this.pageSize + this.properties.length);
   }
 
+  /** Calea din bucket unde se urcă videoul proprietății. */
+  videoFolderPath(property: PropertyDTO): string {
+    return `videos/${property.id}/`;
+  }
+
+  /** Copiază calea în clipboard, ca să nu fie nevoie de folderul-marker din bucket. */
+  async copyVideoPath(property: PropertyDTO) {
+    const path = this.videoFolderPath(property);
+    try {
+      await navigator.clipboard.writeText(path);
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Copiat',
+        detail: `${path} — urcă fișierul .mp4 acolo, în bucket-ul hai-in-sat-assets.`
+      });
+    } catch {
+      // clipboard-ul poate fi blocat (permisiuni / context non-secure) — arătăm calea ca s-o poată copia manual
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Calea de upload',
+        detail: path
+      });
+    }
+  }
+
+  /**
+   * Golește cache-ul video al backend-ului și raportează dacă videoul e vizibil acum.
+   * De folosit imediat după ce ai urcat .mp4-ul în bucket.
+   */
+  onRefreshVideo(property: PropertyDTO) {
+    if (!property?.id) {
+      return;
+    }
+    this.propertyFormService.refreshVideo(property.id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (resp) => {
+          this.messageService.add({
+            severity: resp?.videoUrl ? 'success' : 'warn',
+            summary: resp?.videoUrl ? 'Video găsit' : 'Niciun video',
+            detail: resp?.videoUrl
+              ? 'Videoul e activ pe pagina proprietății.'
+              : `Niciun fișier .mp4 în ${resp?.folder ?? this.videoFolderPath(property)}. Atenție: doar .mp4 este detectat.`
+          });
+        },
+        error: (err) => {
+          console.error('Eroare la reîmprospătarea videoului:', err);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Eroare',
+            detail: 'Nu s-a putut verifica videoul.'
+          });
+        }
+      });
+  }
+
   /**
    * Poziția 1-based în lista COMPLETĂ, nu în pagina curentă.
    * Lista de admin e paginată, iar `index` e relativ la pagină — folosirea lui
    * directă ca poziție ar muta elementele de pe pagina 2 în capul listei.
    */
-  private globalPosition(index: number): number {
+  globalPosition(index: number): number {
     return this.currentPage * this.pageSize + index + 1;
   }
 

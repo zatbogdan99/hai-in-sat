@@ -82,6 +82,18 @@ export class PropertyFormServiceService {
     return this.http.delete(`${this.deletePropertyUrl}?id=${encodeURIComponent(id)}`);
   }
 
+  /**
+   * Golește cache-ul video al backend-ului pentru o proprietate și întoarce starea
+   * proaspătă. Fără asta, un video urcat în bucket poate să nu apară până la 10 minute,
+   * fiindcă se memorează și răspunsul „nu are video".
+   */
+  refreshVideo(id: string): Observable<{ videoUrl: string | null; bucket: string; folder: string }> {
+    return this.http.patch<{ videoUrl: string | null; bucket: string; folder: string }>(
+      `${this.updateSortOrderBaseUrl}/${encodeURIComponent(id)}/refresh-video`,
+      {}
+    );
+  }
+
   private withSsrTimeoutAndRetry<T>(request$: Observable<T>): Observable<T> {
     if (!isPlatformServer(this.platformId)) {
       return request$;
