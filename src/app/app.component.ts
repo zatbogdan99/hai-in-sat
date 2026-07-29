@@ -1,7 +1,6 @@
 import {Component, DestroyRef, inject, OnInit} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ViewportScroller } from '@angular/common';
-import {MenuItem} from "primeng/api";
 import {Router, RouterOutlet, NavigationEnd} from "@angular/router";
 import { faTiktok } from '@fortawesome/free-brands-svg-icons';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
@@ -32,13 +31,11 @@ import { filter } from 'rxjs/operators';
 })
 export class AppComponent implements OnInit {
   title = 'hai-in-sat';
-  items: MenuItem[] | undefined;
   faTiktok = faTiktok;
   faFacebook = faFacebook;
   faInstagram = faInstagram;
   faSquareFacebook = faSquareFacebook;
 
-  visible: boolean = false;
   contact: boolean = false;
   cookies: boolean = false;
   termenii: boolean = false;
@@ -76,19 +73,12 @@ export class AppComponent implements OnInit {
     this.router.navigateByUrl("/about-us");
   }
 
-  goToInfoPage() {
-    this.router.navigateByUrl("/info-page");
-  }
-
   goToVillageOfTheMonth() {
     this.router.navigateByUrl("/village-of-the-month");
   }
 
   goToLandingPage() {
-    // this.service.reload$.next(true);
-    this.router.navigateByUrl("/landing-page").then(() => {
-      window.location.reload();
-    });
+    this.router.navigateByUrl("/");
   }
 
   goToHomeFormPage() {
@@ -103,64 +93,11 @@ export class AppComponent implements OnInit {
     this.router.navigateByUrl("/under-the-mountain");
   }
 
-  private goToSeeTheArea() {
-    this.router.navigateByUrl("/see-the-area");
-  }
-
   goToProperties() {
     this.router.navigateByUrl("/properties");
   }
 
-  private goToAddProperty() {
-    this.router.navigateByUrl("/add-property");
-  }
-
   ngOnInit() {
-
-    this.items = [
-      {
-        label: 'Despre noi',
-        icon: 'pi pi-fw pi-images',
-        styleClass: 'despreNoiStyle',
-        command: () => this.goToAboutUs(),
-      },
-      {
-        label: 'Oltenia de sub Munte',
-        icon: 'pi pi-fw pi-sun',
-        command: () => this.goToUnderTheMountain()
-      },
-      {
-        label: 'Sate în Oltenia de sub Munte',
-        icon: 'pi pi-fw pi-home',
-        command: () => this.goToVillageOfTheMonth()
-      },
-      {
-        label: 'Proprietăți',
-        icon: 'pi pi-fw pi-eye',
-        command: () => this.goToProperties()
-      },
-      {
-        label: 'Găsește-mi locul',
-        icon: 'pi pi-fw pi-home',
-        command: () => this.goToHomeFormPage()
-      },
-      // {
-      //   label: "Adaugare",
-      //   command: () => this.goToAddProperty()
-      // }
-      // {
-      //   label: 'Contactează-ne!',
-      //   icon: 'pi pi-fw pi-phone',
-      //   command: () => this.goToContactUsPage()
-      // }
-    ];
-
-    // gsap.to(document.body, {
-    //   backgroundImage: 'url("/assets/oras.jpg")',
-    //   duration: 0.5,
-    //   ease: 'power2.inOut'
-    // });
-
     // Abonare la semnalele globale pentru deschiderea pop-up-urilor
     this.service.openTerms$
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -181,18 +118,6 @@ export class AppComponent implements OnInit {
           this.service.openPrivacy$.next(false);
         }
       });
-  }
-
-  goToTikTokPage() {
-
-  }
-
-  goToFacebookPage() {
-
-  }
-
-  goToInstagramPage() {
-
   }
 
   openLink(url: string): void {
