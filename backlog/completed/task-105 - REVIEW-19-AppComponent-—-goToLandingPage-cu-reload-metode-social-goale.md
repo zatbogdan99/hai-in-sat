@@ -1,10 +1,10 @@
 ---
 id: TASK-105
 title: 'REVIEW-19: AppComponent — goToLandingPage cu reload + metode social goale'
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-05-07 08:47'
-updated_date: '2026-07-27'
+updated_date: '2026-07-29'
 labels:
   - review
   - bug
@@ -113,16 +113,16 @@ Dupa deploy: clic pe logo (trebuie sa duca la homepage **fara** reincarcarea pag
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 `goToLandingPage()` face `this.router.navigateByUrl('/')` — fara `window.location.reload()`; string-ul `/landing-page` nu mai apare nicaieri in `src/app` (era o ruta inexistenta)
-- [ ] #2 Metodele goale `goToTikTokPage`, `goToFacebookPage`, `goToInstagramPage` sunt STERSE din `app.component.ts` (nu populate) — `app.component.html` apeleaza deja direct `openLink(...)` cu URL-urile corecte
-- [ ] #3 `app.component.html` NU e modificat in privinta iconitelor sociale — functioneaza deja corect
-- [ ] #4 Codul comentat de la liniile ~151-166 e sters
-- [ ] #5 Codul mort confirmat e sters: campul `items: MenuItem[]` + constructia lui din `ngOnInit`, `goToTerrainFormPage`, `goToInfoPage`, `goToSeeTheArea`, `goToAddProperty`, campul `visible`
-- [ ] #6 Pentru FIECARE nume sters, implementatorul a lipit in `## Implementation Notes` rezultatul `git grep` care arata 0 referinte ramase in `src/`. Orice nume care avea inca o referinta a fost pastrat, cu motivul notat
-- [ ] #7 `contact`, `cookies`, `termenii`, `politica` si `showCookies()` sunt PASTRATE — dialogurile din footer le folosesc
-- [ ] #8 `takeUntilDestroyed` ramane pe cele trei subscribe-uri existente (Fix 3 era deja rezolvat, nu se atinge)
-- [ ] #9 `npx ng test --watch=false --browsers=ChromeHeadless` trece
-- [ ] #10 Implementatorul a rulat `npm run build:browser` si a lipit rezultatul in `## Implementation Notes`
+- [x] #1 `goToLandingPage()` face `this.router.navigateByUrl('/')` — fara `window.location.reload()`; string-ul `/landing-page` nu mai apare nicaieri in `src/app` (era o ruta inexistenta)
+- [x] #2 Metodele goale `goToTikTokPage`, `goToFacebookPage`, `goToInstagramPage` sunt STERSE din `app.component.ts` (nu populate) — `app.component.html` apeleaza deja direct `openLink(...)` cu URL-urile corecte
+- [x] #3 `app.component.html` NU e modificat in privinta iconitelor sociale — functioneaza deja corect
+- [x] #4 Codul comentat de la liniile ~151-166 e sters
+- [x] #5 Codul mort confirmat e sters: campul `items: MenuItem[]` + constructia lui din `ngOnInit`, `goToTerrainFormPage`, `goToInfoPage`, `goToSeeTheArea`, `goToAddProperty`, campul `visible`
+- [x] #6 Pentru FIECARE nume sters, implementatorul a lipit in `## Implementation Notes` rezultatul `git grep` care arata 0 referinte ramase in `src/`. Orice nume care avea inca o referinta a fost pastrat, cu motivul notat
+- [x] #7 `contact`, `cookies`, `termenii`, `politica` si `showCookies()` sunt PASTRATE — dialogurile din footer le folosesc
+- [x] #8 `takeUntilDestroyed` ramane pe cele trei subscribe-uri existente (Fix 3 era deja rezolvat, nu se atinge)
+- [x] #9 `npx ng test --watch=false --browsers=ChromeHeadless` trece
+- [x] #10 Implementatorul a rulat `npm run build:browser` si a lipit rezultatul in `## Implementation Notes`
 <!-- AC:END -->
 
 ## Implementation Notes
@@ -135,4 +135,75 @@ Revizuire 2026-07-27 (pregatire pentru pipeline). Contradictia principala rezolv
 Alte ambiguitati eliminate: intrebarile retorice din „Cleanup aditional" („sunt utilizate?", „exista vreun popup de cookies?") au devenit un inventar cu verdict per camp, plus regula explicita de a verifica fiecare cu `git grep` inainte de stergere.
 
 AC-ul vechi #5 (test manual pe toate butoanele) → mutat in `## Verificare post-deploy (owner)`.
+
+Implementare 2026-07-29:
+
+- `goToLandingPage()` navighează acum direct la `/`, fără reload complet.
+- Au fost eliminate importul `MenuItem`, câmpurile `items` și `visible`, inițializarea meniului vechi, metodele `goToInfoPage`, `goToSeeTheArea`, `goToAddProperty`, `goToTikTokPage`, `goToFacebookPage`, `goToInstagramPage` și blocurile de cod comentat. `goToTerrainFormPage` era deja absent înainte de implementare.
+- `app.component.html` nu a fost modificat; `contact`, `cookies`, `termenii`, `politica`, `showCookies()` și cele trei utilizări `takeUntilDestroyed(this.destroyRef)` au fost păstrate.
+
+Dovezi `git grep` după curățare:
+
+```text
+> git grep -n -E 'goToTikTokPage|goToFacebookPage|goToInstagramPage|goToTerrainFormPage|goToInfoPage|goToSeeTheArea|goToAddProperty' -- src/
+(fără potriviri; exit code 1)
+
+> git grep -n -E '^[[:space:]]*items[[:space:]]*:|this\.items|MenuItem' -- src/
+(fără potriviri; exit code 1)
+
+> git grep -n -E '^[[:space:]]*visible[[:space:]]*:|this\.visible' -- src/
+(fără potriviri; exit code 1)
+
+> git grep -n -F '/landing-page' -- src/app/
+(fără potriviri; exit code 1)
+
+> git grep -n -F 'takeUntilDestroyed(this.destroyRef)' -- src/app/app.component.ts
+src/app/app.component.ts:66:      .pipe(filter((e) => e instanceof NavigationEnd), takeUntilDestroyed(this.destroyRef))
+src/app/app.component.ts:103:      .pipe(takeUntilDestroyed(this.destroyRef))
+src/app/app.component.ts:113:      .pipe(takeUntilDestroyed(this.destroyRef))
+
+> git grep -n -E '^[[:space:]]*(contact|cookies|termenii|politica)[[:space:]]*:|showCookies\(' -- src/app/app.component.ts src/app/app.component.html
+src/app/app.component.html:46:        <p-chip class="clickable" (click)="showCookies()" label="Politica de cookies"/>
+src/app/app.component.html:246:        <p-chip (click)="showCookies()" label="Politica de cookies"/>
+src/app/app.component.ts:39:  contact: boolean = false;
+src/app/app.component.ts:40:  cookies: boolean = false;
+src/app/app.component.ts:41:  termenii: boolean = false;
+src/app/app.component.ts:42:  politica: boolean = false;
+src/app/app.component.ts:55:  showCookies() {
+
+> git grep -n -F '[(visible)]=' -- src/app/app.component.html
+src/app/app.component.html:52:        [(visible)]="politica"
+src/app/app.component.html:136:        [(visible)]="termenii"
+src/app/app.component.html:175:        [(visible)]="cookies"
+src/app/app.component.html:199:        [(visible)]="contact"
+src/app/app.component.html:254:        [(visible)]="politica"
+src/app/app.component.html:338:        [(visible)]="termenii"
+src/app/app.component.html:377:        [(visible)]="cookies"
+
+> git diff --exit-code -- src/app/app.component.html
+(fără diff; exit code 0)
+```
+
+Validare:
+
+```text
+> npx ng test --watch=false --browsers=ChromeHeadless
+Chrome Headless 151.0.0.0 (Windows 10): Executed 51 of 51 SUCCESS
+TOTAL: 51 SUCCESS
+Exit code: 0
+
+> npm run build:browser
+Build at: 2026-07-29T10:33:57.908Z - Hash: 1db62b47d19aa7d9 - Time: 28844ms
+Exit code: 0
+Observații existente, neblocante: deprecarea Sass `@import` și avertismentele de budget pentru
+`info-page.component.scss`, `properties.component.scss` și `under-the-mountain.component.scss`.
+```
+
+Rezumat dev-pipeline 2026-07-29:
+- Implementat in `src/app/app.component.ts`: navigare SPA la `/` si eliminarea codului mort confirmat.
+- `src/app/app.component.html` si linkurile sociale au ramas nemodificate.
+- Review independent: 1 ciclu, fara blocker, major sau nit.
+- Verify independent: `allCriteriaMet: true`, toate cele 10 criterii indeplinite.
+- Validare orchestrator: `npm run build:browser` si `npx ng test --watch=false --browsers=ChromeHeadless` au iesit cu cod 0; `TOTAL: 51 SUCCESS`.
+- Nit-uri amanate: niciunul.
 <!-- SECTION:NOTES:END -->
