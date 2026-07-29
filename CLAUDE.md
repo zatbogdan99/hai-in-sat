@@ -12,7 +12,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `ng serve` — same, without auto-opening the browser.
 - `npm run build` (= `ng build`) — production build by default (configuration is `production`); outputs to `dist/hai-in-sat/`. Production swaps `src/environments/environment.ts` for `environment.prod.ts`.
 - `ng build --configuration development` or `npm run watch` — non-optimized dev build with sourcemaps.
-- `npm test` (= `ng test`) — Karma + Jasmine. Run a single spec by editing the `*.spec.ts` to use `fdescribe`/`fit`, or pass `--include=src/app/path/to.spec.ts`.
+- `npm test` (= `ng test`) — local, interactive Karma + Jasmine run.
+- `npm run test:ci` — single headless test run used for automated verification. Run one spec with `npm run test:ci -- --include=src/app/path/to.spec.ts`.
+- Never leave focused or disabled Jasmine tests (`fdescribe`, `fit`, `xdescribe`, `xit`) in committed code.
 - `npm run generate-sitemap` — fetches every property from the live API and writes `src/sitemap.xml`. Run **before** `ng build` when properties have changed; the sitemap is bundled as a static asset.
 
 Production budgets (see `angular.json`): initial bundle warns at 4 MB / errors at 6 MB; per-component style warns at 7.5 KB / errors at 10 KB.

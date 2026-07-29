@@ -9,6 +9,7 @@
     "build:browser": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "test:ci": "ng test --watch=false --browsers=ChromeHeadless",
     "dev:ssr": "ng run hai-in-sat:serve-ssr",
     "serve:ssr": "node dist/hai-in-sat/server/main.js",
     "prerender": "ng run hai-in-sat:prerender"
