@@ -1,10 +1,10 @@
 ---
 id: TASK-103
 title: 'REVIEW-18: TypeScript dev/preview version în package.json'
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-05-07 08:47'
-updated_date: '2026-07-27'
+updated_date: '2026-07-29'
 labels:
   - review
   - deps
@@ -80,12 +80,12 @@ Nu e cazul: schimbarea e strict la compilare. Daca build-ul si testele trec, com
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 `package.json` are `"typescript": "~5.8.0"` — fara `^`, fara sufix `-dev`, fara nightly (ruta de retragere acceptata: `~5.6.3`, si atunci motivul e scris in implementation notes)
-- [ ] #2 `yarn.lock` e regenerat prin `yarn install`; NU exista `package-lock.json` in repo
-- [ ] #3 Implementatorul a rulat `npx tsc --version` si a lipit iesirea in `## Implementation Notes` — nu contine `-dev`
-- [ ] #4 Implementatorul a rulat `npm run build:browser` si a lipit iesirea in `## Implementation Notes`: build reusit, zero erori de tip
-- [ ] #5 `npx ng test --watch=false --browsers=ChromeHeadless` trece (baseline 49/49 pe master, remasurat 2026-07-28)
-- [ ] #6 `CLAUDE.md` mentioneaza versiunea de TypeScript suportata si politica de fixare cu tilda (`~`) — sectiunea „Conventions" spune azi doar „TypeScript ~5.5", de aliniat cu realitatea
+- [x] #1 `package.json` are `"typescript": "~5.8.0"` — fara `^`, fara sufix `-dev`, fara nightly (ruta de retragere acceptata: `~5.6.3`, si atunci motivul e scris in implementation notes)
+- [x] #2 `yarn.lock` e regenerat prin `yarn install`; NU exista `package-lock.json` in repo
+- [x] #3 Implementatorul a rulat `npx tsc --version` si a lipit iesirea in `## Implementation Notes` — nu contine `-dev`
+- [x] #4 Implementatorul a rulat `npm run build:browser` si a lipit iesirea in `## Implementation Notes`: build reusit, zero erori de tip
+- [x] #5 `npx ng test --watch=false --browsers=ChromeHeadless` trece (baseline 49/49 pe master, remasurat 2026-07-28)
+- [x] #6 `CLAUDE.md` mentioneaza versiunea de TypeScript suportata si politica de fixare cu tilda (`~`) — sectiunea „Conventions" spune azi doar „TypeScript ~5.5", de aliniat cu realitatea
 <!-- AC:END -->
 
 ## Implementation Notes
@@ -96,5 +96,39 @@ Verificare 2026-07-06: neschimbat — package.json are tot 'typescript': '^5.5.0
 Revizuire 2026-07-27 (pregatire pentru pipeline). Ambiguitati eliminate:
 1. Nota din verificarea 2026-07-06 spunea „NU hardcoda ~5.6.0 fara verificare: consulta matricea de compatibilitate Angular 19.2" — adica cerea agentului sa consulte o pagina web, ceea ce intr-un sandbox fara retea inseamna fie esec, fie inventare. FIXAT: `~5.8.0`, cu justificarea intervalului (`>=5.5.0 <5.9.0` pentru Angular 19.2) scrisa in task si cu ruta de retragere explicita.
 2. Managerul de pachete era ambiguu (`yarn add` in descriere, `npm run` in AC) → clarificat: yarn pentru instalare, npm run pentru scripturi.
-3. AC-ul vechi #4 zicea „npm test (sau ce exista post-REVIEW-6)" → concretizat, cu baseline-ul 49/49.
+3. AC-ul vechi #4 zicea „npm test (sau ce exista post-REVIEW-6)” → concretizat, cu baseline-ul 49/49.
+
+### Verificari implementare 2026-07-29
+
+TypeScript a fost fixat direct la intervalul stabil `~5.8.0`; ruta de retragere la `~5.6.3` nu a fost necesara. Verificarile au fost rulate de orchestrator dupa regenerarea lockfile-ului, conform separarii rolurilor din pipeline:
+
+```text
+$ yarn install
+success Saved lockfile.
+Done in 11.27s.
+exit 0
+
+$ npx tsc --version
+Version 5.8.3
+exit 0
+
+$ npm run build:browser
+Build at: 2026-07-29T09:13:09.400Z - Hash: 00e6cc9e4d45f596 - Time: 15622ms
+exit 0
+
+$ npx ng test --watch=false --browsers=ChromeHeadless
+Chrome Headless 151.0.0.0 (Windows 10): Executed 51 of 51 SUCCESS
+TOTAL: 51 SUCCESS
+exit 0
+```
+
+`yarn.lock` a fost regenerat prin `yarn install`; `package-lock.json` nu exista. Build-ul pastreaza doar warning-urile preexistente despre Sass `@import` si bugetele SCSS, fara erori de tip. Testele emit loguri si warning-uri asteptate, fara teste esuate.
+
+### Rezumat pipeline 2026-07-29
+
+- TypeScript migrat de la nightly la intervalul stabil `~5.8.0`, rezolvat la `5.8.3`; ruta de retragere nu a fost necesara.
+- Fisiere principale: `package.json`, `yarn.lock`, `CLAUDE.md` si acest task.
+- Review independent: curat dupa ciclul 1/3; 0 blocker, 0 major, 0 nit, fara etapa de fix.
+- Verify independent: `allCriteriaMet: true`; toate criteriile #1-#6 sunt indeplinite.
+- Nit-uri amanate: niciunul.
 <!-- SECTION:NOTES:END -->

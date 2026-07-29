@@ -51,7 +51,8 @@ Deployed to Google App Engine Standard, runtime `nodejs22`, instance class F2. `
 ## Conventions
 
 - Component style is `scss` (set in `angular.json` schematics). Selector prefix is `app`.
-- TypeScript ~5.5; Angular ~19.2; zone.js ~0.15; RxJS ~7.8.
+- TypeScript ~5.8; Angular ~19.2; zone.js ~0.15; RxJS ~7.8.
+- Keep TypeScript pinned with a tilde (`~`) so routine updates stay within patch releases (5.8.x). Before changing the TypeScript minor version, verify compatibility with the Angular version used by the project.
 - Romanian text is the default in templates and user-facing strings — match the surrounding language when editing.
 
 <!-- BACKLOG.MD MCP GUIDELINES START -->
