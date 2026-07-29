@@ -5,7 +5,7 @@ import { HomeFormDto } from "../../dto/home-form.dto";
 @Injectable({
   providedIn: 'root'
 })
-export class HomeFormServiceService {
+export class HomeFormService {
 
   private homeFormUrl = 'https://hai-in-sat-api.lm.r.appspot.com/home-form';
 

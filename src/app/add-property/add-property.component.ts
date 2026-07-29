@@ -12,7 +12,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FileUpload } from 'primeng/fileupload';
 import { ButtonDirective } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';
-import { PropertyFormServiceService } from '../service/property-form-service/property-form-service.service';
+import { PropertyApiService } from '../service/property-api/property-api.service';
 import {Textarea} from "primeng/textarea";
 import { PhotoAdminService, ReplacePhotosRequest } from '../service/photo-admin.service';
 import { MessageService } from 'primeng/api';
@@ -93,7 +93,7 @@ export class AddPropertyComponent {
 
   constructor(
     public store: PropertyTypeStore,
-    private propertyFormService: PropertyFormServiceService,
+    private propertyApiService: PropertyApiService,
     private photoAdminService: PhotoAdminService,
     private messageService: MessageService,
     public loadingService: LoadingService,
@@ -179,7 +179,7 @@ export class AddPropertyComponent {
       photos: gallery
     };
 
-    this.propertyFormService.saveProperty(payload)
+    this.propertyApiService.saveProperty(payload)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: (resp) => {
@@ -221,7 +221,7 @@ export class AddPropertyComponent {
       });
       return;
     }
-    this.propertyFormService.deleteProperty(trimmed)
+    this.propertyApiService.deleteProperty(trimmed)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: () => {
@@ -301,7 +301,7 @@ export class AddPropertyComponent {
     if (!property?.id) {
       return;
     }
-    this.propertyFormService.refreshVideo(property.id)
+    this.propertyApiService.refreshVideo(property.id)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (resp) => {
@@ -347,7 +347,7 @@ export class AddPropertyComponent {
       });
       return;
     }
-    this.propertyFormService.updateSortOrder(property.id, position)
+    this.propertyApiService.updateSortOrder(property.id, position)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
@@ -380,7 +380,7 @@ export class AddPropertyComponent {
     if (newOrder == null || !property.id) {
       return;
     }
-    this.propertyFormService.updateSortOrder(property.id, newOrder)
+    this.propertyApiService.updateSortOrder(property.id, newOrder)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: () => {
@@ -496,7 +496,7 @@ export class AddPropertyComponent {
     try {
       this.loadingService.loadingOn();
       const currentProperty = await firstValueFrom(
-        this.propertyFormService.getPropertyById(this.selectedReplaceProperty.id)
+        this.propertyApiService.getPropertyById(this.selectedReplaceProperty.id)
       );
       const photosBase64 = await Promise.all(
         this.replaceGalleryFiles.map((file) => this.fileToBase64(file))
@@ -759,7 +759,7 @@ export class AddPropertyComponent {
     const property = this.editDescriptionProperty;
     if (!property?.id) return;
 
-    this.propertyFormService.updateDescription(property.id, this.editDescriptionValue)
+    this.propertyApiService.updateDescription(property.id, this.editDescriptionValue)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: () => {
@@ -817,7 +817,7 @@ export class AddPropertyComponent {
 
   private loadPropertiesPage(page: number) {
     this.loadingService.loadingOn();
-    this.propertyFormService.getPropertiesPage(page, this.pageSize)
+    this.propertyApiService.getPropertiesPage(page, this.pageSize)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: (resp) => {
@@ -895,12 +895,12 @@ export class AddPropertyComponent {
 
     try {
       // 1. Fetch ALL properties (all pages)
-      const firstPage = await firstValueFrom(this.propertyFormService.getPropertiesPage(0, 100));
+      const firstPage = await firstValueFrom(this.propertyApiService.getPropertiesPage(0, 100));
       const allProperties = Array.isArray(firstPage?.content) ? firstPage.content : [];
       const totalPages = firstPage?.totalPages ?? 1;
 
       for (let page = 1; page < totalPages; page++) {
-        const resp = await firstValueFrom(this.propertyFormService.getPropertiesPage(page, 100));
+        const resp = await firstValueFrom(this.propertyApiService.getPropertiesPage(page, 100));
         if (resp?.content) allProperties.push(...resp.content);
       }
 
@@ -925,7 +925,7 @@ export class AddPropertyComponent {
         if (!prop.id) continue;
         try {
           const photosResp = await firstValueFrom(
-            this.propertyFormService.getPhotos(prop.id, 0, 1)
+            this.propertyApiService.getPhotos(prop.id, 0, 1)
           );
           const total = photosResp?.total ?? 0;
           photoResults.push({

@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { Auth } from '@angular/fire/auth';
 
 import { AddPropertyComponent } from './add-property.component';
-import { PropertyFormServiceService } from '../service/property-form-service/property-form-service.service';
+import { PropertyApiService } from '../service/property-api/property-api.service';
 import { PhotoAdminService } from '../service/photo-admin.service';
 import { MessageService } from 'primeng/api';
 import { LoadingService } from '../service/loading-service/loading-service.service';
@@ -15,14 +15,14 @@ import { PropertiesStateService } from '../service/properties-state-service/prop
 describe('AddPropertyComponent', () => {
   let component: AddPropertyComponent;
   let fixture: ComponentFixture<AddPropertyComponent>;
-  let propertyFormService: jasmine.SpyObj<PropertyFormServiceService>;
+  let propertyApiService: jasmine.SpyObj<PropertyApiService>;
   let photoAdminService: jasmine.SpyObj<PhotoAdminService>;
   let messageService: jasmine.SpyObj<MessageService>;
   let propertiesState: PropertiesStateService;
 
   beforeEach(() => {
-    propertyFormService = jasmine.createSpyObj<PropertyFormServiceService>(
-      'PropertyFormServiceService',
+    propertyApiService = jasmine.createSpyObj<PropertyApiService>(
+      'PropertyApiService',
       ['saveProperty', 'getPropertiesPage', 'deleteProperty', 'updateSortOrder', 'getPropertyById']
     );
     photoAdminService = jasmine.createSpyObj<PhotoAdminService>(
@@ -31,13 +31,13 @@ describe('AddPropertyComponent', () => {
     );
     messageService = jasmine.createSpyObj<MessageService>('MessageService', ['add']);
 
-    propertyFormService.getPropertiesPage.and.returnValue(
+    propertyApiService.getPropertiesPage.and.returnValue(
       of({ content: [], totalElements: 0, totalPages: 0, size: 10, number: 0 })
     );
-    propertyFormService.saveProperty.and.returnValue(of({}));
-    propertyFormService.deleteProperty.and.returnValue(of(null));
-    propertyFormService.updateSortOrder.and.returnValue(of(void 0));
-    propertyFormService.getPropertyById.and.returnValue(of({
+    propertyApiService.saveProperty.and.returnValue(of({}));
+    propertyApiService.deleteProperty.and.returnValue(of(null));
+    propertyApiService.updateSortOrder.and.returnValue(of(void 0));
+    propertyApiService.getPropertyById.and.returnValue(of({
       id: 'default-id',
       name: 'Default',
       description: 'desc',
@@ -56,7 +56,7 @@ describe('AddPropertyComponent', () => {
         LoadingService,
         { provide: Auth, useValue: {} },
         { provide: Router, useValue: jasmine.createSpyObj<Router>('Router', ['navigate']) },
-        { provide: PropertyFormServiceService, useValue: propertyFormService },
+        { provide: PropertyApiService, useValue: propertyApiService },
         { provide: PhotoAdminService, useValue: photoAdminService },
         { provide: MessageService, useValue: messageService }
       ]
@@ -71,14 +71,14 @@ describe('AddPropertyComponent', () => {
   it('should load properties on show', () => {
     component.onShowProperties();
 
-    expect(propertyFormService.getPropertiesPage).toHaveBeenCalledWith(0, 20);
+    expect(propertyApiService.getPropertiesPage).toHaveBeenCalledWith(0, 20);
   });
 
   it('should show toast when saving invalid form', async () => {
     await component.onSave();
 
     expect(messageService.add).toHaveBeenCalled();
-    expect(propertyFormService.saveProperty).not.toHaveBeenCalled();
+    expect(propertyApiService.saveProperty).not.toHaveBeenCalled();
   });
 
   it('should persist sort order when moving property down', () => {
@@ -106,7 +106,7 @@ describe('AddPropertyComponent', () => {
     // Un SINGUR apel: serverul mută proprietatea pe poziția cerută și împinge
     // restul listei, atomic. Varianta veche trimitea câte un apel per element
     // mutat, iar un eșec parțial lăsa poziții duplicate sau găuri.
-    expect(propertyFormService.updateSortOrder).toHaveBeenCalledOnceWith('a', 2);
+    expect(propertyApiService.updateSortOrder).toHaveBeenCalledOnceWith('a', 2);
   });
 
   it('should move a property up to the previous global position', () => {
@@ -129,7 +129,7 @@ describe('AddPropertyComponent', () => {
     // Poziția se calculează pe lista COMPLETĂ (pagina 1 × 20 + index 0 + 1 = 21),
     // nu pe indexul din pagina curentă — altfel elementele de pe pagina a doua
     // ar sări în capul listei.
-    expect(propertyFormService.updateSortOrder).toHaveBeenCalledOnceWith('x', 20);
+    expect(propertyApiService.updateSortOrder).toHaveBeenCalledOnceWith('x', 20);
   });
 
   it('should not move the last property further down', () => {
@@ -148,12 +148,12 @@ describe('AddPropertyComponent', () => {
 
     component.movePropertyDown(0);
 
-    expect(propertyFormService.updateSortOrder).not.toHaveBeenCalled();
+    expect(propertyApiService.updateSortOrder).not.toHaveBeenCalled();
   });
 
   it('should keep the existing thumbnail when replacing gallery photos', async () => {
     spyOn<any>(component, 'fileToBase64').and.callFake((file: File) => Promise.resolve(`base64:${file.name}`));
-    propertyFormService.getPropertyById.and.returnValue(of({
+    propertyApiService.getPropertyById.and.returnValue(of({
       id: 'land-1',
       name: 'Land',
       description: 'desc',
@@ -176,7 +176,7 @@ describe('AddPropertyComponent', () => {
 
     await component.confirmReplacePhotos();
 
-    expect(propertyFormService.getPropertyById).toHaveBeenCalledWith('land-1');
+    expect(propertyApiService.getPropertyById).toHaveBeenCalledWith('land-1');
     expect(photoAdminService.replacePhotos).toHaveBeenCalledWith({
       propertyId: 'land-1',
       thumbnail: 'https://cdn.example.com/full-thumb.jpg',
@@ -186,7 +186,7 @@ describe('AddPropertyComponent', () => {
 
   it('should use the first selected photo as fallback thumbnail when one is missing', async () => {
     spyOn<any>(component, 'fileToBase64').and.callFake((file: File) => Promise.resolve(`base64:${file.name}`));
-    propertyFormService.getPropertyById.and.returnValue(of({
+    propertyApiService.getPropertyById.and.returnValue(of({
       id: 'land-2',
       name: 'Land',
       description: 'desc',

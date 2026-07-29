@@ -1,7 +1,7 @@
 ---
 id: TASK-106
 title: 'REVIEW-9: PropertyFormServiceService — dublu sufix Service și nume neclar'
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-05-07 08:46'
 updated_date: '2026-07-27'
@@ -93,4 +93,17 @@ Revizuire 2026-07-27 (pregatire pentru pipeline). Ambiguitati eliminate:
 1. Tabelul de rename avea „sau" pe doua randuri si „verifica ce face" pe al treilea — agentul ar fi trebuit sa decida singur numele publice ale claselor. FIXATE de owner, cu folderul si numele de fisier finale.
 2. AC-ul vechi #2 („numele reflecta rolul real") era subiectiv → inlocuit cu criterii care numesc clasa si calea exacta.
 3. AC-ul vechi #5 (test manual pe 5 fluxuri) → mutat in `## Verificare post-deploy (owner)`; a ramas dovada de build, care prinde importurile rupte.
+
+Verificare finala 2026-07-29:
+- `npx ng test --watch=false --browsers=ChromeHeadless` — exit code 0, `TOTAL: 51 SUCCESS`.
+- `npm run build:browser` — exit code 0; build-ul Angular pentru browser s-a finalizat cu succes (hash `92e31ee3ecfd62bd`, timp raportat `27339ms`, total initial `2.63 MB` / transfer estimat `469.69 kB`). Au ramas doar avertismentele nefatale preexistente de style budget.
+- TASK-101 era deja livrat; serviciul Terrain nu a fost atins si nu apare in diff.
+- Backend-ul a ramas nemodificat (working tree curat la verificarea orchestratorului).
+
+Rezumat implementare pipeline:
+- Serviciul CRUD pentru proprietati a fost mutat si redenumit ca `PropertyApiService` in `src/app/service/property-api/`, iar serviciul de contact ca `PropertyContactService` in `src/app/service/property-contact/`.
+- `HomeFormService` pastreaza folderul si fisierul existente; toate importurile, injectarile DI si mock-urile relevante au fost actualizate.
+- Review independent: 3 cicluri; primele doua au corectat dovada de build din task si formularea notei Terrain, iar ciclul 3 a fost curat (`0 issues`).
+- Verify independent: `allCriteriaMet: true`, `missing: []`; toate cele 9 criterii sunt indeplinite.
+- Nit-uri amanate: niciunul.
 <!-- SECTION:NOTES:END -->

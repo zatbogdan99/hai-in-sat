@@ -6,7 +6,7 @@ import { PropertyFormDTO } from '../../dto/property-form.dto';
 @Injectable({
   providedIn: 'root'
 })
-export class PropertyFormEmailServiceService {
+export class PropertyContactService {
   // private readonly propertiesFormUrl = 'http://localhost:8080/properties-form';
   private readonly propertiesFormUrl = 'https://hai-in-sat-api.lm.r.appspot.com/properties-form';
 

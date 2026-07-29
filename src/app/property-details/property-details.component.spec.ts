@@ -4,7 +4,7 @@ import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NEVER, of, throwError } from 'rxjs';
 
-import { PropertyFormServiceService } from '../service/property-form-service/property-form-service.service';
+import { PropertyApiService } from '../service/property-api/property-api.service';
 import { LoadingService } from '../service/loading-service/loading-service.service';
 import { PropertiesStateService } from '../service/properties-state-service/properties-state.service';
 import { PropertyDetailsComponent } from './property-details.component';
@@ -16,7 +16,7 @@ import { SeoService } from '../service/seo.service';
 describe('PropertyDetailsComponent', () => {
   let component: PropertyDetailsComponent;
   let fixture: ComponentFixture<PropertyDetailsComponent>;
-  let propertyFormService: jasmine.SpyObj<PropertyFormServiceService>;
+  let propertyApiService: jasmine.SpyObj<PropertyApiService>;
   let router: Router;
   let ssrRenderState: SsrRenderState;
 
@@ -29,9 +29,9 @@ describe('PropertyDetailsComponent', () => {
   };
 
   function configure(platformId: 'browser' | 'server' = 'browser'): void {
-    propertyFormService = jasmine.createSpyObj<PropertyFormServiceService>('PropertyFormServiceService', ['getPropertyById', 'getPhotos']);
-    propertyFormService.getPropertyById.and.returnValue(NEVER);
-    propertyFormService.getPhotos.and.returnValue(NEVER);
+    propertyApiService = jasmine.createSpyObj<PropertyApiService>('PropertyApiService', ['getPropertyById', 'getPhotos']);
+    propertyApiService.getPropertyById.and.returnValue(NEVER);
+    propertyApiService.getPhotos.and.returnValue(NEVER);
     ssrRenderState = createSsrRenderState();
 
     TestBed.configureTestingModule({
@@ -50,8 +50,8 @@ describe('PropertyDetailsComponent', () => {
           }
         },
         {
-          provide: PropertyFormServiceService,
-          useValue: propertyFormService
+          provide: PropertyApiService,
+          useValue: propertyApiService
         },
         { provide: PLATFORM_ID, useValue: platformId },
         { provide: SSR_RENDER_STATE, useValue: ssrRenderState }
@@ -93,7 +93,7 @@ describe('PropertyDetailsComponent', () => {
     const loadingOffSpy = spyOn(loadingService, 'loadingOff').and.callThrough();
     const upstreamError = new Error('Network error');
     (upstreamError as Error & { status: number }).status = 0;
-    propertyFormService.getPropertyById.and.returnValue(throwError(() => upstreamError));
+    propertyApiService.getPropertyById.and.returnValue(throwError(() => upstreamError));
     component.propertyId = 'prop-1';
 
     expect(() => component.loadPropertyDetails()).not.toThrow();
@@ -109,7 +109,7 @@ describe('PropertyDetailsComponent', () => {
     const loadingOffSpy = spyOn(loadingService, 'loadingOff').and.callThrough();
     const upstreamError = new Error('Backend unavailable');
     (upstreamError as Error & { status: number }).status = 503;
-    propertyFormService.getPropertyById.and.returnValue(throwError(() => upstreamError));
+    propertyApiService.getPropertyById.and.returnValue(throwError(() => upstreamError));
     component.propertyId = 'prop-1';
 
     expect(() => component.loadPropertyDetails()).not.toThrow();
@@ -122,8 +122,8 @@ describe('PropertyDetailsComponent', () => {
 
   it('loads only the initial photo batch on the server', () => {
     configure('server');
-    propertyFormService.getPropertyById.and.returnValue(of(property));
-    propertyFormService.getPhotos.and.returnValue(of({
+    propertyApiService.getPropertyById.and.returnValue(of(property));
+    propertyApiService.getPhotos.and.returnValue(of({
       photos: ['photo-1', 'photo-2'],
       total: 5
     }));
@@ -131,15 +131,15 @@ describe('PropertyDetailsComponent', () => {
 
     component.loadPropertyDetails();
 
-    expect(propertyFormService.getPhotos).toHaveBeenCalledTimes(1);
-    expect(propertyFormService.getPhotos).toHaveBeenCalledWith('prop-1', 0, 2);
+    expect(propertyApiService.getPhotos).toHaveBeenCalledTimes(1);
+    expect(propertyApiService.getPhotos).toHaveBeenCalledWith('prop-1', 0, 2);
     expect(component.photoSlides.length).toBe(2);
   });
 
   it('continues loading remaining photo batches in the browser', () => {
     configure('browser');
-    propertyFormService.getPropertyById.and.returnValue(of(property));
-    propertyFormService.getPhotos.and.callFake((_propertyId: string, offset: number) => of(
+    propertyApiService.getPropertyById.and.returnValue(of(property));
+    propertyApiService.getPhotos.and.callFake((_propertyId: string, offset: number) => of(
       offset === 0
         ? { photos: ['photo-1', 'photo-2'], total: 5 }
         : { photos: ['photo-3', 'photo-4', 'photo-5'], total: 5 }
@@ -148,9 +148,9 @@ describe('PropertyDetailsComponent', () => {
 
     component.loadPropertyDetails();
 
-    expect(propertyFormService.getPhotos).toHaveBeenCalledTimes(2);
-    expect(propertyFormService.getPhotos).toHaveBeenCalledWith('prop-1', 0, 2);
-    expect(propertyFormService.getPhotos).toHaveBeenCalledWith('prop-1', 2, 3);
+    expect(propertyApiService.getPhotos).toHaveBeenCalledTimes(2);
+    expect(propertyApiService.getPhotos).toHaveBeenCalledWith('prop-1', 0, 2);
+    expect(propertyApiService.getPhotos).toHaveBeenCalledWith('prop-1', 2, 3);
     expect(component.photoSlides.length).toBe(5);
   });
 
@@ -159,12 +159,12 @@ describe('PropertyDetailsComponent', () => {
     const seo = TestBed.inject(SeoService);
     const updatePageMetaSpy = spyOn(seo, 'updatePageMeta');
     const setRealEstateListingSpy = spyOn(seo, 'setRealEstateListing');
-    propertyFormService.getPropertyById.and.returnValue(of({
+    propertyApiService.getPropertyById.and.returnValue(of({
       ...property,
       name: 'Casa test',
       description: '<p>Casa <strong>frumoasă</strong> &amp; aproape</p>'
     }));
-    propertyFormService.getPhotos.and.returnValue(of({ photos: [], total: 0 }));
+    propertyApiService.getPhotos.and.returnValue(of({ photos: [], total: 0 }));
     component.propertyId = 'prop-1';
 
     component.loadPropertyDetails();

@@ -4,10 +4,10 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 
 import { PropertyType } from '../../dto/property-type.enum';
 import { PropertyDTO } from '../../dto/property.dto';
-import { PropertyFormServiceService } from './property-form-service.service';
+import { PropertyApiService } from './property-api.service';
 
-describe('PropertyFormServiceService', () => {
-  let service: PropertyFormServiceService;
+describe('PropertyApiService', () => {
+  let service: PropertyApiService;
   let httpMock: HttpTestingController;
 
   const propertyUrl = 'https://hai-in-sat-api.lm.r.appspot.com/get-by-id?id=prop%201';
@@ -33,7 +33,7 @@ describe('PropertyFormServiceService', () => {
       ]
     });
 
-    service = TestBed.inject(PropertyFormServiceService);
+    service = TestBed.inject(PropertyApiService);
     httpMock = TestBed.inject(HttpTestingController);
   }
 
