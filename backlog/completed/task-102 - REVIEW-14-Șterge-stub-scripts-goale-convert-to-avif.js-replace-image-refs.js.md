@@ -3,10 +3,10 @@ id: TASK-102
 title: >-
   REVIEW-14: Șterge stub scripts goale (convert-to-avif.js,
   replace-image-refs.js)
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-05-07 08:46'
-updated_date: '2026-07-27'
+updated_date: '2026-07-29'
 labels:
   - review
   - cleanup
@@ -73,15 +73,15 @@ Nu e cazul: task-ul nu schimba nimic din comportamentul aplicatiei in productie.
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 `ls hai-in-sat/hai-in-sat/scripts/` returneaza DOAR `generate-sitemap.js` — `convert-to-avif.js` si `replace-image-refs.js` (stub-uri de 0 bytes) nu mai exista
-- [ ] #2 `hai-in-sat/hai-in-sat/extra-webpack.config.js` e sters (decizie owner, neconditionata de TASK-131)
-- [ ] #3 `hai-in-sat/hai-in-sat/CLAUDE.md` nu mai contine mentiunea despre „empty stub files" / `convert-to-avif.js` / `replace-image-refs.js`; daca acolo se descria si `extra-webpack.config.js` ca legacy, si acea mentiune dispare
-- [ ] #4 `package.json`: sterse din `dependencies` pachetele `yarn` si `schematics-scss-migrate`
-- [ ] #5 `package.json`: sterse din `devDependencies` pachetele `css-loader`, `style-loader`, `file-loader`, `sass-loader`, `browser-sync`
-- [ ] #6 Fiecare pachet sters a fost verificat inainte cu `git grep`: implementatorul a lipit in `## Implementation Notes` rezultatul cautarii pentru fiecare nume. Orice pachet care are inca o referinta reala e PASTRAT, cu motivul notat
-- [ ] #7 `yarn.lock` e regenerat prin `yarn install` (repo-ul foloseste yarn; NU se introduce `package-lock.json`)
-- [ ] #8 Implementatorul a rulat `npm run build:browser` DUPA stergerea dependentelor si a lipit rezultatul in `## Implementation Notes`
-- [ ] #9 `npx ng test --watch=false --browsers=ChromeHeadless` trece
+- [x] #1 `ls hai-in-sat/hai-in-sat/scripts/` returneaza DOAR `generate-sitemap.js` — `convert-to-avif.js` si `replace-image-refs.js` (stub-uri de 0 bytes) nu mai exista
+- [x] #2 `hai-in-sat/hai-in-sat/extra-webpack.config.js` e sters (decizie owner, neconditionata de TASK-131)
+- [x] #3 `hai-in-sat/hai-in-sat/CLAUDE.md` nu mai contine mentiunea despre „empty stub files” / `convert-to-avif.js` / `replace-image-refs.js`; daca acolo se descria si `extra-webpack.config.js` ca legacy, si acea mentiune dispare
+- [x] #4 `package.json`: sterse din `dependencies` pachetele `yarn` si `schematics-scss-migrate`
+- [x] #5 `package.json`: sterse din `devDependencies` pachetele `css-loader`, `style-loader`, `file-loader`, `sass-loader`, `browser-sync`
+- [x] #6 Fiecare pachet sters a fost verificat inainte cu `git grep`: implementatorul a lipit in `## Implementation Notes` rezultatul cautarii pentru fiecare nume. Orice pachet care are inca o referinta reala e PASTRAT, cu motivul notat
+- [x] #7 `yarn.lock` e regenerat prin `yarn install` (repo-ul foloseste yarn; NU se introduce `package-lock.json`)
+- [x] #8 Implementatorul a rulat `npm run build:browser` DUPA stergerea dependentelor si a lipit rezultatul in `## Implementation Notes`
+- [x] #9 `npx ng test --watch=false --browsers=ChromeHeadless` trece
 <!-- AC:END -->
 
 ## Implementation Notes
@@ -94,4 +94,78 @@ Revizuire 2026-07-27 (pregatire pentru pipeline). Ambiguitati eliminate:
 2. Phase 3 (script AVIF real, cu cod de exemplu) invita agentul sa implementeze ceva ce nu se cere → marcata explicit ca „NU se face".
 3. AC-ul vechi #5 amesteca `yarn install` cu `npm run build:browser` fara sa spuna care e managerul de pachete → clarificat: yarn (`yarn.lock` e lockfile-ul repo-ului).
 4. AC-ul vechi #2 permitea „sters SAU documentat ca ramane" — alt fork; acum e strict stergere.
+### Verificari implementare 2026-07-29
+
+Cautarile complete au fost rulate inaintea modificarilor. Mai jos este rezultatul brut relevant din starea pre-modificare (`HEAD`), cu `yarn.lock`, `backlog/**` si asset-urile AVIF excluse pentru a separa utilizarile operationale de lockfile, cerintele taskului si potrivirile binare.
+
+```text
+$ git grep -n -F -- 'yarn' HEAD -- ':!yarn.lock' ':!backlog/**' ':!*.avif'
+HEAD:.gcloudignore:9:#   - yarn.lock
+HEAD:.gcloudignore:21:# Dependente — GAE reinstaleaza din yarn.lock
+HEAD:.gcloudignore:24:.yarn/
+HEAD:.gcloudignore:38:# Lockfile alternativ — yarn.lock e sursa de adevar (vezi CLAUDE.md)
+HEAD:.gcloudignore:83:yarn-debug.log*
+HEAD:.gcloudignore:84:yarn-error.log*
+HEAD:.gitignore:12:yarn-error.log
+HEAD:package.json:51:    "yarn": "^1.22.19",
+exit 0
+
+$ git grep -n -F -- 'schematics-scss-migrate' HEAD -- ':!yarn.lock' ':!backlog/**' ':!*.avif'
+HEAD:package.json:47:    "schematics-scss-migrate": "^2.3.17",
+exit 0
+
+$ git grep -n -F -- 'css-loader' HEAD -- ':!yarn.lock' ':!backlog/**' ':!*.avif'
+HEAD:extra-webpack.config.js:6:        use: ['css-loader', 'style-loader'],
+HEAD:package.json:64:    "css-loader": "^6.9.1",
+exit 0
+
+$ git grep -n -F -- 'style-loader' HEAD -- ':!yarn.lock' ':!backlog/**' ':!*.avif'
+HEAD:extra-webpack.config.js:6:        use: ['css-loader', 'style-loader'],
+HEAD:package.json:75:    "style-loader": "^3.3.4",
+exit 0
+
+$ git grep -n -F -- 'file-loader' HEAD -- ':!yarn.lock' ':!backlog/**' ':!*.avif'
+HEAD:extra-webpack.config.js:10:        use: ['file-loader'],
+HEAD:package.json:65:    "file-loader": "^6.2.0",
+exit 0
+
+$ git grep -n -F -- 'sass-loader' HEAD -- ':!yarn.lock' ':!backlog/**' ':!*.avif'
+HEAD:package.json:73:    "sass-loader": "13",
+exit 0
+
+$ git grep -n -F -- 'browser-sync' HEAD -- ':!yarn.lock' ':!backlog/**' ':!*.avif'
+HEAD:package.json:63:    "browser-sync": "^3.0.0",
+exit 0
+```
+
+Interpretare: `yarn` apare operational numai ca manager/lockfile in fisierele ignore, nu ca biblioteca folosita de aplicatie; `schematics-scss-migrate`, `sass-loader` si `browser-sync` apar numai ca dependente directe. `css-loader`, `style-loader` si `file-loader` mai apar doar in `extra-webpack.config.js`, configuratie nereferentiata in `angular.json` si eliminata in acelasi task. Prin urmare, toate cele sapte dependente directe pot fi sterse.
+
+Fisiere eliminate: `scripts/convert-to-avif.js`, `scripts/replace-image-refs.js`, `extra-webpack.config.js`. Fisiere modificate: `package.json`, `yarn.lock`, `CLAUDE.md` si acest task.
+
+Verificari rulate de orchestrator dupa eliminarea dependentelor, conform separarii rolurilor din pipeline:
+
+```text
+$ yarn install
+success Saved lockfile.
+Done in 21.71s.
+exit 0
+
+$ npm run build:browser
+Build at: 2026-07-29T08:13:56.874Z - Hash: 00e6cc9e4d45f596 - Time: 36555ms
+exit 0
+
+$ npx ng test --watch=false --browsers=ChromeHeadless
+Chrome Headless 151.0.0.0 (Windows 10): Executed 51 of 51 SUCCESS
+TOTAL: 51 SUCCESS
+exit 0
+```
+
+Build-ul pastreaza doar warning-urile preexistente despre Sass `@import` si bugetele SCSS; testele emit loguri/warning-uri asteptate, fara teste esuate. Nu a fost creat `package-lock.json`.
+
+### Rezumat pipeline 2026-07-29
+
+- Implementare frontend finalizata conform planului; backend-ul nu a necesitat modificari.
+- Review independent: curat dupa ciclul 1/3; 0 blocker, 0 major, 0 nit, fara etapa de fix.
+- Verify independent: `allCriteriaMet: true`; toate criteriile #1-#9 sunt indeplinite.
+- Nit-uri amanate: niciunul.
 <!-- SECTION:NOTES:END -->
