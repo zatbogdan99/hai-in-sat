@@ -46,7 +46,6 @@ Deployed to Google App Engine Standard, runtime `nodejs22`, instance class F2. `
 - `PhotoAdminService` is the admin-only API client for replace/delete/regenerate operations.
 
 ### Build pipeline notes
-- `extra-webpack.config.js` exists but is not wired into `angular.json`; the standard `@angular-devkit/build-angular:browser` builder is used. Treat it as legacy unless explicitly switched on.
 - Karma config is implicit (no `karma.conf.js`) — test bootstrapping uses `tsconfig.spec.json` and `polyfills: ["zone.js", "zone.js/testing"]` from `angular.json`.
 
 ## Conventions
