@@ -2,7 +2,7 @@ import {AfterViewInit, Component, DestroyRef, inject, OnInit} from '@angular/cor
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MessageService} from "primeng/api";
-import {HomeFormServiceService} from "../service/home-form-service/home-form-service.service";
+import {HomeFormService} from "../service/home-form-service/home-form-service.service";
 import {HomeFormDto} from "../dto/home-form.dto";
 import {LoadingService} from "../service/loading-service/loading-service.service";
 import {FormStatesUtil} from "../utils/form-states-util";
@@ -53,7 +53,7 @@ export class FormPageComponent implements OnInit, AfterViewInit{
   private destroyRef = inject(DestroyRef);
 
   constructor(private messageService: MessageService,
-              private homeFormService: HomeFormServiceService,
+              private homeFormService: HomeFormService,
               public loadingService: LoadingService,
               private formBuilder: FormBuilder,
               private dataService: DataService,

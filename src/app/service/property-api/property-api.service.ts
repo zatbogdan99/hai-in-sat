@@ -15,7 +15,7 @@ export interface PageResponse<T> {
 @Injectable({
   providedIn: 'root'
 })
-export class PropertyFormServiceService {
+export class PropertyApiService {
   private savePropertyUrl = 'https://hai-in-sat-api.lm.r.appspot.com/save-property';
   private deletePropertyUrl = 'https://hai-in-sat-api.lm.r.appspot.com/delete-property';
   private getAllPropertiesUrl = 'https://hai-in-sat-api.lm.r.appspot.com/get-all-properties';

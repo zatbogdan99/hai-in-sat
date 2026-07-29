@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, ViewChildren, QueryList, DestroyRef, inject, PLATFORM_ID } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PropertyFormServiceService } from '../service/property-form-service/property-form-service.service';
+import { PropertyApiService } from '../service/property-api/property-api.service';
 import { PropertiesStateService, PropertyTypeFilter } from '../service/properties-state-service/properties-state.service';
 import { PropertyDTO } from '../dto/property.dto';
 import { LoadingService } from '../service/loading-service/loading-service.service';
@@ -69,7 +69,7 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private propertyService: PropertyFormServiceService,
+    private propertyApiService: PropertyApiService,
     public loadingService: LoadingService,
     private propertiesState: PropertiesStateService,
     private seo: SeoService,
@@ -94,7 +94,7 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
   }
 
   loadPropertyDetails(): void {
-    this.propertyService.getPropertyById(this.propertyId)
+    this.propertyApiService.getPropertyById(this.propertyId)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: (prop: PropertyDTO) => {
@@ -212,7 +212,7 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
   private loadPhotosBatch(offset: number, limit: number, prop?: PropertyDTO): void {
     const name = prop?.name ?? this.propertyName;
 
-    this.propertyService.getPhotos(this.propertyId, offset, limit)
+    this.propertyApiService.getPhotos(this.propertyId, offset, limit)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: (resp) => {

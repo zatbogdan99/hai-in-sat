@@ -5,29 +5,29 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { PropertiesComponent } from './properties.component';
 import { LoadingService } from '../service/loading-service/loading-service.service';
-import { PropertyFormEmailServiceService } from '../service/property-form-email-service/property-form-email-service.service';
-import { PropertyFormServiceService } from '../service/property-form-service/property-form-service.service';
+import { PropertyContactService } from '../service/property-contact/property-contact.service';
+import { PropertyApiService } from '../service/property-api/property-api.service';
 import { PropertiesStateService } from '../service/properties-state-service/properties-state.service';
 import { PropertyDTO } from '../dto/property.dto';
 
 describe('PropertiesComponent', () => {
   let component: PropertiesComponent;
   let fixture: ComponentFixture<PropertiesComponent>;
-  let propertyFormService: jasmine.SpyObj<PropertyFormServiceService>;
-  let propertyFormEmailService: jasmine.SpyObj<PropertyFormEmailServiceService>;
+  let propertyApiService: jasmine.SpyObj<PropertyApiService>;
+  let propertyContactService: jasmine.SpyObj<PropertyContactService>;
   let router: jasmine.SpyObj<Router>;
   let propertiesState: PropertiesStateService;
 
   const createComponent = (queryParams: Record<string, string> = {}) => {
     TestBed.resetTestingModule();
-    propertyFormService = jasmine.createSpyObj<PropertyFormServiceService>('PropertyFormServiceService', ['getPropertiesPage']);
-    propertyFormEmailService = jasmine.createSpyObj<PropertyFormEmailServiceService>('PropertyFormEmailServiceService', ['sendPropertyForm']);
+    propertyApiService = jasmine.createSpyObj<PropertyApiService>('PropertyApiService', ['getPropertiesPage']);
+    propertyContactService = jasmine.createSpyObj<PropertyContactService>('PropertyContactService', ['sendPropertyForm']);
     router = jasmine.createSpyObj<Router>('Router', ['navigate']);
 
-    propertyFormService.getPropertiesPage.and.returnValue(
+    propertyApiService.getPropertiesPage.and.returnValue(
       of({ content: [], totalElements: 0, totalPages: 0, size: 6, number: 0 })
     );
-    propertyFormEmailService.sendPropertyForm.and.returnValue(of(void 0));
+    propertyContactService.sendPropertyForm.and.returnValue(of(void 0));
 
     TestBed.configureTestingModule({
       imports: [PropertiesComponent],
@@ -36,12 +36,12 @@ describe('PropertiesComponent', () => {
         LoadingService,
         PropertiesStateService,
         {
-          provide: PropertyFormServiceService,
-          useValue: propertyFormService
+          provide: PropertyApiService,
+          useValue: propertyApiService
         },
         {
-          provide: PropertyFormEmailServiceService,
-          useValue: propertyFormEmailService
+          provide: PropertyContactService,
+          useValue: propertyContactService
         },
         {
           provide: ActivatedRoute,
@@ -86,7 +86,7 @@ describe('PropertiesComponent', () => {
     expect(component.size).toBe(6);
     expect(component.propertyType).toBe('house');
     expect(component.properties).toEqual(cachedProperties);
-    expect(propertyFormService.getPropertiesPage).not.toHaveBeenCalled();
+    expect(propertyApiService.getPropertiesPage).not.toHaveBeenCalled();
   });
 
   it('should fetch page data when cache is missing', () => {
@@ -101,13 +101,13 @@ describe('PropertiesComponent', () => {
     ];
 
     createComponent({ page: '1', size: '6', type: 'land' });
-    propertyFormService.getPropertiesPage.and.returnValue(
+    propertyApiService.getPropertiesPage.and.returnValue(
       of({ content: responseProperties, totalElements: 1, totalPages: 1, size: 6, number: 1 })
     );
 
     fixture.detectChanges();
 
-    expect(propertyFormService.getPropertiesPage).toHaveBeenCalledWith(1, 6, 'land');
+    expect(propertyApiService.getPropertiesPage).toHaveBeenCalledWith(1, 6, 'land');
     expect(component.properties).toEqual(responseProperties);
     expect(propertiesState.getCachedPage(1, 6, 'land')).toEqual(responseProperties);
   });
@@ -131,7 +131,7 @@ describe('PropertiesComponent', () => {
     expect(component.propertyForm.get('firstName')?.hasError('required')).toBeTrue();
     expect(component.propertyForm.get('village')?.hasError('required')).toBeTrue();
     expect(component.propertyForm.hasError('contactRequired')).toBeTrue();
-    expect(propertyFormEmailService.sendPropertyForm).not.toHaveBeenCalled();
+    expect(propertyContactService.sendPropertyForm).not.toHaveBeenCalled();
   });
 
   it('should validate phone as digits only and minimum 10 digits', () => {
@@ -146,14 +146,14 @@ describe('PropertiesComponent', () => {
     component.saveProperty();
 
     expect(component.propertyForm.get('phone')?.hasError('pattern')).toBeTrue();
-    expect(propertyFormEmailService.sendPropertyForm).not.toHaveBeenCalled();
+    expect(propertyContactService.sendPropertyForm).not.toHaveBeenCalled();
 
     component.propertyForm.patchValue({ phone: '071234567' });
 
     component.saveProperty();
 
     expect(component.propertyForm.get('phone')?.hasError('minlength')).toBeTrue();
-    expect(propertyFormEmailService.sendPropertyForm).not.toHaveBeenCalled();
+    expect(propertyContactService.sendPropertyForm).not.toHaveBeenCalled();
   });
 
   it('should validate email format when email is used as contact method', () => {
@@ -168,7 +168,7 @@ describe('PropertiesComponent', () => {
     component.saveProperty();
 
     expect(component.propertyForm.get('email')?.hasError('email')).toBeTrue();
-    expect(propertyFormEmailService.sendPropertyForm).not.toHaveBeenCalled();
+    expect(propertyContactService.sendPropertyForm).not.toHaveBeenCalled();
   });
 
   it('should submit when required fields are completed and phone is valid', () => {
@@ -182,9 +182,9 @@ describe('PropertiesComponent', () => {
 
     component.saveProperty();
 
-    expect(propertyFormEmailService.sendPropertyForm).toHaveBeenCalled();
+    expect(propertyContactService.sendPropertyForm).toHaveBeenCalled();
 
-    const sentDto = propertyFormEmailService.sendPropertyForm.calls.mostRecent().args[0];
+    const sentDto = propertyContactService.sendPropertyForm.calls.mostRecent().args[0];
 
     expect(sentDto.firstName).toBe('Ion Popescu');
     expect(sentDto.email).toBe('');
@@ -205,7 +205,7 @@ describe('PropertiesComponent', () => {
     } as PropertyDTO;
 
     createComponent();
-    propertyFormService.getPropertiesPage.and.returnValue(
+    propertyApiService.getPropertiesPage.and.returnValue(
       of({ content: [propertyWithHtml], totalElements: 1, totalPages: 1, size: 6, number: 0 })
     );
 

@@ -18,7 +18,7 @@ import {
 } from "@angular/forms";
 import { DataViewModule } from "primeng/dataview";
 import { ActivatedRoute, Router } from "@angular/router";
-import { PropertyFormServiceService } from "../service/property-form-service/property-form-service.service";
+import { PropertyApiService } from "../service/property-api/property-api.service";
 import { PropertyDTO } from "../dto/property.dto";
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { TagModule } from "primeng/tag";
@@ -29,7 +29,7 @@ import {DropdownModule} from "primeng/dropdown";
 import {AutoComplete} from "primeng/autocomplete";
 import {PaginatorModule} from "primeng/paginator";
 import { PropertyFormDTO } from "../dto/property-form.dto";
-import { PropertyFormEmailServiceService } from "../service/property-form-email-service/property-form-email-service.service";
+import { PropertyContactService } from "../service/property-contact/property-contact.service";
 import { PropertiesStateService, PropertyTypeFilter } from "../service/properties-state-service/properties-state.service";
 import { SeoService } from "../service/seo.service";
 import { FormStatesUtil } from "../utils/form-states-util";
@@ -124,8 +124,8 @@ export class PropertiesComponent implements OnInit {
     public loadingService: LoadingService,
     private router: Router,
     private route: ActivatedRoute,
-    private propertyFormService: PropertyFormServiceService,
-    private propertyFormEmailService: PropertyFormEmailServiceService,
+    private propertyApiService: PropertyApiService,
+    private propertyContactService: PropertyContactService,
     private propertiesState: PropertiesStateService,
     private fb: FormBuilder,
     private seo: SeoService,
@@ -191,7 +191,7 @@ export class PropertiesComponent implements OnInit {
     }
 
     this.loadingService.loadingOn();
-    this.propertyFormService.getPropertiesPage(this.page, this.size, this.propertyType)
+    this.propertyApiService.getPropertiesPage(this.page, this.size, this.propertyType)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: (resp) => {
@@ -262,7 +262,7 @@ export class PropertiesComponent implements OnInit {
     this.displayModal = false;
 
     this.loadingService.loadingOn();
-    this.propertyFormEmailService.sendPropertyForm(dto)
+    this.propertyContactService.sendPropertyForm(dto)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: () => {
@@ -394,7 +394,7 @@ export class PropertiesComponent implements OnInit {
       return;
     }
 
-    this.propertyFormService.getPropertiesPage(nextPage, this.size, currentType)
+    this.propertyApiService.getPropertiesPage(nextPage, this.size, currentType)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: (resp) => {

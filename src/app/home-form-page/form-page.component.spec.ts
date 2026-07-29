@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NEVER } from 'rxjs';
 
 import { FormPageComponent } from './form-page.component';
-import { HomeFormServiceService } from '../service/home-form-service/home-form-service.service';
+import { HomeFormService } from '../service/home-form-service/home-form-service.service';
 
 describe('FormPageComponent', () => {
   let component: FormPageComponent;
@@ -13,7 +13,7 @@ describe('FormPageComponent', () => {
       imports: [FormPageComponent],
       providers: [
         {
-          provide: HomeFormServiceService,
+          provide: HomeFormService,
           useValue: {
             sendHomeEmails: () => NEVER
           }
