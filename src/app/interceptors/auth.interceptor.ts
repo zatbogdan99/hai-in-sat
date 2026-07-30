@@ -3,9 +3,7 @@ import { inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Auth } from '@angular/fire/auth';
 import { from, switchMap } from 'rxjs';
-
-const API_ORIGIN = 'https://hai-in-sat-api.lm.r.appspot.com';
-const LOCAL_API_ORIGIN = 'http://localhost:8080';
+import { environment } from '../../environments/environment';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   if (!isPlatformBrowser(inject(PLATFORM_ID))) {
@@ -13,8 +11,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   }
 
   const isApiRequest =
-    req.url.startsWith(API_ORIGIN) ||
-    req.url.startsWith(LOCAL_API_ORIGIN) ||
+    req.url.startsWith(environment.apiBaseUrl) ||
     req.url.startsWith('/home-form');
 
   if (!isApiRequest) {

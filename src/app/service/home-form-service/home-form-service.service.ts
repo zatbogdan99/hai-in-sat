@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { HomeFormDto } from "../../dto/home-form.dto";
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HomeFormService {
 
-  private homeFormUrl = 'https://hai-in-sat-api.lm.r.appspot.com/home-form';
+  private readonly homeFormUrl = `${environment.apiBaseUrl}/home-form`;
 
   constructor(private http: HttpClient) { }
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface ReplacePhotosRequest {
   propertyId: string;
@@ -10,8 +11,7 @@ export interface ReplacePhotosRequest {
 
 @Injectable({ providedIn: 'root' })
 export class PhotoAdminService {
-  private readonly baseUrl = 'https://hai-in-sat-api.lm.r.appspot.com';
-  // private readonly baseUrl = 'http://localhost:8080';
+  private readonly baseUrl = environment.apiBaseUrl;
 
   private readonly deleteAllPhotosUrl = `${this.baseUrl}/delete-all-photos`;
   private readonly replacePhotosUrl = `${this.baseUrl}/replace-photos`;
@@ -28,14 +28,14 @@ export class PhotoAdminService {
 
   regenerateThumbnails(width: number, height: number): Observable<number> {
     return this.http.post<number>(
-      `http://localhost:8080/regenerate-thumbnails?width=${width}&height=${height}`,
+      `${this.baseUrl}/regenerate-thumbnails?width=${width}&height=${height}`,
       null
     );
   }
 
   regenerateThumbnailForProperty(propertyId: string, width: number, height: number): Observable<void> {
     return this.http.post<void>(
-      `http://localhost:8080/regenerate-thumbnail/${encodeURIComponent(propertyId)}?width=${width}&height=${height}`,
+      `${this.baseUrl}/regenerate-thumbnail/${encodeURIComponent(propertyId)}?width=${width}&height=${height}`,
       null
     );
   }

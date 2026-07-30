@@ -4,14 +4,15 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 
 import { PropertyType } from '../../dto/property-type.enum';
 import { PropertyDTO } from '../../dto/property.dto';
+import { environment } from '../../../environments/environment';
 import { PropertyApiService } from './property-api.service';
 
 describe('PropertyApiService', () => {
   let service: PropertyApiService;
   let httpMock: HttpTestingController;
 
-  const propertyUrl = 'https://hai-in-sat-api.lm.r.appspot.com/get-by-id?id=prop%201';
-  const photosUrl = 'https://hai-in-sat-api.lm.r.appspot.com/get-photos?propertyId=prop%201&offset=0&limit=2';
+  const propertyUrl = `${environment.apiBaseUrl}/get-by-id?id=prop%201`;
+  const photosUrl = `${environment.apiBaseUrl}/get-photos?propertyId=prop%201&offset=0&limit=2`;
   const property: PropertyDTO = {
     id: 'prop 1',
     name: 'Test property',
