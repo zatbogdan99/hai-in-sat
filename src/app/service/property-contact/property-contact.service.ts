@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PropertyFormDTO } from '../../dto/property-form.dto';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PropertyContactService {
-  // private readonly propertiesFormUrl = 'http://localhost:8080/properties-form';
-  private readonly propertiesFormUrl = 'https://hai-in-sat-api.lm.r.appspot.com/properties-form';
+  private readonly propertiesFormUrl = `${environment.apiBaseUrl}/properties-form`;
 
   constructor(private http: HttpClient) {}
 

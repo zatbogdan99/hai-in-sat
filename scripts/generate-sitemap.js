@@ -6,7 +6,8 @@
  * Rulează înainte de deploy (sau adaugă în npm scripts).
  */
 
-const API_URL = 'https://hai-in-sat-api.lm.r.appspot.com/get-all-properties';
+const API_BASE_URL = (process.env.SITEMAP_API_URL || 'https://hai-in-sat-api.lm.r.appspot.com').replace(/\/+$/, '');
+const API_URL = `${API_BASE_URL}/get-all-properties`;
 const BASE_URL = 'https://hai-în-sat.ro';
 const fs = require('fs');
 const path = require('path');

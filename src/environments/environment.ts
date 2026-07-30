@@ -1,6 +1,7 @@
 // Firebase configuration for development environment
 export const environment = {
   production: false,
+  apiBaseUrl: 'http://localhost:8080',
   firebaseConfig: {
     apiKey: "AIzaSyAfYTGAwwj1oLhJ6cWE3d65qQqJvLyn1zQ",
     authDomain: "hai-in-sat-api.firebaseapp.com",

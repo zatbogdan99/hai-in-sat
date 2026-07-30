@@ -1,10 +1,10 @@
 ---
 id: TASK-107
 title: 'REVIEW-8: API base URL hardcoded în 5 servicii — mută în environment'
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-05-07 08:46'
-updated_date: '2026-07-27'
+updated_date: '2026-07-30'
 labels:
   - review
   - refactor
@@ -101,17 +101,17 @@ Dupa deploy, pe `https://hai-în-sat.ro`, cu DevTools → Network deschis: lista
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 `src/environments/environment.ts` are campul `apiBaseUrl: 'http://localhost:8080'`, iar `src/environments/environment.prod.ts` are `apiBaseUrl: 'https://hai-in-sat-api.lm.r.appspot.com'`
-- [ ] #2 `git grep "hai-in-sat-api.lm.r.appspot.com" src/app` returneaza 0 rezultate — string-ul exista doar in `environment.prod.ts`
-- [ ] #3 `git grep "localhost:8080" src/app` returneaza 0 rezultate — string-ul exista doar in `environment.ts` si `proxy.conf.json`
-- [ ] #4 Cele 5 servicii folosesc `` `${environment.apiBaseUrl}/...` ``: `property-form-service.service.ts` (azi liniile 19-23), `photo-admin.service.ts` (13-14), `property-form-email-service.service.ts` (10-11), `home-form-service.service.ts` (10) si `interceptors/auth.interceptor.ts` (7-8)
-- [ ] #5 Variantele `localhost:8080` COMENTATE adiacent (ex. `property-form-service.service.ts:25-29`) sunt sterse — nu mai exista toggle prin comentarii
-- [ ] #6 `interceptors/auth.interceptor.ts`: conditia `isApiRequest` e actualizata sa foloseasca `environment.apiBaseUrl` si ramane corecta si pentru prefixul relativ `/home-form` (folosit in dev prin `proxy.conf.json`) — altfel formularul de acasa pierde tokenul in dev
-- [ ] #7 `scripts/generate-sitemap.js`: URL-ul vine din `process.env.SITEMAP_API_URL` cu fallback pe `'https://hai-in-sat-api.lm.r.appspot.com'` (azi hardcodat la linia 9)
-- [ ] #8 `proxy.conf.json` NU e modificat (Phase 2 respinsa de owner)
-- [ ] #9 `terrain-form-service` NU apare in diff — e cod mort, sters de TASK-101 (vezi `dependencies`)
-- [ ] #10 `npx ng test --watch=false --browsers=ChromeHeadless` trece
-- [ ] #11 Implementatorul a rulat `npm run build:browser` si a lipit rezultatul in `## Implementation Notes` (build-ul de productie foloseste `fileReplacements`, deci e singura dovada ca `environment.prod.ts` chiar se substituie)
+- [x] #1 `src/environments/environment.ts` are campul `apiBaseUrl: 'http://localhost:8080'`, iar `src/environments/environment.prod.ts` are `apiBaseUrl: 'https://hai-in-sat-api.lm.r.appspot.com'`
+- [x] #2 `git grep "hai-in-sat-api.lm.r.appspot.com" src/app` returneaza 0 rezultate — string-ul exista doar in `environment.prod.ts`
+- [x] #3 `git grep "localhost:8080" src/app` returneaza 0 rezultate — string-ul exista doar in `environment.ts` si `proxy.conf.json`
+- [x] #4 Cele 5 servicii folosesc `` `${environment.apiBaseUrl}/...` ``: `property-form-service.service.ts` (azi liniile 19-23), `photo-admin.service.ts` (13-14), `property-form-email-service.service.ts` (10-11), `home-form-service.service.ts` (10) si `interceptors/auth.interceptor.ts` (7-8)
+- [x] #5 Variantele `localhost:8080` COMENTATE adiacent (ex. `property-form-service.service.ts:25-29`) sunt sterse — nu mai exista toggle prin comentarii
+- [x] #6 `interceptors/auth.interceptor.ts`: conditia `isApiRequest` e actualizata sa foloseasca `environment.apiBaseUrl` si ramane corecta si pentru prefixul relativ `/home-form` (folosit in dev prin `proxy.conf.json`) — altfel formularul de acasa pierde tokenul in dev
+- [x] #7 `scripts/generate-sitemap.js`: URL-ul vine din `process.env.SITEMAP_API_URL` cu fallback pe `'https://hai-in-sat-api.lm.r.appspot.com'` (azi hardcodat la linia 9)
+- [x] #8 `proxy.conf.json` NU e modificat (Phase 2 respinsa de owner)
+- [x] #9 `terrain-form-service` NU apare in diff — e cod mort, sters de TASK-101 (vezi `dependencies`)
+- [x] #10 `npx ng test --watch=false --browsers=ChromeHeadless` trece
+- [x] #11 Implementatorul a rulat `npm run build:browser` si a lipit rezultatul in `## Implementation Notes` (build-ul de productie foloseste `fileReplacements`, deci e singura dovada ca `environment.prod.ts` chiar se substituie)
 <!-- AC:END -->
 
 ## Implementation Notes
@@ -127,4 +127,8 @@ Revizuire 2026-07-27 (pregatire pentru pipeline). Doua ambiguitati eliminate:
 AC-ul vechi #4 si #6 („bundle-uri functionale care lovesc backend-ul corect", „test manual: properties, login, save-property") cereau rulare in browser pe productie → mutate in `## Verificare post-deploy (owner)`; a ramas dovada de build.
 
 `dependencies: [TASK-101]`: `terrain-form-service` e in lista de refactorizat, dar e cod mort care se sterge. Daca rulezi TASK-107 primul, sari peste el si nu-l refactoriza.
+
+Implementare 2026-07-30: `npm run build:browser` a finalizat cu succes (exit code `0`, build hash `5be232cb7b220fa7`). Build-ul de productie foloseste configuratia `fileReplacements` din `angular.json` pentru a substitui `environment.ts` cu `environment.prod.ts`. Au ramas doar avertismentele SCSS existente pentru `info-page`, `properties` si `under-the-mountain`.
+
+Rezumat pipeline 2026-07-30: `apiBaseUrl` a fost centralizat in environment-urile Angular si folosit de serviciile curente `property-api`, `property-contact`, `home-form`, `photo-admin` si de `auth.interceptor`; generatorul sitemap accepta `SITEMAP_API_URL`, cu fallback de productie, iar testele serviciului property-api au fost actualizate. Review-ul s-a inchis curat dupa 2 cicluri (un singur major de documentare rezolvat in ciclul 1). Verifier-ul nativ a confirmat toate cele 11 criterii. Karma: `TOTAL: 51 SUCCESS`; build browser: exit code `0`, hash `5be232cb7b220fa7`. Nit-uri amanate: niciunul. Deploy-ul nu a fost rulat; verificarea post-deploy ramane la owner.
 <!-- SECTION:NOTES:END -->

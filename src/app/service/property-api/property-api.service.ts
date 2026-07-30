@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { isPlatformServer } from '@angular/common';
 import { Observable, retry, timeout } from 'rxjs';
 import { PropertyDTO } from '../../dto/property.dto';
+import { environment } from '../../../environments/environment';
 
 export interface PageResponse<T> {
   content: T[];
@@ -16,17 +17,11 @@ export interface PageResponse<T> {
   providedIn: 'root'
 })
 export class PropertyApiService {
-  private savePropertyUrl = 'https://hai-in-sat-api.lm.r.appspot.com/save-property';
-  private deletePropertyUrl = 'https://hai-in-sat-api.lm.r.appspot.com/delete-property';
-  private getAllPropertiesUrl = 'https://hai-in-sat-api.lm.r.appspot.com/get-all-properties';
-  private getPropertyByIdUrl = 'https://hai-in-sat-api.lm.r.appspot.com/get-by-id';
-  private updateSortOrderBaseUrl = 'https://hai-in-sat-api.lm.r.appspot.com/properties';
-
-  // private savePropertyUrl = 'http://localhost:8080/save-property';
-  // private deletePropertyUrl = 'http://localhost:8080/delete-property';
-  // private getAllPropertiesUrl = 'http://localhost:8080/get-all-properties';
-  // private getPropertyByIdUrl = 'http://localhost:8080/get-by-id';
-  // private updateSortOrderBaseUrl = 'http://localhost:8080/properties';
+  private readonly savePropertyUrl = `${environment.apiBaseUrl}/save-property`;
+  private readonly deletePropertyUrl = `${environment.apiBaseUrl}/delete-property`;
+  private readonly getAllPropertiesUrl = `${environment.apiBaseUrl}/get-all-properties`;
+  private readonly getPropertyByIdUrl = `${environment.apiBaseUrl}/get-by-id`;
+  private readonly updateSortOrderBaseUrl = `${environment.apiBaseUrl}/properties`;
 
   constructor(
     private http: HttpClient,

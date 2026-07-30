@@ -1,6 +1,7 @@
 // Firebase configuration for production environment
 export const environment = {
   production: true,
+  apiBaseUrl: 'https://hai-in-sat-api.lm.r.appspot.com',
   firebaseConfig: {
     apiKey: "AIzaSyAfYTGAwwj1oLhJ6cWE3d65qQqJvLyn1zQ",
     authDomain: "hai-in-sat-api.firebaseapp.com",
