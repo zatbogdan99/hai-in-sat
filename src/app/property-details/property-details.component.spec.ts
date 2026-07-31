@@ -12,6 +12,7 @@ import { PropertyDTO } from '../dto/property.dto';
 import { PropertyType } from '../dto/property-type.enum';
 import { createSsrRenderState, SSR_RENDER_STATE, SsrRenderState } from '../ssr-render-state';
 import { SeoService } from '../service/seo.service';
+import { LoggerService } from '../service/logger.service';
 
 describe('PropertyDetailsComponent', () => {
   let component: PropertyDetailsComponent;
@@ -176,5 +177,41 @@ describe('PropertyDetailsComponent', () => {
       description: 'Casa frumoasă & aproape'
     }));
     expect(component.propertyDescription).toBe('<p>Casa <strong>frumoasă</strong> &amp; aproape</p>');
+  });
+
+  it('warns and uses the land fallback when the API returns an unknown property type', () => {
+    configure('browser');
+    const invalidProperty = {
+      ...property,
+      id: 'prop-invalid',
+      name: 'Proprietate experimentală',
+      type: 'farm'
+    } as unknown as PropertyDTO;
+    const logger = TestBed.inject(LoggerService);
+    const seo = TestBed.inject(SeoService);
+    const warnSpy = spyOn(logger, 'warn');
+    const navigateSpy = spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    const setRealEstateListingSpy = spyOn(seo, 'setRealEstateListing');
+    propertyApiService.getPropertyById.and.returnValue(of(invalidProperty));
+    propertyApiService.getPhotos.and.returnValue(of({ photos: [], total: 0 }));
+    component.propertyId = 'prop-invalid';
+
+    expect(() => component.loadPropertyDetails()).not.toThrow();
+
+    expect(warnSpy).toHaveBeenCalledWith(
+      'Tip de proprietate necunoscut: farm (proprietatea prop-invalid)'
+    );
+    expect(component.propertyKind).toBe(PropertyType.LAND);
+    expect(navigateSpy).toHaveBeenCalledWith(
+      ['/property', 'prop-invalid', 'teren-de-vanzare-proprietate-experimentala'],
+      {
+        replaceUrl: true,
+        queryParamsHandling: 'preserve'
+      }
+    );
+    expect(setRealEstateListingSpy).toHaveBeenCalledWith(jasmine.objectContaining({
+      url: '/property/prop-invalid/teren-de-vanzare-proprietate-experimentala',
+      propertyType: 'land'
+    }));
   });
 });

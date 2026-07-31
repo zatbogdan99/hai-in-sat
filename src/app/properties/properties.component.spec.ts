@@ -219,4 +219,33 @@ describe('PropertiesComponent', () => {
     expect(description?.textContent).not.toContain('<strong>');
     expect(image?.getAttribute('alt')).toBe(`Casă de vânzare: Casa cu vedere - ${component.truncate(plainDescription, 60)}`);
   });
+
+  it('uses the land fallback for alt text and navigation when the API returns an unknown property type', () => {
+    const invalidProperty = {
+      id: 'invalid-1',
+      name: 'Lot experimental',
+      description: 'Descriere',
+      type: 'farm',
+      thumbnail: 'thumb-invalid.jpg'
+    } as unknown as PropertyDTO;
+
+    createComponent();
+
+    expect(component.getImageAlt(invalidProperty)).toBe(
+      'Teren de vânzare: Lot experimental - Descriere'
+    );
+
+    component.viewPropertyDetails(invalidProperty);
+
+    expect(router.navigate).toHaveBeenCalledWith(
+      ['/property', 'invalid-1', 'teren-de-vanzare-lot-experimental'],
+      {
+        queryParams: {
+          page: 0,
+          size: 6,
+          type: 'land'
+        }
+      }
+    );
+  });
 });
