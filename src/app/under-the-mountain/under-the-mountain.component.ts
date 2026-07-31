@@ -10,6 +10,7 @@ import { NgFor } from '@angular/common';
 import { register } from 'swiper/element/bundle';
 import {PrimeTemplate} from "primeng/api";
 import { SeoService } from "../service/seo.service";
+import { LoggerService } from "../service/logger.service";
 
 register();
 
@@ -34,7 +35,12 @@ export class UnderTheMountainComponent implements AfterViewInit, OnInit {
   @ViewChild('nextNav') nextNav?: ElementRef<HTMLElement>;
 
 
-  constructor(private router: Router, private service: DataService, private seo: SeoService) {
+  constructor(
+    private router: Router,
+    private service: DataService,
+    private seo: SeoService,
+    private logger: LoggerService
+  ) {
     let dataDto = new DataDto(
       1,
       "Horezu",
@@ -222,7 +228,7 @@ export class UnderTheMountainComponent implements AfterViewInit, OnInit {
         ease: "sine.in"
       },
       onComplete: () => {
-        console.log('on complete pe playReverse');
+        this.logger.log('on complete pe playReverse');
       }
     });
 

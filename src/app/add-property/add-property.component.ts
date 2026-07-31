@@ -23,6 +23,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { PaginatorModule } from 'primeng/paginator';
 import { firstValueFrom, map } from 'rxjs';
 import { PropertiesStateService } from '../service/properties-state-service/properties-state.service';
+import { LoggerService } from '../service/logger.service';
 
 @Component({
   selector: 'app-add-property',
@@ -99,7 +100,8 @@ export class AddPropertyComponent {
     public loadingService: LoadingService,
     private propertiesState: PropertiesStateService,
     private auth: Auth,
-    private router: Router
+    private router: Router,
+    private logger: LoggerService
   ) {}
 
   onUpload(event: any) {
@@ -158,7 +160,7 @@ export class AddPropertyComponent {
       try {
         thumbnail = await this.fileToBase64(photo);
       } catch (e) {
-        console.error('Eroare la conversia imaginii:', e);
+        this.logger.error('Eroare la conversia imaginii:', e);
       }
     }
 
@@ -167,7 +169,7 @@ export class AddPropertyComponent {
       try {
         gallery = await Promise.all(photos.map((f) => this.fileToBase64(f)));
       } catch (e) {
-        console.error('Eroare la conversia imaginilor din galerie:', e);
+        this.logger.error('Eroare la conversia imaginilor din galerie:', e);
       }
     }
 
@@ -191,7 +193,7 @@ export class AddPropertyComponent {
         this.loadingService.loadingOff();
       },
       error: (err) => {
-        console.error('Failed to save property', err);
+        this.logger.error('Failed to save property', err);
         this.messageService.add({
           severity: 'error',
           summary: 'Eroare',
@@ -233,7 +235,7 @@ export class AddPropertyComponent {
         this.loadPropertiesPage(this.currentPage);
       },
       error: (err) => {
-        console.error('Eroare la ștergerea proprietății', err);
+        this.logger.error('Eroare la ștergerea proprietății', err);
         this.messageService.add({
           severity: 'error',
           summary: 'Eroare',
@@ -314,7 +316,7 @@ export class AddPropertyComponent {
           });
         },
         error: (err) => {
-          console.error('Eroare la reîmprospătarea videoului:', err);
+          this.logger.error('Eroare la reîmprospătarea videoului:', err);
           this.messageService.add({
             severity: 'error',
             summary: 'Eroare',
@@ -359,7 +361,7 @@ export class AddPropertyComponent {
           this.loadPropertiesPage(this.currentPage);
         },
         error: (err) => {
-          console.error('Eroare la salvarea ordinii:', err);
+          this.logger.error('Eroare la salvarea ordinii:', err);
           this.messageService.add({
             severity: 'error',
             summary: 'Eroare',
@@ -394,7 +396,7 @@ export class AddPropertyComponent {
         this.loadPropertiesPage(this.currentPage);
       },
       error: (err) => {
-        console.error('Eroare la actualizarea ordinii:', err);
+        this.logger.error('Eroare la actualizarea ordinii:', err);
         this.messageService.add({
           severity: 'error',
           summary: 'Eroare',
@@ -435,7 +437,7 @@ export class AddPropertyComponent {
           this.loadPropertiesPage(this.currentPage);
         },
         error: (err) => {
-          console.error('Eroare la adăugarea pozei:', err);
+          this.logger.error('Eroare la adăugarea pozei:', err);
           this.messageService.add({
             severity: 'error',
             summary: 'Eroare',
@@ -445,7 +447,7 @@ export class AddPropertyComponent {
         }
       });
     } catch (e) {
-      console.error('Eroare la conversia pozei:', e);
+      this.logger.error('Eroare la conversia pozei:', e);
       this.loadingService.loadingOff();
     }
     if (input) input.value = '';
@@ -522,7 +524,7 @@ export class AddPropertyComponent {
           this.loadPropertiesPage(this.currentPage);
         },
         error: (err) => {
-          console.error('Eroare la înlocuirea pozelor:', err);
+          this.logger.error('Eroare la înlocuirea pozelor:', err);
           this.messageService.add({
             severity: 'error',
             summary: 'Eroare',
@@ -532,7 +534,7 @@ export class AddPropertyComponent {
         }
       });
     } catch (e) {
-      console.error('Eroare la pregătirea pozelor pentru înlocuire:', e);
+      this.logger.error('Eroare la pregătirea pozelor pentru înlocuire:', e);
       this.messageService.add({
         severity: 'error',
         summary: 'Eroare',
@@ -613,7 +615,7 @@ export class AddPropertyComponent {
           this.loadPropertiesPage(this.currentPage);
         },
         error: (err) => {
-          console.error('Eroare la înlocuirea pozei principale:', err);
+          this.logger.error('Eroare la înlocuirea pozei principale:', err);
           this.messageService.add({
             severity: 'error',
             summary: 'Eroare',
@@ -623,7 +625,7 @@ export class AddPropertyComponent {
         }
       });
     } catch (e) {
-      console.error('Eroare la pregătirea pozei principale:', e);
+      this.logger.error('Eroare la pregătirea pozei principale:', e);
       this.messageService.add({
         severity: 'error',
         summary: 'Eroare',
@@ -664,7 +666,7 @@ export class AddPropertyComponent {
         this.loadPropertiesPage(this.currentPage);
       },
       error: (err) => {
-        console.error('Eroare la regenerarea thumbnailului:', err);
+        this.logger.error('Eroare la regenerarea thumbnailului:', err);
         this.messageService.add({
           severity: 'error',
           summary: 'Eroare',
@@ -700,7 +702,7 @@ export class AddPropertyComponent {
         this.loadPropertiesPage(this.currentPage);
       },
       error: (err) => {
-        console.error('Eroare la ștergerea pozelor proprietății:', err);
+        this.logger.error('Eroare la ștergerea pozelor proprietății:', err);
         this.messageService.add({
           severity: 'error',
           summary: 'Eroare',
@@ -738,7 +740,7 @@ export class AddPropertyComponent {
         }
       },
       error: (err) => {
-        console.error('Eroare la regenerarea thumbnailurilor:', err);
+        this.logger.error('Eroare la regenerarea thumbnailurilor:', err);
         this.messageService.add({
           severity: 'error',
           summary: 'Eroare',
@@ -772,7 +774,7 @@ export class AddPropertyComponent {
         this.closeEditDescription();
       },
       error: (err) => {
-        console.error('Eroare la actualizarea descrierii:', err);
+        this.logger.error('Eroare la actualizarea descrierii:', err);
         this.messageService.add({
           severity: 'error',
           summary: 'Eroare',
@@ -805,7 +807,7 @@ export class AddPropertyComponent {
         });
       },
       error: (err) => {
-        console.error('Eroare la ștergerea tuturor pozelor:', err);
+        this.logger.error('Eroare la ștergerea tuturor pozelor:', err);
         this.messageService.add({
           severity: 'error',
           summary: 'Eroare',
@@ -834,7 +836,7 @@ export class AddPropertyComponent {
         this.loadingService.loadingOff();
       },
       error: (err) => {
-        console.error('Failed to fetch properties', err);
+        this.logger.error('Failed to fetch properties', err);
         this.messageService.add({
           severity: 'error',
           summary: 'Eroare',
@@ -891,7 +893,7 @@ export class AddPropertyComponent {
   async onDebugInfo() {
     if (!this.isLocalhost()) return;
 
-    console.log('%c=== DEBUG: Fetching all properties and photos ===', 'color: #ff6600; font-size: 14px; font-weight: bold;');
+    this.logger.log('%c=== DEBUG: Fetching all properties and photos ===', 'color: #ff6600; font-size: 14px; font-weight: bold;');
 
     try {
       // 1. Fetch ALL properties (all pages)
@@ -906,8 +908,8 @@ export class AddPropertyComponent {
 
       const propertyIds = new Set(allProperties.map(p => p.id).filter(Boolean));
 
-      console.log(`%c📋 Total proprietăți: ${allProperties.length}`, 'color: #2196F3; font-weight: bold;');
-      console.table(allProperties.map(p => ({
+      this.logger.log(`%c📋 Total proprietăți: ${allProperties.length}`, 'color: #2196F3; font-weight: bold;');
+      this.logger.log(allProperties.map(p => ({
         id: p.id,
         name: p.name,
         type: p.type,
@@ -916,7 +918,7 @@ export class AddPropertyComponent {
       })));
 
       // 2. Fetch photo count per property
-      console.log('%c\n📸 Fetching photos per property...', 'color: #4CAF50; font-weight: bold;');
+      this.logger.log('%c\n📸 Fetching photos per property...', 'color: #4CAF50; font-weight: bold;');
 
       const photoResults: { propertyId: string; propertyName: string; photoCount: number }[] = [];
       const propertiesWithNoPhotos: { id: string; name: string; type: string }[] = [];
@@ -937,7 +939,7 @@ export class AddPropertyComponent {
             propertiesWithNoPhotos.push({ id: prop.id, name: prop.name, type: prop.type });
           }
         } catch (err) {
-          console.error(`  Error fetching photos for "${prop.name}" (${prop.id}):`, err);
+          this.logger.error(`  Error fetching photos for "${prop.name}" (${prop.id}):`, err);
           photoResults.push({
             propertyId: prop.id!,
             propertyName: prop.name,
@@ -946,23 +948,23 @@ export class AddPropertyComponent {
         }
       }
 
-      console.log('%c\n📊 Photo count per property:', 'color: #9C27B0; font-weight: bold;');
-      console.table(photoResults);
+      this.logger.log('%c\n📊 Photo count per property:', 'color: #9C27B0; font-weight: bold;');
+      this.logger.log(photoResults);
 
       if (propertiesWithNoPhotos.length > 0) {
-        console.log(`%c\n⚠️ Proprietăți FĂRĂ poze (${propertiesWithNoPhotos.length}):`, 'color: #FF5722; font-weight: bold; font-size: 13px;');
-        console.table(propertiesWithNoPhotos);
+        this.logger.log(`%c\n⚠️ Proprietăți FĂRĂ poze (${propertiesWithNoPhotos.length}):`, 'color: #FF5722; font-weight: bold; font-size: 13px;');
+        this.logger.log(propertiesWithNoPhotos);
       } else {
-        console.log('%c\n✅ Toate proprietățile au cel puțin o poză.', 'color: #4CAF50; font-weight: bold;');
+        this.logger.log('%c\n✅ Toate proprietățile au cel puțin o poză.', 'color: #4CAF50; font-weight: bold;');
       }
 
       // 3. Fetch ALL photos from the "photos" table and check orphans
-      console.log('%c\n🗄️ Fetching ALL photos from database (photos table)...', 'color: #E91E63; font-weight: bold;');
+      this.logger.log('%c\n🗄️ Fetching ALL photos from database (photos table)...', 'color: #E91E63; font-weight: bold;');
 
       try {
         const allPhotos = await firstValueFrom(this.photoAdminService.getAllPhotosMetadata());
-        console.log(`%c Total poze în tabela "photos": ${allPhotos.length}`, 'color: #E91E63; font-weight: bold;');
-        console.table(allPhotos.map(p => ({
+        this.logger.log(`%c Total poze în tabela "photos": ${allPhotos.length}`, 'color: #E91E63; font-weight: bold;');
+        this.logger.log(allPhotos.map(p => ({
           photoId: p.photoId,
           propertyId: p.propertyId,
           hasData: p.hasData,
@@ -971,31 +973,31 @@ export class AddPropertyComponent {
 
         const orphanPhotos = allPhotos.filter(p => !propertyIds.has(p.propertyId));
         if (orphanPhotos.length > 0) {
-          console.log(`%c\n🚨 POZE ORFANE - ${orphanPhotos.length} poze NU sunt legate de nicio proprietate existentă:`, 'color: #F44336; font-weight: bold; font-size: 13px;');
-          console.table(orphanPhotos.map(p => ({
+          this.logger.log(`%c\n🚨 POZE ORFANE - ${orphanPhotos.length} poze NU sunt legate de nicio proprietate existentă:`, 'color: #F44336; font-weight: bold; font-size: 13px;');
+          this.logger.log(orphanPhotos.map(p => ({
             photoId: p.photoId,
             propertyId: p.propertyId,
             hasData: p.hasData
           })));
 
           const orphanPropertyIds = [...new Set(orphanPhotos.map(p => p.propertyId))];
-          console.log(`%c\n Property IDs orfane (${orphanPropertyIds.length} unice):`, 'color: #F44336;');
+          this.logger.log(`%c\n Property IDs orfane (${orphanPropertyIds.length} unice):`, 'color: #F44336;');
           orphanPropertyIds.forEach(id => {
             const count = orphanPhotos.filter(p => p.propertyId === id).length;
-            console.log(`   ${id} → ${count} poze`);
+            this.logger.log(`   ${id} → ${count} poze`);
           });
         } else {
-          console.log('%c\n✅ Nicio poză orfană. Toate pozele sunt legate de proprietăți existente.', 'color: #4CAF50; font-weight: bold;');
+          this.logger.log('%c\n✅ Nicio poză orfană. Toate pozele sunt legate de proprietăți existente.', 'color: #4CAF50; font-weight: bold;');
         }
       } catch (err) {
-        console.error('%c\n❌ Nu s-au putut aduce pozele din baza de date. Asigură-te că backend-ul rulează local cu endpoint-ul /debug/all-photos-metadata', 'color: #F44336;');
-        console.error(err);
+        this.logger.error('%c\n❌ Nu s-au putut aduce pozele din baza de date. Asigură-te că backend-ul rulează local cu endpoint-ul /debug/all-photos-metadata', 'color: #F44336;');
+        this.logger.error(err);
       }
 
-      console.log('%c\n=== DEBUG COMPLETE ===', 'color: #ff6600; font-size: 14px; font-weight: bold;');
+      this.logger.log('%c\n=== DEBUG COMPLETE ===', 'color: #ff6600; font-size: 14px; font-weight: bold;');
 
     } catch (err) {
-      console.error('Debug info failed:', err);
+      this.logger.error('Debug info failed:', err);
     }
   }
 
@@ -1005,7 +1007,7 @@ export class AddPropertyComponent {
   async logout() {
     try {
       await signOut(this.auth);
-      console.log('[Logout] User signed out successfully');
+      this.logger.log('[Logout] User signed out successfully');
       this.messageService.add({
         severity: 'success',
         summary: 'Deconectat',
@@ -1013,7 +1015,7 @@ export class AddPropertyComponent {
       });
       this.router.navigate(['/']);
     } catch (err) {
-      console.error('[Logout] Error signing out:', err);
+      this.logger.error('[Logout] Error signing out:', err);
       this.messageService.add({
         severity: 'error',
         summary: 'Eroare',
