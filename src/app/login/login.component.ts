@@ -3,6 +3,7 @@ import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { LoggerService } from '../service/logger.service';
 
 /**
  * LoginComponent - Pagină de autentificare pentru adminii site-ului
@@ -25,7 +26,8 @@ export class LoginComponent {
 
   constructor(
     private auth: Auth,
-    private router: Router
+    private router: Router,
+    private logger: LoggerService
   ) {}
 
   /**
@@ -46,12 +48,12 @@ export class LoginComponent {
       // Încercare autentificare cu Firebase
       await signInWithEmailAndPassword(this.auth, this.email, this.password);
 
-      console.log('[Login] Authentication successful');
+      this.logger.log('[Login] Authentication successful');
 
       // Redirectionează către pagina de administrare
       this.router.navigate(['/add-property']);
     } catch (err: any) {
-      console.error('[Login] Authentication failed:', err);
+      this.logger.error('[Login] Authentication failed:', err);
 
       // Mesaje de eroare prietenoase pentru utilizator
       switch (err.code) {

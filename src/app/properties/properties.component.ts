@@ -36,6 +36,7 @@ import { FormStatesUtil } from "../utils/form-states-util";
 import { generateSlug } from "../utils/slug.util";
 import { PropertyType } from "../dto/property-type.enum";
 import { HtmlTextService } from "../service/html-text.service";
+import { LoggerService } from "../service/logger.service";
 
 const trimControlValue = (control: AbstractControl | null | undefined): string => {
   const value = control?.value;
@@ -129,7 +130,8 @@ export class PropertiesComponent implements OnInit {
     private propertiesState: PropertiesStateService,
     private fb: FormBuilder,
     private seo: SeoService,
-    private htmlText: HtmlTextService
+    private htmlText: HtmlTextService,
+    private logger: LoggerService
   ) {
     this.propertyForm = this.fb.group({
       firstName: ['', [requiredTrimmedValidator]],
@@ -195,7 +197,6 @@ export class PropertiesComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: (resp) => {
-        console.log('Apelul initial (paginat):', resp);
         const content = Array.isArray(resp?.content) ? resp.content : [];
         this.properties = this.sortPropertiesByOrder(content);
         this.totalRecords = typeof resp?.totalElements === 'number' ? resp.totalElements : content.length;
@@ -210,7 +211,7 @@ export class PropertiesComponent implements OnInit {
         this.prefetchNextPage();
       },
       error: (err) => {
-        console.error('Failed to fetch properties', err);
+        this.logger.error('Failed to fetch properties', err);
         this.properties = [];
         this.totalRecords = 0;
         this.totalPages = 0;
@@ -256,8 +257,6 @@ export class PropertiesComponent implements OnInit {
       propertyDescription: formValue.propertyDescription || ''
     };
 
-    console.log('PropertyFormDTO:', dto);
-
     this.propertyForm.reset();
     this.displayModal = false;
 
@@ -266,11 +265,11 @@ export class PropertiesComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: () => {
-        console.log('Property form sent successfully');
+        this.logger.log('Property form sent successfully');
         this.loadingService.loadingOff();
       },
       error: (err) => {
-        console.error('Failed to send property form', err);
+        this.logger.error('Failed to send property form', err);
         this.loadingService.loadingOff();
       }
     });
@@ -309,7 +308,7 @@ export class PropertiesComponent implements OnInit {
   }
 
   viewPropertyDetails(property: PropertyDTO) {
-    console.log('Viewing property details:', property);
+    this.logger.log('Viewing property details:', property.id, property.name);
     if (property && property.id) {
       const slug = generateSlug(property.type as PropertyType, property.name);
       this.router.navigate(['/property', property.id, slug], {
@@ -401,10 +400,10 @@ export class PropertiesComponent implements OnInit {
         const content = Array.isArray(resp?.content) ? resp.content : [];
         const sorted = this.sortPropertiesByOrder(content);
         this.propertiesState.setCachedPage(nextPage, this.size, currentType, sorted);
-        console.log(`✅ Prefetched page ${nextPage} (${sorted.length} properties)`);
+        this.logger.log(`✅ Prefetched page ${nextPage} (${sorted.length} properties)`);
       },
       error: (err) => {
-        console.warn(`⚠️ Failed to prefetch page ${nextPage}`, err);
+        this.logger.warn(`⚠️ Failed to prefetch page ${nextPage}`, err);
       }
     });
   }

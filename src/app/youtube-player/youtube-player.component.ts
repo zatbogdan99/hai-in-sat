@@ -1,4 +1,5 @@
 import {AfterViewInit, Component, ElementRef, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild} from '@angular/core';
+import {LoggerService} from "../service/logger.service";
 
 declare var YT: any;
 
@@ -17,6 +18,8 @@ export class YoutubePlayerComponent implements AfterViewInit, OnChanges, OnDestr
   @Input() height: string = '60%';
   @Input() width: string = '100%';
 
+  constructor(private logger: LoggerService) {}
+
   ngAfterViewInit(): void {
     this.initPlayer();
   }
@@ -29,7 +32,7 @@ export class YoutubePlayerComponent implements AfterViewInit, OnChanges, OnDestr
 
   initPlayer(): void {
     if (this.playerElementRef == undefined) {
-      console.error('Eroare la initializarea playerului de youtube');
+      this.logger.error('Eroare la initializarea playerului de youtube');
       return;
     }
 

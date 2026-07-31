@@ -1,10 +1,10 @@
 ---
 id: TASK-109
 title: 'REVIEW-7: console.log/error în cod producție (≈59 apariții, 11 fișiere)'
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-05-07 08:46'
-updated_date: '2026-07-27'
+updated_date: '2026-07-31'
 labels:
   - review
   - quality
@@ -121,4 +121,17 @@ Revizuire 2026-07-27 (pregatire pentru pipeline). Ambiguitati eliminate:
 3. AC-ul vechi #3 („niciun log nu mai expune PII") era prea vag pentru un verificator → inlocuit cu trei criterii care numesc fisierul si linia exacta.
 
 `dependencies: [TASK-101]`: din cele 65 de aparitii, 2 sunt in componente moarte care se sterg. Daca rulezi acest task primul, ignora-le si noteaza-le in implementation notes.
+
+Măsurători implementare TASK-109 — 2026-07-31 (rulate de orchestratorul dev-pipeline conform workflow-ului):
+- Înainte de implementare: `dist/hai-in-sat/browser/main.0b3d709f805c23b3.js` — **2.222.845 bytes** (`npm run build:browser`, succes).
+- După implementare: `dist/hai-in-sat/browser/main.24317d8333b74038.js` — **2.223.354 bytes** (`npm run build:browser`, succes).
+- Diferență: **+509 bytes** (aprox. **+0,023%**), creștere mică explicată de introducerea `LoggerService`; criteriul este informativ și nu cere scădere obligatorie.
+- Teste post-implementare: `npx ng test --watch=false --browsers=ChromeHeadless` — **53/53 SUCCESS**.
+
+Rezultat pipeline 2026-07-31:
+- Implementat `src/app/service/logger.service.ts` și testele dedicate; `log`/`warn` sunt suprimate în producție, iar `error` rămâne activ.
+- Migrat logging-ul din cele 9 fișiere frontend active; logul `PropertyFormDTO` și payload-urile brute au fost eliminate sau reduse la valori scalare/proiecții sanitizate.
+- `console.*` a rămas exclusiv în `logger.service.ts`; componentele eliminate prin TASK-101 și repo-ul backend nu au fost atinse.
+- Review: 1 ciclu, verdict `{ "issues": [] }`; nit-uri amânate: niciunul.
+- Verify: `allCriteriaMet: true`, toate cele 9 criterii îndeplinite.
 <!-- SECTION:NOTES:END -->

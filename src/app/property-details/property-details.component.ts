@@ -14,6 +14,7 @@ import {generateSlug} from "../utils/slug.util";
 import {PropertyType} from "../dto/property-type.enum";
 import {SSR_RENDER_STATE} from "../ssr-render-state";
 import {HtmlTextService} from "../service/html-text.service";
+import {LoggerService} from "../service/logger.service";
 
 export interface GallerySlide {
   type: 'image' | 'video';
@@ -73,7 +74,8 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
     public loadingService: LoadingService,
     private propertiesState: PropertiesStateService,
     private seo: SeoService,
-    private htmlText: HtmlTextService
+    private htmlText: HtmlTextService,
+    private logger: LoggerService
   ) {}
 
   ngOnInit(): void {
@@ -99,7 +101,7 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
       .subscribe({
       next: (prop: PropertyDTO) => {
         if (!prop) {
-          console.warn('Property not found for id', this.propertyId);
+          this.logger.warn('Property not found for id', this.propertyId);
           this.loadingService.loadingOff();
           this.router.navigate(['/properties']);
           return;
@@ -161,7 +163,7 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
           return;
         }
 
-        console.error('Failed to load property details', err);
+        this.logger.error('Failed to load property details', err);
         this.loadingService.loadingOff();
         this.router.navigate(['/properties']);
       }
@@ -174,7 +176,7 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
 
   private markSsrUnavailable(err: unknown): void {
     if (!this.ssrRenderState) {
-      console.error('Failed to load property details during SSR', err);
+      this.logger.error('Failed to load property details during SSR', err);
       return;
     }
 
@@ -243,7 +245,7 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
         }
       },
       error: (err) => {
-        console.error(`[Photos] Eroare la batch offset=${offset}:`, err);
+        this.logger.error(`[Photos] Eroare la batch offset=${offset}:`, err);
         if (offset === 0) {
           this.loadingService.loadingOff();
         }

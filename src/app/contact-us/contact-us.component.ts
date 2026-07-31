@@ -5,6 +5,7 @@ import {gsap} from "gsap";
 import {TimelineLite} from 'gsap';
 import {Power2} from "gsap";
 import {SeoService} from "../service/seo.service";
+import {LoggerService} from "../service/logger.service";
 
 @Component({
   selector: 'app-contact-us',
@@ -24,7 +25,7 @@ export class ContactUsComponent implements OnInit{
 
   private platformId = inject(PLATFORM_ID);
 
-  constructor(private seo: SeoService) {
+  constructor(private seo: SeoService, private logger: LoggerService) {
 
   }
 
@@ -87,7 +88,7 @@ export class ContactUsComponent implements OnInit{
 
     textContainers.forEach((textContainer) => {
       const spans = textContainer.querySelectorAll("span");
-      console.log('spans: ', spans);
+      this.logger.log('spans count:', spans.length);
 
       textContainer.addEventListener("mousemove", (e) => {
         const target = e.target;
@@ -102,14 +103,14 @@ export class ContactUsComponent implements OnInit{
             scale = neighborScale;
           }
           span.style.transform = `scaleY(${scale})`;
-          console.log('span style transform');
+          this.logger.log('span style transform');
         });
       });
 
       textContainer.addEventListener("mouseleave", () => {
         spans.forEach((span) => {
           span.style.transform = `scaleY(${defaultScale})`;
-          console.log('mouseLeaveEvenet');
+          this.logger.log('mouseLeaveEvenet');
         })
       })
 

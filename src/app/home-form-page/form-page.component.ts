@@ -20,6 +20,7 @@ import {RadioButton} from "primeng/radiobutton";
 import { PropertyType } from "../dto/property-type.enum";
 import { DataService } from "../service/data-service";
 import { SeoService } from "../service/seo.service";
+import { LoggerService } from "../service/logger.service";
 
 @Component({
   selector: 'app-form-page',
@@ -57,7 +58,8 @@ export class FormPageComponent implements OnInit, AfterViewInit{
               public loadingService: LoadingService,
               private formBuilder: FormBuilder,
               private dataService: DataService,
-              private seo: SeoService) {
+              private seo: SeoService,
+              private logger: LoggerService) {
   }
 
   ngOnInit(): void {
@@ -122,7 +124,7 @@ export class FormPageComponent implements OnInit, AfterViewInit{
             this.loadingService.loadingOff();
           },
           error: (error) => {
-            console.error('There was an error!', error);
+            this.logger.error('There was an error!', error);
             this.loadingService.loadingOff();
           }
         })
