@@ -1,10 +1,10 @@
 ---
 id: TASK-110
 title: 'REVIEW-11: Type cast unsafe pe prop.type în PropertyDetailsComponent'
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-05-07 08:46'
-updated_date: '2026-07-27'
+updated_date: '2026-07-31'
 labels:
   - review
   - types
@@ -117,4 +117,12 @@ Revizuire 2026-07-27 (pregatire pentru pipeline). Ambiguitati eliminate:
 1. Phase 2 cerea „verifica daca e string, schimba la enum" — dar DTO-ul e deja enum din 2026-06-08. Marcata explicit ca rezolvata, ca sa nu piarda agentul timp sau, mai rau, sa „repare" ceva corect.
 2. AC-ul vechi #5 („slug consistent: casa-de-vanzare doar pentru house") repeta comportamentul deja garantat de `generateSlug` → inlocuit cu criteriul care conteaza: normalizarea tipului se face o singura data, la granita.
 3. Sursa log-ului de avertisment era ambigua (`logger.warn` fara sa spuna de unde vine `logger`) → clarificat: LoggerService daca TASK-109 e livrat, altfel `console.warn`.
+
+Rezultat pipeline 2026-07-31:
+- Adăugate `isPropertyType` și `toPropertyType` în `property-type.enum.ts`, plus spec-ul cu exact cele trei cazuri cerute.
+- `property-details.component.ts` normalizează tipul o singură dată, avertizează cu ID-ul proprietății pentru valori invalide și folosește fallback-ul la teren pentru slug, etichetă și SEO.
+- `properties.component.ts` normalizează defensiv tipul primit din API pentru navigare și textul alternativ; `property.dto.ts`, utilitarele slug/SEO și backend-ul au rămas neatinse.
+- Teste: `npx ng test --watch=false --browsers=ChromeHeadless` — **58/58 SUCCESS**; build frontend reușit.
+- Review: 1 ciclu, verdict `{ "issues": [] }`; nit-uri amânate: niciunul.
+- Verify: `allCriteriaMet: true`, toate cele 9 criterii îndeplinite.
 <!-- SECTION:NOTES:END -->

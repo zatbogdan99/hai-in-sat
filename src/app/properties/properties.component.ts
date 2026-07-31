@@ -34,7 +34,7 @@ import { PropertiesStateService, PropertyTypeFilter } from "../service/propertie
 import { SeoService } from "../service/seo.service";
 import { FormStatesUtil } from "../utils/form-states-util";
 import { generateSlug } from "../utils/slug.util";
-import { PropertyType } from "../dto/property-type.enum";
+import { PropertyType, toPropertyType } from "../dto/property-type.enum";
 import { HtmlTextService } from "../service/html-text.service";
 import { LoggerService } from "../service/logger.service";
 
@@ -310,7 +310,8 @@ export class PropertiesComponent implements OnInit {
   viewPropertyDetails(property: PropertyDTO) {
     this.logger.log('Viewing property details:', property.id, property.name);
     if (property && property.id) {
-      const slug = generateSlug(property.type as PropertyType, property.name);
+      const type = toPropertyType(property.type);
+      const slug = generateSlug(type, property.name);
       this.router.navigate(['/property', property.id, slug], {
         queryParams: {
           page: this.page,
@@ -349,7 +350,7 @@ export class PropertiesComponent implements OnInit {
   }
 
   getImageAlt(property: PropertyDTO): string {
-    const type = property.type === 'land' ? 'Teren' : 'Casă';
+    const type = toPropertyType(property.type) === PropertyType.LAND ? 'Teren' : 'Casă';
     const truncatedDesc = this.truncateDescription(property.description, 60);
     return `${type} de vânzare: ${property.name} - ${truncatedDesc}`;
   }

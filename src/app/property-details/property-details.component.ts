@@ -11,7 +11,7 @@ import {AsyncPipe, isPlatformServer, NgForOf, NgIf} from "@angular/common";
 import {PhoneLinkPipe} from "../pipes/phone-link.pipe";
 import {SeoService} from "../service/seo.service";
 import {generateSlug} from "../utils/slug.util";
-import {PropertyType} from "../dto/property-type.enum";
+import {isPropertyType, PropertyType, toPropertyType} from "../dto/property-type.enum";
 import {SSR_RENDER_STATE} from "../ssr-render-state";
 import {HtmlTextService} from "../service/html-text.service";
 import {LoggerService} from "../service/logger.service";
@@ -106,12 +106,16 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
           this.router.navigate(['/properties']);
           return;
         }
+        if (!isPropertyType(prop.type)) {
+          this.logger.warn(`Tip de proprietate necunoscut: ${prop.type} (proprietatea ${prop.id})`);
+        }
+        const type = toPropertyType(prop.type);
         this.propertyName = prop.name;
         this.propertyDescription = prop.description;
-        this.propertyKind = prop.type as PropertyType;
+        this.propertyKind = type;
         this.propertyVideoUrl = prop.videoUrl || null;
         this.propertyVideoPoster = prop.thumbnail || null;
-        this.propertyTypeLabel = prop.type === 'land' ? 'Teren' : 'Casă';
+        this.propertyTypeLabel = type === PropertyType.LAND ? 'Teren' : 'Casă';
 
         this.videoSlide = this.propertyVideoUrl ? {
           type: 'video',
@@ -120,7 +124,7 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
           alt: `Tur video — ${prop.name}`
         } : null;
 
-        const slug = generateSlug(prop.type as PropertyType, prop.name);
+        const slug = generateSlug(type, prop.name);
         const currentSlug = this.route.snapshot.params['slug'];
         if (!currentSlug || currentSlug !== slug) {
           this.router.navigate(['/property', this.propertyId, slug], {
@@ -143,7 +147,7 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
           description: plainDescription.substring(0, 300),
           url: canonicalPath,
           image: prop.thumbnail,
-          propertyType: prop.type as 'house' | 'land'
+          propertyType: type === PropertyType.HOUSE ? 'house' : 'land'
         });
 
         this.seo.setBreadcrumbs([
