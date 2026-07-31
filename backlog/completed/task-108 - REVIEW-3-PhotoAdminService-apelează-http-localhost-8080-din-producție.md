@@ -1,10 +1,10 @@
 ---
 id: TASK-108
 title: 'REVIEW-3: PhotoAdminService apelează http://localhost:8080 din producție'
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-05-07 08:45'
-updated_date: '2026-07-27'
+updated_date: '2026-07-31'
 labels:
   - review
   - bug
@@ -97,4 +97,11 @@ Verificare 2026-07-06: neschimbat (aceleasi linii). DOUA precizari utile: (1) ad
 Revizuire 2026-07-27 (pregatire pentru pipeline). DECIZIE owner: **Optiunea A** — URL-urile trec pe `${baseUrl}` HTTPS, butoanele raman vizibile. Optiunile B si C au fost sterse din descriere ca sa nu mai existe fork pentru agent.
 
 AC-ul vechi #2 cerea inspectie in DevTools pe site-ul deployat → mutat in `## Verificare post-deploy (owner)`. Restul AC-urilor sunt acum verificabile prin `git grep` si lectura.
+
+Pipeline 2026-07-31:
+- Implementare: no-op in cod; TASK-107 livrat anterior pe `master` a mutat deja `PhotoAdminService` pe `environment.apiBaseUrl`, iar ambele metode folosesc `${this.baseUrl}` si pastreaza `encodeURIComponent(propertyId)`.
+- Fisiere sursa modificate: niciunul. `add-property.component.ts` si repo-ul backend au ramas neatinse.
+- Review: 1 ciclu, verdict `{ "issues": [] }`; nit-uri amanate: niciunul.
+- Verify: `allCriteriaMet: true`, toate cele 6 criterii indeplinite.
+- Validari: `npm run build:browser` reusit (doar avertismente SCSS de buget preexistente); `npx ng test --watch=false --browsers=ChromeHeadless` — 51/51 teste reusite; `git grep "localhost:8080" -- src/app` — 0 rezultate.
 <!-- SECTION:NOTES:END -->
