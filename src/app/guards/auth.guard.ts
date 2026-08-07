@@ -1,33 +1,32 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Auth, authState } from '@angular/fire/auth';
-import { map, take } from 'rxjs/operators';
+import { Auth } from '@angular/fire/auth';
 import { LoggerService } from '../service/logger.service';
 
 /**
  * AuthGuard - Protejează rutele care necesită autentificare
  *
- * Verifică dacă utilizatorul este autentificat:
- * - Dacă DA: permite accesul la rută
- * - Dacă NU: redirectionează către /login
+ * Așteaptă ca Firebase SDK să termine de verificat sesiunea persistată
+ * (IndexedDB/localStorage) prin `authStateReady()`, apoi verifică `currentUser`.
+ * Varianta veche (`authState(auth).pipe(take(1))`) prindea prima emisie, care
+ * la cold start este `null` chiar și pentru un utilizator logat -> redirect greșit.
+ *
+ * Notă SSR: pe server `currentUser` este mereu `null`, deci ruta protejată
+ * redirecționează la /login la randarea pe server. Comportament acceptat.
  */
-export const authGuard = () => {
+export const authGuard = async (): Promise<boolean> => {
+  // inject() trebuie apelat SINCRON, înainte de primul await (context de injecție).
   const auth = inject(Auth);
   const router = inject(Router);
   const logger = inject(LoggerService);
 
-  return authState(auth).pipe(
-    take(1), // Ia doar prima emisie pentru a evita multiple verificări
-    map(user => {
-      if (user) {
-        // Utilizator autentificat - permite accesul
-        return true;
-      } else {
-        // Utilizator neautentificat - redirectionează la login
-        logger.log('[AuthGuard] Access denied. Redirecting to /login');
-        router.navigate(['/login']);
-        return false;
-      }
-    })
-  );
+  await auth.authStateReady();
+
+  if (auth.currentUser) {
+    return true;
+  }
+
+  logger.log('[AuthGuard] Access denied. Redirecting to /login');
+  router.navigate(['/login']);
+  return false;
 };
