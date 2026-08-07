@@ -78,7 +78,7 @@ Astepti **404** (endpoint inexistent). Verifica apoi ca fluxul de admin din `/ad
 - [ ] #1 Backend (branch `master`): metoda cu `@GetMapping` pe `/debug/all-photos-metadata` e stearsa din `HaiInSatController.java` (azi ~linia 124), impreuna cu metoda de service pe care o apela, daca ramane nefolosita
 - [ ] #2 Backend: regula pentru `/debug/**` din `SecurityConfig.java` (azi linia 54) e stearsa — nu are ce proteja dupa stergerea endpoint-ului
 - [ ] #3 Backend: `git grep -in "/debug" --include="*.java"` returneaza 0 rezultate
-- [ ] #4 Frontend: metoda `getAllPhotosMetadata` e stearsa din `src/app/service/photo-admin.service.ts` (azi liniile 47-51)
+- [ ] #4 Frontend: metoda `getAllPhotosMetadata` e stearsa din `../../src/app/service/photo-admin.service.ts` (azi liniile 47-51)
 - [ ] #5 Frontend: apelul din `add-property.component.ts` (azi linia ~900) e sters, impreuna cu elementul de UI care il declansa si cu campurile de componenta ramase nefolosite din cauza lui
 - [ ] #6 `git grep "getAllPhotosMetadata\|all-photos-metadata"` returneaza 0 rezultate in AMBELE repo-uri
 - [ ] #7 `.\mvnw.cmd -q test` (backend) si `npx ng test --watch=false --browsers=ChromeHeadless` (frontend) trec — ambele rulate automat de runner, fiindca acest task atinge ambele repo-uri
