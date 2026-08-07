@@ -10,6 +10,8 @@ import { createSsrRenderState, SSR_RENDER_STATE } from './app/ssr-render-state';
 
 const SSR_RENDER_TIMEOUT_MS = 25000;
 const RETRY_AFTER_SECONDS = 60;
+const CANONICAL_HOST = 'xn--hai-n-sat-t5a.ro';
+const LOCAL_HOST_PATTERN = /^(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$/i;
 
 class SsrRenderTimeoutError extends Error {
   constructor() {
@@ -30,6 +32,24 @@ export function app(): express.Express {
 
   server.set('view engine', 'html');
   server.set('views', distFolder);
+
+  // Redirect canonic 301: www->apex si http->https (TASK-113)
+  server.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+    const host = req.headers.host ?? '';
+    const rawProto: string | string[] = req.headers['x-forwarded-proto'] ?? 'https'; // GAE seteaza x-forwarded-proto
+    const proto = Array.isArray(rawProto) ? rawProto[0] : rawProto;
+
+    // Exceptie localhost (decizie owner 2026-08-07): fara ea, `npm run serve:ssr`
+    // ar raspunde 301 spre productie la orice verificare SSR locala.
+    if (LOCAL_HOST_PATTERN.test(host)) {
+      return next();
+    }
+
+    if (host !== CANONICAL_HOST || proto !== 'https') {
+      return res.redirect(301, `https://${CANONICAL_HOST}${req.originalUrl}`);
+    }
+    next();
+  });
 
   // Example Express Rest API endpoints
   // server.get('/api/**', (req, res) => { });
