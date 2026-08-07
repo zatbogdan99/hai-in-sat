@@ -28,7 +28,7 @@ Deployed to Google App Engine Standard, runtime `nodejs22`, instance class F2. `
 ### Bootstrap and routing
 - Standalone-component app — **no NgModule**. Bootstrapped in `src/main.ts` via `bootstrapApplication(AppComponent, { providers: [...] })`. Add new providers there (router, Firebase, PrimeNG theme, HttpClient, global services).
 - Routes live in `src/app/app.routes.ts`. The `**` wildcard renders `NewLandingPageComponent` (the home page is the wildcard, not a literal `/`). New routes go here, and the imported component must be `standalone: true` (Angular 19 default) — there is no module to register it in.
-- `add-property` is the only auth-gated route; protected by `authGuard` (`src/app/guards/auth.guard.ts`) which uses Firebase `authState` and redirects to `/login`.
+- `add-property` is the only auth-gated route; protected by `authGuard` (`src/app/guards/auth.guard.ts`) which uses Firebase `authStateReady()` and redirects to `/login`.
 
 ### Backend API
 - Backend base URL is hardcoded in each service: `https://hai-in-sat-api.lm.r.appspot.com`. Each service file also has a commented-out `http://localhost:8080` variant — toggling between them is the convention here, there is no env-var mechanism. `PhotoAdminService.regenerateThumbnails*` is hardcoded to localhost (admin-only, run locally).
