@@ -51,6 +51,27 @@ export function app(): express.Express {
     next();
   });
 
+  // Headere de securitate pentru răspunsurile SSR (TASK-114).
+  // CSP raportează încălcările; aplicarea restrictivă se va face separat.
+  server.use((_req: express.Request, res: express.Response, next: express.NextFunction) => {
+    res.set({
+      'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
+      'X-Content-Type-Options': 'nosniff',
+      'X-Frame-Options': 'SAMEORIGIN',
+      'Referrer-Policy': 'strict-origin-when-cross-origin',
+      'Permissions-Policy': 'geolocation=(), microphone=(), camera=()',
+      'Content-Security-Policy-Report-Only':
+        "default-src 'self'; " +
+        "script-src 'self' 'unsafe-inline' https://www.youtube.com https://www.gstatic.com https://www.googleapis.com; " +
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+        "font-src 'self' https://fonts.gstatic.com; " +
+        "img-src 'self' data: https:; " +
+        "connect-src 'self' https://hai-in-sat-api.lm.r.appspot.com https://*.firebaseio.com https://*.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com; " +
+        'frame-src https://www.youtube.com;',
+    });
+    next();
+  });
+
   // Example Express Rest API endpoints
   // server.get('/api/**', (req, res) => { });
   // Serve static files from /browser
