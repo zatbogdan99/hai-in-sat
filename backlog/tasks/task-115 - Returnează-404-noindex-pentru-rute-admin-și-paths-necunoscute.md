@@ -1,10 +1,11 @@
 ---
 id: TASK-115
 title: Returnează 404/noindex pentru rute admin și paths necunoscute
-status: To Do
-assignee: []
+status: Done
+assignee:
+  - '@codex'
 created_date: '2026-05-07 07:54'
-updated_date: '2026-07-27'
+updated_date: '2026-09-18 16:52'
 labels:
   - seo
   - critical
@@ -70,20 +71,26 @@ In Google Search Console, dupa 2-4 saptamani: raportul **Pages** trebuie sa arat
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 `src/app/ssr-render-state.ts`: interfata `SsrRenderState` are campul `notFound: boolean`, cu valoarea implicita `false` acolo unde se construieste starea
-- [ ] #2 Exista `src/app/not-found/not-found.component.ts` (+ `.html`, `.scss`), componenta standalone, plasata direct in `src/app/<nume>/` conform conventiei repo-ului (NU in `src/app/components/`)
-- [ ] #3 `NotFoundComponent.ngOnInit` face trei lucruri: (a) `seo.updatePageMeta(...)` cu titlul „Pagina nu a fost găsită", (b) `seo.setNoindex()`, (c) injecteaza `SSR_RENDER_STATE` ca optional si seteaza `notFound = true` doar cand ruleaza pe server (`isPlatformServer(platformId)`)
-- [ ] #4 Template-ul `not-found.component.html` contine mesaj in romana si un link real `<a routerLink="/properties">`
-- [ ] #5 `src/app/service/seo.service.ts` are metoda publica noua `setNoindex()` care apeleaza `meta.updateTag({ name: 'robots', content: 'noindex, nofollow' })`
-- [ ] #6 `src/app/app.routes.ts` contine ruta explicita `{ path: '', component: NewLandingPageComponent }`, iar wildcard-ul `{ path: '**', ... }` pointeaza acum spre `NotFoundComponent` (azi spre `NewLandingPageComponent`)
-- [ ] #7 `src/server.ts`: dupa render, cand `ssrRenderState.notFound` e `true` → `res.status(404)`; verificarea `serviceUnavailable`/503 din TASK-47 ramane in cod, neatinsa
-- [ ] #8 `src/server.ts` contine un middleware care seteaza `X-Robots-Tag: noindex, nofollow` pentru path-urile `/login` si `/add-property`
-- [ ] #9 `login.component.ts` si `add-property.component.ts` apeleaza `seo.setNoindex()` in `ngOnInit`
-- [ ] #10 `property-details.component.ts`: pe ramura „proprietate negasita / eroare non-tranzitorie", cand ruleaza pe server seteaza `notFound = true` in loc sa apeleze `router.navigate(['/properties'])`; in browser redirectul actual poate ramane
-- [ ] #11 `scripts/generate-sitemap.js`: lista `STATIC_PAGES` nu contine `/login` si nici `/add-property` (verificare prin lectura)
-- [ ] #12 Implementatorul a rulat protocolul SSR local (`backlog/docs/verificare-locala-ssr.md`) si a lipit iesirile in `## Implementation Notes`: `curl -sI http://localhost:4000/this-page-does-not-exist` → **404**; `curl -sI http://localhost:4000/login` → contine `X-Robots-Tag`; `curl -sI http://localhost:4000/` → **200**, fara `X-Robots-Tag`; `curl -s http://localhost:4000/random-string-12345` → HTML-ul contine `href="/properties"`; `curl -sI http://localhost:4000/property/00000000-0000-0000-0000-000000000000/orice-slug` → **404**
-- [ ] #13 `npx ng test --watch=false --browsers=ChromeHeadless` trece (suita e verde pe master: 49/49, remasurat 2026-07-28 — orice esec nou e regresie introdusa de acest task)
+- [x] #1 `src/app/ssr-render-state.ts`: interfata `SsrRenderState` are campul `notFound: boolean`, cu valoarea implicita `false` acolo unde se construieste starea
+- [x] #2 Exista `src/app/not-found/not-found.component.ts` (+ `.html`, `.scss`), componenta standalone, plasata direct in `src/app/<nume>/` conform conventiei repo-ului (NU in `src/app/components/`)
+- [x] #3 `NotFoundComponent.ngOnInit` face trei lucruri: (a) `seo.updatePageMeta(...)` cu titlul „Pagina nu a fost găsită", (b) `seo.setNoindex()`, (c) injecteaza `SSR_RENDER_STATE` ca optional si seteaza `notFound = true` doar cand ruleaza pe server (`isPlatformServer(platformId)`)
+- [x] #4 Template-ul `not-found.component.html` contine mesaj in romana si un link real `<a routerLink="/properties">`
+- [x] #5 `src/app/service/seo.service.ts` are metoda publica noua `setNoindex()` care apeleaza `meta.updateTag({ name: 'robots', content: 'noindex, nofollow' })`
+- [x] #6 `src/app/app.routes.ts` contine ruta explicita `{ path: '', component: NewLandingPageComponent }`, iar wildcard-ul `{ path: '**', ... }` pointeaza acum spre `NotFoundComponent` (azi spre `NewLandingPageComponent`)
+- [x] #7 `src/server.ts`: dupa render, cand `ssrRenderState.notFound` e `true` → `res.status(404)`; verificarea `serviceUnavailable`/503 din TASK-47 ramane in cod, neatinsa
+- [x] #8 `src/server.ts` contine un middleware care seteaza `X-Robots-Tag: noindex, nofollow` pentru path-urile `/login` si `/add-property`
+- [x] #9 `login.component.ts` si `add-property.component.ts` apeleaza `seo.setNoindex()` in `ngOnInit`
+- [x] #10 `property-details.component.ts`: pe ramura „proprietate negasita / eroare non-tranzitorie", cand ruleaza pe server seteaza `notFound = true` in loc sa apeleze `router.navigate(['/properties'])`; in browser redirectul actual poate ramane
+- [x] #11 `scripts/generate-sitemap.js`: lista `STATIC_PAGES` nu contine `/login` si nici `/add-property` (verificare prin lectura)
+- [x] #12 Implementatorul a rulat protocolul SSR local (`backlog/docs/verificare-locala-ssr.md`) si a lipit iesirile in `## Implementation Notes`: `curl -sI http://localhost:4000/this-page-does-not-exist` → **404**; `curl -sI http://localhost:4000/login` → contine `X-Robots-Tag`; `curl -sI http://localhost:4000/` → **200**, fara `X-Robots-Tag`; `curl -s http://localhost:4000/random-string-12345` → HTML-ul contine `href="/properties"`; `curl -sI http://localhost:4000/property/00000000-0000-0000-0000-000000000000/orice-slug` → **404**
+- [x] #13 `npx ng test --watch=false --browsers=ChromeHeadless` trece (suita e verde pe master: 49/49, remasurat 2026-07-28 — orice esec nou e regresie introdusa de acest task)
 <!-- AC:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Introduce NotFoundComponent si ruta homepage explicita; extinde SSR_RENDER_STATE cu notFound, raspuns HTTP 404 si noindex pe paginile administrative. 2. Trateaza proprietatile inexistente cu pagina 404 si stare transferata la hidratare, pastrand mecanismul 503; reseteaza robots la activarea unei pagini publice si la meta noi. 3. Adauga teste de regresie pentru 404, noindex, navigare si diferentierea 404/503; ruleaza build, suita completa si protocolul HTTP SSR local. 4. Dupa implementare, porneste subagent de review, rezolva observatiile blocante si reverifica modificarile. 5. Documenteaza dovezile, commit si PR pe ticket/task-115-404-noindex; fara dev-pipeline sau deploy.
+<!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
 
@@ -94,4 +101,113 @@ Cross-ref: complementar cu noul TASK-47 (5xx/503 SSR) - TASK-47 trateaza erorile
 Revizuire 2026-07-27 (pregatire pentru pipeline): AC-urile cereau `GET` pe rutele de productie. Rescrise ca verificari statice pe fisierele exacte + protocolul SSR local pe `http://localhost:4000`, care randeaza identic. Verificarile de productie si urmarirea in Search Console au trecut in `## Verificare post-deploy (owner)`.
 
 Planul din descriere era deja precis (mecanism ales, fisiere si linii exacte) — nu a fost nevoie de nicio decizie noua de la owner.
+
+Implementare directa pe `ticket/task-115-404-noindex`, fara dev-pipeline.
+
+- Pagina NotFound standalone in romana; homepage explicit, wildcard 404, canonical pentru URL-ul accesat si eliminarea JSON-LD de proprietate ramas din navigarea precedenta.
+- Stare SSR per request `notFound`, HTTP 404 cu meta si header noindex. Ramura 503 si timeout-ul existente au ramas neschimbate si au prioritate.
+- Login/add-property au noindex in HTML si HTTP, inclusiv query string, trailing slash si parametri matrix. Activarea unei rute publice si actualizarea metadatelor restaureaza indexarea; navigarea anulata nu elimina noindex de pe pagina curenta.
+- Proprietatile inexistente afiseaza 404 in SSR si browser. TransferState pastreaza rezultatul la hidratare; trecerea la o proprietate valida restaureaza pagina si indexarea. Autentificarea existenta ramane in vigoare.
+- STATIC_PAGES din scripts/generate-sitemap.js nu contine login/add-property (verificat prin lectura). Documentatia rutarii din CLAUDE.md a fost actualizata.
+
+Validare:
+- 2026-09-17: `npm run test:ci` — 69/69 SUCCESS (9 teste noi fata de baseline 60).
+- 2026-09-17: `npm run build` — browser + server reusite; numai avertismentele SCSS preexistente pentru info-page, properties si under-the-mountain.
+- 2026-09-18: HTTP SSR local: /, /properties si /about-us -> 200, meta index, follow si fara X-Robots-Tag; paths necunoscute, /random-string-12345 si /.well-known/ai-policy -> 404 + noindex. /login si /add-property -> 200 + noindex. Verificate si /login?next=properties, /login/ si /login;source=test. Headerele de securitate TASK-114 sunt prezente; redirectul canonic www -> apex ramane 301 si pastreaza query string.
+- Backend-ul real a returnat 503 la get-by-id pentru UUID zero si la get-all-properties. Frontend-ul a returnat corect 503, Retry-After: 60, Cache-Control: no-store si noindex pentru detaliul proprietatii. Disponibilitatea backend-ului live nu a fost presupusa sau modificata.
+- Pentru verificarea izolata a AC12, bundle-ul SSR nemodificat a fost pornit pe localhost:4000 cu un preload temporar care intercepteaza exclusiv get-by-id pentru trei UUID-uri de test. UUID zero -> API 200 + null -> pagina HTTP 404; UUID 11111111-1111-1111-1111-111111111111 -> API 404 -> pagina HTTP 404; UUID 22222222-2222-2222-2222-222222222222 -> API 503 -> pagina HTTP 503. Toate celelalte cereri folosesc fetch normal. Fixture-ul nu este inclus in aplicatie sau commit.
+- Pentru cele doua cazuri 404 s-au verificat mesajul romanesc, meta/header noindex, href=/properties, canonical-ul URL-ului cerut si cheia TransferState property-not-found:<id>. Pentru 503 s-au verificat pagina temporara, Retry-After: 60 si Cache-Control: no-store.
+- Verificarea vizuala prin browser nu a putut porni: instrumentul a raportat `failed to write kernel assets`. Testele automate de navigare si hidratare si inspectia HTML SSR au trecut.
+- Subagent de review pornit dupa implementare: fara probleme blocante sau regresii concrete. Reverificarea strategiei HTTP in prezenta backend-ului indisponibil: fara blocante; rezultate live si fixture documentate separat.
+
+Dovezi AC12 (iesiri reale din rularea SSR locala cu fixture API doar pentru ID-urile de test):
+
+```text
+curl -sI http://localhost:4000/this-page-does-not-exist
+HTTP/1.1 404 Not Found
+X-Powered-By: Express
+Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Referrer-Policy: strict-origin-when-cross-origin
+Permissions-Policy: geolocation=(), microphone=(), camera=()
+Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.youtube.com https://www.gstatic.com https://www.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://hai-in-sat-api.lm.r.appspot.com https://*.firebaseio.com https://*.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com; frame-src https://www.youtube.com;
+X-Robots-Tag: noindex, nofollow
+Content-Type: text/html; charset=utf-8
+Content-Length: 109518
+ETag: W/"1abce-1QphUkhho56EQc/lXatfPaVhgk8"
+Date: Fri, 18 Sep 2026 16:50:49 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+```
+
+```text
+curl -sI http://localhost:4000/login
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Referrer-Policy: strict-origin-when-cross-origin
+Permissions-Policy: geolocation=(), microphone=(), camera=()
+Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.youtube.com https://www.gstatic.com https://www.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://hai-in-sat-api.lm.r.appspot.com https://*.firebaseio.com https://*.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com; frame-src https://www.youtube.com;
+X-Robots-Tag: noindex, nofollow
+Content-Type: text/html; charset=utf-8
+Content-Length: 113466
+ETag: W/"1bb3a-LedPDJ6wmCtj7kf7OGVRS3aq54Q"
+Date: Fri, 18 Sep 2026 16:50:50 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+```
+
+```text
+curl -sI http://localhost:4000/
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Referrer-Policy: strict-origin-when-cross-origin
+Permissions-Policy: geolocation=(), microphone=(), camera=()
+Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.youtube.com https://www.gstatic.com https://www.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://hai-in-sat-api.lm.r.appspot.com https://*.firebaseio.com https://*.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com; frame-src https://www.youtube.com;
+Content-Type: text/html; charset=utf-8
+Content-Length: 113061
+ETag: W/"1b9a5-r3zvc2J5UxdVbEgtsV+H4JPwS+g"
+Date: Fri, 18 Sep 2026 16:50:49 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+```
+
+```text
+curl -sI http://localhost:4000/property/00000000-0000-0000-0000-000000000000/orice-slug
+HTTP/1.1 404 Not Found
+X-Powered-By: Express
+Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Referrer-Policy: strict-origin-when-cross-origin
+Permissions-Policy: geolocation=(), microphone=(), camera=()
+Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.youtube.com https://www.gstatic.com https://www.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://hai-in-sat-api.lm.r.appspot.com https://*.firebaseio.com https://*.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com; frame-src https://www.youtube.com;
+X-Robots-Tag: noindex, nofollow
+Content-Type: text/html; charset=utf-8
+Content-Length: 119379
+ETag: W/"1d253-OeQG3/0qag58P3bLk5Aljp0DDA4"
+Date: Fri, 18 Sep 2026 16:50:50 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+```
+
+Fragment extras din HTML-ul returnat de `curl -s http://localhost:4000/random-string-12345`:
+
+```html
+<a _ngcontent-ng-c1003534863 routerlink="/properties" href="/properties" jsaction="click:;">Vezi proprietățile disponibile</a>
+```
+
+Deploy-ul si verificarea in productie raman in sarcina owner-ului, dupa aprobarea PR-ului.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Rutele inexistente si proprietatile lipsa raspund 404 cu pagina dedicata; login/admin sunt noindex, iar navigarea publica restaureaza indexarea. Build browser/SSR si 69 teste trecute; HTTP local verificat, inclusiv 404/503 cu fixture API deoarece backend-ul real returna 503. Review independent fara blocante. Fara deploy.
+<!-- SECTION:FINAL_SUMMARY:END -->

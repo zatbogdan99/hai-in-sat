@@ -2,7 +2,9 @@
   <p-progressSpinner></p-progressSpinner>
 </div>
 
-<main class="property-details-container">
+<app-not-found *ngIf="propertyNotFound"></app-not-found>
+
+<main *ngIf="!propertyNotFound" class="property-details-container">
   <span class="category-chip" *ngIf="propertyKind">{{ categoryLabel }}</span>
 
   <div class="title-row">

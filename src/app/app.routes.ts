@@ -13,8 +13,10 @@ import { AddPropertyComponent } from './add-property/add-property.component';
 import { NewLandingPageComponent } from './new-landing-page/new-landing-page.component';
 import { LoginComponent } from './login/login.component';
 import { authGuard } from './guards/auth.guard';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 export const appRoutes: Routes = [
+  { path: '', pathMatch: 'full', component: NewLandingPageComponent },
   { path: 'homes', component: FormPageComponent },
   { path: 'about-us', component: AboutUsComponent },
   { path: 'info-page', component: InfoPageComponent },
@@ -27,5 +29,5 @@ export const appRoutes: Routes = [
   { path: 'village-of-the-month', component: VillageOfTheMonthComponent },
   { path: 'login', component: LoginComponent },
   { path: 'add-property', component: AddPropertyComponent, canActivate: [authGuard] },
-  { path: '**', component: NewLandingPageComponent }
+  { path: '**', component: NotFoundComponent }
 ];

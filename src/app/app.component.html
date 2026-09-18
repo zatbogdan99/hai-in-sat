@@ -27,7 +27,7 @@
       <fa-icon (click)="openLink('https://www.tiktok.com/@hai.in.sat?_t=8n1yemWQQMr&_r=1')" class="topbar__icon" [icon]="faTiktok"></fa-icon>
     </div>
   </div>
-  <router-outlet></router-outlet>
+  <router-outlet (activate)="resetPageIndexing()"></router-outlet>
 
   <div class="large-screen">
     <div style="text-align: center" class="card justify-content-center">

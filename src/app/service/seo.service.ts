@@ -30,6 +30,7 @@ export class SeoService {
     ogImage?: string;
     canonicalPath?: string;
   }): void {
+    this.setIndexable();
     this.title.setTitle(config.title);
 
     this.meta.updateTag({ name: 'description', content: config.description });
@@ -52,6 +53,14 @@ export class SeoService {
     if (config.ogImage) {
       this.meta.updateTag({ name: 'twitter:image', content: config.ogImage });
     }
+  }
+
+  setIndexable(): void {
+    this.meta.updateTag({ name: 'robots', content: 'index, follow' });
+  }
+
+  setNoindex(): void {
+    this.meta.updateTag({ name: 'robots', content: 'noindex, nofollow' });
   }
 
   setJsonLd(id: string, data: object): void {

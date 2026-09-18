@@ -4,6 +4,7 @@ import { of } from 'rxjs';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { Auth } from '@angular/fire/auth';
+import { Meta } from '@angular/platform-browser';
 
 import { AddPropertyComponent } from './add-property.component';
 import { PropertyApiService } from '../service/property-api/property-api.service';
@@ -72,6 +73,10 @@ describe('AddPropertyComponent', () => {
     component.onShowProperties();
 
     expect(propertyApiService.getPropertiesPage).toHaveBeenCalledWith(0, 20);
+  });
+
+  it('marks the administration page as noindex', () => {
+    expect(TestBed.inject(Meta).getTag('name="robots"')?.content).toBe('noindex, nofollow');
   });
 
   it('should show toast when saving invalid form', async () => {

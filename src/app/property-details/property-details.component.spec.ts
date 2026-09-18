@@ -1,4 +1,5 @@
-import { PLATFORM_ID } from '@angular/core';
+import { makeStateKey, PLATFORM_ID, TransferState } from '@angular/core';
+import { Meta } from '@angular/platform-browser';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -116,9 +117,70 @@ describe('PropertyDetailsComponent', () => {
     expect(() => component.loadPropertyDetails()).not.toThrow();
 
     expect(ssrRenderState.serviceUnavailable).toBeTrue();
+    expect(ssrRenderState.notFound).toBeFalse();
     expect(ssrRenderState.error).toBe(upstreamError);
     expect(loadingOffSpy).not.toHaveBeenCalled();
     expect(navigateSpy).not.toHaveBeenCalled();
+  });
+
+  for (const response of ['empty', '404', '400']) {
+    it(`renders a noindex 404 during SSR for a ${response} property response`, () => {
+      configure('server');
+      const navigateSpy = spyOn(router, 'navigate');
+      propertyApiService.getPropertyById.and.returnValue(response === 'empty'
+        ? of(null as unknown as PropertyDTO)
+        : throwError(() => ({ status: Number(response) })));
+      component.propertyId = 'missing-property';
+
+      component.loadPropertyDetails();
+      fixture.detectChanges();
+
+      expect(ssrRenderState.notFound).toBeTrue();
+      expect(ssrRenderState.serviceUnavailable).toBeFalse();
+      expect(navigateSpy).not.toHaveBeenCalled();
+      expect(propertyApiService.getPhotos).not.toHaveBeenCalled();
+      expect(fixture.nativeElement.querySelector('h1').textContent).toContain('Pagina nu a fost găsită');
+      expect(fixture.nativeElement.querySelector('a[href="/properties"]')).toBeTruthy();
+      expect(TestBed.inject(Meta).getTag('name="robots"')?.content).toBe('noindex, nofollow');
+      expect(TestBed.inject(TransferState).get(makeStateKey<boolean>('property-not-found:missing-property'), false)).toBeTrue();
+    });
+  }
+
+  it('preserves the SSR missing-property page during browser hydration without refetching', () => {
+    configure('browser');
+    const transferState = TestBed.inject(TransferState);
+    const key = makeStateKey<boolean>('property-not-found:missing-property');
+    transferState.set(key, true);
+    component.propertyId = 'missing-property';
+
+    component.loadPropertyDetails();
+    fixture.detectChanges();
+
+    expect(component.propertyNotFound).toBeTrue();
+    expect(propertyApiService.getPropertyById).not.toHaveBeenCalled();
+    expect(transferState.hasKey(key)).toBeFalse();
+    expect(ssrRenderState.notFound).toBeFalse();
+    expect(fixture.nativeElement.querySelector('a[href="/properties"]')).toBeTruthy();
+  });
+
+  it('restores indexable metadata when the reused component loads an existing property', () => {
+    configure('browser');
+    propertyApiService.getPropertyById.and.returnValue(throwError(() => ({ status: 404 })));
+    component.propertyId = 'missing-property';
+    component.loadPropertyDetails();
+    fixture.detectChanges();
+    expect(TestBed.inject(Meta).getTag('name="robots"')?.content).toBe('noindex, nofollow');
+
+    propertyApiService.getPropertyById.and.returnValue(of(property));
+    propertyApiService.getPhotos.and.returnValue(of({ photos: [], total: 0 }));
+    spyOn(router, 'navigate').and.resolveTo(true);
+    component.propertyId = 'prop-1';
+    component.loadPropertyDetails();
+    fixture.detectChanges();
+
+    expect(component.propertyNotFound).toBeFalse();
+    expect(fixture.nativeElement.querySelector('app-not-found')).toBeNull();
+    expect(TestBed.inject(Meta).getTag('name="robots"')?.content).toBe('index, follow');
   });
 
   it('loads only the initial photo batch on the server', () => {
