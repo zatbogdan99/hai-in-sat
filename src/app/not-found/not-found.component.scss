@@ -1,0 +1,49 @@
+:host {
+  display: block;
+}
+
+.not-found {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  padding: 4rem 1.5rem;
+  text-align: center;
+  background: #f4efe5;
+  color: #1b3a2a;
+
+  p, h1 {
+    margin: 0;
+    max-width: 40rem;
+  }
+
+  h1 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+  }
+
+  .status-code {
+    font-size: 3rem;
+    font-weight: 700;
+  }
+
+  a {
+    display: inline-block;
+    padding: 0.875rem 1.5rem;
+    border-radius: 0.5rem;
+    background: #1b3a2a;
+    color: #fff;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:focus-visible {
+      outline: 3px solid #1b3a2a;
+      outline-offset: 4px;
+    }
+  }
+}

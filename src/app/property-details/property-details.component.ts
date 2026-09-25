@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, ViewChildren, QueryList, DestroyRef, inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, ViewChildren, QueryList, DestroyRef, inject, PLATFORM_ID, TransferState, makeStateKey } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PropertyApiService } from '../service/property-api/property-api.service';
@@ -15,6 +15,7 @@ import {isPropertyType, PropertyType, toPropertyType} from "../dto/property-type
 import {SSR_RENDER_STATE} from "../ssr-render-state";
 import {HtmlTextService} from "../service/html-text.service";
 import {LoggerService} from "../service/logger.service";
+import {NotFoundComponent} from "../not-found/not-found.component";
 
 export interface GallerySlide {
   type: 'image' | 'video';
@@ -31,7 +32,8 @@ export interface GallerySlide {
     NgIf,
     AsyncPipe,
     NgForOf,
-    PhoneLinkPipe
+    PhoneLinkPipe,
+    NotFoundComponent
   ],
   styleUrls: ['./property-details.component.scss']
 })
@@ -41,6 +43,7 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
   @ViewChildren('mobileVideoEl') mobileVideoElements?: QueryList<ElementRef<HTMLVideoElement>>;
 
   propertyId: string = '';
+  propertyNotFound = false;
   propertyKind?: PropertyType;
   propertyName: string = '';
   propertyDescription: string = '';
@@ -57,6 +60,7 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
   private destroyRef = inject(DestroyRef);
   private platformId = inject(PLATFORM_ID);
   private ssrRenderState = inject(SSR_RENDER_STATE, { optional: true });
+  private transferState = inject(TransferState);
   private totalPhotos = 0;
   private loadedPhotosCount = 0;
   private readonly INITIAL_BATCH = 2;
@@ -96,14 +100,22 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
   }
 
   loadPropertyDetails(): void {
+    this.propertyNotFound = false;
+    const notFoundKey = makeStateKey<boolean>(`property-not-found:${this.propertyId}`);
+    if (!isPlatformServer(this.platformId) && this.transferState.get(notFoundKey, false)) {
+      // Păstrează pagina 404 la hidratare: răspunsurile HTTP de eroare nu intră în cache-ul Angular.
+      this.transferState.remove(notFoundKey);
+      this.showNotFound();
+      return;
+    }
+
     this.propertyApiService.getPropertyById(this.propertyId)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: (prop: PropertyDTO) => {
         if (!prop) {
           this.logger.warn('Property not found for id', this.propertyId);
-          this.loadingService.loadingOff();
-          this.router.navigate(['/properties']);
+          this.showNotFound();
           return;
         }
         if (!isPropertyType(prop.type)) {
@@ -168,10 +180,27 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
         }
 
         this.logger.error('Failed to load property details', err);
-        this.loadingService.loadingOff();
-        this.router.navigate(['/properties']);
+        if (this.isTransientUpstreamError(err)) {
+          this.loadingService.loadingOff();
+          this.router.navigate(['/properties']);
+          return;
+        }
+        this.showNotFound();
       }
     });
+  }
+
+  private showNotFound(): void {
+    this.propertyNotFound = true;
+    this.loadingService.loadingOff();
+    this.seo.setNoindex();
+
+    if (isPlatformServer(this.platformId)) {
+      if (this.ssrRenderState) {
+        this.ssrRenderState.notFound = true;
+      }
+      this.transferState.set(makeStateKey<boolean>(`property-not-found:${this.propertyId}`), true);
+    }
   }
 
   private shouldMarkSsrUnavailable(err: unknown): boolean {

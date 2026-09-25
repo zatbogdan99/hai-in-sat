@@ -72,6 +72,14 @@ export function app(): express.Express {
     next();
   });
 
+  // Paginile administrative rămân accesibile, dar nu trebuie indexate.
+  server.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+    if (/^\/(?:login|add-property)(?:[;/]|$)/.test(req.path)) {
+      res.set('X-Robots-Tag', 'noindex, nofollow');
+    }
+    next();
+  });
+
   // Example Express Rest API endpoints
   // server.get('/api/**', (req, res) => { });
   // Serve static files from /browser
@@ -98,6 +106,11 @@ export function app(): express.Express {
         if (ssrRenderState.serviceUnavailable) {
           console.error(`[SSR] Render marked unavailable for ${originalUrl}`, ssrRenderState.error);
           sendSsrServiceUnavailable(res);
+          return;
+        }
+
+        if (ssrRenderState.notFound) {
+          res.status(404).set('X-Robots-Tag', 'noindex, nofollow').send(html);
           return;
         }
 

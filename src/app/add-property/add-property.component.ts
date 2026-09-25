@@ -1,4 +1,4 @@
-import { Component, DestroyRef, ElementRef, inject, ViewChild } from '@angular/core';
+import { Component, DestroyRef, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -24,6 +24,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { firstValueFrom, map } from 'rxjs';
 import { PropertiesStateService } from '../service/properties-state-service/properties-state.service';
 import { LoggerService } from '../service/logger.service';
+import { SeoService } from '../service/seo.service';
 
 @Component({
   selector: 'app-add-property',
@@ -46,7 +47,7 @@ import { LoggerService } from '../service/logger.service';
     PaginatorModule
   ]
 })
-export class AddPropertyComponent {
+export class AddPropertyComponent implements OnInit {
   @ViewChild('replaceGalleryInput') replaceGalleryInput?: ElementRef<HTMLInputElement>;
   @ViewChild('replaceThumbnailInput') replaceThumbnailInput?: ElementRef<HTMLInputElement>;
   @ViewChild('addPhotoInput') addPhotoInput?: ElementRef<HTMLInputElement>;
@@ -101,8 +102,13 @@ export class AddPropertyComponent {
     private propertiesState: PropertiesStateService,
     private auth: Auth,
     private router: Router,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private seo: SeoService
   ) {}
+
+  ngOnInit(): void {
+    this.seo.setNoindex();
+  }
 
   onUpload(event: any) {
     const file: File | undefined = event?.files?.[0];

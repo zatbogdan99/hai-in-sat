@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { LoggerService } from '../service/logger.service';
+import { SeoService } from '../service/seo.service';
 
 /**
  * LoginComponent - Pagină de autentificare pentru adminii site-ului
@@ -18,7 +19,7 @@ import { LoggerService } from '../service/logger.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   email = '';
   password = '';
   error = '';
@@ -27,8 +28,13 @@ export class LoginComponent {
   constructor(
     private auth: Auth,
     private router: Router,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private seo: SeoService
   ) {}
+
+  ngOnInit(): void {
+    this.seo.setNoindex();
+  }
 
   /**
    * Gestionează submit-ul formularului de login

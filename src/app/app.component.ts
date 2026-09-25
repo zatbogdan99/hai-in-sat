@@ -14,6 +14,7 @@ import {Popover} from "primeng/popover";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {Toast} from "primeng/toast";
 import { filter } from 'rxjs/operators';
+import { SeoService } from './service/seo.service';
 
 @Component({
   selector: 'app-root',
@@ -60,13 +61,19 @@ export class AppComponent implements OnInit {
     this.contact = true;
   }
 
-  constructor(private router: Router, private service: DataService, private viewportScroller: ViewportScroller) {
+  constructor(private router: Router, private service: DataService, private viewportScroller: ViewportScroller, private seo: SeoService) {
     // Forțează resetarea poziției de scroll la top la fiecare navigare (inclusiv pe aceeași rută)
     this.router.events
       .pipe(filter((e) => e instanceof NavigationEnd), takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.viewportScroller.scrollToPosition([0, 0]);
       });
+  }
+
+  resetPageIndexing(): void {
+    // RouterOutlet emite activate înainte de ngOnInit al paginii noi.
+    // Login, admin și 404 aplică apoi noindex; restul paginilor pornesc indexabile.
+    this.seo.setIndexable();
   }
 
   goToAboutUs() {
