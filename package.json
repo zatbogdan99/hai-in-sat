@@ -10,6 +10,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:ci": "ng test --watch=false --browsers=ChromeHeadless",
+    "test:ssr": "tsc -p tsconfig.ssr-test.json && node --test out-tsc/ssr-test/ssr-cache.test.js",
+    "test:ssr:http": "node scripts/test-ssr-cache.cjs",
     "dev:ssr": "ng run hai-in-sat:serve-ssr",
     "serve:ssr": "node dist/hai-in-sat/server/main.js",
     "prerender": "ng run hai-in-sat:prerender"
@@ -41,6 +43,7 @@
     "express": "^4.18.2",
     "firebase": "^12.8.0",
     "gsap": "^3.12.2",
+    "lru-cache": "11.5.3",
     "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",
     "primeng": "^19.1.3",

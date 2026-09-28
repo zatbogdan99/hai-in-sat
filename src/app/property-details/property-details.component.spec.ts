@@ -69,6 +69,18 @@ describe('PropertyDetailsComponent', () => {
     TestBed.resetTestingModule();
   });
 
+  it('does not cache SSR HTML when the initial photo batch fails', () => {
+    configure('server');
+    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    propertyApiService.getPropertyById.and.returnValue(of(property));
+    propertyApiService.getPhotos.and.returnValue(throwError(() => ({ status: 503 })));
+    component.propertyId = 'prop-1';
+    component.loadPropertyDetails();
+    expect(ssrRenderState.cacheable).toBeFalse();
+    expect(ssrRenderState.serviceUnavailable).toBeFalse();
+    expect(component.propertyName).toBe(property.name);
+  });
+
   it('should create', () => {
     configure();
     fixture.detectChanges();

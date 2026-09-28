@@ -279,6 +279,9 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
       },
       error: (err) => {
         this.logger.error(`[Photos] Eroare la batch offset=${offset}:`, err);
+        if (this.ssrRenderState) {
+          this.ssrRenderState.cacheable = false;
+        }
         if (offset === 0) {
           this.loadingService.loadingOff();
         }

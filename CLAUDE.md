@@ -14,6 +14,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `ng build --configuration development` or `npm run watch` — non-optimized dev build with sourcemaps.
 - `npm test` (= `ng test`) — local, interactive Karma + Jasmine run.
 - `npm run test:ci` — single headless test run used for automated verification. Run one spec with `npm run test:ci -- --include=src/app/path/to.spec.ts`.
+- `npm run test:ssr` — Node tests for the SSR HTML cache, including expiry and HTTP freshness.
+- `npm run test:ssr:http` — after `npm run build`, starts a temporary SSR server with local API fixtures and checks real GET/HEAD/304 responses. Port 4000 must be free, or set `SSR_CACHE_TEST_PORT`. Stops its server and prints the evidence directory on completion.
 - Never leave focused or disabled Jasmine tests (`fdescribe`, `fit`, `xdescribe`, `xit`) in committed code.
 - `npm run generate-sitemap` — fetches every property from the live API and writes `src/sitemap.xml`. Run **before** `ng build` when properties have changed; the sitemap is bundled as a static asset.
 
@@ -40,6 +42,7 @@ Deployed to Google App Engine Standard, runtime `nodejs22`, instance class F2. `
 - Heavy use of PrimeNG components (Dialog, Toast, Button, etc.) with the `Lara` theme preset (configured in `main.ts`). `darkModeSelector: 'none'` disables PrimeNG's auto dark-mode handling.
 
 ### SEO
+- Public SSR HTML uses a per-instance LRU cache (100 entries, five minutes from render start). GET requests without query strings are eligible; admin/noindex, 404/503, API-degraded HTML and authenticated requests bypass it with `no-store`. `X-Cache` reports HIT/MISS; original `Date` and increasing `Age` prevent a HIT from restarting browser freshness. When a component catches an error that degrades SSR content, set optional `SSR_RENDER_STATE.cacheable = false`.
 - `SeoService` (`src/app/service/seo.service.ts`) is the single point for `<title>`, meta/OG/Twitter tags, canonical link, and JSON-LD injection (`setBreadcrumbs`, `setRealEstateListing`). Page components call `updatePageMeta(...)` and the JSON-LD helpers in `ngOnInit`. Base URL constant is `https://hai-în-sat.ro`.
 - Property URLs use `/property/:id/:slug` (with a legacy `/property/:id` fallback). Slug is built by `generateSlug(type, name)` in `src/app/utils/slug.util.ts` — prefix is `casa-de-vanzare` for `PropertyType.HOUSE`, `teren-de-vanzare` otherwise; diacritics are stripped via a fixed map (ă/â→a, î→i, ș→s, ț→t). The same logic is duplicated in `scripts/generate-sitemap.js` — keep them in sync if you change one.
 

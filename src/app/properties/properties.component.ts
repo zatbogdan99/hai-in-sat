@@ -37,6 +37,7 @@ import { generateSlug } from "../utils/slug.util";
 import { PropertyType, toPropertyType } from "../dto/property-type.enum";
 import { HtmlTextService } from "../service/html-text.service";
 import { LoggerService } from "../service/logger.service";
+import { SSR_RENDER_STATE } from '../ssr-render-state';
 
 const trimControlValue = (control: AbstractControl | null | undefined): string => {
   const value = control?.value;
@@ -91,6 +92,7 @@ export class PropertiesComponent implements OnInit {
   totalRecords: number = 0;
   totalPages: number = 0;
   private destroyRef = inject(DestroyRef);
+  private readonly ssrRenderState = inject(SSR_RENDER_STATE, { optional: true });
 
   options = [
     { label: 'Listă', value: 'list' },
@@ -212,6 +214,9 @@ export class PropertiesComponent implements OnInit {
       },
       error: (err) => {
         this.logger.error('Failed to fetch properties', err);
+        if (this.ssrRenderState) {
+          this.ssrRenderState.cacheable = false;
+        }
         this.properties = [];
         this.totalRecords = 0;
         this.totalPages = 0;

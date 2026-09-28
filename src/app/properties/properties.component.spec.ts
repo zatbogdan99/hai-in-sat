@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { PropertiesComponent } from './properties.component';
@@ -9,6 +9,7 @@ import { PropertyContactService } from '../service/property-contact/property-con
 import { PropertyApiService } from '../service/property-api/property-api.service';
 import { PropertiesStateService } from '../service/properties-state-service/properties-state.service';
 import { PropertyDTO } from '../dto/property.dto';
+import { createSsrRenderState, SSR_RENDER_STATE, SsrRenderState } from '../ssr-render-state';
 
 describe('PropertiesComponent', () => {
   let component: PropertiesComponent;
@@ -17,9 +18,11 @@ describe('PropertiesComponent', () => {
   let propertyContactService: jasmine.SpyObj<PropertyContactService>;
   let router: jasmine.SpyObj<Router>;
   let propertiesState: PropertiesStateService;
+  let ssrRenderState: SsrRenderState;
 
   const createComponent = (queryParams: Record<string, string> = {}) => {
     TestBed.resetTestingModule();
+    ssrRenderState = createSsrRenderState();
     propertyApiService = jasmine.createSpyObj<PropertyApiService>('PropertyApiService', ['getPropertiesPage']);
     propertyContactService = jasmine.createSpyObj<PropertyContactService>('PropertyContactService', ['sendPropertyForm']);
     router = jasmine.createSpyObj<Router>('Router', ['navigate']);
@@ -35,6 +38,7 @@ describe('PropertiesComponent', () => {
         provideNoopAnimations(),
         LoadingService,
         PropertiesStateService,
+        { provide: SSR_RENDER_STATE, useValue: ssrRenderState },
         {
           provide: PropertyApiService,
           useValue: propertyApiService
@@ -62,6 +66,31 @@ describe('PropertiesComponent', () => {
     fixture = TestBed.createComponent(PropertiesComponent);
     component = fixture.componentInstance;
   };
+
+  it('does not cache an empty page caused by a failed API request during SSR', () => {
+    createComponent();
+    propertyApiService.getPropertiesPage.and.returnValue(throwError(() => ({ status: 503 })));
+    fixture.detectChanges();
+    expect(ssrRenderState.cacheable).toBeFalse();
+    expect(ssrRenderState.serviceUnavailable).toBeFalse();
+    expect(component.properties).toEqual([]);
+  });
+
+  it('keeps a genuinely empty API result cacheable', () => {
+    createComponent();
+    fixture.detectChanges();
+    expect(ssrRenderState.cacheable).toBeTrue();
+  });
+
+  it('does not discard a valid rendered page when only prefetch fails', () => {
+    createComponent();
+    propertyApiService.getPropertiesPage.and.callFake(page => page === 0
+      ? of({ content: [], totalElements: 7, totalPages: 2, size: 6, number: 0 })
+      : throwError(() => ({ status: 503 })));
+    fixture.detectChanges();
+    expect(propertyApiService.getPropertiesPage).toHaveBeenCalledTimes(2);
+    expect(ssrRenderState.cacheable).toBeTrue();
+  });
 
   it('should restore page, size and filter from query params and use cache', () => {
     createComponent({ page: '2', size: '6', type: 'house' });
