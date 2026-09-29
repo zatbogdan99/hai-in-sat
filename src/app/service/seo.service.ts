@@ -1,6 +1,7 @@
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { inject, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { SSR_RENDER_STATE } from '../ssr-render-state';
 
 const BASE_URL = 'https://hai-în-sat.ro';
 
@@ -14,6 +15,7 @@ export interface BreadcrumbItem {
 })
 export class SeoService {
   private readonly isBrowser: boolean;
+  private readonly ssrRenderState = inject(SSR_RENDER_STATE, { optional: true });
 
   constructor(
     private title: Title,
@@ -61,6 +63,9 @@ export class SeoService {
 
   setNoindex(): void {
     this.meta.updateTag({ name: 'robots', content: 'noindex, nofollow' });
+    if (this.ssrRenderState) {
+      this.ssrRenderState.cacheable = false;
+    }
   }
 
   setJsonLd(id: string, data: object): void {

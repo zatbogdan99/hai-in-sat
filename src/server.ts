@@ -5,8 +5,10 @@ import { CommonEngine } from '@angular/ssr/node';
 import express from 'express';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
+import { LRUCache } from 'lru-cache';
 import bootstrap from './main.server';
 import { createSsrRenderState, SSR_RENDER_STATE } from './app/ssr-render-state';
+import { isPrivateSsrPath, SsrCacheEntry, SsrHtmlCache } from './ssr-cache';
 
 const SSR_RENDER_TIMEOUT_MS = 25000;
 const RETRY_AFTER_SECONDS = 60;
@@ -29,6 +31,11 @@ export function app(): express.Express {
     : join(distFolder, 'index.html');
 
   const commonEngine = new CommonEngine();
+  const htmlCache = new SsrHtmlCache(new LRUCache<string, SsrCacheEntry>({
+    max: 100,
+    ttl: 300000,
+    updateAgeOnGet: false,
+  }));
 
   server.set('view engine', 'html');
   server.set('views', distFolder);
@@ -74,7 +81,7 @@ export function app(): express.Express {
 
   // Paginile administrative rămân accesibile, dar nu trebuie indexate.
   server.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
-    if (/^\/(?:login|add-property)(?:[;/]|$)/.test(req.path)) {
+    if (isPrivateSsrPath(req.path)) {
       res.set('X-Robots-Tag', 'noindex, nofollow');
     }
     next();
@@ -89,8 +96,11 @@ export function app(): express.Express {
 
   // All regular routes use the Angular engine
   server.get('*', (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    if (htmlCache.tryServe(req, res)) return;
+
     const { protocol, originalUrl, baseUrl, headers } = req;
     const ssrRenderState = createSsrRenderState();
+    const renderedAt = Date.now();
 
     renderWithTimeout(commonEngine, {
       bootstrap,
@@ -114,7 +124,7 @@ export function app(): express.Express {
           return;
         }
 
-        res.send(html);
+        htmlCache.send(req, res, ssrRenderState, html, renderedAt);
       })
       .catch((err) => next(err));
   });
