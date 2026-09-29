@@ -1,6 +1,6 @@
 const assert = require('node:assert/strict');
 const { spawn } = require('node:child_process');
-const { existsSync, mkdtempSync, writeFileSync } = require('node:fs');
+const { existsSync, mkdtempSync, readdirSync, writeFileSync } = require('node:fs');
 const http = require('node:http');
 const net = require('node:net');
 const { tmpdir } = require('node:os');
@@ -121,9 +121,42 @@ async function main() {
   } });
   assert.equal(redirect.status, 301);
   assert.equal(redirect.headers.location, 'https://xn--hai-n-sat-t5a.ro/properties?type=land');
-  const asset = await request('/robots.txt');
-  assert.equal(asset.status, 200);
-  assert.equal(asset.headers['x-cache'], undefined);
+
+  // Politicile statice sunt independente de cache-ul HTML și de query string.
+  const browser = path.join(root, 'dist/hai-in-sat/browser');
+  const bundles = readdirSync(browser).filter(name => /\.(?:js|css)$/.test(name));
+  assert.ok(bundles.some(name => name.startsWith('main.')));
+  assert.ok(bundles.some(name => name.startsWith('styles.')));
+  for (const name of bundles) {
+    assert.match(name, /^.+\.[0-9a-f]{16}\.(?:js|css)$/);
+    for (const suffix of ['', '?v=test']) {
+      const result = await request(`/${name}${suffix}`, { method: 'HEAD' });
+      assert.equal(result.status, 200);
+      assert.equal(result.headers['cache-control'], 'public, max-age=31536000, immutable');
+      assert.equal(result.headers['x-cache'], undefined);
+      assert.equal(result.headers['x-content-type-options'], 'nosniff');
+      console.log(`PASS HEAD /${name}${suffix} -> immutable, 365 days`);
+    }
+  }
+  const image = await request('/assets/poza_landing1.avif', { method: 'HEAD' });
+  assert.equal(image.status, 200);
+  assert.equal(image.headers['cache-control'], 'public, max-age=2592000');
+  assert.equal(image.headers['x-cache'], undefined);
+  console.log('PASS /assets/poza_landing1.avif -> 30 days, without immutable');
+  for (const url of ['/robots.txt', '/sitemap.xml', '/favicon.ico', '/llms.txt']) {
+    const result = await request(url, { method: 'HEAD' });
+    assert.equal(result.status, 200);
+    assert.equal(result.headers['cache-control'], 'public, max-age=600');
+    assert.equal(result.headers['x-cache'], undefined);
+    console.log(`PASS HEAD ${url} -> 600 seconds, without immutable`);
+  }
+  // Angular normalizează /index.html la homepage; primește politica SSR scurtă.
+  const index = await request('/index.html');
+  verify(index, 200, 'MISS', true);
+  assert.ok(index.html.includes('id="ng-state"'), 'index.html must be rendered by Angular SSR');
+  for (const url of ['/index.original.html', '/missing.0123456789abcdef.js', '/assets/missing-task117.avif']) {
+    verify(await request(url), 404, 'MISS');
+  }
   console.log(`PASS redirect, static assets; ${evidence.length} HTTP responses checked.`);
 }
 
