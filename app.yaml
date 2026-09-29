@@ -15,10 +15,22 @@ automatic_scaling:
   max_instances: 10
 
 handlers:
+  # Bundle-uri JS/CSS versionate prin hash de conținut (inclusiv chunk-uri lazy).
+  - url: /(.+\.[0-9a-f]{16}\.(?:js|css))$
+    static_files: dist/hai-in-sat/browser/\1
+    upload: dist/hai-in-sat/browser/.+\.[0-9a-f]{16}\.(?:js|css)$
+    secure: always
+    expiration: "365d"
+    http_headers:
+      Cache-Control: "public, max-age=31536000, immutable"
+
   # Asseturi statice — App Engine le servește direct fără să spună Node-ului.
   - url: /assets
     static_dir: dist/hai-in-sat/browser/assets
     secure: always
+    expiration: "30d"
+    http_headers:
+      Cache-Control: "public, max-age=2592000"
 
   - url: /robots.txt
     static_files: dist/hai-in-sat/browser/robots.txt
@@ -35,7 +47,7 @@ handlers:
     upload: dist/hai-in-sat/browser/favicon.ico
     secure: always
 
-  # Bundle-uri JS/CSS și alte fișiere fingerprint-uite — servite static.
+  # Restul fișierelor statice păstrează expirarea implicită de 10 minute.
   - url: /(.*\.(js|css|map|ico|png|jpg|jpeg|avif|svg|woff|woff2|ttf|eot|xml|txt|json))$
     static_files: dist/hai-in-sat/browser/\1
     upload: dist/hai-in-sat/browser/.*\.(js|css|map|ico|png|jpg|jpeg|avif|svg|woff|woff2|ttf|eot|xml|txt|json)$

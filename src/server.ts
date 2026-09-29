@@ -87,11 +87,23 @@ export function app(): express.Express {
     next();
   });
 
-  // Example Express Rest API endpoints
-  // server.get('/api/**', (req, res) => { });
-  // Serve static files from /browser
-  server.get('*.*', express.static(distFolder, {
-    maxAge: '1y'
+  // Aceeași ordine și politică pentru fișiere statice ca în app.yaml.
+  // Immutable se aplică exclusiv bundle-urilor JS/CSS cu hash de conținut.
+  server.get(/^\/(.+\.[0-9a-f]{16}\.(?:js|css))$/, express.static(distFolder, {
+    maxAge: '1y',
+    immutable: true,
+    index: false,
+  }));
+
+  server.use('/assets', express.static(join(distFolder, 'assets'), {
+    maxAge: '30d',
+    index: false,
+  }));
+
+  // HTML-ul ajunge la SSR; robots/sitemap și fișierele fără hash nu sunt immutable.
+  server.get(/\.(?:js|css|map|ico|png|jpg|jpeg|avif|svg|woff|woff2|ttf|eot|xml|txt|json)$/, express.static(distFolder, {
+    maxAge: '10m',
+    index: false,
   }));
 
   // All regular routes use the Angular engine
