@@ -15,7 +15,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm test` (= `ng test`) — local, interactive Karma + Jasmine run.
 - `npm run test:ci` — single headless test run used for automated verification. Run one spec with `npm run test:ci -- --include=src/app/path/to.spec.ts`.
 - `npm run test:ssr` — Node tests for the SSR HTML cache, including expiry and HTTP freshness.
-- `npm run test:ssr:http` — after `npm run build`, starts a temporary SSR server with local API fixtures and checks real GET/HEAD/304 responses. Port 4000 must be free, or set `SSR_CACHE_TEST_PORT`. Stops its server and prints the evidence directory on completion.
+- `npm run test:ssr:http` — after `npm run build`, starts a temporary SSR server with local API fixtures and checks real GET/HEAD/304 responses, SEO phone filtering and the official contact number. Port 4000 must be free, or set `SSR_CACHE_TEST_PORT`. Stops its server and prints the evidence directory on completion.
 - Never leave focused or disabled Jasmine tests (`fdescribe`, `fit`, `xdescribe`, `xit`) in committed code.
 - `npm run generate-sitemap` — fetches every property from the live API and writes `src/sitemap.xml`. Run **before** `ng build` when properties have changed; the sitemap is bundled as a static asset.
 
@@ -42,6 +42,7 @@ Deployed to Google App Engine Standard, runtime `nodejs22`, instance class F2. `
 - Heavy use of PrimeNG components (Dialog, Toast, Button, etc.) with the `Lara` theme preset (configured in `main.ts`). `darkModeSelector: 'none'` disables PrimeNG's auto dark-mode handling.
 
 ### SEO
+- The official phone is `+40728140628` in links/schema/llms.txt and `0728 140 628` in the UI. Use `stripPhones` after `HtmlTextService.htmlToText`, before truncation, for property SEO descriptions and listing image alt text (including property names used there). Keep owners' phones in visible descriptions and `phoneLink` unchanged.
 - Static caching in `app.yaml` and local Express: JS/CSS with a 16-character content hash get one year + `immutable`; `/assets` gets 30 days without `immutable`; other eligible static files get 10 minutes. Keep this order and limit long immutable caching to versioned bundles. Direct HTML paths use SSR.
 - Public SSR HTML uses a per-instance LRU cache (100 entries, five minutes from render start). GET requests without query strings are eligible; admin/noindex, 404/503, API-degraded HTML and authenticated requests bypass it with `no-store`. `X-Cache` reports HIT/MISS; original `Date` and increasing `Age` prevent a HIT from restarting browser freshness. When a component catches an error that degrades SSR content, set optional `SSR_RENDER_STATE.cacheable = false`.
 - `SeoService` (`src/app/service/seo.service.ts`) is the single point for `<title>`, meta/OG/Twitter tags, canonical link, and JSON-LD injection (`setBreadcrumbs`, `setRealEstateListing`). Page components call `updatePageMeta(...)` and the JSON-LD helpers in `ngOnInit`. Base URL constant is `https://hai-în-sat.ro`.

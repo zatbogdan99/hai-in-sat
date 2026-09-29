@@ -253,6 +253,41 @@ describe('PropertyDetailsComponent', () => {
     expect(component.propertyDescription).toBe('<p>Casa <strong>frumoasă</strong> &amp; aproape</p>');
   });
 
+  for (const platform of ['browser', 'server'] as const) {
+    it(`removes phones before SEO truncation but preserves visible content on ${platform}`, () => {
+      configure(platform);
+      spyOn(router, 'navigate').and.resolveTo(true);
+      const seo = TestBed.inject(SeoService);
+      const listingSpy = spyOn(seo, 'setRealEstateListing').and.callThrough();
+      // Both phones cross the old 150/300 character truncation boundaries.
+      const intro = `${'a'.repeat(139)} Telefon:`;
+      const middle = 'b'.repeat(136);
+      const description = `<p>${intro} 0763144967 ${middle} +40&nbsp;728&nbsp;140&nbsp;628 final</p>`;
+      const name = 'Casa +40 768 915 198';
+      propertyApiService.getPropertyById.and.returnValue(of({ ...property, name, description }));
+      propertyApiService.getPhotos.and.returnValue(of({ photos: [], total: 0 }));
+      component.propertyId = 'prop-1';
+
+      component.loadPropertyDetails();
+      fixture.detectChanges();
+
+      const expectedPlainText = `${intro} ${middle} final`;
+      const meta = TestBed.inject(Meta);
+      for (const selector of ['name="description"', 'property="og:description"', 'name="twitter:description"']) {
+        expect(meta.getTag(selector)?.content)
+          .toBe(`Teren de vânzare în Oltenia de sub Munte: Casa. ${expectedPlainText.substring(0, 150)}`);
+      }
+      expect(listingSpy).toHaveBeenCalledWith(jasmine.objectContaining({
+        description: expectedPlainText.substring(0, 300)
+      }));
+      expect(component.propertyName).toBe(name);
+      expect(component.propertyDescription).toBe(description);
+      const visibleDescription = fixture.nativeElement.querySelector('.property-description') as HTMLElement;
+      expect(visibleDescription.textContent).toContain('0763144967');
+      expect(visibleDescription.querySelector('a[href="tel:0763144967"]')).toBeTruthy();
+    });
+  }
+
   it('warns and uses the land fallback when the API returns an unknown property type', () => {
     configure('browser');
     const invalidProperty = {
