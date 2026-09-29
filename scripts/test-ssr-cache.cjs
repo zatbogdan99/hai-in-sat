@@ -7,6 +7,7 @@ const { tmpdir } = require('node:os');
 const path = require('node:path');
 const { once } = require('node:events');
 const { setTimeout: delay } = require('node:timers/promises');
+const { parse } = require('parse5');
 
 const root = path.resolve(__dirname, '..');
 const bundle = path.join(root, 'dist/hai-in-sat/server/main.js');
@@ -42,6 +43,38 @@ function verify(result, status, cache, publicResponse = false) {
   assert.equal(result.headers['x-frame-options'], 'SAMEORIGIN');
   assert.ok(result.headers['content-security-policy-report-only']);
   console.log(`PASS ${result.method} ${result.url} -> ${status}, ${cache}, ${result.headers['cache-control']}, Age=${result.headers.age ?? '-'}`);
+}
+
+function elements(node) {
+  return [node, ...(node.childNodes ?? []).flatMap(elements)];
+}
+
+function attr(node, name) {
+  return node.attrs?.find(attribute => attribute.name === name)?.value;
+}
+
+function textContent(node) {
+  return node.nodeName === '#text' ? node.value : (node.childNodes ?? []).map(textContent).join('');
+}
+
+function verifySeoPhones(result) {
+  assert.equal(result.status, 200, result.url);
+  const nodes = elements(parse(result.html));
+  const descriptions = ['description', 'og:description', 'twitter:description'].map(name => {
+    const tag = nodes.find(node => node.tagName === 'meta' &&
+      (attr(node, 'name') === name || attr(node, 'property') === name));
+    assert.ok(tag, `${result.url}: missing ${name}`);
+    const value = attr(tag, 'content');
+    assert.ok(value, `${result.url}: empty ${name}`);
+    assert.doesNotMatch(value, /(?:\+?40|0)[\s.\-]*7(?:[\s.\-]*\d){8}/, result.url);
+    return value;
+  });
+  const schemas = nodes.filter(node => node.tagName === 'script' && attr(node, 'type') === 'application/ld+json')
+    .map(node => JSON.parse(textContent(node)));
+  const agent = schemas.find(schema => schema['@type'] === 'RealEstateAgent');
+  assert.equal(agent?.telephone, '+40728140628', result.url);
+  console.log(`PASS SEO ${result.url}: ${descriptions[0]}`);
+  return { nodes, schemas, descriptions };
 }
 
 async function main() {
@@ -157,7 +190,47 @@ async function main() {
   for (const url of ['/index.original.html', '/missing.0123456789abcdef.js', '/assets/missing-task117.avif']) {
     verify(await request(url), 404, 'MISS');
   }
-  console.log(`PASS redirect, static assets; ${evidence.length} HTTP responses checked.`);
+  // TASK-118: toate rutele statice, plus un anunț cu telefoane în nume/descriere.
+  for (const url of ['/', '/homes', '/about-us', '/info-page', '/contact-us', '/under-the-mountain',
+    '/see-the-area', '/properties', '/village-of-the-month', '/login', '/add-property']) {
+    const result = await request(url);
+    const { nodes } = verifySeoPhones(result);
+    if (url === '/contact-us') {
+      const phones = nodes.filter(node => node.tagName === 'a' && attr(node, 'href')?.startsWith('tel:'));
+      assert.ok(phones.length >= 2);
+      for (const phone of phones) {
+        assert.equal(attr(phone, 'href'), 'tel:+40728140628');
+        assert.equal(textContent(phone).replace(/\s/g, ''), '0728140628');
+      }
+    }
+  }
+  const seoProperty = {
+    id: '44444444-4444-4444-4444-444444444444', name: 'Proprietate test +40 768 915 198', type: 'land',
+    description: '<p>Teren 1.250 mp, preț 75.000 euro. Telefon: 0763144967 și +40&nbsp;728&nbsp;140&nbsp;628</p>',
+    thumbnail: '/assets/poza_landing1.avif',
+  };
+  writeFileSync(fixtureState, JSON.stringify({ property: seoProperty, properties: [seoProperty] }));
+  const listingUrl = `/property/${seoProperty.id}/teren-de-vanzare-proprietate-test-40-768-915-198`;
+  for (const expectedCache of ['MISS', 'HIT']) {
+    const result = await request(listingUrl);
+    verify(result, 200, expectedCache, true);
+    const { nodes, schemas, descriptions } = verifySeoPhones(result);
+    const listing = schemas.find(schema => schema['@type'] === 'RealEstateListing');
+    assert.equal(listing?.description, 'Teren 1.250 mp, preț 75.000 euro. Telefon: și');
+    assert.equal(descriptions[0], 'Teren de vânzare în Oltenia de sub Munte: Proprietate test. Teren 1.250 mp, preț 75.000 euro. Telefon: și');
+    assert.ok(nodes.some(node => node.tagName === 'a' && attr(node, 'href') === 'tel:0763144967'));
+    assert.ok(nodes.some(node => attr(node, 'class')?.split(' ').includes('property-description') &&
+      textContent(node).includes('+40\u00a0728\u00a0140\u00a0628')));
+  }
+  // Query-ul evită intrarea goală /properties deja salvată în cache în scenariile anterioare.
+  const cards = verifySeoPhones(await request('/properties?seo-test=1')).nodes;
+  const imageAlts = cards.filter(node => node.tagName === 'img').map(node => attr(node, 'alt'));
+  assert.ok(imageAlts.includes('Teren de vânzare: Proprietate test - Teren 1.250 mp, preț 75.000 euro. Telefon: și'));
+  const llms = await request('/llms.txt');
+  assert.equal(llms.status, 200);
+  assert.ok(llms.html.includes('Telefon: +40728140628'));
+  assert.ok(!llms.html.includes('+40 728 140 628'));
+  console.log(`PASS redirect, static assets, SEO phones; ${evidence.length} HTTP responses checked.`);
 }
 
 main().catch(error => {

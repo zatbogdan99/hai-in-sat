@@ -16,6 +16,7 @@ import {SSR_RENDER_STATE} from "../ssr-render-state";
 import {HtmlTextService} from "../service/html-text.service";
 import {LoggerService} from "../service/logger.service";
 import {NotFoundComponent} from "../not-found/not-found.component";
+import {stripPhones} from "../utils/strip-phones.util";
 
 export interface GallerySlide {
   type: 'image' | 'video';
@@ -146,10 +147,11 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
         }
 
         const canonicalPath = `/property/${this.propertyId}/${slug}`;
-        const plainDescription = this.htmlText.htmlToText(prop.description);
+        const seoName = stripPhones(prop.name);
+        const plainDescription = stripPhones(this.htmlText.htmlToText(prop.description));
         this.seo.updatePageMeta({
           title: `${this.propertyTypeLabel} de vânzare: ${prop.name} | Hai în Sat`,
-          description: `${this.propertyTypeLabel} de vânzare în Oltenia de sub Munte: ${prop.name}. ${plainDescription.substring(0, 150)}`,
+          description: `${this.propertyTypeLabel} de vânzare în Oltenia de sub Munte: ${seoName}. ${plainDescription.substring(0, 150)}`,
           ogImage: prop.thumbnail,
           canonicalPath
         });

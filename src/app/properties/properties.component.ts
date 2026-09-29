@@ -38,6 +38,7 @@ import { PropertyType, toPropertyType } from "../dto/property-type.enum";
 import { HtmlTextService } from "../service/html-text.service";
 import { LoggerService } from "../service/logger.service";
 import { SSR_RENDER_STATE } from '../ssr-render-state';
+import { stripPhones } from '../utils/strip-phones.util';
 
 const trimControlValue = (control: AbstractControl | null | undefined): string => {
   const value = control?.value;
@@ -356,8 +357,9 @@ export class PropertiesComponent implements OnInit {
 
   getImageAlt(property: PropertyDTO): string {
     const type = toPropertyType(property.type) === PropertyType.LAND ? 'Teren' : 'Casă';
-    const truncatedDesc = this.truncateDescription(property.description, 60);
-    return `${type} de vânzare: ${property.name} - ${truncatedDesc}`;
+    const description = stripPhones(this.htmlText.htmlToText(property.description));
+    const truncatedDesc = this.truncate(description, 60);
+    return `${type} de vânzare: ${stripPhones(property.name)} - ${truncatedDesc}`;
   }
 
   private parseNumberParam(value: string | null, fallback: number): number {

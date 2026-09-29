@@ -10,7 +10,8 @@ globalThis.fetch = (input, init) => {
   let body;
   if (url.pathname === '/get-all-properties') {
     status = state.listError ? 503 : 200;
-    body = { content: [], totalElements: 0, totalPages: 0, size: 6, number: 0 };
+    const content = state.properties ?? [];
+    body = { content, totalElements: content.length, totalPages: content.length ? 1 : 0, size: 6, number: 0 };
   } else if (url.pathname === '/get-by-id') {
     const id = url.searchParams.get('id');
     if (id === '00000000-0000-0000-0000-000000000000') body = null;
@@ -18,7 +19,7 @@ globalThis.fetch = (input, init) => {
       status = 503;
       body = { message: 'Temporary test failure' };
     } else {
-      body = { id, name: 'Proprietate test', description: 'Descriere test', type: 'land', thumbnail: '' };
+      body = { name: 'Proprietate test', description: 'Descriere test', type: 'land', thumbnail: '', ...state.property, id };
     }
   } else if (url.pathname === '/get-photos') {
     status = url.searchParams.get('propertyId') === '33333333-3333-3333-3333-333333333333' ? 503 : 200;

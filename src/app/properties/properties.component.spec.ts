@@ -249,6 +249,20 @@ describe('PropertiesComponent', () => {
     expect(image?.getAttribute('alt')).toBe(`Casă de vânzare: Casa cu vedere - ${component.truncate(plainDescription, 60)}`);
   });
 
+  it('removes phones from image alt before truncation without changing visible card text', () => {
+    createComponent();
+    const intro = 'Teren '.repeat(9);
+    const property = {
+      id: 'phone-alt', name: 'Casa +40 768 915 198', type: 'house', thumbnail: 'thumb.jpg',
+      description: `<p>${intro}0763&nbsp;144&nbsp;967 ideal, preț 75.000 euro.</p>`
+    } as PropertyDTO;
+
+    expect(component.getImageAlt(property))
+      .toBe(`Casă de vânzare: Casa - ${component.truncate(`${intro}ideal, preț 75.000 euro.`, 60)}`);
+    expect(component.truncateDescription(property.description, 500)).toContain('0763\u00a0144\u00a0967');
+    expect(property.name).toBe('Casa +40 768 915 198');
+  });
+
   it('uses the land fallback for alt text and navigation when the API returns an unknown property type', () => {
     const invalidProperty = {
       id: 'invalid-1',
