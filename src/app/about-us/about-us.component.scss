@@ -102,9 +102,14 @@
 }
 
 .story h1 {
+  padding-left: 12rem;
   font-size: 3rem;
   margin-bottom: 2rem;
   font-family: 'Libre Baskerville', serif;
+}
+
+.mobile-subtitle {
+  display: none;
 }
 
 .story p {
@@ -245,7 +250,7 @@
     display: none;
   }
 
-  .hero-banner {
+  .containers {
     height: 60vh;
     background-image: url('../../assets/contact.avif');
     background-repeat: no-repeat;
@@ -257,7 +262,7 @@
     position: relative;
   }
 
-  .hero-banner::before {
+  .containers::before {
     content: '';
     position: absolute;
     top: 0;
@@ -268,21 +273,41 @@
     z-index: 0;
   }
 
-  .hero-content {
+  .left-container, .center-container, .menu-container, .first-block, .extra-text,
+  .story > hr, .story > p {
+    display: none;
+  }
+
+  .right-container {
+    width: 100%;
+    height: auto;
+    background: transparent;
+  }
+
+  .story {
     position: relative;
+    width: auto;
+    height: auto;
+    left: auto;
+    top: auto;
     z-index: 1;
     text-align: center;
     color: #f5f5f5;
   }
 
-  .hero-content h1 {
+  .story h1 {
+    padding-left: 0;
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    letter-spacing: normal;
     font-size: 2.5rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
     font-family: 'Libre Baskerville', serif;
   }
 
-  .hero-content h2 {
+  .mobile-subtitle {
+    display: block;
     font-size: 1.2rem;
     font-weight: 400;
     font-family: 'Libre Baskerville', serif;

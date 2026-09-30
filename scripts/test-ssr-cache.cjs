@@ -230,7 +230,24 @@ async function main() {
   assert.equal(llms.status, 200);
   assert.ok(llms.html.includes('Telefon: +40728140628'));
   assert.ok(!llms.html.includes('+40 728 140 628'));
-  console.log(`PASS redirect, static assets, SEO phones; ${evidence.length} HTTP responses checked.`);
+
+  // TASK-119: inspect the actual SSR DOM for every indexed route, including
+  // headings in CSS-hidden desktop/mobile branches. All requests stay local;
+  // property data comes from the API fixture, never from the production API.
+  const sitemap = await request('/sitemap.xml');
+  assert.equal(sitemap.status, 200);
+  const sitemapUrls = elements(parse(sitemap.html)).filter(node => node.tagName === 'loc')
+    .map(node => new URL(textContent(node).trim()));
+  assert.ok(sitemapUrls.length > 0, 'The sitemap must contain URLs to check.');
+  for (const url of sitemapUrls) {
+    const result = await request(url.pathname + url.search);
+    assert.equal(result.status, 200, result.url);
+    const headings = elements(parse(result.html)).filter(node => node.tagName === 'h1');
+    assert.equal(headings.length, 1, `${result.url}: expected exactly one H1 in the SSR DOM`);
+    assert.ok(textContent(headings[0]).trim(), `${result.url}: the H1 must not be empty`);
+    console.log(`PASS H1 ${result.url}: ${textContent(headings[0]).trim()}`);
+  }
+  console.log(`PASS redirect, static assets, SEO phones, ${sitemapUrls.length} sitemap headings; ${evidence.length} HTTP responses checked.`);
 }
 
 main().catch(error => {

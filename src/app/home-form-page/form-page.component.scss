@@ -30,6 +30,28 @@ h1 {
   padding-right: 1rem;
 }
 
+/* The heading shares the form's grid track on desktop, including its minimum width. */
+@media only screen and (width < 500px) {
+  .parent-container {
+    display: block;
+    padding-inline: 0;
+  }
+}
+
+.consent-text {
+  font-weight: bold;
+}
+
+.consent-desktop {
+  font-size: 1.17em;
+  margin-block: 1em;
+}
+
+.consent-mobile {
+  font-size: 1em;
+  margin-block: 1.33em;
+}
+
 .container {
   display: flex;
   justify-content: center;

@@ -13,6 +13,30 @@ main {
   padding-block: min(10vh, 1.5rem);
 }
 
+.area-intro {
+  padding-left: 14rem;
+}
+
+.back-mobile {
+  display: none;
+}
+
+.choice-title {
+  font-size: 2em;
+}
+
+@media only screen and (width < 500px) {
+  .area-intro {
+    padding-left: 0;
+  }
+  .back-desktop {
+    display: none;
+  }
+  .back-mobile {
+    display: inline-block;
+  }
+}
+
 main > div span {
   text-transform: uppercase;
   letter-spacing: 1.5px;

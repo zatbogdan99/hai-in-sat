@@ -20,6 +20,13 @@ describe('ContactUsComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('has one shared contact heading outside the responsive branches', () => {
+    const headings = fixture.nativeElement.querySelectorAll('h1') as NodeListOf<HTMLHeadingElement>;
+    expect(headings.length).toBe(1);
+    expect(headings[0].textContent?.trim()).toBe('Contactează Hai în Sat — agenție imobiliară în Horezu');
+    expect(headings[0].closest('.large-screen, .small-screen')).toBeNull();
+  });
+
   it('shows the official number on desktop and mobile and keeps it out of SEO descriptions', () => {
     const links = fixture.nativeElement.querySelectorAll('a[href^="tel:"]') as NodeListOf<HTMLAnchorElement>;
     expect(links.length).toBe(2);

@@ -28,4 +28,12 @@ describe('FormPageComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('has one shared heading even when both responsive forms exist in the DOM', () => {
+    const headings = fixture.nativeElement.querySelectorAll('h1') as NodeListOf<HTMLHeadingElement>;
+    expect(headings.length).toBe(1);
+    expect(headings[0].textContent).toContain('Spune-ne ce cauți,');
+    expect(headings[0].textContent).toContain('iar noi găsim pentru tine');
+    expect(headings[0].closest('.large-screen, .small-screen')).toBeNull();
+  });
 });

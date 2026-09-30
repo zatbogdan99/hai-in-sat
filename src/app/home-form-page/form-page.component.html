@@ -3,11 +3,10 @@
   <div *ngIf="loadingService.loading$ | async" class="spinner-container">
     <p-progressSpinner></p-progressSpinner>
   </div>
-  <div class="large-screen">
   <div class="parent-container">
-
     <h1 class="form-hero-title">Spune-ne ce cauți,<br>iar noi găsim pentru tine</h1>
     <p class="form-hero-subtitle">Fie că visezi la o casă tradițională sau un teren unde să-ți construiești locul tău, noi suntem aici să te ajutăm să-l găsești. Lasă datele tale, iar echipa noastră revine cu variante reale, din zonă.</p>
+  <div class="large-screen">
 
     <div class="div-style">
       <p-float-label style="margin-bottom: 2rem; width: 30rem" [formGroup]="formGroup">
@@ -47,7 +46,7 @@
 
       <div [formGroup]="formGroup" style="display: flex; align-items: center; gap: 0.75rem;">
         <p-checkbox formControlName="terms" [binary]="true" inputId="terms"></p-checkbox>
-        <h3 style="padding-left: 1rem">Sunt de acord cu <a href="javascript:void(0)" (click)="openTermenii()">termenii si condițiile</a> și <a href="javascript:void(0)" (click)="openPolitica()">politica de confidențialitate</a></h3>
+        <p class="consent-text consent-desktop" style="padding-left: 1rem">Sunt de acord cu <a href="javascript:void(0)" (click)="openTermenii()">termenii si condițiile</a> și <a href="javascript:void(0)" (click)="openPolitica()">politica de confidențialitate</a></p>
       </div>
 <!--      //TODO scos temporar-->
 <!--      <div [formGroup]="formGroup" style="display: flex; align-items: center; gap: 0.75rem; margin-top: 0.5rem;">-->
@@ -62,14 +61,11 @@
     </div>
 
     <img class="bg" alt="logo-background" src="assets/logo.avif" />
-  </div>
 </div>
 
-<!-- mobile section updated as well -->
+<!-- The form controls retain their existing responsive layouts. -->
 <div class="small-screen">
   <div>
-    <h1 class="form-hero-title">Spune-ne ce cauti,<br>iar noi gasim pentru tine</h1>
-    <p class="form-hero-subtitle">Fie că visezi la o casă tradițională sau un teren unde să-ți construiești locul tău, noi suntem aici să te ajutăm să-l găsești. Lasă datele tale, iar echipa noastră revine cu variante reale, din zonă.</p>
     <div class="div-style">
       <p-float-label style="margin-bottom: 2rem" [formGroup]="formGroup">
         <input type="text" pInputText id="name-mobile" formControlName="name">
@@ -111,7 +107,7 @@
 
       <div [formGroup]="formGroup" style="display: flex; align-items: center; gap: 0.5rem; padding-left: 4rem; padding-right: 4rem">
         <p-checkbox formControlName="terms" [binary]="true" inputId="terms_mobile"></p-checkbox>
-        <h4 style="padding-left: 0.5rem">Sunt de acord cu <a href="javascript:void(0)" (click)="openTermenii()">termenii si condițiile</a> și <a href="javascript:void(0)" (click)="openPolitica()">politica de confidențialitate</a></h4>
+        <p class="consent-text consent-mobile" style="padding-left: 0.5rem">Sunt de acord cu <a href="javascript:void(0)" (click)="openTermenii()">termenii si condițiile</a> și <a href="javascript:void(0)" (click)="openPolitica()">politica de confidențialitate</a></p>
       </div>
 <!--      //TODO dezactivat temporar-->
 <!--      <div [formGroup]="formGroup" style="display: flex; align-items: center; gap: 0.5rem; padding-left: 0.5rem; margin-top: 0.5rem;">-->
@@ -126,4 +122,5 @@
   </div>
 </div>
 
+</div>
 </div>
