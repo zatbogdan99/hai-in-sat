@@ -1,4 +1,5 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, DestroyRef, ElementRef, inject, OnInit, PLATFORM_ID} from '@angular/core';
+import {isPlatformBrowser} from '@angular/common';
 import {gsap} from "gsap";
 import { faTiktok } from '@fortawesome/free-brands-svg-icons';
 import { faSquareFacebook } from "@fortawesome/free-brands-svg-icons";
@@ -13,6 +14,9 @@ import { SeoService } from '../service/seo.service';
   imports: [Divider]
 })
 export class AboutUsComponent implements OnInit, AfterViewInit{
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly element = inject(ElementRef<HTMLElement>);
+  private readonly destroyRef = inject(DestroyRef);
 
   faTiktok = faTiktok;
   faSquareFacebook = faSquareFacebook;
@@ -34,48 +38,53 @@ export class AboutUsComponent implements OnInit, AfterViewInit{
   }
 
   ngAfterViewInit(): void {
-    gsap.from(".left-container", 2, {
-      width: "0",
-      ease: "Expo.easeInOut"
-    });
-    gsap.from(".right-container", 2, {
-      delay: 1,
-      width: "0",
-      opacity: "0",
-      ease: "Expo.easeInOut"
-    });
-    gsap.from(".center-container", 2, {
-      delay: 2,
-      width: "0",
-      x: -20,
-      ease: "Expo.easeInOut"
-    });
-    gsap.from(".logo", 2, {
-      delay: 1,
-      y: 20,
-      opacity: 0,
-      ease: "Expo.easeInOut"
-    });
-    gsap.from(".info", 2, {
-      delay: 1,
-      y: 50,
-      opacity: 0,
-      scale: 2.5,
-      ease: "Expo.easeInOut"
-    });
-    gsap.from(".story", 2, {
-      delay: 2,
-      y: 20,
-      opacity: 0,
-      ease: "Expo.easeInOut"
-    });
-    gsap.from(".menu", 2, {
-      delay: 2.5,
-      y: 20,
-      opacity: 0,
-      rotation: 90,
-      ease: "Expo.easeInOut"
-    });
+    if (!isPlatformBrowser(this.platformId)) return;
+    const animations = gsap.matchMedia();
+    this.destroyRef.onDestroy(() => animations.revert());
+    animations.add('(min-width: 1200px) and (min-height: 600px)', () => {
+      gsap.from(".left-container", 2, {
+        width: "0",
+        ease: "Expo.easeInOut"
+      });
+      gsap.from(".right-container", 2, {
+        delay: 1,
+        width: "0",
+        opacity: "0",
+        ease: "Expo.easeInOut"
+      });
+      gsap.from(".center-container", 2, {
+        delay: 2,
+        width: "0",
+        x: -20,
+        ease: "Expo.easeInOut"
+      });
+      gsap.from(".logo", 2, {
+        delay: 1,
+        y: 20,
+        opacity: 0,
+        ease: "Expo.easeInOut"
+      });
+      gsap.from(".info", 2, {
+        delay: 1,
+        y: 50,
+        opacity: 0,
+        scale: 2.5,
+        ease: "Expo.easeInOut"
+      });
+      gsap.from(".story", 2, {
+        delay: 2,
+        y: 20,
+        opacity: 0,
+        ease: "Expo.easeInOut"
+      });
+      gsap.from(".menu", 2, {
+        delay: 2.5,
+        y: 20,
+        opacity: 0,
+        rotation: 90,
+        ease: "Expo.easeInOut"
+      });
+    }, this.element.nativeElement);
   }
 
   getSecondText() {
