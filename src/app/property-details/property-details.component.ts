@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, ViewChildren, QueryList, DestroyRef, inject, PLATFORM_ID, TransferState, makeStateKey } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { PropertyApiService } from '../service/property-api/property-api.service';
 import { PropertiesStateService, PropertyTypeFilter } from '../service/properties-state-service/properties-state.service';
 import { PropertyDTO } from '../dto/property.dto';
@@ -34,6 +34,7 @@ export interface GallerySlide {
     AsyncPipe,
     NgForOf,
     PhoneLinkPipe,
+    RouterLink,
     NotFoundComponent
   ],
   styleUrls: ['./property-details.component.scss']
@@ -376,7 +377,7 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
     return toIdx;
   }
 
-  goBackToProperties(): void {
+  get propertiesQueryParams(): {page: number; size: number; type: PropertyTypeFilter} {
     const queryParams = this.route.snapshot.queryParamMap;
     const pageParam = queryParams.get('page');
     const sizeParam = queryParams.get('size');
@@ -386,9 +387,7 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
     const size = this.parseNumberParam(sizeParam, this.propertiesState.size);
     const type = this.parseTypeParam(typeParam, this.propertiesState.propertyType);
 
-    this.router.navigate(['/properties'], {
-      queryParams: { page, size, type }
-    });
+    return { page, size, type };
   }
 
   private parseNumberParam(value: string | null, fallback: number): number {

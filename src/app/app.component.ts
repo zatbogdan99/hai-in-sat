@@ -1,7 +1,7 @@
 import {Component, DestroyRef, inject, OnInit} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ViewportScroller } from '@angular/common';
-import {Router, RouterOutlet, NavigationEnd} from "@angular/router";
+import {Router, RouterLink, RouterOutlet, NavigationEnd} from "@angular/router";
 import { faTiktok } from '@fortawesome/free-brands-svg-icons';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
 import { faInstagram } from '@fortawesome/free-brands-svg-icons';
@@ -26,6 +26,7 @@ import { SeoService } from './service/seo.service';
     Popover,
     FaIconComponent,
     RouterOutlet,
+    RouterLink,
     Toast
   ],
   styleUrls: ['./app.component.scss']
@@ -74,34 +75,6 @@ export class AppComponent implements OnInit {
     // RouterOutlet emite activate înainte de ngOnInit al paginii noi.
     // Login, admin și 404 aplică apoi noindex; restul paginilor pornesc indexabile.
     this.seo.setIndexable();
-  }
-
-  goToAboutUs() {
-    this.router.navigateByUrl("/about-us");
-  }
-
-  goToVillageOfTheMonth() {
-    this.router.navigateByUrl("/village-of-the-month");
-  }
-
-  goToLandingPage() {
-    this.router.navigateByUrl("/");
-  }
-
-  goToHomeFormPage() {
-    this.router.navigateByUrl("/homes");
-  }
-
-  goToContactUsPage() {
-    this.router.navigateByUrl("/contact-us");
-  }
-
-  goToUnderTheMountain() {
-    this.router.navigateByUrl("/under-the-mountain");
-  }
-
-  goToProperties() {
-    this.router.navigateByUrl("/properties");
   }
 
   ngOnInit() {

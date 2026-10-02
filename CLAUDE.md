@@ -15,7 +15,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm test` (= `ng test`) — local, interactive Karma + Jasmine run.
 - `npm run test:ci` — single headless test run used for automated verification. Run one spec with `npm run test:ci -- --include=src/app/path/to.spec.ts`.
 - `npm run test:ssr` — Node tests for the SSR HTML cache, including expiry and HTTP freshness.
-- `npm run test:ssr:http` — after `npm run build`, starts a temporary SSR server with local API fixtures and checks real GET/HEAD/304 responses, SEO phone filtering and the official contact number. Port 4000 must be free, or set `SSR_CACHE_TEST_PORT`. Stops its server and prints the evidence directory on completion.
+- `npm run test:ssr:http` — after `npm run build`, starts a temporary SSR server with local API fixtures and checks real GET/HEAD/304 responses, SEO phone filtering and the official contact number. Also checks internal links on every sitemap route and discovers property pages by following the rendered filter/pagination links; saves `internal-links.json` as evidence. Port 4000 must be free, or set `SSR_CACHE_TEST_PORT`. Stops its server and prints the evidence directory on completion.
 - Never leave focused or disabled Jasmine tests (`fdescribe`, `fit`, `xdescribe`, `xit`) in committed code.
 - `npm run generate-sitemap` — fetches every property from the live API and writes `src/sitemap.xml`. Run **before** `ng build` when properties have changed; the sitemap is bundled as a static asset.
 
@@ -38,7 +38,7 @@ Deployed to Google App Engine Standard, runtime `nodejs22`, instance class F2. `
 
 ### State and services
 - `DataService` (`src/app/service/data-service.ts`) holds global `BehaviorSubject` signals — used by the footer / `AppComponent` to open Terms and Privacy popups from anywhere. Subscribe-and-reset pattern (set to `true`, consumer resets to `false`).
-- `PropertiesStateService` (`src/app/service/properties-state-service/`) uses **Angular signals** for paged property list state and an in-memory page cache keyed by `${page}:${size}`. Distinct from the BehaviorSubject pattern in `DataService` — match the existing style of the area you're editing.
+- `PropertiesStateService` (`src/app/service/properties-state-service/`) uses **Angular signals** for paged property list state and an in-memory cache keyed by `${page}:${size}:${type}`, including each page's pagination totals. The list reacts to URL query changes; absent parameters mean page 0, size 6, type land. Detail-page return links carry the current selection explicitly. Distinct from the BehaviorSubject pattern in `DataService` — match the existing style of the area you're editing.
 - Heavy use of PrimeNG components (Dialog, Toast, Button, etc.) with the `Lara` theme preset (configured in `main.ts`). `darkModeSelector: 'none'` disables PrimeNG's auto dark-mode handling.
 
 ### SEO

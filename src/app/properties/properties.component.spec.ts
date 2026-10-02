@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
-import { of, throwError } from 'rxjs';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { BehaviorSubject, of, Subject, throwError } from 'rxjs';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { PropertiesComponent } from './properties.component';
@@ -16,16 +17,16 @@ describe('PropertiesComponent', () => {
   let fixture: ComponentFixture<PropertiesComponent>;
   let propertyApiService: jasmine.SpyObj<PropertyApiService>;
   let propertyContactService: jasmine.SpyObj<PropertyContactService>;
-  let router: jasmine.SpyObj<Router>;
   let propertiesState: PropertiesStateService;
   let ssrRenderState: SsrRenderState;
+  let queryParamMap: BehaviorSubject<ReturnType<typeof convertToParamMap>>;
 
   const createComponent = (queryParams: Record<string, string> = {}) => {
     TestBed.resetTestingModule();
     ssrRenderState = createSsrRenderState();
     propertyApiService = jasmine.createSpyObj<PropertyApiService>('PropertyApiService', ['getPropertiesPage']);
     propertyContactService = jasmine.createSpyObj<PropertyContactService>('PropertyContactService', ['sendPropertyForm']);
-    router = jasmine.createSpyObj<Router>('Router', ['navigate']);
+    queryParamMap = new BehaviorSubject(convertToParamMap(queryParams));
 
     propertyApiService.getPropertiesPage.and.returnValue(
       of({ content: [], totalElements: 0, totalPages: 0, size: 6, number: 0 })
@@ -33,7 +34,7 @@ describe('PropertiesComponent', () => {
     propertyContactService.sendPropertyForm.and.returnValue(of(void 0));
 
     TestBed.configureTestingModule({
-      imports: [PropertiesComponent],
+      imports: [PropertiesComponent, RouterTestingModule],
       providers: [
         provideNoopAnimations(),
         LoadingService,
@@ -50,14 +51,11 @@ describe('PropertiesComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
+            queryParamMap: queryParamMap.asObservable(),
             snapshot: {
               queryParamMap: convertToParamMap(queryParams)
             }
           }
-        },
-        {
-          provide: Router,
-          useValue: router
         }
       ]
     });
@@ -273,22 +271,168 @@ describe('PropertiesComponent', () => {
     } as unknown as PropertyDTO;
 
     createComponent();
+    propertyApiService.getPropertiesPage.and.returnValue(
+      of({ content: [invalidProperty], totalElements: 1, totalPages: 1, size: 6, number: 0 })
+    );
+    fixture.detectChanges();
 
     expect(component.getImageAlt(invalidProperty)).toBe(
       'Teren de vânzare: Lot experimental - Descriere'
     );
 
-    component.viewPropertyDetails(invalidProperty);
+    const titleLink = fixture.nativeElement.querySelector('.property-card h2 a') as HTMLAnchorElement;
+    expect(titleLink.getAttribute('href'))
+      .toBe('/property/invalid-1/teren-de-vanzare-lot-experimental?page=0&size=6&type=land');
+  });
 
-    expect(router.navigate).toHaveBeenCalledWith(
-      ['/property', 'invalid-1', 'teren-de-vanzare-lot-experimental'],
-      {
-        queryParams: {
-          page: 0,
-          size: 6,
-          type: 'land'
-        }
+  it('renders title and details links with the current list state in both layouts', () => {
+    createComponent({ page: '2', size: '12', type: 'house' });
+    propertyApiService.getPropertiesPage.and.returnValue(of({
+      content: [{ id: 'house-1', name: 'Casă în sat', type: 'house', description: 'Descriere', thumbnail: 'thumb.jpg' } as PropertyDTO],
+      totalElements: 25, totalPages: 3, size: 12, number: 2
+    }));
+    fixture.detectChanges();
+
+    for (const layout of ['grid', 'list'] as const) {
+      component.layout = layout;
+      fixture.detectChanges();
+      const container = fixture.nativeElement.querySelector(layout === 'grid' ? '.property-card' : '.property-list-item') as HTMLElement;
+      const links = Array.from(container.querySelectorAll('a'));
+      expect(links.length).toBe(2);
+      for (const link of links) {
+        expect(link.getAttribute('href')).toBe('/property/house-1/casa-de-vanzare-casa-in-sat?page=2&size=12&type=house');
       }
-    );
+    }
+  });
+
+  it('does not publish a broken detail URL for a property without an id', () => {
+    createComponent();
+    propertyApiService.getPropertiesPage.and.returnValue(of({
+      content: [{ id: null, name: 'Fără identificator', type: 'land', description: '', thumbnail: 'thumb.jpg' } as unknown as PropertyDTO],
+      totalElements: 1, totalPages: 1, size: 6, number: 0
+    }));
+    fixture.detectChanges();
+
+    for (const layout of ['grid', 'list'] as const) {
+      component.layout = layout;
+      fixture.detectChanges();
+      const container = fixture.nativeElement.querySelector(layout === 'grid' ? '.property-card' : '.property-list-item') as HTMLElement;
+      expect(container.querySelector('a[href]')).toBeNull();
+    }
+  });
+
+  it('publishes filter and pagination URLs preserving size and the selected type', () => {
+    createComponent({ page: '1', size: '12', type: 'house' });
+    propertyApiService.getPropertiesPage.and.returnValue(of({ content: [], totalElements: 25, totalPages: 3, size: 12, number: 1 }));
+    fixture.detectChanges();
+
+    const filters = Array.from(fixture.nativeElement.querySelectorAll('a.filter-button')) as HTMLAnchorElement[];
+    expect(filters.map(link => link.getAttribute('href'))).toEqual([
+      '/properties?page=0&size=12&type=house',
+      '/properties?page=0&size=12&type=land'
+    ]);
+    const pages = Array.from(fixture.nativeElement.querySelectorAll('.property-pagination a[href]')) as HTMLAnchorElement[];
+    expect(pages.length).toBeGreaterThan(0);
+    const pageIndexes = pages.map(link => {
+      const url = new URL(link.href);
+      expect(url.pathname).toBe('/properties');
+      expect(url.searchParams.get('size')).toBe('12');
+      expect(url.searchParams.get('type')).toBe('house');
+      return url.searchParams.get('page');
+    });
+    expect(pageIndexes).toContain('0');
+    expect(pageIndexes).toContain('2');
+  });
+
+  it('reloads the reused list on query changes and restores the cached page when navigating back', () => {
+    createComponent({ page: '0', size: '6', type: 'land' });
+    const land = { id: 'land-1', name: 'Teren', type: 'land' } as PropertyDTO;
+    const house = { id: 'house-1', name: 'Casă', type: 'house' } as PropertyDTO;
+    propertyApiService.getPropertiesPage.and.callFake((page, size, type) => of({
+      content: [type === 'house' ? house : land], totalElements: 1, totalPages: 1, size, number: page
+    }));
+    fixture.detectChanges();
+    expect(component.properties).toEqual([land]);
+
+    queryParamMap.next(convertToParamMap({ page: '2', size: '12', type: 'house' }));
+    fixture.detectChanges();
+    expect(propertyApiService.getPropertiesPage).toHaveBeenCalledWith(2, 12, 'house');
+    expect(component.properties).toEqual([house]);
+    expect([component.page, component.size, component.propertyType]).toEqual([2, 12, 'house']);
+
+    propertyApiService.getPropertiesPage.calls.reset();
+    queryParamMap.next(convertToParamMap({ page: '0', size: '6', type: 'land' }));
+    fixture.detectChanges();
+    expect(component.properties).toEqual([land]);
+    expect([component.page, component.size, component.propertyType]).toEqual([0, 6, 'land']);
+    expect(propertyApiService.getPropertiesPage).not.toHaveBeenCalled();
+  });
+
+  it('ignores a previous filter request that completes after the next filter has loaded', () => {
+    createComponent({ page: '0', size: '6', type: 'land' });
+    const land = { id: 'land-1', name: 'Teren', type: 'land' } as PropertyDTO;
+    const house = { id: 'house-1', name: 'Casă', type: 'house' } as PropertyDTO;
+    const landResponse = new Subject<{ content: PropertyDTO[]; totalElements: number; totalPages: number; size: number; number: number }>();
+    propertyApiService.getPropertiesPage.and.callFake((_page, _size, type) => type === 'land'
+      ? landResponse.asObservable()
+      : of({ content: [house], totalElements: 1, totalPages: 1, size: 6, number: 0 }));
+    fixture.detectChanges();
+
+    queryParamMap.next(convertToParamMap({ page: '0', size: '6', type: 'house' }));
+    landResponse.next({ content: [land], totalElements: 20, totalPages: 4, size: 6, number: 0 });
+    landResponse.complete();
+    fixture.detectChanges();
+
+    expect(component.properties).toEqual([house]);
+    expect(component.propertyType).toBe('house');
+    expect(component.totalRecords).toBe(1);
+    expect(component.totalPages).toBe(1);
+    expect(propertiesState.getCachedPage(0, 6, 'house')).toEqual([house]);
+  });
+
+  it('uses URL defaults for an empty query, including when returning from a filtered page', () => {
+    createComponent();
+    propertiesState.setPage(3);
+    propertiesState.setSize(12);
+    propertiesState.setPropertyType('house');
+    fixture.detectChanges();
+    expect([component.page, component.size, component.propertyType]).toEqual([0, 6, 'land']);
+    expect(propertyApiService.getPropertiesPage).toHaveBeenCalledWith(0, 6, 'land');
+
+    queryParamMap.next(convertToParamMap({ page: '1', size: '12', type: 'house' }));
+    fixture.detectChanges();
+    expect([component.page, component.size, component.propertyType]).toEqual([1, 12, 'house']);
+
+    queryParamMap.next(convertToParamMap({}));
+    fixture.detectChanges();
+    expect([component.page, component.size, component.propertyType]).toEqual([0, 6, 'land']);
+    expect([propertiesState.page, propertiesState.size, propertiesState.propertyType]).toEqual([0, 6, 'land']);
+  });
+
+  it('restores pagination totals for the cached filter instead of reusing the last filter totals', () => {
+    createComponent({ page: '0', size: '6', type: 'land' });
+    const land = { id: 'land-1', name: 'Teren', type: 'land' } as PropertyDTO;
+    const house = { id: 'house-1', name: 'Casă', type: 'house' } as PropertyDTO;
+    propertyApiService.getPropertiesPage.and.callFake((page, size, type) => of({
+      content: [type === 'house' ? house : land],
+      totalElements: type === 'house' ? 1 : 13,
+      totalPages: type === 'house' ? 1 : 3,
+      size, number: page
+    }));
+    fixture.detectChanges();
+    expect(component.totalPages).toBe(3);
+
+    queryParamMap.next(convertToParamMap({ page: '0', size: '6', type: 'house' }));
+    fixture.detectChanges();
+    expect(component.totalRecords).toBe(1);
+    expect(component.totalPages).toBe(1);
+
+    propertyApiService.getPropertiesPage.calls.reset();
+    queryParamMap.next(convertToParamMap({ page: '0', size: '6', type: 'land' }));
+    fixture.detectChanges();
+    expect(component.properties).toEqual([land]);
+    expect(component.totalRecords).toBe(13);
+    expect(component.totalPages).toBe(3);
+    expect(propertyApiService.getPropertiesPage).not.toHaveBeenCalled();
   });
 });

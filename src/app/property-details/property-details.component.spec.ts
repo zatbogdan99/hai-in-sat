@@ -30,7 +30,7 @@ describe('PropertyDetailsComponent', () => {
     thumbnail: 'thumbnail'
   };
 
-  function configure(platformId: 'browser' | 'server' = 'browser'): void {
+  function configure(platformId: 'browser' | 'server' = 'browser', queryParams: Record<string, string> = {}): void {
     propertyApiService = jasmine.createSpyObj<PropertyApiService>('PropertyApiService', ['getPropertyById', 'getPhotos']);
     propertyApiService.getPropertyById.and.returnValue(NEVER);
     propertyApiService.getPhotos.and.returnValue(NEVER);
@@ -47,7 +47,7 @@ describe('PropertyDetailsComponent', () => {
             params: NEVER,
             snapshot: {
               params: {},
-              queryParamMap: convertToParamMap({})
+              queryParamMap: convertToParamMap(queryParams)
             }
           }
         },
@@ -86,6 +86,34 @@ describe('PropertyDetailsComponent', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
+
+  it('renders both back links with the page, size and filter from the detail URL', () => {
+    configure('browser', { page: '2', size: '12', type: 'house' });
+    fixture.detectChanges();
+
+    const links = fixture.nativeElement.querySelectorAll('a.back-btn') as NodeListOf<HTMLAnchorElement>;
+    expect(links.length).toBe(2);
+    for (const link of Array.from(links)) {
+      expect(link.getAttribute('href')).toBe('/properties?page=2&size=12&type=house');
+    }
+  });
+
+  for (const queryParams of [{}, { page: 'invalid', size: 'Infinity', type: 'farm' }] as Record<string, string>[]) {
+    it(`uses saved list state in back links when query values are ${Object.keys(queryParams).length ? 'invalid' : 'absent'}`, () => {
+      configure('browser', queryParams);
+      const state = TestBed.inject(PropertiesStateService);
+      state.setPage(3);
+      state.setSize(12);
+      state.setPropertyType('house');
+      fixture.detectChanges();
+
+      const links = fixture.nativeElement.querySelectorAll('a.back-btn') as NodeListOf<HTMLAnchorElement>;
+      expect(links.length).toBe(2);
+      for (const link of Array.from(links)) {
+        expect(link.getAttribute('href')).toBe('/properties?page=3&size=12&type=house');
+      }
+    });
+  }
 
   it('should render the description in the dedicated paragraph element', () => {
     configure();

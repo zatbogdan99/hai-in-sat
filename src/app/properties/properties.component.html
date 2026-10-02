@@ -157,8 +157,8 @@
   </p-dialog>
 
   <div class="property-filter-buttons">
-    <button class="filter-button" [ngClass]="{'filter-button-transparent': propertyType === 'land', 'filter-button-orange': propertyType === 'house'}" (click)="setPropertyType('house')">Case</button>
-    <button class="filter-button" [ngClass]="{'filter-button-transparent': propertyType === 'house', 'filter-button-orange': propertyType === 'land'}" (click)="setPropertyType('land')">Terenuri</button>
+    <a class="filter-button" [ngClass]="{'filter-button-transparent': propertyType === 'land', 'filter-button-orange': propertyType === 'house'}" routerLink="/properties" [queryParams]="{page: 0, size: size, type: 'house'}" [attr.aria-current]="propertyType === 'house' ? 'page' : null">Case</a>
+    <a class="filter-button" [ngClass]="{'filter-button-transparent': propertyType === 'house', 'filter-button-orange': propertyType === 'land'}" routerLink="/properties" [queryParams]="{page: 0, size: size, type: 'land'}" [attr.aria-current]="propertyType === 'land' ? 'page' : null">Terenuri</a>
   </div>
 </div>
 
@@ -181,9 +181,9 @@
                [alt]="getImageAlt(property)"
                loading="lazy" />
           <div class="property-list-content">
-            <h2>{{ truncate(property.name, 40) }}</h2>
+            <h2><a class="property-name-link" [routerLink]="propertyLink(property)" [queryParams]="{page: page, size: size, type: propertyType}" [attr.aria-label]="property.name">{{ truncate(property.name, 40) }}</a></h2>
             <p>{{ truncateDescription(property.description, 50) }}</p>
-            <p-button severity="info" label="Detalii" (click)="viewPropertyDetails(property)"></p-button>
+            <a pButton severity="info" class="property-details-link" [routerLink]="propertyLink(property)" [queryParams]="{page: page, size: size, type: propertyType}" [attr.aria-label]="'Detalii: ' + property.name" [attr.aria-disabled]="!property.id ? true : null">Detalii</a>
           </div>
         </div>
       </div>
@@ -195,21 +195,22 @@
           <img [src]="property.thumbnail"
                [alt]="getImageAlt(property)"
                loading="lazy" />
-          <h2>{{ truncate(property.name, 40) }}</h2>
+          <h2><a class="property-name-link" [routerLink]="propertyLink(property)" [queryParams]="{page: page, size: size, type: propertyType}" [attr.aria-label]="property.name">{{ truncate(property.name, 40) }}</a></h2>
           <p>{{ truncateDescription(property.description, 50) }}</p>
-          <p-button severity="info" label="Detalii" (click)="viewPropertyDetails(property)"></p-button>
+          <a pButton severity="info" class="property-details-link" [routerLink]="propertyLink(property)" [queryParams]="{page: page, size: size, type: propertyType}" [attr.aria-label]="'Detalii: ' + property.name" [attr.aria-disabled]="!property.id ? true : null">Detalii</a>
         </div>
       </div>
     </ng-template>
   </p-dataView>
   <div style="display: flex; justify-content: center; padding: 1rem 0 2rem 0;">
-    <p-paginator
-      [rows]="size"
-      [totalRecords]="totalRecords"
-      [first]="page * size"
-      [pageLinkSize]="6"
-      (onPageChange)="onPageChange($event)"
-    >
-    </p-paginator>
+    <nav class="property-pagination" aria-label="Paginarea proprietăților">
+      <a [routerLink]="page > 0 ? ['/properties'] : null" [queryParams]="{page: 0, size: size, type: propertyType}" [class.disabled]="page <= 0" [attr.aria-disabled]="page <= 0 ? true : null" aria-label="Prima pagină"><AngleDoubleLeftIcon aria-hidden="true" /></a>
+      <a [routerLink]="page > 0 ? ['/properties'] : null" [queryParams]="{page: page - 1, size: size, type: propertyType}" [class.disabled]="page <= 0" [attr.aria-disabled]="page <= 0 ? true : null" aria-label="Pagina anterioară"><AngleLeftIcon aria-hidden="true" /></a>
+      <span class="pagination-pages">
+        <a *ngFor="let pageNumber of pageNumbers" routerLink="/properties" [queryParams]="{page: pageNumber, size: size, type: propertyType}" [attr.aria-current]="pageNumber === page ? 'page' : null" [attr.aria-label]="'Pagina ' + (pageNumber + 1)">{{ pageNumber + 1 }}</a>
+      </span>
+      <a [routerLink]="page + 1 < totalPages ? ['/properties'] : null" [queryParams]="{page: page + 1, size: size, type: propertyType}" [class.disabled]="page + 1 >= totalPages" [attr.aria-disabled]="page + 1 >= totalPages ? true : null" aria-label="Pagina următoare"><AngleRightIcon aria-hidden="true" /></a>
+      <a [routerLink]="page + 1 < totalPages ? ['/properties'] : null" [queryParams]="{page: totalPages - 1, size: size, type: propertyType}" [class.disabled]="page + 1 >= totalPages" [attr.aria-disabled]="page + 1 >= totalPages ? true : null" aria-label="Ultima pagină"><AngleDoubleRightIcon aria-hidden="true" /></a>
+    </nav>
   </div>
 </div>

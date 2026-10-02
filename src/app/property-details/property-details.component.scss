@@ -222,6 +222,8 @@ $text-strong: #1e1e1e;
 }
 
 .back-btn {
+  text-decoration: none;
+  line-height: normal;
   display: inline-flex;
   align-items: center;
   gap: 10px;

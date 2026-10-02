@@ -3,6 +3,12 @@ import { PropertyDTO } from '../../dto/property.dto';
 
 export type PropertyTypeFilter = 'house' | 'land';
 
+interface CachedPropertyPage {
+  properties: PropertyDTO[];
+  totalRecords: number;
+  totalPages: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -12,7 +18,7 @@ export class PropertiesStateService {
   private readonly totalRecordsSignal = signal<number>(0);
   private readonly totalPagesSignal = signal<number>(0);
   private readonly propertyTypeSignal = signal<PropertyTypeFilter>('land');
-  private readonly pageCacheSignal = signal<Map<string, PropertyDTO[]>>(new Map());
+  private readonly pageCacheSignal = signal<Map<string, CachedPropertyPage>>(new Map());
 
   get page(): number {
     return this.pageSignal();
@@ -55,12 +61,20 @@ export class PropertiesStateService {
   }
 
   getCachedPage(page: number, size: number, type: PropertyTypeFilter): PropertyDTO[] | null {
-    return this.pageCacheSignal().get(this.getCacheKey(page, size, type)) ?? null;
+    return this.pageCacheSignal().get(this.getCacheKey(page, size, type))?.properties ?? null;
   }
 
-  setCachedPage(page: number, size: number, type: PropertyTypeFilter, properties: PropertyDTO[]): void {
+  getCachedPagination(page: number, size: number, type: PropertyTypeFilter): { totalRecords: number; totalPages: number } | null {
+    const cached = this.pageCacheSignal().get(this.getCacheKey(page, size, type));
+    return cached ? { totalRecords: cached.totalRecords, totalPages: cached.totalPages } : null;
+  }
+
+  setCachedPage(
+    page: number, size: number, type: PropertyTypeFilter, properties: PropertyDTO[],
+    pagination = { totalRecords: this.totalRecords, totalPages: this.totalPages }
+  ): void {
     const updatedCache = new Map(this.pageCacheSignal());
-    updatedCache.set(this.getCacheKey(page, size, type), properties);
+    updatedCache.set(this.getCacheKey(page, size, type), { properties, ...pagination });
     this.pageCacheSignal.set(updatedCache);
   }
 
