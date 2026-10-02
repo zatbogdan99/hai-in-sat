@@ -1,11 +1,11 @@
 ---
 id: TASK-120
 title: Fă link-urile interne crawlabile — <a href> în loc de click handlers
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-06-12 16:16'
-updated_date: '2026-10-02 07:55'
+updated_date: '2026-10-02 09:07'
 labels:
   - seo
   - technical
@@ -145,15 +145,17 @@ Pagini de listare descoperite:
 Review independent: constatările despre Back fără query, lățimile chipurilor mobile, focusul mobil, paddingul Detalii și fontul paginatorului au fost corectate și reverificate. Verdict final: fără probleme blocante rămase. git diff --check: PASS.
 
 Limită de verificare: CUA nu poate inițializa browserul (`failed to write kernel assets: The system cannot find the path specified. (os error 3)`), inclusiv după reset/reîncercare. Nu s-au putut face capturi comparative sau verificarea vizuală efectivă desktop/mobil. Media queries existente au fost păstrate și CSS-ul elementelor convertite a fost verificat la review; aceasta nu înlocuiește verificarea vizuală. PR-ul rămâne draft până la această verificare. Fără deploy.
+
+Închidere 2026-10-02: utilizatorul a confirmat testarea manuală (Am testat, totul merge bine, poti inchide task-ul). Validarea restantă este acceptată pe baza acestei confirmări; nu sunt atribuite agentului capturi sau verificări CUA care nu au fost efectuate. Toate criteriile și Definition of Done sunt îndeplinite; TASK-120 este Done. Nu s-a modificat codul aplicației la închidere și nu a fost necesară rerularea testelor. Fără merge sau deploy.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary
 
 <!-- SECTION:FINAL_SUMMARY:BEGIN -->
-Navigarea publică folosește linkuri RouterLink crawlabile, inclusiv filtre și paginare. Build + 106 teste Angular + 26 teste SSR + 109 răspunsuri HTTP trecute; toate cele 24 de rute au linkuri interne și incoming links, toate cele 16 anunțuri sunt descoperite. Review independent fără blocante. Verificarea vizuală desktop/mobil rămâne deschisă: CUA indisponibil; PR draft, fără deploy.
+Navigarea publică folosește linkuri RouterLink crawlabile, inclusiv filtre și paginare. Build + 106 teste Angular + 26 teste SSR + 109 răspunsuri HTTP trecute; toate cele 24 de rute au linkuri interne și incoming links, iar toate cele 16 anunțuri sunt descoperite. Review independent fără blocante. Utilizatorul a confirmat testarea manuală și a autorizat închiderea: TASK-120 Done. Fără deploy.
 <!-- SECTION:FINAL_SUMMARY:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Verificare vizuală comparativă desktop/mobil după restabilirea instrumentului de browser (CUA indisponibil la 2026-10-02).
+- [x] #1 Validarea manuală restantă este acceptată de utilizator, care confirmă că totul funcționează corect.
 <!-- DOD:END -->
