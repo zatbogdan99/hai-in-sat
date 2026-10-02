@@ -9,9 +9,9 @@
 
   <div class="title-row">
     <h1 class="property-title">{{ propertyName }}</h1>
-    <button type="button" class="back-btn back-btn--inline" (click)="goBackToProperties()">
+    <a class="back-btn back-btn--inline" routerLink="/properties" [queryParams]="propertiesQueryParams">
       <span aria-hidden="true">←</span> Înapoi la lista de proprietăți
-    </button>
+    </a>
   </div>
 
   <hr class="accent-line" />
@@ -127,8 +127,8 @@
   </ng-container>
 
   <div class="back-action back-action--bottom">
-    <button type="button" class="back-btn back-btn--bottom" (click)="goBackToProperties()">
+    <a class="back-btn back-btn--bottom" routerLink="/properties" [queryParams]="propertiesQueryParams">
       <span aria-hidden="true">←</span> Înapoi la lista de proprietăți
-    </button>
+    </a>
   </div>
 </main>

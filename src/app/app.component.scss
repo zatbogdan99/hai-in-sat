@@ -280,3 +280,46 @@ fa-icon {
   padding: 0.5rem !important;
   background: transparent;
 }
+.topbar__logo-link,
+.navigation-link {
+  display: inline-flex;
+  color: inherit;
+  text-decoration: none;
+  border-radius: 2rem;
+}
+
+.navigation-link:focus-visible,
+.topbar__logo-link:focus-visible,
+.footer-links a:focus-visible {
+  outline: 2px solid #f4efe5;
+  outline-offset: 4px;
+}
+
+.mobile-menu-list .navigation-link > p-chip {
+  flex: 1;
+}
+
+.mobile-menu-list .navigation-link:focus-visible {
+  outline-color: #042677;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem 1.5rem;
+  padding: 2rem 1.5rem 0;
+  background: #042677;
+  color: #f4efe5;
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    line-height: 1.5;
+    padding-block: 0.25rem;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+}

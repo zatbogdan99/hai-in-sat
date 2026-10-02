@@ -5,7 +5,7 @@ import { GalleriaModule } from "primeng/galleria";
 import { Divider } from "primeng/divider";
 import { Dialog } from "primeng/dialog";
 import { ProgressSpinner } from "primeng/progressspinner";
-import { Button } from "primeng/button";
+import { Button, ButtonDirective } from "primeng/button";
 import {
   AbstractControl,
   FormBuilder,
@@ -17,7 +17,7 @@ import {
   Validators
 } from "@angular/forms";
 import { DataViewModule } from "primeng/dataview";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, RouterLink } from "@angular/router";
 import { PropertyApiService } from "../service/property-api/property-api.service";
 import { PropertyDTO } from "../dto/property.dto";
 import { SelectButtonModule } from 'primeng/selectbutton';
@@ -27,7 +27,6 @@ import {Textarea} from "primeng/textarea";
 import {FloatLabel} from "primeng/floatlabel";
 import {DropdownModule} from "primeng/dropdown";
 import {AutoComplete} from "primeng/autocomplete";
-import {PaginatorModule} from "primeng/paginator";
 import { PropertyFormDTO } from "../dto/property-form.dto";
 import { PropertyContactService } from "../service/property-contact/property-contact.service";
 import { PropertiesStateService, PropertyTypeFilter } from "../service/properties-state-service/properties-state.service";
@@ -39,6 +38,11 @@ import { HtmlTextService } from "../service/html-text.service";
 import { LoggerService } from "../service/logger.service";
 import { SSR_RENDER_STATE } from '../ssr-render-state';
 import { stripPhones } from '../utils/strip-phones.util';
+import { Subscription } from 'rxjs';
+import { AngleDoubleLeftIcon } from 'primeng/icons/angledoubleleft';
+import { AngleLeftIcon } from 'primeng/icons/angleleft';
+import { AngleRightIcon } from 'primeng/icons/angleright';
+import { AngleDoubleRightIcon } from 'primeng/icons/angledoubleright';
 
 const trimControlValue = (control: AbstractControl | null | undefined): string => {
   const value = control?.value;
@@ -62,6 +66,12 @@ const atLeastOneContactValidator: ValidatorFn = (control: AbstractControl): Vali
     GalleriaModule,
     ProgressSpinner,
     Button,
+    ButtonDirective,
+    RouterLink,
+    AngleDoubleLeftIcon,
+    AngleLeftIcon,
+    AngleRightIcon,
+    AngleDoubleRightIcon,
     FormsModule,
     ReactiveFormsModule,
     DataViewModule,
@@ -73,8 +83,7 @@ const atLeastOneContactValidator: ValidatorFn = (control: AbstractControl): Vali
     Textarea,
     FloatLabel,
     DropdownModule,
-    AutoComplete,
-    PaginatorModule
+    AutoComplete
   ],
   styleUrls: ['./properties.component.scss']
 })
@@ -93,6 +102,7 @@ export class PropertiesComponent implements OnInit {
   totalRecords: number = 0;
   totalPages: number = 0;
   private destroyRef = inject(DestroyRef);
+  private propertiesRequest?: Subscription;
   private readonly ssrRenderState = inject(SSR_RENDER_STATE, { optional: true });
 
   options = [
@@ -100,15 +110,10 @@ export class PropertiesComponent implements OnInit {
     { label: 'Grid', value: 'grid' }
   ];
 
-  setPropertyType(type: PropertyTypeFilter) {
-    if (this.propertyType === type) {
-      return;
-    }
-    this.propertyType = type;
-    this.page = 0;
-    this.propertiesState.setPropertyType(type);
-    this.propertiesState.setPage(0);
-    this.initializeProperties();
+  get pageNumbers(): number[] {
+    const count = Math.min(6, this.totalPages);
+    const start = Math.max(0, Math.min(this.page - Math.floor(count / 2), this.totalPages - count));
+    return Array.from({ length: count }, (_, index) => start + index);
   }
 
 
@@ -126,7 +131,6 @@ export class PropertiesComponent implements OnInit {
 
   constructor(
     public loadingService: LoadingService,
-    private router: Router,
     private route: ActivatedRoute,
     private propertyApiService: PropertyApiService,
     private propertyContactService: PropertyContactService,
@@ -163,32 +167,30 @@ export class PropertiesComponent implements OnInit {
     ]);
     this.seo.removeJsonLd('real-estate-listing');
 
-    const queryParams = this.route.snapshot.queryParamMap;
-    const pageParam = queryParams.get('page');
-    const sizeParam = queryParams.get('size');
-    const typeParam = queryParams.get('type');
-
-    const initialPage = this.parseNumberParam(pageParam, this.propertiesState.page);
-    const initialSize = this.parseNumberParam(sizeParam, this.propertiesState.size);
-    const initialType = this.parseTypeParam(typeParam, this.propertiesState.propertyType);
-
-    this.page = initialPage;
-    this.size = initialSize;
-    this.propertyType = initialType;
-
-    this.propertiesState.setPage(this.page);
-    this.propertiesState.setSize(this.size);
-    this.propertiesState.setPropertyType(this.propertyType);
-
-    this.initializeProperties();
+    // Angular reuses this component when only the filter/page query changes.
+    this.route.queryParamMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(queryParams => {
+      // A URL without query parameters must also restore the same list on Back.
+      this.page = this.parseNumberParam(queryParams.get('page'), 0);
+      this.size = this.parseNumberParam(queryParams.get('size'), 6);
+      this.propertyType = this.parseTypeParam(queryParams.get('type'), 'land');
+      this.propertiesState.setPage(this.page);
+      this.propertiesState.setSize(this.size);
+      this.propertiesState.setPropertyType(this.propertyType);
+      this.initializeProperties();
+    });
   }
 
   initializeProperties() {
+    this.propertiesRequest?.unsubscribe();
+    const { page, size, propertyType } = this;
     const cached = this.propertiesState.getCachedPage(this.page, this.size, this.propertyType);
     if (cached) {
+      const pagination = this.propertiesState.getCachedPagination(page, size, propertyType);
       this.properties = this.sortPropertiesByOrder(cached);
-      this.totalRecords = this.propertiesState.totalRecords || cached.length;
-      this.totalPages = this.propertiesState.totalPages || 1;
+      this.totalRecords = pagination?.totalRecords ?? cached.length;
+      this.totalPages = pagination?.totalPages ?? 1;
+      this.propertiesState.setTotalRecords(this.totalRecords);
+      this.propertiesState.setTotalPages(this.totalPages);
       this.loadingService.loadingOff();
 
       this.prefetchNextPage();
@@ -196,7 +198,7 @@ export class PropertiesComponent implements OnInit {
     }
 
     this.loadingService.loadingOn();
-    this.propertyApiService.getPropertiesPage(this.page, this.size, this.propertyType)
+    this.propertiesRequest = this.propertyApiService.getPropertiesPage(page, size, propertyType)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: (resp) => {
@@ -208,7 +210,9 @@ export class PropertiesComponent implements OnInit {
         this.propertiesState.setSize(this.size);
         this.propertiesState.setTotalRecords(this.totalRecords);
         this.propertiesState.setTotalPages(this.totalPages);
-        this.propertiesState.setCachedPage(this.page, this.size, this.propertyType, this.properties);
+        this.propertiesState.setCachedPage(page, size, propertyType, this.properties, {
+          totalRecords: this.totalRecords, totalPages: this.totalPages
+        });
         this.loadingService.loadingOff();
 
         this.prefetchNextPage();
@@ -226,16 +230,6 @@ export class PropertiesComponent implements OnInit {
         this.loadingService.loadingOff();
       }
     });
-  }
-
-  onPageChange(event: any) {
-    this.page = event?.page ?? 0;
-    if (event?.rows && event.rows !== this.size) {
-      this.size = event.rows;
-    }
-    this.propertiesState.setPage(this.page);
-    this.propertiesState.setSize(this.size);
-    this.initializeProperties();
   }
 
   showAddPropertyModal() {
@@ -313,19 +307,10 @@ export class PropertiesComponent implements OnInit {
     window.location.href = 'tel:+40728140628';
   }
 
-  viewPropertyDetails(property: PropertyDTO) {
-    this.logger.log('Viewing property details:', property.id, property.name);
-    if (property && property.id) {
-      const type = toPropertyType(property.type);
-      const slug = generateSlug(type, property.name);
-      this.router.navigate(['/property', property.id, slug], {
-        queryParams: {
-          page: this.page,
-          size: this.size,
-          type: this.propertyType
-        }
-      });
-    }
+  propertyLink(property: PropertyDTO): string[] | null {
+    return property?.id
+      ? ['/property', property.id, generateSlug(toPropertyType(property.type), property.name)]
+      : null;
   }
 
   getFilteredProperties() {
@@ -396,18 +381,22 @@ export class PropertiesComponent implements OnInit {
     }
 
     const currentType = this.propertyType;
-    const cachedNext = this.propertiesState.getCachedPage(nextPage, this.size, currentType);
+    const currentSize = this.size;
+    const cachedNext = this.propertiesState.getCachedPage(nextPage, currentSize, currentType);
     if (cachedNext) {
       return;
     }
 
-    this.propertyApiService.getPropertiesPage(nextPage, this.size, currentType)
+    this.propertyApiService.getPropertiesPage(nextPage, currentSize, currentType)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: (resp) => {
         const content = Array.isArray(resp?.content) ? resp.content : [];
         const sorted = this.sortPropertiesByOrder(content);
-        this.propertiesState.setCachedPage(nextPage, this.size, currentType, sorted);
+        this.propertiesState.setCachedPage(nextPage, currentSize, currentType, sorted, {
+          totalRecords: typeof resp?.totalElements === 'number' ? resp.totalElements : content.length,
+          totalPages: typeof resp?.totalPages === 'number' ? resp.totalPages : 1
+        });
         this.logger.log(`✅ Prefetched page ${nextPage} (${sorted.length} properties)`);
       },
       error: (err) => {

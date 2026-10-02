@@ -239,15 +239,122 @@ async function main() {
   const sitemapUrls = elements(parse(sitemap.html)).filter(node => node.tagName === 'loc')
     .map(node => new URL(textContent(node).trim()));
   assert.ok(sitemapUrls.length > 0, 'The sitemap must contain URLs to check.');
+
+  // TASK-120: represent every indexed property with local data whose name/type
+  // reproduces its real slug. The fixture respects filtering and pagination;
+  // no sitemap rewrite or production API request is needed for this crawl.
+  const propertyUrls = sitemapUrls.filter(url => url.pathname.startsWith('/property/'));
+  const catalog = propertyUrls.map((url, sortOrder) => {
+    const match = url.pathname.match(/^\/property\/([^/]+)\/(teren|casa)-de-vanzare-(.+)$/);
+    assert.ok(match, `Unsupported property sitemap URL: ${url.pathname}`);
+    return {
+      id: match[1], type: match[2] === 'casa' ? 'house' : 'land',
+      name: decodeURIComponent(match[3]).replace(/-/g, ' '), sortOrder,
+      description: 'Proprietate din catalogul local pentru verificarea linkurilor interne.',
+      thumbnail: '/assets/poza_landing1.avif',
+    };
+  });
+  assert.ok(catalog.length > 0, 'The sitemap must contain property URLs to check.');
+  const propertyPaths = new Map(propertyUrls.map(url => [url.pathname.split('/')[2], url.pathname]));
+  assert.equal(propertyPaths.size, catalog.length, 'Sitemap property IDs must be unique.');
+  writeFileSync(fixtureState, JSON.stringify({ catalog }));
+
+  const incoming = new Map(sitemapUrls.map(url => [url.pathname, new Set()]));
+  const indexedPages = [];
+  const listingPages = [];
+  const discoveredProperties = new Set();
+  const localOrigin = `http://localhost:${port}`;
+
+  function inspectInternalLinks(result, nodes) {
+    const anchors = nodes.filter(node => node.tagName === 'a' && /^\/(?!\/)/.test(attr(node, 'href') ?? ''));
+    const hrefs = [...new Set(anchors.map(node => attr(node, 'href')))];
+    assert.ok(hrefs.length >= 5, `${result.url}: expected at least five distinct internal anchor hrefs, got ${hrefs.length}`);
+    const sourcePath = new URL(result.url, localOrigin).pathname;
+    for (const href of hrefs) {
+      const destination = new URL(href, localOrigin);
+      assert.equal(destination.origin, localOrigin, `${result.url}: expected a local internal href`);
+      assert.ok(!['/sate', '/articole'].includes(destination.pathname), `${result.url}: link to a route that does not exist`);
+      if (destination.pathname !== sourcePath) incoming.get(destination.pathname)?.add(result.url);
+    }
+    return { anchors, hrefs };
+  }
+
   for (const url of sitemapUrls) {
     const result = await request(url.pathname + url.search);
     assert.equal(result.status, 200, result.url);
-    const headings = elements(parse(result.html)).filter(node => node.tagName === 'h1');
+    const nodes = elements(parse(result.html));
+    const headings = nodes.filter(node => node.tagName === 'h1');
     assert.equal(headings.length, 1, `${result.url}: expected exactly one H1 in the SSR DOM`);
     assert.ok(textContent(headings[0]).trim(), `${result.url}: the H1 must not be empty`);
     console.log(`PASS H1 ${result.url}: ${textContent(headings[0]).trim()}`);
+    if (url.pathname.startsWith('/property/')) {
+      const canonical = nodes.find(node => node.tagName === 'link' && attr(node, 'rel') === 'canonical');
+      assert.ok(canonical && attr(canonical, 'href'), `${result.url}: missing canonical property URL`);
+      assert.equal(new URL(attr(canonical, 'href')).pathname, url.pathname, `${result.url}: fixture must preserve the indexed property slug`);
+    }
+    const { hrefs } = inspectInternalLinks(result, nodes);
+    indexedPages.push({ url: result.url, internalLinkCount: hrefs.length, internalLinks: hrefs });
   }
-  console.log(`PASS redirect, static assets, SEO phones, ${sitemapUrls.length} sitemap headings; ${evidence.length} HTTP responses checked.`);
+
+  // The initial query bypasses /properties cached while the earlier API-failure
+  // scenario had an empty list. Every later listing URL must be discovered in
+  // rendered HTML, including the house filter and subsequent land pages.
+  const queue = ['/properties?type=land&page=0&size=6'];
+  const visited = new Set();
+  while (queue.length) {
+    const next = new URL(queue.shift(), localOrigin);
+    next.searchParams.sort();
+    const requestPath = next.pathname + next.search;
+    if (visited.has(requestPath)) continue;
+    visited.add(requestPath);
+    assert.ok(visited.size <= catalog.length * 2 + 10, 'Listing crawl did not converge; check generated pagination hrefs.');
+    const result = await request(requestPath);
+    assert.equal(result.status, 200, requestPath);
+    const { anchors, hrefs } = inspectInternalLinks(result, elements(parse(result.html)));
+    const type = next.searchParams.get('type');
+    const page = Number(next.searchParams.get('page'));
+    const size = Number(next.searchParams.get('size'));
+    assert.ok(['land', 'house'].includes(type), `${requestPath}: missing property filter`);
+    assert.ok(Number.isInteger(page) && page >= 0, `${requestPath}: invalid page`);
+    assert.ok(Number.isInteger(size) && size > 0, `${requestPath}: invalid page size`);
+    const expectedProperties = catalog.filter(property => property.type === type).slice(page * size, (page + 1) * size);
+    const actualPropertyPaths = new Set();
+    for (const anchor of anchors) {
+      const destination = new URL(attr(anchor, 'href'), localOrigin);
+      if (destination.pathname === '/properties' && destination.search) {
+        queue.push(destination.pathname + destination.search);
+      }
+      if (!destination.pathname.startsWith('/property/')) continue;
+      const id = destination.pathname.split('/')[2];
+      assert.equal(destination.pathname, propertyPaths.get(id), `${requestPath}: incorrect property ID or slug`);
+      for (const [key, expected] of [['page', String(page)], ['size', String(size)], ['type', type]]) {
+        assert.equal(destination.searchParams.get(key), expected, `${requestPath}: property href must preserve ${key}`);
+      }
+      actualPropertyPaths.add(destination.pathname);
+      discoveredProperties.add(destination.pathname);
+    }
+    assert.deepEqual([...actualPropertyPaths].sort(), expectedProperties.map(property => propertyPaths.get(property.id)).sort(),
+      `${requestPath}: rendered property links must match the requested fixture page/filter`);
+    for (const property of expectedProperties) {
+      assert.ok(anchors.some(anchor => {
+        const destination = new URL(attr(anchor, 'href'), localOrigin);
+        const label = textContent(anchor).trim().replace(/\.\.\.$/, '');
+        return destination.pathname === propertyPaths.get(property.id) && label.length > 0 && property.name.startsWith(label);
+      }), `${requestPath}: ${property.id} must have its name as anchor text`);
+    }
+    listingPages.push({ url: requestPath, internalLinkCount: hrefs.length, internalLinks: hrefs });
+    console.log(`PASS CRAWL ${requestPath}: ${actualPropertyPaths.size} property destinations, ${hrefs.length} distinct internal hrefs`);
+  }
+  assert.deepEqual([...discoveredProperties].sort(), propertyUrls.map(url => url.pathname).sort(),
+    'Following SSR listing/filter/pagination hrefs must discover every property in the sitemap.');
+  for (const page of indexedPages) {
+    const sources = [...incoming.get(new URL(page.url, localOrigin).pathname)].sort();
+    assert.ok(sources.length > 0, `${page.url}: no incoming link from another page`);
+    page.incomingFrom = sources;
+    console.log(`PASS LINKS ${page.url}: ${page.internalLinkCount} distinct internal hrefs; incoming from ${sources[0]}`);
+  }
+  writeFileSync(path.join(output, 'internal-links.json'), JSON.stringify({ indexedPages, listingPages, discoveredProperties: [...discoveredProperties] }, null, 2));
+  console.log(`PASS redirect, static assets, SEO phones, ${sitemapUrls.length} sitemap headings and incoming links, ${discoveredProperties.size} discovered properties; ${evidence.length} HTTP responses checked.`);
 }
 
 main().catch(error => {

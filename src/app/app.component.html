@@ -2,22 +2,24 @@
 <div>
   <div class="topbar">
     <div class="topbar__left">
-      <img class="topbar__logo" src="assets/Hai%20in%20sat.avif" alt="Hai în Sat - Case și terenuri de vânzare în Oltenia de sub Munte" height="80" (click)="goToLandingPage()"/>
+      <a class="topbar__logo-link" routerLink="/" aria-label="Acasă">
+        <img class="topbar__logo" src="assets/Hai%20in%20sat.avif" alt="Hai în Sat - Case și terenuri de vânzare în Oltenia de sub Munte" height="80"/>
+      </a>
     </div>
     <div class="topbar__center">
       <div class="nav-chips">
-        <p-chip class="clickable topchip" icon="pi pi-sun" label="Oltenia de sub Munte" (click)="goToUnderTheMountain()"></p-chip>
-        <p-chip class="clickable topchip" icon="pi pi-home" label="Sate în Oltenia de sub Munte" (click)="goToVillageOfTheMonth()"></p-chip>
-        <p-chip class="clickable topchip" icon="pi pi-eye" label="Proprietăți" (click)="goToProperties()"></p-chip>
-        <p-chip class="clickable topchip" icon="pi pi-home" label="Găsește-mi locul" (click)="goToHomeFormPage()"></p-chip>
+        <a class="navigation-link" routerLink="/under-the-mountain"><p-chip class="clickable topchip" icon="pi pi-sun" label="Oltenia de sub Munte"></p-chip></a>
+        <a class="navigation-link" routerLink="/village-of-the-month"><p-chip class="clickable topchip" icon="pi pi-home" label="Sate în Oltenia de sub Munte"></p-chip></a>
+        <a class="navigation-link" routerLink="/properties"><p-chip class="clickable topchip" icon="pi pi-eye" label="Proprietăți"></p-chip></a>
+        <a class="navigation-link" routerLink="/homes"><p-chip class="clickable topchip" icon="pi pi-home" label="Găsește-mi locul"></p-chip></a>
       </div>
       <p-button class="topbar__menu-button" icon="pi pi-list" [rounded]="true" [text]="true" (onClick)="mobileMenu.toggle($event)"></p-button>
       <p-popover #mobileMenu [dismissable]="true" [baseZIndex]="10000" styleClass="mobile-menu-panel">
         <div class="mobile-menu-list">
-          <p-chip class="clickable topchip" icon="pi pi-sun" label="Oltenia de sub Munte" (click)="goToUnderTheMountain(); mobileMenu.hide()"></p-chip>
-          <p-chip class="clickable topchip" icon="pi pi-home" label="Sate în Oltenia de sub Munte" (click)="goToVillageOfTheMonth(); mobileMenu.hide()"></p-chip>
-          <p-chip class="clickable topchip" icon="pi pi-eye" label="Proprietăți" (click)="goToProperties(); mobileMenu.hide()"></p-chip>
-          <p-chip class="clickable topchip" icon="pi pi-home" label="Găsește-mi locul" (click)="goToHomeFormPage(); mobileMenu.hide()"></p-chip>
+          <a class="navigation-link" routerLink="/under-the-mountain" (click)="mobileMenu.hide()"><p-chip class="clickable topchip" icon="pi pi-sun" label="Oltenia de sub Munte"></p-chip></a>
+          <a class="navigation-link" routerLink="/village-of-the-month" (click)="mobileMenu.hide()"><p-chip class="clickable topchip" icon="pi pi-home" label="Sate în Oltenia de sub Munte"></p-chip></a>
+          <a class="navigation-link" routerLink="/properties" (click)="mobileMenu.hide()"><p-chip class="clickable topchip" icon="pi pi-eye" label="Proprietăți"></p-chip></a>
+          <a class="navigation-link" routerLink="/homes" (click)="mobileMenu.hide()"><p-chip class="clickable topchip" icon="pi pi-home" label="Găsește-mi locul"></p-chip></a>
         </div>
       </p-popover>
     </div>
@@ -28,6 +30,16 @@
     </div>
   </div>
   <router-outlet (activate)="resetPageIndexing()"></router-outlet>
+
+  <nav class="footer-links" aria-label="Pagini Hai în Sat">
+    <a routerLink="/properties">Proprietăți</a>
+    <a routerLink="/about-us">Despre noi</a>
+    <a routerLink="/contact-us">Contact</a>
+    <a routerLink="/see-the-area">Vezi zona</a>
+    <a routerLink="/under-the-mountain">Oltenia de sub Munte</a>
+    <a routerLink="/village-of-the-month">Satul lunii</a>
+    <a routerLink="/homes">Găsește-mi locul</a>
+  </nav>
 
   <div class="large-screen">
     <div style="text-align: center" class="card justify-content-center">
@@ -246,7 +258,7 @@
         <p-chip (click)="showCookies()" label="Politica de cookies"/>
       </div>
       <div style="padding-top: 1rem; text-align: center">
-        <p-chip (click)="goToContactUsPage()" label="Contact" />
+        <a class="navigation-link" routerLink="/contact-us"><p-chip label="Contact" /></a>
       </div>
       <p-dialog
         header="Politica de confidențialitate"

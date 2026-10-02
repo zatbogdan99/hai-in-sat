@@ -40,4 +40,18 @@ describe('ContactUsComponent', () => {
       expect(content).not.toMatch(/\d/);
     }
   });
+
+  it('links desktop social contacts to the real profiles in a separate tab', () => {
+    const links = Array.from(fixture.nativeElement.querySelectorAll('.large-screen a[href^="https://"]')) as HTMLAnchorElement[];
+    expect(links.map(link => link.getAttribute('href'))).toEqual([
+      'https://www.instagram.com/hai.in.sat?igsh=MXh5NmFqcXhjdThtYQ%3D%3D&utm_source=qr',
+      'https://www.facebook.com/profile.php?id=61560478122728&is_tour_dismissed',
+      'https://www.tiktok.com/@hai.in.sat?_t=8n1yemWQQMr&_r=1'
+    ]);
+    for (const link of links) {
+      expect(link.target).toBe('_blank');
+      expect(link.relList.contains('noopener')).toBeTrue();
+    }
+    expect(fixture.nativeElement.querySelector('a[href="#"]')).toBeNull();
+  });
 });

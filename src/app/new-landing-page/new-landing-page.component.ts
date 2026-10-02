@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { SeoService } from '../service/seo.service';
 
 @Component({
   selector: 'app-new-landing-page',
   templateUrl: './new-landing-page.component.html',
+  imports: [RouterLink],
   styleUrls: ['./new-landing-page.component.scss']
 })
 export class NewLandingPageComponent implements OnInit {
-  constructor(private router: Router, private seo: SeoService) {}
+  constructor(private seo: SeoService) {}
 
   ngOnInit(): void {
     this.seo.updatePageMeta({
@@ -23,7 +24,4 @@ export class NewLandingPageComponent implements OnInit {
     this.seo.removeJsonLd('real-estate-listing');
   }
 
-  goToHomeFormPage() {
-    this.router.navigateByUrl('/homes');
-  }
 }

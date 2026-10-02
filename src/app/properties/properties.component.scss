@@ -280,6 +280,8 @@
 }
 
 .filter-button {
+  text-decoration: none;
+  line-height: normal;
   padding: 1rem 2rem;
   font-size: 1.2rem;
   font-weight: bold;
@@ -308,6 +310,74 @@
 }
 
 /* Responsive */
+.property-name-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.property-details-link {
+  text-decoration: none;
+  font-weight: 500;
+  padding-block: var(--p-button-padding-y);
+  padding-inline: var(--p-button-padding-x);
+}
+
+/* Keep the PrimeNG paginator dimensions, using anchors for crawlable pages. */
+.property-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--p-content-border-radius);
+  background: var(--p-content-background);
+  color: var(--p-content-color);
+
+  .pagination-pages {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    color: var(--p-text-muted-color);
+    text-decoration: none;
+    line-height: 1;
+    font-size: 13.3333px;
+    cursor: pointer;
+    user-select: none;
+    transition: background var(--p-transition-duration), color var(--p-transition-duration);
+  }
+
+  a:hover {
+    background: var(--p-content-hover-background);
+    color: var(--p-text-hover-muted-color);
+  }
+
+  a[aria-current='page'] {
+    background: var(--p-highlight-background);
+    color: var(--p-highlight-color);
+  }
+
+  a.disabled {
+    opacity: var(--p-disabled-opacity, 0.6);
+    pointer-events: none;
+  }
+}
+
+.property-name-link:focus-visible,
+.filter-button:focus-visible,
+.property-pagination a:focus-visible {
+  outline: 2px solid #0b2f6b;
+  outline-offset: 2px;
+}
+
 @media (max-width: 768px) {
   .property-header-container {
     flex-direction: column;
