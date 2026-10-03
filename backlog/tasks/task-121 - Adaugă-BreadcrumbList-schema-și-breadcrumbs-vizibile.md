@@ -4,12 +4,13 @@ title: Adaugă BreadcrumbList schema și breadcrumbs vizibile
 status: To Do
 assignee: []
 created_date: '2026-05-07 07:59'
-updated_date: '2026-07-27'
+updated_date: '2026-10-03 21:51'
 labels:
   - seo
   - schema
   - ux
-dependencies: []
+dependencies:
+  - TASK-132
 documentation:
   - ../../seo-audit-output/ACTION-PLAN.md
 priority: medium
@@ -97,4 +98,6 @@ Revizuire 2026-07-27 (pregatire pentru pipeline). Ambiguitati eliminate:
 3. AC-ul vechi #3 (Google Rich Results Test pe 3 pagini) → mutat in `## Verificare post-deploy (owner)`.
 
 Stare reala (confirmata prin grep 2026-07-06): JSON-LD-ul `BreadcrumbList` e DEJA implementat si apelat de toate paginile publice rutate. Partea neimplementata e DOAR breadcrumb-ul VIZIBIL — de aceea AC-urile se concentreaza pe componenta noua, nu pe schema.
+
+Prioritate de execuție stabilită explicit de utilizator la 2026-10-04: TASK-132 (actualizarea dependențelor frontend/SSR) este următorul de implementat. După finalizarea lui se reia ordinea numerică începând cu TASK-121. Aceasta este o dependență de planificare, nu o cerință tehnică a breadcrumbs.
 <!-- SECTION:NOTES:END -->
