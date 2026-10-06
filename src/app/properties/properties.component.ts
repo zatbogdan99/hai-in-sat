@@ -25,7 +25,6 @@ import { TagModule } from "primeng/tag";
 import {InputText} from "primeng/inputtext";
 import {Textarea} from "primeng/textarea";
 import {FloatLabel} from "primeng/floatlabel";
-import {DropdownModule} from "primeng/dropdown";
 import {AutoComplete} from "primeng/autocomplete";
 import { PropertyFormDTO } from "../dto/property-form.dto";
 import { PropertyContactService } from "../service/property-contact/property-contact.service";
@@ -82,7 +81,6 @@ const atLeastOneContactValidator: ValidatorFn = (control: AbstractControl): Vali
     InputText,
     Textarea,
     FloatLabel,
-    DropdownModule,
     AutoComplete
   ],
   styleUrls: ['./properties.component.scss']

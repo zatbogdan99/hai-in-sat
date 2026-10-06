@@ -6,7 +6,7 @@
   <section class="properties-hero">
     <h1 class="hero-title">Case și terenuri</h1>
     <p class="hero-subtitle">Cu <strong>150 lei/an</strong> îți facem proprietatea vizibilă pentru oameni care vor locuri ca ale tale!</p>
-    <p-button label="Vreau și eu!" class="hero-cta" (click)="showAddPropertyModal()"></p-button>
+    <p-button [buttonProps]="{ autofocus: false }" label="Vreau și eu!" class="hero-cta" (click)="showAddPropertyModal()"></p-button>
   </section>
 
   <p-dialog
@@ -146,7 +146,7 @@
     <ng-template pTemplate="footer">
       <div class="dialog-footer">
         <div class="dialog-footer-left">
-          <p-button severity="info" icon="pi pi-send" label="Trimite" (click)="saveProperty()"></p-button>
+          <p-button [buttonProps]="{ autofocus: false }" severity="info" icon="pi pi-send" label="Trimite" (click)="saveProperty()"></p-button>
         </div>
         <div class="dialog-footer-right">
           <i class="pi pi-lock privacy-icon" aria-hidden="true"></i>
@@ -204,13 +204,13 @@
   </p-dataView>
   <div style="display: flex; justify-content: center; padding: 1rem 0 2rem 0;">
     <nav class="property-pagination" aria-label="Paginarea proprietăților">
-      <a [routerLink]="page > 0 ? ['/properties'] : null" [queryParams]="{page: 0, size: size, type: propertyType}" [class.disabled]="page <= 0" [attr.aria-disabled]="page <= 0 ? true : null" aria-label="Prima pagină"><AngleDoubleLeftIcon aria-hidden="true" /></a>
-      <a [routerLink]="page > 0 ? ['/properties'] : null" [queryParams]="{page: page - 1, size: size, type: propertyType}" [class.disabled]="page <= 0" [attr.aria-disabled]="page <= 0 ? true : null" aria-label="Pagina anterioară"><AngleLeftIcon aria-hidden="true" /></a>
+      <a [routerLink]="page > 0 ? ['/properties'] : null" [queryParams]="{page: 0, size: size, type: propertyType}" [class.disabled]="page <= 0" [attr.aria-disabled]="page <= 0 ? true : null" aria-label="Prima pagină"><svg data-p-icon="angle-double-left" aria-hidden="true" /></a>
+      <a [routerLink]="page > 0 ? ['/properties'] : null" [queryParams]="{page: page - 1, size: size, type: propertyType}" [class.disabled]="page <= 0" [attr.aria-disabled]="page <= 0 ? true : null" aria-label="Pagina anterioară"><svg data-p-icon="angle-left" aria-hidden="true" /></a>
       <span class="pagination-pages">
         <a *ngFor="let pageNumber of pageNumbers" routerLink="/properties" [queryParams]="{page: pageNumber, size: size, type: propertyType}" [attr.aria-current]="pageNumber === page ? 'page' : null" [attr.aria-label]="'Pagina ' + (pageNumber + 1)">{{ pageNumber + 1 }}</a>
       </span>
-      <a [routerLink]="page + 1 < totalPages ? ['/properties'] : null" [queryParams]="{page: page + 1, size: size, type: propertyType}" [class.disabled]="page + 1 >= totalPages" [attr.aria-disabled]="page + 1 >= totalPages ? true : null" aria-label="Pagina următoare"><AngleRightIcon aria-hidden="true" /></a>
-      <a [routerLink]="page + 1 < totalPages ? ['/properties'] : null" [queryParams]="{page: totalPages - 1, size: size, type: propertyType}" [class.disabled]="page + 1 >= totalPages" [attr.aria-disabled]="page + 1 >= totalPages ? true : null" aria-label="Ultima pagină"><AngleDoubleRightIcon aria-hidden="true" /></a>
+      <a [routerLink]="page + 1 < totalPages ? ['/properties'] : null" [queryParams]="{page: page + 1, size: size, type: propertyType}" [class.disabled]="page + 1 >= totalPages" [attr.aria-disabled]="page + 1 >= totalPages ? true : null" aria-label="Pagina următoare"><svg data-p-icon="angle-right" aria-hidden="true" /></a>
+      <a [routerLink]="page + 1 < totalPages ? ['/properties'] : null" [queryParams]="{page: totalPages - 1, size: size, type: propertyType}" [class.disabled]="page + 1 >= totalPages" [attr.aria-disabled]="page + 1 >= totalPages ? true : null" aria-label="Ultima pagină"><svg data-p-icon="angle-double-right" aria-hidden="true" /></a>
     </nav>
   </div>
 </div>

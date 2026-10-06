@@ -9,7 +9,9 @@ const { once } = require('node:events');
 const { setTimeout: delay } = require('node:timers/promises');
 const { parse } = require('parse5');
 
-const root = path.resolve(__dirname, '..');
+// An alternate prebuilt root also validates the runtime-only Yarn deployment
+// installation; test tooling and fixtures still come from this checkout.
+const root = path.resolve(process.env.SSR_CACHE_TEST_ROOT || path.join(__dirname, '..'));
 const bundle = path.join(root, 'dist/hai-in-sat/server/main.js');
 const port = Number(process.env.SSR_CACHE_TEST_PORT || 4000);
 const output = mkdtempSync(path.join(tmpdir(), 'hai-in-sat-ssr-cache-'));
@@ -41,6 +43,10 @@ function verify(result, status, cache, publicResponse = false) {
   assert.equal(result.headers['x-cache'], cache, result.url);
   assert.equal(result.headers['cache-control'], publicResponse ? 'public, max-age=300' : 'no-store', result.url);
   assert.equal(result.headers['x-frame-options'], 'SAMEORIGIN');
+  assert.equal(result.headers['strict-transport-security'], 'max-age=31536000; includeSubDomains; preload');
+  assert.equal(result.headers['x-content-type-options'], 'nosniff');
+  assert.equal(result.headers['referrer-policy'], 'strict-origin-when-cross-origin');
+  assert.equal(result.headers['permissions-policy'], 'geolocation=(), microphone=(), camera=()');
   assert.ok(result.headers['content-security-policy-report-only']);
   console.log(`PASS ${result.method} ${result.url} -> ${status}, ${cache}, ${result.headers['cache-control']}, Age=${result.headers.age ?? '-'}`);
 }
@@ -98,6 +104,21 @@ async function main() {
   }
   assert.ok(serverLog.includes('Node Express server listening'), 'SSR server did not start.');
 
+  // Angular 20 CommonEngine requires allowedHosts. Exercise each accepted Host
+  // without the HTML cache, so a silent CSR fallback cannot pass as a 200 page.
+  for (const host of ['xn--hai-n-sat-t5a.ro', `localhost:${port}`, `127.0.0.1:${port}`, `[::1]:${port}`]) {
+    const result = await request('/?host-check=1', { headers: {
+      Host: host, 'X-Forwarded-Proto': 'https',
+      'X-Forwarded-Host': 'untrusted.invalid', 'X-Forwarded-Prefix': '//untrusted.invalid',
+    } });
+    verify(result, 200, 'MISS');
+    assert.equal(elements(parse(result.html)).filter(node => node.tagName === 'h1').length, 1,
+      `${host}: expected fully rendered HTML, not a CSR fallback`);
+  }
+  const unknownHost = await request('/properties?type=land', { headers: { Host: 'untrusted.invalid' } });
+  assert.equal(unknownHost.status, 301);
+  assert.equal(unknownHost.headers.location, 'https://xn--hai-n-sat-t5a.ro/properties?type=land');
+
   const first = await request('/');
   verify(first, 200, 'MISS', true);
   await delay(1200);
@@ -125,6 +146,10 @@ async function main() {
   writeFileSync(fixtureState, JSON.stringify({ listError: false }));
   verify(await request('/properties'), 200, 'MISS', true);
   verify(await request('/properties'), 200, 'HIT', true);
+  // TASK-132 / GHSA-ff3f-86qr-9cv3: a single short numeric matrix-parameter
+  // request exercises the patched router without running a DoS load test.
+  verify(await request('/properties;990;2522'), 200, 'MISS', true);
+  verify(await request('/properties'), 200, 'HIT', true);
   for (const url of ['/properties?page=2', '/properties?__proto__=ignored', '/properties?']) {
     for (let count = 0; count < 2; count++) verify(await request(url), 200, 'MISS');
   }
@@ -134,11 +159,13 @@ async function main() {
       '/property/00000000-0000-0000-0000-000000000000/orice-slug']) {
       const result = await request(url);
       verify(result, 404, 'MISS');
+      assert.equal(result.headers['x-robots-tag'], 'noindex, nofollow');
       assert.ok(result.html.includes('href="/properties"'));
     }
     const unavailable = await request('/property/22222222-2222-2222-2222-222222222222/orice-slug');
     verify(unavailable, 503, 'MISS');
     assert.equal(unavailable.headers['retry-after'], '60');
+    assert.equal(unavailable.headers['x-robots-tag'], 'noindex, nofollow');
     verify(await request('/property/33333333-3333-3333-3333-333333333333/teren-de-vanzare-proprietate-test'), 200, 'MISS');
   }
   const valid = '/property/11111111-1111-1111-1111-111111111111/teren-de-vanzare-proprietate-test';
@@ -287,11 +314,11 @@ async function main() {
     assert.equal(headings.length, 1, `${result.url}: expected exactly one H1 in the SSR DOM`);
     assert.ok(textContent(headings[0]).trim(), `${result.url}: the H1 must not be empty`);
     console.log(`PASS H1 ${result.url}: ${textContent(headings[0]).trim()}`);
-    if (url.pathname.startsWith('/property/')) {
-      const canonical = nodes.find(node => node.tagName === 'link' && attr(node, 'rel') === 'canonical');
-      assert.ok(canonical && attr(canonical, 'href'), `${result.url}: missing canonical property URL`);
-      assert.equal(new URL(attr(canonical, 'href')).pathname, url.pathname, `${result.url}: fixture must preserve the indexed property slug`);
-    }
+    const canonical = nodes.find(node => node.tagName === 'link' && attr(node, 'rel') === 'canonical');
+    assert.ok(canonical && attr(canonical, 'href'), `${result.url}: missing canonical URL`);
+    const canonicalUrl = new URL(attr(canonical, 'href'));
+    assert.equal(canonicalUrl.origin, 'https://xn--hai-n-sat-t5a.ro', `${result.url}: incorrect canonical origin`);
+    assert.equal(canonicalUrl.pathname, url.pathname, `${result.url}: incorrect canonical path`);
     const { hrefs } = inspectInternalLinks(result, nodes);
     indexedPages.push({ url: result.url, internalLinkCount: hrefs.length, internalLinks: hrefs });
   }

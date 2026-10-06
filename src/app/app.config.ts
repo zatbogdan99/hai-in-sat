@@ -7,7 +7,7 @@ import { provideRouter } from '@angular/router';
 import { providePrimeNG } from 'primeng/config';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MessageService } from 'primeng/api';
-import Lara from '@primeng/themes/lara';
+import Lara from '@primeuix/themes/lara';
 
 import { appRoutes } from './app.routes';
 import { PhotoService } from './service/photo-service';

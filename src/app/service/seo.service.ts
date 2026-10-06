@@ -1,6 +1,6 @@
-import { inject, Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { inject, Inject, Injectable, PLATFORM_ID, DOCUMENT } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { SSR_RENDER_STATE } from '../ssr-render-state';
 
 const BASE_URL = 'https://hai-în-sat.ro';

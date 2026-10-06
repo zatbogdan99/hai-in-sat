@@ -30,7 +30,12 @@ export function app(): express.Express {
     ? join(distFolder, 'index.original.html')
     : join(distFolder, 'index.html');
 
-  const commonEngine = new CommonEngine();
+  // Angular 20 validates render hosts. Keep this aligned with the canonical
+  // redirect and its local-development exceptions; never trust a request header
+  // to populate this list, or use a wildcard that bypasses SSRF protection.
+  const commonEngine = new CommonEngine({
+    allowedHosts: [CANONICAL_HOST, 'localhost', '127.0.0.1', '[::1]'],
+  });
   const htmlCache = new SsrHtmlCache(new LRUCache<string, SsrCacheEntry>({
     max: 100,
     ttl: 300000,
@@ -111,13 +116,17 @@ export function app(): express.Express {
     if (htmlCache.tryServe(req, res)) return;
 
     const { protocol, originalUrl, baseUrl, headers } = req;
+    // Preserve Angular's existing route semantics for //login etc. while giving
+    // Angular 20 an unambiguous same-host path. Cache/private-route checks above
+    // and below deliberately continue to use the original request.
+    const renderPath = originalUrl.replace(/^\/+/, '/');
     const ssrRenderState = createSsrRenderState();
     const renderedAt = Date.now();
 
     renderWithTimeout(commonEngine, {
       bootstrap,
       documentFilePath: indexHtml,
-      url: `${protocol}://${headers.host}${originalUrl}`,
+      url: `${protocol}://${headers.host}${renderPath}`,
       publicPath: distFolder,
       providers: [
         { provide: APP_BASE_HREF, useValue: baseUrl },

@@ -1,9 +1,11 @@
 ---
 id: TASK-132
 title: Actualizează dependențele frontend și SSR pentru remedierea vulnerabilităților
-status: To Do
-assignee: []
+status: In Progress
+assignee:
+  - '@codex'
 created_date: '2026-10-03 21:50'
+updated_date: '2026-10-06 20:30'
 labels:
   - security
   - dependencies
@@ -26,7 +28,7 @@ ordinal: 0
 ## Obiectiv și prioritate
 Actualizează dependențele frontendului Angular și serverului SSR pentru a remedia vulnerabilitățile cunoscute, păstrând funcționalitatea, SEO și aspectul desktop/mobil.
 
-Decizie explicită a utilizatorului din 2026-10-04: ACESTA ESTE URMĂTORUL TASK DE IMPLEMENTAT, înaintea TASK-121 și a celorlalte task-uri SEO rămase. Excepție de la ordinea numerică istorică din backlog/docs/ordine-executie.md. Cererea curentă autorizează crearea și prioritizarea task-ului, nu începerea implementării.
+Decizie explicită a utilizatorului din 2026-10-04: ACESTA ESTE URMĂTORUL TASK DE IMPLEMENTAT, înaintea TASK-121 și a celorlalte task-uri SEO rămase. Excepție de la ordinea numerică istorică din backlog/docs/ordine-executie.md. Implementarea a fost autorizată ulterior explicit de utilizator și realizată direct, fără dev-pipeline.
 
 ## Context verificat
 Auditul npm production din verificarea de pregătire pentru deploy: npm audit --omit=dev a raportat 28 pachete afectate: 4 critical, 11 high, 13 moderate. Aceste numere sunt baseline istoric, nu dovadă că fiecare alertă este exploatabilă în site; auditul trebuie refăcut la implementare.
@@ -49,18 +51,30 @@ Audit înainte/după și instalare curată cu lockfile-ul folosit la deploy; bui
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Auditul înainte/după este documentat, cu versiunile directe/tranzitive și advisory-urile critical/high; numărul alertelor nu este prezentat ca număr de exploatări confirmate.
-- [ ] #2 Pachetele Angular sunt pe o linie suportată care include remedierile relevante, iar toate peer dependencies și versiunea Node/TypeScript sunt compatibile, fără instalări forțate sau ignorarea incompatibilităților.
-- [ ] #3 Alertele production critical/high care au remediere disponibilă sunt eliminate; orice alertă fără remediere disponibilă are explicație verificabilă și risc rezidual explicit, fără a fi declarată rezolvată.
-- [ ] #4 package.json, package-lock.json și yarn.lock sunt coerente; o instalare curată folosind lockfile-ul de deploy reușește reproductibil și pornește bundle-ul SSR.
-- [ ] #5 Buildurile de producție browser și SSR și suitele test:ci, test:ssr și test:ssr:http trec; nu sunt dezactivate teste sau mărite praguri doar pentru a ascunde regresii.
-- [ ] #6 Protocolul SSR local confirmă redirecturi, security headers, coduri 200/404/503 și Retry-After, noindex, cache GET/HEAD/304 și separarea rutelor private; toate rutele din sitemap păstrează H1/canonical și linkuri interne/incoming links.
-- [ ] #7 Verificarea funcțională și vizuală desktop/mobil este documentată: navigare normală și tab nou, meniu, footer, filtre/paginare/Back, detalii/galerii, formulare și fluxul de autentificare; fără regresii neacceptate sau efecte în producție.
+- [x] #1 Auditul înainte/după este documentat, cu versiunile directe/tranzitive și advisory-urile critical/high; numărul alertelor nu este prezentat ca număr de exploatări confirmate.
+- [x] #2 Pachetele Angular sunt pe o linie suportată care include remedierile relevante, iar toate peer dependencies și versiunea Node/TypeScript sunt compatibile, fără instalări forțate sau ignorarea incompatibilităților.
+- [x] #3 Alertele production critical/high care au remediere disponibilă sunt eliminate; orice alertă fără remediere disponibilă are explicație verificabilă și risc rezidual explicit, fără a fi declarată rezolvată.
+- [x] #4 package.json, package-lock.json și yarn.lock sunt coerente; o instalare curată folosind lockfile-ul de deploy reușește reproductibil și pornește bundle-ul SSR.
+- [x] #5 Buildurile de producție browser și SSR și suitele test:ci, test:ssr și test:ssr:http trec; nu sunt dezactivate teste sau mărite praguri doar pentru a ascunde regresii.
+- [x] #6 Protocolul SSR local confirmă redirecturi, security headers, coduri 200/404/503 și Retry-After, noindex, cache GET/HEAD/304 și separarea rutelor private; toate rutele din sitemap păstrează H1/canonical și linkuri interne/incoming links.
+- [x] #7 Verificarea funcțională și vizuală desktop/mobil este documentată: navigare normală și tab nou, meniu, footer, filtre/paginare/Back, detalii/galerii, formulare și fluxul de autentificare; fără regresii neacceptate sau efecte în producție.
 - [ ] #8 Review-ul independent este încheiat fără probleme blocante, iar PR-ul descrie versiunile, remedierea alertelor, validările și riscurile reziduale; nu s-a făcut deploy.
 <!-- AC:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Audit si baseline vizual. 2. Migrari oficiale Angular si remedieri cu versiuni compatibile, pastrand webpack si contractele SSR/UI. 3. Lockfile-uri coerente si instalare curata Yarn. 4. Build si teste Angular/SSR/HTTP plus desktop/mobile cu fixture locale inclusiv autentificare si formulare. 5. Review independent, fixuri, documentare si PR fara deploy.
+<!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 NEXT: ales explicit de utilizator la 2026-10-04. Se implementează înainte de TASK-121; după finalizare se reia ordinea TASK-121 … TASK-131. Nu implementa în această rundă de planificare.
+
+Implementarea este autorizata explicit de utilizator la 2026-10-04; notele anterioare privind doar planificarea sunt istorice. Audit initial productie: 28 pachete afectate (4 critical, 11 high, 13 moderate).
+
+Migrare oficiala Angular 19 -> 20.3.33, CLI/SSR 20.3.37, CDK 20.2.14, TypeScript 5.9.3, PrimeNG 20.4/Lara PrimeUIX. Audit npm productie 0; full 14 dev (braces high fara patch si uuid/SockJS moderate cu v4 neafectat). 106 teste Angular si 26 SSR trecute. Build browser+SSR trecut. Verificarea HTTP a identificat noua cerinta allowedHosts si respingerea slashurilor initiale duble; adaptari locale pentru pastrarea contractului, in revalidare. Review independent a cerut completarea variantelor native Linux/macOS din yarn.lock; regenerare in curs. Capturi desktop/mobile si fluxuri simulate in curs.
+
+Validare finala 2026-10-06: npm/Yarn production 0 alerte; full 14 exclusiv dev documentate. Patch-uri suplimentare proxy-addr 2.0.8/source-map-js 1.2.2. Build browser+SSR PASS; 106 Angular, 26 SSR si 116 verificari HTTP pe instalare noua Yarn production PASS. 44 verificari browser, 50 capturi, 0 erori JS, geometrii identice la 1440/390/320 px; corectate DataView host display si autofocus PrimeNG20. Review independent inclusiv incremental fara blocante. PR in pregatire.
 <!-- SECTION:NOTES:END -->

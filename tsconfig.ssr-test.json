@@ -3,6 +3,7 @@
   "compilerOptions": {
     "outDir": "./out-tsc/ssr-test",
     "module": "commonjs",
+    "moduleResolution": "node",
     "types": ["node"],
     "esModuleInterop": true,
     "skipLibCheck": true,
