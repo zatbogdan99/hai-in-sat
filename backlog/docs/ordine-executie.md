@@ -1,8 +1,12 @@
 # Ordinea de executie a task-urilor
 
-**Regula, de la renumerotarea din 2026-07-27: numarul mai mic se implementeaza inainte de numarul mai mare.**
+**Urmatorul task: TASK-121 — Breadcrumbs vizibile.**
 
-Task-urile active din `backlog/tasks/` sunt numerotate **TASK-101 … TASK-131**, in ordinea in care trebuie rulate. Nu mai trebuie sa citesti dependentele ca sa stii ce urmeaza — ordinea e chiar numarul. Campul `dependencies` din front matter a ramas ca plasa de siguranta si arata intotdeauna spre numere mai mici.
+**Decizie explicita a utilizatorului, 2026-10-04:** dupa TASK-120 se implementeaza TASK-132, inaintea TASK-121 si a restului backlogului SEO. TASK-132 a fost implementat si verificat la 2026-10-06, cu livrare in [PR #25](https://github.com/zatbogdan99/hai-in-sat/pull/25), fara deploy.
+
+Se reia ordinea TASK-121 → TASK-122 → … → TASK-131. Pentru celelalte task-uri ramane regula stabilita la renumerotarea din 2026-07-27: numarul mai mic se implementeaza inainte de numarul mai mare.
+
+Task-urile din `backlog/tasks/` folosesc seria **TASK-101 … TASK-132**. Campul `dependencies` ramane plasa de siguranta; TASK-121 depinde acum de TASK-132 pentru a reflecta prioritatea ceruta de utilizator.
 
 Intervalul 101+ a fost ales ca sa nu se ciocneasca cu nimic din `completed/`, `manual/` sau `wont-do/`, unde numerele vechi isi pastreaza intelesul.
 
@@ -30,7 +34,8 @@ Intervalul 101+ a fost ales ca sa nu se ciocneasca cu nimic din `completed/`, `m
 | TASK-118 | TASK-19 | NAP / telefon oficial (helper `stripPhones`) | SEO markup |
 | TASK-119 | TASK-21 | Structura H1 | ⬐ |
 | TASK-120 | TASK-23 | Link-uri interne crawlabile | ⬐ |
-| TASK-121 | TASK-30 | Breadcrumbs vizibile | ⬐ |
+| TASK-132 | nou | Actualizare dependente frontend/SSR si remediere vulnerabilitati | **implementat, PR #25, 2026-10-06** |
+| TASK-121 | TASK-30 | Breadcrumbs vizibile | **urmatorul** |
 | TASK-122 | TASK-65 | `/info-page/:village` + igiena SEO | ⬐ |
 | TASK-123 | TASK-28 | Schema RealEstateAgent | ⬐ |
 | TASK-124 | TASK-27 | SearchAction + filtru `?q=` | ⬐ |

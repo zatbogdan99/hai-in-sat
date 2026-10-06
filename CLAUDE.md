@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-`hai-in-sat` — Angular 19 single-page application for a Romanian real estate site (region: Oltenia de sub Munte, Vâlcea). UI text and code comments are in Romanian. Production site: `https://hai-în-sat.ro` (IDN domain with diacritics).
+`hai-in-sat` — Angular 20 single-page application for a Romanian real estate site (region: Oltenia de sub Munte, Vâlcea). UI text and code comments are in Romanian. Production site: `https://hai-în-sat.ro` (IDN domain with diacritics).
 
 ## Commands
 
@@ -58,8 +58,11 @@ Deployed to Google App Engine Standard, runtime `nodejs22`, instance class F2. `
 ## Conventions
 
 - Component style is `scss` (set in `angular.json` schematics). Selector prefix is `app`.
-- TypeScript ~5.8; Angular ~19.2; zone.js ~0.15; RxJS ~7.8.
-- Keep TypeScript pinned with a tilde (`~`) so routine updates stay within patch releases (5.8.x). Before changing the TypeScript minor version, verify compatibility with the Angular version used by the project.
+- TypeScript ~5.9; Angular ~20.3; zone.js ~0.15; RxJS ~7.8. Node must satisfy `^22.12.0 || ^24.0.0`; App Engine remains on Node 22.
+- Keep TypeScript pinned with a tilde (`~`) so routine updates stay within patch releases (5.9.x). Before changing the TypeScript minor version, verify compatibility with the Angular version used by the project.
+- Keep `package-lock.json` and `yarn.lock` in sync. App Engine installs from `yarn.lock`; verify a clean `yarn install --frozen-lockfile --production=true` after dependency updates. Keep npm `overrides` and Yarn `resolutions` identical; the temporary security pins and remaining tooling advisories are explained in `docs/task-132-dependency-audit.md`.
+- PrimeNG 20 uses the Lara preset from `@primeuix/themes/lara`, Select instead of Dropdown, and SVG icons with `data-p-icon` selectors. Preserve the existing appearance when updating component APIs.
+- PrimeNG 20.4.0 passes an undefined autofocus value to its internal directive unless `p-button` has `[buttonProps]="{ autofocus: false }"`. Keep this explicit on buttons that must not steal focus on page load; do not hide keyboard focus rings as a workaround. Reevaluate after an upstream fix.
 - Romanian text is the default in templates and user-facing strings — match the surrounding language when editing.
 
 <!-- BACKLOG.MD MCP GUIDELINES START -->

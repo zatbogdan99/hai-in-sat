@@ -1,12 +1,12 @@
 <div style="display: flex">
   <main>
-    <p-button class="back-desktop" *ngIf="rent!==-1" label="Înapoi" icon="pi pi-arrow-left" size="large" [raised]="true" severity="secondary" (onClick)="onBack()"></p-button>
+    <p-button [buttonProps]="{ autofocus: false }" class="back-desktop" *ngIf="rent!==-1" label="Înapoi" icon="pi pi-arrow-left" size="large" [raised]="true" severity="secondary" (onClick)="onBack()"></p-button>
     <div class="area-intro">
       <h1 style="background-color: rgba(1, 21, 38, 0.90) !important; background-image: none">Haide să vezi zona</h1>
       <hr>
       <p>Echipa noastră poate fi ghidul dvs. în această călătorie de transformare. Suntem aici să vă prezentăm oportunitățile incredibile <br> pe care viața la țară le oferă. Alegeți să faceți pasul și să explorați ce înseamnă cu adevărat să trăiești.</p>
     </div>
-    <p-button class="back-mobile" *ngIf="rent!==-1" label="Înapoi" icon="pi pi-arrow-left" size="large" (onClick)="onBack()"></p-button>
+    <p-button [buttonProps]="{ autofocus: false }" class="back-mobile" *ngIf="rent!==-1" label="Înapoi" icon="pi pi-arrow-left" size="large" (onClick)="onBack()"></p-button>
   </main>
 </div>
 
@@ -25,7 +25,7 @@
       </p>
       <ng-template pTemplate="footer">
         <div style="text-align: center">
-          <p-button label="HAI IN SAT" icon="pi pi-check" (onClick)="changeToBuy()"></p-button>
+          <p-button [buttonProps]="{ autofocus: false }" label="HAI IN SAT" icon="pi pi-check" (onClick)="changeToBuy()"></p-button>
         </div>
       </ng-template>
     </p-card>
@@ -43,7 +43,7 @@
     </p>
     <ng-template pTemplate="footer">
       <div style="text-align: center">
-        <p-button label="HAI IN SAT" icon="pi pi-check" (onClick)="changeToRent()"></p-button>
+        <p-button [buttonProps]="{ autofocus: false }" label="HAI IN SAT" icon="pi pi-check" (onClick)="changeToRent()"></p-button>
       </div>
     </ng-template>
   </p-card>
@@ -71,7 +71,7 @@
       </p>
       <ng-template pTemplate="footer">
         <div style="text-align: center">
-          <p-button label="HAI IN SAT" icon="pi pi-check" (onClick)="changeToRent()"></p-button>
+          <p-button [buttonProps]="{ autofocus: false }" label="HAI IN SAT" icon="pi pi-check" (onClick)="changeToRent()"></p-button>
         </div>
       </ng-template>
     </p-card>
@@ -88,7 +88,7 @@
         </p>
         <ng-template pTemplate="footer">
           <div style="text-align: center">
-            <p-button label="HAI IN SAT" icon="pi pi-check" (onClick)="changeToBuy()"></p-button>
+            <p-button [buttonProps]="{ autofocus: false }" label="HAI IN SAT" icon="pi pi-check" (onClick)="changeToBuy()"></p-button>
           </div>
         </ng-template>
       </p-card>

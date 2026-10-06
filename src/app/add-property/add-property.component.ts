@@ -8,7 +8,7 @@ import { PropertyTypeStore } from '../service/property-type.store';
 import { PropertyType } from '../dto/property-type.enum';
 import { PropertyDTO } from '../dto/property.dto';
 import { InputText } from 'primeng/inputtext';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 import { FileUpload } from 'primeng/fileupload';
 import { ButtonDirective } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';
@@ -36,7 +36,7 @@ import { SeoService } from '../service/seo.service';
     ReactiveFormsModule,
     FormsModule,
     InputText,
-    DropdownModule,
+    SelectModule,
     FileUpload,
     FloatLabel,
     ButtonDirective,

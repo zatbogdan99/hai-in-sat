@@ -13,7 +13,7 @@
         <a class="navigation-link" routerLink="/properties"><p-chip class="clickable topchip" icon="pi pi-eye" label="Proprietăți"></p-chip></a>
         <a class="navigation-link" routerLink="/homes"><p-chip class="clickable topchip" icon="pi pi-home" label="Găsește-mi locul"></p-chip></a>
       </div>
-      <p-button class="topbar__menu-button" icon="pi pi-list" [rounded]="true" [text]="true" (onClick)="mobileMenu.toggle($event)"></p-button>
+      <p-button [buttonProps]="{ autofocus: false }" class="topbar__menu-button" icon="pi pi-list" [rounded]="true" [text]="true" (onClick)="mobileMenu.toggle($event)"></p-button>
       <p-popover #mobileMenu [dismissable]="true" [baseZIndex]="10000" styleClass="mobile-menu-panel">
         <div class="mobile-menu-list">
           <a class="navigation-link" routerLink="/under-the-mountain" (click)="mobileMenu.hide()"><p-chip class="clickable topchip" icon="pi pi-sun" label="Oltenia de sub Munte"></p-chip></a>

@@ -88,6 +88,11 @@
   margin: 2rem auto;
   padding: 0 1rem;
 
+  // PrimeNG 20 puts the DataView root styles on its custom host element.
+  p-dataview {
+    display: block;
+  }
+
   .dataView-header {
     display: flex;
     justify-content: flex-end;
