@@ -1,11 +1,11 @@
 ---
 id: TASK-132
 title: Actualizează dependențele frontend și SSR pentru remedierea vulnerabilităților
-status: In Progress
+status: Done
 assignee:
   - '@codex'
 created_date: '2026-10-03 21:50'
-updated_date: '2026-10-06 20:30'
+updated_date: '2026-10-06 20:33'
 labels:
   - security
   - dependencies
@@ -58,7 +58,7 @@ Audit înainte/după și instalare curată cu lockfile-ul folosit la deploy; bui
 - [x] #5 Buildurile de producție browser și SSR și suitele test:ci, test:ssr și test:ssr:http trec; nu sunt dezactivate teste sau mărite praguri doar pentru a ascunde regresii.
 - [x] #6 Protocolul SSR local confirmă redirecturi, security headers, coduri 200/404/503 și Retry-After, noindex, cache GET/HEAD/304 și separarea rutelor private; toate rutele din sitemap păstrează H1/canonical și linkuri interne/incoming links.
 - [x] #7 Verificarea funcțională și vizuală desktop/mobil este documentată: navigare normală și tab nou, meniu, footer, filtre/paginare/Back, detalii/galerii, formulare și fluxul de autentificare; fără regresii neacceptate sau efecte în producție.
-- [ ] #8 Review-ul independent este încheiat fără probleme blocante, iar PR-ul descrie versiunile, remedierea alertelor, validările și riscurile reziduale; nu s-a făcut deploy.
+- [x] #8 Review-ul independent este încheiat fără probleme blocante, iar PR-ul descrie versiunile, remedierea alertelor, validările și riscurile reziduale; nu s-a făcut deploy.
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -77,4 +77,12 @@ Implementarea este autorizata explicit de utilizator la 2026-10-04; notele anter
 Migrare oficiala Angular 19 -> 20.3.33, CLI/SSR 20.3.37, CDK 20.2.14, TypeScript 5.9.3, PrimeNG 20.4/Lara PrimeUIX. Audit npm productie 0; full 14 dev (braces high fara patch si uuid/SockJS moderate cu v4 neafectat). 106 teste Angular si 26 SSR trecute. Build browser+SSR trecut. Verificarea HTTP a identificat noua cerinta allowedHosts si respingerea slashurilor initiale duble; adaptari locale pentru pastrarea contractului, in revalidare. Review independent a cerut completarea variantelor native Linux/macOS din yarn.lock; regenerare in curs. Capturi desktop/mobile si fluxuri simulate in curs.
 
 Validare finala 2026-10-06: npm/Yarn production 0 alerte; full 14 exclusiv dev documentate. Patch-uri suplimentare proxy-addr 2.0.8/source-map-js 1.2.2. Build browser+SSR PASS; 106 Angular, 26 SSR si 116 verificari HTTP pe instalare noua Yarn production PASS. 44 verificari browser, 50 capturi, 0 erori JS, geometrii identice la 1440/390/320 px; corectate DataView host display si autofocus PrimeNG20. Review independent inclusiv incremental fara blocante. PR in pregatire.
+
+PR creat: https://github.com/zatbogdan99/hai-in-sat/pull/25. AC1-8 indeplinite; raport final docs/task-132-dependency-audit.md. Diferentele vizuale reziduale si limitele mock/baseline sunt explicite in raport. Nu s-a facut merge sau deploy.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Implementat direct in PR https://github.com/zatbogdan99/hai-in-sat/pull/25. Angular 20.3.33/CLI-SSR 20.3.37, PrimeNG20.4/Lara, Express4.22.3 si tranzitive remediate; migrari oficiale si compatibilitate SSR/UI, lockfile-uri npm/Yarn coerente. Audit production npm/Yarn 0; 14 pachete exclusiv dev documentate. Build PASS; 106 Angular, 26 SSR, 116 HTTP inclusiv pe Yarn production curat, 44 verificari browser si 50 capturi la 1440/390/320 px. Review independent fara blocante. Fara deploy; packaging App Engine ramane separat. Urmatorul task: TASK-121.
+<!-- SECTION:FINAL_SUMMARY:END -->
