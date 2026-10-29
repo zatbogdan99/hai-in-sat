@@ -415,9 +415,10 @@ section {
   justify-self: center;
 }
 
+/* Minimul de 1rem: între 360 și 800 px textul ajungea la 12–13 px. */
 .why__text {
   font-family: 'Libre Baskerville', serif;
-  font-size: clamp(0.8rem, 1.6vw, 1.3rem);
+  font-size: clamp(1rem, 1.6vw, 1.3rem);
   line-height: 1.9;
   text-align: left;
 }
@@ -513,6 +514,9 @@ section {
 }
 
 .discover-card {
+  display: block;
+  color: inherit;
+  text-decoration: none;
   background: #ffffff;
   border-radius: 0.75rem;
   overflow: hidden;

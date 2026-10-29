@@ -25,12 +25,12 @@ handlers:
       Cache-Control: "public, max-age=31536000, immutable"
 
   # Asseturi statice — App Engine le servește direct fără să spună Node-ului.
+  # expiration produce singur „Cache-Control: public, max-age=2592000” (plus Expires); un Cache-Control și în
+  # http_headers scria antetul de două ori. La bundle-uri dublura rămâne: doar http_headers poate adăuga immutable.
   - url: /assets
     static_dir: dist/hai-in-sat/browser/assets
     secure: always
     expiration: "30d"
-    http_headers:
-      Cache-Control: "public, max-age=2592000"
 
   - url: /robots.txt
     static_files: dist/hai-in-sat/browser/robots.txt

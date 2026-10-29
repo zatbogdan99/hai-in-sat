@@ -1,4 +1,5 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { isPlatformServer } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LoadingService } from "../service/loading-service/loading-service.service";
 import { GalleriaModule } from "primeng/galleria";
@@ -42,6 +43,14 @@ import { AngleDoubleLeftIcon } from 'primeng/icons/angledoubleleft';
 import { AngleLeftIcon } from 'primeng/icons/angleleft';
 import { AngleRightIcon } from 'primeng/icons/angleright';
 import { AngleDoubleRightIcon } from 'primeng/icons/angledoubleright';
+
+/** Imagine afișată când o proprietate nu are miniatură. */
+const NO_PHOTO_IMAGE = 'assets/fara-fotografie.svg';
+/**
+ * Pe server, miniaturile base64 mai mari de atât nu intră în HTML (au ajuns la 2–13 MB și dublau răspunsul SSR,
+ * care pica cu 500). Rămân în starea transferată, iar browserul le afișează imediat după încărcare.
+ */
+const SSR_INLINE_IMAGE_LIMIT = 150 * 1024;
 
 const trimControlValue = (control: AbstractControl | null | undefined): string => {
   const value = control?.value;
@@ -102,10 +111,12 @@ export class PropertiesComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
   private propertiesRequest?: Subscription;
   private readonly ssrRenderState = inject(SSR_RENDER_STATE, { optional: true });
+  private readonly isServer = isPlatformServer(inject(PLATFORM_ID));
+  private readonly prefetching = new Set<string>();
 
   options = [
     { label: 'Listă', value: 'list' },
-    { label: 'Grid', value: 'grid' }
+    { label: 'Grilă', value: 'grid' }
   ];
 
   get pageNumbers(): number[] {
@@ -371,7 +382,23 @@ export class PropertiesComponent implements OnInit {
     }, { emitEvent: false });
   }
 
+  /** Sursa pozei din card: imaginea de rezervă dacă lipsește miniatura; pe server, fără miniaturile foarte mari. */
+  cardImage(property: PropertyDTO): string {
+    const thumbnail = property?.thumbnail?.trim();
+    if (!thumbnail) {
+      return NO_PHOTO_IMAGE;
+    }
+    if (this.isServer && thumbnail.startsWith('data:') && thumbnail.length > SSR_INLINE_IMAGE_LIMIT) {
+      return NO_PHOTO_IMAGE;
+    }
+    return thumbnail;
+  }
+
   private prefetchNextPage(): void {
+    // Preîncărcarea servește doar navigării din browser; pe server ar adăuga încă o pagină în HTML.
+    if (this.isServer) {
+      return;
+    }
     const nextPage = this.page + 1;
 
     if (nextPage >= this.totalPages) {
@@ -381,9 +408,12 @@ export class PropertiesComponent implements OnInit {
     const currentType = this.propertyType;
     const currentSize = this.size;
     const cachedNext = this.propertiesState.getCachedPage(nextPage, currentSize, currentType);
-    if (cachedNext) {
+    // Pagina curentă poate sosi de două ori (copia din HTML, apoi răspunsul complet): o singură cerere de preîncărcare.
+    const prefetchKey = `${nextPage}:${currentSize}:${currentType}`;
+    if (cachedNext || this.prefetching.has(prefetchKey)) {
       return;
     }
+    this.prefetching.add(prefetchKey);
 
     this.propertyApiService.getPropertiesPage(nextPage, currentSize, currentType)
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -396,8 +426,10 @@ export class PropertiesComponent implements OnInit {
           totalPages: typeof resp?.totalPages === 'number' ? resp.totalPages : 1
         });
         this.logger.log(`✅ Prefetched page ${nextPage} (${sorted.length} properties)`);
+        this.prefetching.delete(prefetchKey);
       },
       error: (err) => {
+        this.prefetching.delete(prefetchKey);
         this.logger.warn(`⚠️ Failed to prefetch page ${nextPage}`, err);
       }
     });

@@ -1,0 +1,11 @@
+/* Ca iframe-ul creat de API-ul YouTube (frameborder="0"); restul așezării vine de la pagina-gazdă. */
+.youtube-frame {
+  border: 0;
+}
+
+/* Inel pentru focusul din tastatură, unde browserul aplică :focus-visible pe iframe. Chrome și Safari nu-l aplică
+   (focusul trece în documentul playerului), iar acolo se vede inelul pe care îl desenează YouTube în player. */
+.youtube-frame:focus-visible {
+  outline: 3px solid #005baa;
+  outline-offset: 2px;
+}

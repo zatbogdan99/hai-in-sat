@@ -1,16 +1,13 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, AfterViewInit, ElementRef, ViewChild, OnInit } from '@angular/core';
-import {Router} from "@angular/router";
+import {RouterLink} from "@angular/router";
 import {gsap} from "gsap";
 import {DataDto} from "../dto/data.dto";
-import {DataService} from "../service/data-service";
-import {Button} from "primeng/button";
-import {Card} from "primeng/card";
 import {YoutubePlayerComponent} from "../youtube-player/youtube-player.component";
 import { NgFor } from '@angular/common';
 import { register } from 'swiper/element/bundle';
-import {PrimeTemplate} from "primeng/api";
 import { SeoService } from "../service/seo.service";
 import { LoggerService } from "../service/logger.service";
+import { villagePath } from "../utils/villages";
 
 register();
 
@@ -19,7 +16,8 @@ register();
   templateUrl: './under-the-mountain.component.html',
   imports: [
     YoutubePlayerComponent,
-    NgFor
+    NgFor,
+    RouterLink
   ],
   styleUrls: ['./under-the-mountain.component.scss'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -35,9 +33,9 @@ export class UnderTheMountainComponent implements AfterViewInit, OnInit {
   @ViewChild('nextNav') nextNav?: ElementRef<HTMLElement>;
 
 
+  readonly villagePath = villagePath;
+
   constructor(
-    private router: Router,
-    private service: DataService,
     private seo: SeoService,
     private logger: LoggerService
   ) {
@@ -145,22 +143,6 @@ export class UnderTheMountainComponent implements AfterViewInit, OnInit {
     this.nextCard();
   }
 
-  showMore() {
-    this.service.village$.next(this.currentNum + 1);
-    this.router.navigateByUrl("/info-page");
-  }
-
-  goToVillage(id: number) {
-    this.service.village$.next(id);
-    this.router.navigateByUrl("/info-page");
-  }
-
-  onCardKeyDown(event: KeyboardEvent, id: number) {
-    if (event.code === 'Space' || event.key === ' ') {
-      event.preventDefault();
-      this.goToVillage(id);
-    }
-  }
 
   playForward() {
     let tl = gsap.timeline({
@@ -303,6 +285,16 @@ export class UnderTheMountainComponent implements AfterViewInit, OnInit {
       navigation: {
         prevEl,
         nextEl
+      },
+      // Etichetele Swiper în română (în Safari se citeau „Previous slide” / „Next slide”).
+      a11y: {
+        prevSlideMessage: 'Satul anterior',
+        nextSlideMessage: 'Satul următor',
+        firstSlideMessage: 'Primul sat',
+        lastSlideMessage: 'Ultimul sat',
+        slideLabelMessage: '{{index}} din {{slidesLength}}',
+        containerRoleDescriptionMessage: 'carusel',
+        itemRoleDescriptionMessage: 'sat'
       }
     };
 
@@ -312,7 +304,26 @@ export class UnderTheMountainComponent implements AfterViewInit, OnInit {
     setTimeout(() => {
       if (typeof swiperEl.initialize === 'function') {
         swiperEl.initialize();
+        this.syncSlideFocus(swiperEl, [prevEl, nextEl]);
+        swiperEl.swiper?.on('slideChangeTransitionEnd', () => this.syncSlideFocus(swiperEl));
+        swiperEl.swiper?.on('resize', () => this.syncSlideFocus(swiperEl));
       }
     });
+  }
+
+  /**
+   * Doar cardurile vizibile rămân în ordinea de Tab: celelalte stau sub stratul semitransparent, iar focusul ajungea
+   * pe ele nevăzut. Swiper pune pe săgeți aria-controls spre un id din shadow DOM, deci invalid din pagină: îl scoatem.
+   */
+  private syncSlideFocus(swiperEl: HTMLElement & { swiper?: { slides?: HTMLElement[] } }, navButtons: (HTMLElement | undefined)[] = []): void {
+    for (const slide of swiperEl.swiper?.slides ?? []) {
+      const link = slide.querySelector('a');
+      if (slide.classList.contains('swiper-slide-visible')) {
+        link?.removeAttribute('tabindex');
+      } else {
+        link?.setAttribute('tabindex', '-1');
+      }
+    }
+    navButtons.forEach(button => button?.removeAttribute('aria-controls'));
   }
 }

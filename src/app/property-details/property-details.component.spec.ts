@@ -69,16 +69,60 @@ describe('PropertyDetailsComponent', () => {
     TestBed.resetTestingModule();
   });
 
-  it('does not cache SSR HTML when the initial photo batch fails', () => {
+  it('leaves the photos to the browser during SSR, keeping the HTML small and cacheable', () => {
     configure('server');
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     propertyApiService.getPropertyById.and.returnValue(of(property));
-    propertyApiService.getPhotos.and.returnValue(throwError(() => ({ status: 503 })));
     component.propertyId = 'prop-1';
+
     component.loadPropertyDetails();
-    expect(ssrRenderState.cacheable).toBeFalse();
+    fixture.detectChanges();
+
+    expect(propertyApiService.getPhotos).not.toHaveBeenCalled();
+    expect(ssrRenderState.cacheable).toBeTrue();
     expect(ssrRenderState.serviceUnavailable).toBeFalse();
     expect(component.propertyName).toBe(property.name);
+    // Galeria și banda de miniaturi rămân loc rezervat (fără mesajul „fără fotografii”): pozele vin după hidratare.
+    expect(fixture.nativeElement.querySelector('.gallery')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('.gallery-empty')).toBeNull();
+    expect(fixture.nativeElement.querySelectorAll('.thumb-strip .thumb--pending').length).toBe(4);
+  });
+
+  for (const platform of ['server', 'browser'] as const) {
+    it(`${platform === 'server' ? 'leaves out' : 'keeps'} a large base64 video poster on the ${platform}`, () => {
+      configure(platform);
+      spyOn(router, 'navigate').and.resolveTo(true);
+      const poster = `data:image/jpeg;base64,${'A'.repeat(200 * 1024)}`;
+      propertyApiService.getPropertyById.and.returnValue(of({ ...property, videoUrl: 'https://storage.googleapis.com/b/v.mp4', thumbnail: poster }));
+      propertyApiService.getPhotos.and.returnValue(of({ photos: [], total: 0 }));
+      component.propertyId = 'prop-1';
+
+      component.loadPropertyDetails();
+      fixture.detectChanges();
+
+      expect(component.propertyVideoPoster).toBe(platform === 'server' ? null : poster);
+      // Fără poster, atributul lipsește: legătura pe proprietate scria „null” și browserul cerea /null.
+      for (const video of Array.from(fixture.nativeElement.querySelectorAll('video')) as HTMLVideoElement[]) {
+        expect(video.getAttribute('poster')).toBe(platform === 'server' ? null : poster);
+      }
+      expect(fixture.nativeElement.querySelectorAll('video').length).toBeGreaterThan(0);
+    });
+  }
+
+  it('uses the static share image instead of a base64 thumbnail in meta tags and JSON-LD', () => {
+    configure('server');
+    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    const seo = TestBed.inject(SeoService);
+    const metaSpy = spyOn(seo, 'updatePageMeta');
+    const listingSpy = spyOn(seo, 'setRealEstateListing');
+    propertyApiService.getPropertyById.and.returnValue(of({ ...property, thumbnail: 'data:image/jpeg;base64,AAAA' }));
+    component.propertyId = 'prop-1';
+
+    component.loadPropertyDetails();
+
+    const shareImage = 'https://hai-în-sat.ro/assets/og-hai-in-sat.jpg';
+    expect(metaSpy).toHaveBeenCalledWith(jasmine.objectContaining({ ogImage: shareImage }));
+    expect(listingSpy).toHaveBeenCalledWith(jasmine.objectContaining({ image: shareImage }));
   });
 
   it('should create', () => {
@@ -223,38 +267,131 @@ describe('PropertyDetailsComponent', () => {
     expect(TestBed.inject(Meta).getTag('name="robots"')?.content).toBe('index, follow');
   });
 
-  it('loads only the initial photo batch on the server', () => {
-    configure('server');
+  it('says the photos failed to load, not that there are none, when the first batch fails in the browser', () => {
+    configure('browser');
+    spyOn(router, 'navigate').and.resolveTo(true);
     propertyApiService.getPropertyById.and.returnValue(of(property));
-    propertyApiService.getPhotos.and.returnValue(of({
-      photos: ['photo-1', 'photo-2'],
-      total: 5
-    }));
+    propertyApiService.getPhotos.and.returnValue(throwError(() => ({ status: 503 })));
     component.propertyId = 'prop-1';
 
     component.loadPropertyDetails();
+    fixture.detectChanges();
 
-    expect(propertyApiService.getPhotos).toHaveBeenCalledTimes(1);
-    expect(propertyApiService.getPhotos).toHaveBeenCalledWith('prop-1', 0, 2);
-    expect(component.photoSlides.length).toBe(2);
+    expect(component.photosLoaded).toBeTrue();
+    expect(fixture.nativeElement.querySelector('.gallery')).toBeNull();
+    expect(fixture.nativeElement.querySelector('.gallery-empty').textContent).toContain('nu s-au putut încărca');
   });
 
-  it('continues loading remaining photo batches in the browser', () => {
+  it('replaces the empty gallery with a message when the property has no photos', () => {
+    configure('browser');
+    spyOn(router, 'navigate').and.resolveTo(true);
+    propertyApiService.getPropertyById.and.returnValue(of(property));
+    propertyApiService.getPhotos.and.returnValue(of({ photos: [], total: 0 }));
+    component.propertyId = 'prop-1';
+
+    component.loadPropertyDetails();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.gallery')).toBeNull();
+    expect(fixture.nativeElement.querySelector('.gallery-nav')).toBeNull();
+    expect(fixture.nativeElement.querySelector('.gallery-empty').textContent).toContain('Proprietatea nu are încă fotografii.');
+  });
+
+  it('continues loading remaining photo batches in the browser with aligned offsets', () => {
     configure('browser');
     propertyApiService.getPropertyById.and.returnValue(of(property));
     propertyApiService.getPhotos.and.callFake((_propertyId: string, offset: number) => of(
       offset === 0
-        ? { photos: ['photo-1', 'photo-2'], total: 5 }
-        : { photos: ['photo-3', 'photo-4', 'photo-5'], total: 5 }
+        ? { photos: ['photo-1', 'photo-2', 'photo-3'], total: 5 }
+        : { photos: ['photo-4', 'photo-5'], total: 5 }
     ));
     component.propertyId = 'prop-1';
 
     component.loadPropertyDetails();
 
     expect(propertyApiService.getPhotos).toHaveBeenCalledTimes(2);
-    expect(propertyApiService.getPhotos).toHaveBeenCalledWith('prop-1', 0, 2);
-    expect(propertyApiService.getPhotos).toHaveBeenCalledWith('prop-1', 2, 3);
-    expect(component.photoSlides.length).toBe(5);
+    expect(propertyApiService.getPhotos).toHaveBeenCalledWith('prop-1', 0, 3);
+    expect(propertyApiService.getPhotos).toHaveBeenCalledWith('prop-1', 3, 3);
+    expect(component.photoSlides.map(slide => slide.src)).toEqual(['photo-1', 'photo-2', 'photo-3', 'photo-4', 'photo-5']);
+  });
+
+  it('never duplicates a photo when a batch repeats earlier ones, and stops on an empty batch', () => {
+    configure('browser');
+    propertyApiService.getPropertyById.and.returnValue(of(property));
+    // Backendul vechi întorcea aceleași poze pentru offseturi nealiniate.
+    propertyApiService.getPhotos.and.callFake((_propertyId: string, offset: number) => of(
+      offset === 0 ? { photos: ['photo-1', 'photo-2', 'photo-3'], total: 8 }
+        : offset === 3 ? { photos: ['photo-1', 'photo-2', 'photo-4'], total: 8 }
+          : { photos: [], total: 8 }
+    ));
+    component.propertyId = 'prop-1';
+
+    component.loadPropertyDetails();
+
+    expect(component.photoSlides.map(slide => slide.src)).toEqual(['photo-1', 'photo-2', 'photo-3', 'photo-4']);
+    expect(propertyApiService.getPhotos).toHaveBeenCalledTimes(3);
+  });
+
+  describe('gallery controls', () => {
+    function loadPhotos(count: number): void {
+      configure('browser');
+      spyOn(router, 'navigate').and.resolveTo(true);
+      propertyApiService.getPropertyById.and.returnValue(of(property));
+      const photos = Array.from({ length: count }, (_, i) => `photo-${i + 1}`);
+      propertyApiService.getPhotos.and.callFake((_propertyId: string, offset: number, limit: number) =>
+        of({ photos: photos.slice(offset, offset + limit), total: count }));
+      component.propertyId = 'prop-1';
+      component.loadPropertyDetails();
+      fixture.detectChanges();
+    }
+
+    it('offers a focusable thumbnail for every photo, not only the first four', () => {
+      loadPhotos(7);
+
+      const thumbs = fixture.nativeElement.querySelectorAll('.thumb-strip button.thumb') as NodeListOf<HTMLButtonElement>;
+      expect(thumbs.length).toBe(7);
+      expect(fixture.nativeElement.querySelector('.thumb--pending')).toBeNull();
+      expect(thumbs[6].getAttribute('aria-label')).toBe('Fotografia 7 din 7');
+      expect(thumbs[0].getAttribute('aria-current')).toBe('true');
+    });
+
+    it('hides the arrows and the thumbnails for a single photo', () => {
+      loadPhotos(1);
+
+      expect(fixture.nativeElement.querySelector('.gallery-nav')).toBeNull();
+      expect(fixture.nativeElement.querySelector('.thumb-strip')).toBeNull();
+      expect(fixture.nativeElement.querySelector('.gallery-counter').textContent.trim()).toBe('1 / 1');
+    });
+
+    it('changes the photo with the arrow keys when the gallery has focus', () => {
+      loadPhotos(3);
+      const gallery = fixture.nativeElement.querySelector('.gallery') as HTMLElement;
+      expect(gallery.getAttribute('tabindex')).toBe('0');
+
+      const event = new KeyboardEvent('keydown', { key: 'ArrowRight', cancelable: true });
+      gallery.dispatchEvent(event);
+
+      expect(component.currentIndex).toBe(1);
+      expect(event.defaultPrevented).toBeTrue();
+    });
+
+    it('changes the photo with a horizontal finger swipe but ignores mouse drags and vertical scrolls', () => {
+      loadPhotos(3);
+      const touch = (x: number, y: number, pointerType = 'touch') =>
+        ({ pointerType, isPrimary: true, clientX: x, clientY: y, target: null }) as unknown as PointerEvent;
+
+      component.onSwipeStart(touch(200, 100, 'mouse'));
+      component.onSwipeEnd(touch(100, 100, 'mouse'), 'photos');
+      expect(component.currentIndex).toBe(0);
+
+      component.onSwipeStart(touch(200, 100));
+      component.onSwipeEnd(touch(180, 220), 'photos');
+      expect(component.currentIndex).toBe(0);
+
+      component.onSwipeStart(touch(200, 100));
+      component.onSwipeEnd(touch(120, 110), 'photos');
+      expect(component.currentIndex).toBe(1);
+    });
   });
 
   it('uses decoded plain text for meta and JSON-LD descriptions', () => {

@@ -1,1 +1,11 @@
-<div #player></div>
+@if (src) {
+  <iframe class="youtube-frame"
+          [src]="src"
+          [attr.width]="width"
+          [attr.height]="height"
+          [title]="title"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen></iframe>
+}

@@ -1,3 +1,6 @@
+<app-not-found *ngIf="villageNotFound"></app-not-found>
+
+<ng-container *ngIf="!villageNotFound">
 <div class="info-page-bg" [ngClass]="{ 'horezu-context': villageId === 1 }">
   <div class="large-screen">
     <div class="top-row">
@@ -29,10 +32,17 @@
             [numVisible]="5"
             [circular]="true"
             [showItemNavigators]="true"
-            (onItemChange)="onGalleryItemChange($event)"
+            (activeIndexChange)="activeIndex = $event"
           >
-            <ng-template pTemplate="item" let-item>
-              <img (click)="openFullScreen(activeIndex)" [src]="item.itemImageSrc" [alt]="item.alt || data[villageId].title" style="width: 45rem; height: 33.5rem; cursor: pointer;" />
+            <ng-template #item let-item>
+              <!-- Buton, nu img cu (click): se poate deschide din tastatură, iar focusul revine aici la închidere. -->
+              <button type="button" class="gallery-open" (click)="openFullScreen(activeIndex, $event)" [attr.aria-label]="'Deschide pe tot ecranul: ' + (item.alt || data[villageId].title)">
+                <img [src]="item.itemImageSrc" [alt]="item.alt || data[villageId].title" class="gallery-image" />
+              </button>
+            </ng-template>
+            <!-- Indicator fără buton în el: PrimeNG pune un <button> într-un tab, adică element interactiv în element interactiv. -->
+            <ng-template #indicator let-index>
+              <span class="gallery-dot" aria-hidden="true"></span>
             </ng-template>
           </p-galleria>
         </div>
@@ -43,7 +53,7 @@
     <div class="features-row">
       <div class="feature-card-left p-card-custom" >
         <p-card>
-          <h4 class="features-title">Ce găsești aici</h4>
+          <h2 class="features-title">Ce găsești aici</h2>
           <ul class="features-list">
             <li *ngFor="let item of getFeaturesLeft()">{{ item }}</li>
           </ul>
@@ -133,7 +143,7 @@
             }
             <div class="polovragi-left">
               <div class="header-wrap">
-                <h1 class="title">Inima spirituală a Bărbăteștiului</h1>
+                <h2 class="title">Inima spirituală a Bărbăteștiului</h2>
               </div>
               <p class="m-0 text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
             </div>
@@ -147,7 +157,7 @@
                 <img class="horezu-image horezu-image--float" [src]="getHorezuSecondImage()" alt="Ceramică tradițională Horezu - Patrimoniu UNESCO" />
               }
               <div class="horezu-left">
-                <h1 class="horezu-title">Ceramica Horezu</h1>
+                <h2 class="horezu-title">Ceramica Horezu</h2>
                 <p class="horezu-paragraph">
                   Horezu este cunoscut drept capitala ceramicii românești. Meșteșugul s-a păstrat neîntrerupt, iar fiecare vas este:
                 </p>
@@ -225,9 +235,9 @@
 
   <div class="small-screen">
     <div class="container1">
+      <!-- Titlul satului e un singur h1, cel din varianta desktop; pe telefon CSS-ul afișează doar titlul din ea. -->
       <div class="left-text mobile">
         @if (villageId === 1) {
-          <h1 class="title">{{ data[villageId].title }}</h1>
           <div class="p-card-custom" style="padding-top: 1rem" *ngIf="data[villageId].desc !== null">
             <p-card>
               <p class="m-0 text-style">
@@ -235,8 +245,6 @@
               </p>
             </p-card>
           </div>
-        } @else {
-          <h1 class="title">{{ data[villageId].title }}</h1>
         }
         <p-galleria
           *ngIf="villageId !== 0"
@@ -248,10 +256,16 @@
           [numVisible]="5"
           [circular]="true"
           [showItemNavigators]="true"
-          (onItemChange)="onGalleryItemChange($event)"
+          (activeIndexChange)="activeIndex = $event"
         >
-        <ng-template pTemplate="item" let-item>
-          <img (click)="openFullScreen(activeIndex)" [src]="item.itemImageSrc" [alt]="item.alt || data[villageId].title" style="width: 18rem; height: 18rem; cursor: pointer;" />
+        <ng-template #item let-item>
+          <button type="button" class="gallery-open" (click)="openFullScreen(activeIndex, $event)" [attr.aria-label]="'Deschide pe tot ecranul: ' + (item.alt || data[villageId].title)">
+            <img [src]="item.itemImageSrc" [alt]="item.alt || data[villageId].title" class="gallery-image gallery-image--square" />
+          </button>
+        </ng-template>
+        <!-- Indicator fără buton în el: PrimeNG pune un <button> într-un tab, adică element interactiv în element interactiv. -->
+        <ng-template #indicator let-index>
+          <span class="gallery-dot" aria-hidden="true"></span>
         </ng-template>
       </p-galleria>
       </div>
@@ -273,7 +287,7 @@
     <div class="features-column">
       <div class="feature-card p-card-custom">
         <p-card>
-          <h4 class="features-title">Ce găsești aici</h4>
+          <h2 class="features-title">Ce găsești aici</h2>
           <ul class="features-list">
             <li *ngFor="let item of getFeaturesLeft()">{{ item }}</li>
           </ul>
@@ -320,16 +334,22 @@
 <p-galleria
   [value]="getImagesForSelected()"
   [fullScreen]="true"
-  [(visible)]="displayFullScreen"
+  [visible]="displayFullScreen"
+  (visibleChange)="onFullScreenVisibleChange($event)"
   [containerStyle]="{ 'max-width': '50rem' }"
   [responsiveOptions]="responsiveOptions"
   [showThumbnails]="false"
   [showIndicators]="false"
   [circular]="true"
   [showItemNavigators]="true"
-  [activeIndex]="activeIndex"
+  [(activeIndex)]="fullScreenIndex"
+  maskClass="village-gallery-mask"
+  [pt]="{ mask: { 'aria-label': 'Galerie foto pe tot ecranul' } }"
 >
-  <ng-template pTemplate="item" let-item>
-    <img [src]="item.itemImageSrc" [alt]="item.alt || data[villageId].title" style="width: 100%; height: auto; display: block;" />
+  <ng-template #item let-item>
+    <!-- Poza încape în ecran (portretele erau tăiate jos) și se poate schimba prin glisare. -->
+    <img [src]="item.itemImageSrc" [alt]="item.alt || data[villageId].title" class="fullscreen-image" draggable="false"
+         (pointerdown)="onSwipeStart($event)" (pointerup)="onSwipeEnd($event)" (pointercancel)="onSwipeCancel()" />
   </ng-template>
 </p-galleria>
+</ng-container>

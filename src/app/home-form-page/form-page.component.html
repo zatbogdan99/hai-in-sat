@@ -8,107 +8,148 @@
     <p class="form-hero-subtitle">Fie că visezi la o casă tradițională sau un teren unde să-ți construiești locul tău, noi suntem aici să te ajutăm să-l găsești. Lasă datele tale, iar echipa noastră revine cu variante reale, din zonă.</p>
   <div class="large-screen">
 
-    <div class="div-style">
-      <p-float-label style="margin-bottom: 2rem; width: 30rem" [formGroup]="formGroup">
-        <input class="name-style" style="width: 100%" type="text" pInputText id="name" formControlName="name">
-        <label for="name">Nume</label>
-      </p-float-label>
-      <p-float-label class="surname-style" [formGroup]="formGroup">
-        <input style="padding: 10px; width: 100%" type="text" pInputText id="surname" formControlName="surname">
-        <label for="surname">Prenume</label>
-      </p-float-label>
-      <p-float-label class="surname-style" [formGroup]="formGroup">
-        <input style="padding: 10px; width: 100%" type="text" pInputText id="phoneNumber" formControlName="phoneNumber">
-        <label for="phoneNumber">Telefon</label>
-      </p-float-label>
-      <p-float-label class="surname-style" [formGroup]="formGroup">
-        <input style="padding: 10px; width: 100%" type="text" pInputText id="mail" formControlName="mail">
-        <label for="mail">Email</label>
-      </p-float-label>
+    <!-- PrimeNG 20.4 pune autofocus pe radiouri și bife dacă nu primesc explicit [autofocus]="false": pagina sărea la „CASĂ”. -->
+    <!-- Fiecare câmp are mesajul lui dedesubt, ca în „Vreau și eu!” de pe /properties. -->
+    <div class="div-style" [formGroup]="formGroup">
+      <div class="form-field form-field--wide">
+        <p-float-label>
+          <input class="name-style" style="width: 100%" type="text" pInputText id="name" formControlName="name" autocomplete="family-name">
+          <label for="name">Nume (obligatoriu)</label>
+        </p-float-label>
+        <small class="field-error" *ngIf="showError('name', 'required')">Numele este obligatoriu.</small>
+      </div>
+      <div class="form-field form-field--wide">
+        <p-float-label>
+          <input style="padding: 10px; width: 100%" type="text" pInputText id="surname" formControlName="surname" autocomplete="given-name">
+          <label for="surname">Prenume (obligatoriu)</label>
+        </p-float-label>
+        <small class="field-error" *ngIf="showError('surname', 'required')">Prenumele este obligatoriu.</small>
+      </div>
+      <div class="form-field form-field--wide">
+        <p-float-label>
+          <input style="padding: 10px; width: 100%" type="tel" inputmode="numeric" pInputText id="phoneNumber" formControlName="phoneNumber" autocomplete="tel">
+          <label for="phoneNumber">Telefon (obligatoriu)</label>
+        </p-float-label>
+        <small class="field-error" *ngIf="showError('phoneNumber', 'required')">Telefonul este obligatoriu.</small>
+        <small class="field-error" *ngIf="showError('phoneNumber', 'pattern')">Numărul de telefon trebuie să conțină doar cifre.</small>
+        <small class="field-error" *ngIf="!showError('phoneNumber', 'pattern') && showError('phoneNumber', 'minlength')">Numărul de telefon trebuie să aibă minimum 10 cifre.</small>
+      </div>
+      <div class="form-field form-field--wide">
+        <p-float-label>
+          <input style="padding: 10px; width: 100%" type="email" pInputText id="mail" formControlName="mail" autocomplete="email">
+          <label for="mail">E-mail (obligatoriu)</label>
+        </p-float-label>
+        <small class="field-error" *ngIf="showError('mail', 'required')">Adresa de e-mail este obligatorie.</small>
+        <small class="field-error" *ngIf="showError('mail', 'email')">Adresa de e-mail nu este validă.</small>
+      </div>
 
-      <p-float-label style="margin-bottom: 2rem" [formGroup]="formGroup">
-        <textarea rows="5" cols="44" pInputTextarea id="details" formControlName="details"></textarea>
-        <label for="details">Detalii</label>
-      </p-float-label>
-      <div class="property-type-section" [formGroup]="formGroup">
+      <div class="form-field">
+        <p-float-label>
+          <textarea rows="5" cols="44" pInputTextarea id="details" formControlName="details"></textarea>
+          <label for="details">Detalii (obligatoriu)</label>
+        </p-float-label>
+        <small class="field-error" *ngIf="showError('details', 'required')">Spune-ne pe scurt ce cauți.</small>
+      </div>
+      <div class="property-type-section">
         <h2 class="property-type-title">Ce cauți?</h2>
         <div class="property-type-options">
           <div class="property-type-option">
-            <p-radioButton name="propertyType" [value]="PropertyType.HOUSE" formControlName="propertyType" inputId="optHouse"></p-radioButton>
+            <p-radioButton [autofocus]="false" name="propertyType" [value]="PropertyType.HOUSE" formControlName="propertyType" inputId="optHouse"></p-radioButton>
             <label for="optHouse" class="pill-label">CASĂ</label>
           </div>
           <div class="property-type-option">
-            <p-radioButton name="propertyType" [value]="PropertyType.LAND" formControlName="propertyType" inputId="optLand"></p-radioButton>
+            <p-radioButton [autofocus]="false" name="propertyType" [value]="PropertyType.LAND" formControlName="propertyType" inputId="optLand"></p-radioButton>
             <label for="optLand" class="pill-label">TEREN</label>
           </div>
         </div>
       </div>
 
-      <div [formGroup]="formGroup" style="display: flex; align-items: center; gap: 0.75rem;">
-        <p-checkbox formControlName="terms" [binary]="true" inputId="terms"></p-checkbox>
-        <p class="consent-text consent-desktop" style="padding-left: 1rem">Sunt de acord cu <a href="javascript:void(0)" (click)="openTermenii()">termenii si condițiile</a> și <a href="javascript:void(0)" (click)="openPolitica()">politica de confidențialitate</a></p>
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <p-checkbox [autofocus]="false" formControlName="terms" [binary]="true" inputId="terms" ariaLabelledBy="consent-text-desktop"></p-checkbox>
+        <p class="consent-text consent-desktop" id="consent-text-desktop" style="padding-left: 1rem"><label for="terms">Sunt de acord cu</label> <button type="button" class="link-button" (click)="openTermenii()">termenii și condițiile</button> și <button type="button" class="link-button" (click)="openPolitica()">politica de confidențialitate</button> (obligatoriu)</p>
       </div>
+      <small class="field-error field-error--consent" *ngIf="showError('terms', 'required')">Bifează acordul ca să-ți putem trimite variante.</small>
 <!--      //TODO scos temporar-->
 <!--      <div [formGroup]="formGroup" style="display: flex; align-items: center; gap: 0.75rem; margin-top: 0.5rem;">-->
 <!--        <p-checkbox formControlName="newsletter" [binary]="true" inputId="newsletter"></p-checkbox>-->
 <!--        <h3 style="padding-left: 1rem">Ma abonez la newsletter pentru a afla mai multe despre zonă si propietati noi</h3>-->
 <!--      </div>-->
 
+      <!-- Text bleumarin pe portocaliu: 5,7:1 (albul avea 2,3:1). -->
       <span style="margin-bottom: 2rem;">
-      <button style="background: #f59533; border-color: #f59533" pButton pRipple label="HAI IN SAT" class="p-button-success" (click)="sendRequest()"></button>
+      <button type="button" style="background: #f59533; border-color: #f59533; color: #0b2f6b" pButton pRipple label="HAI ÎN SAT" class="p-button-success" (click)="sendRequest()"></button>
     </span>
 
     </div>
 
-    <img class="bg" alt="logo-background" src="assets/logo.avif" />
+    <img class="bg" alt="" src="assets/logo.avif" />
 </div>
 
 <!-- The form controls retain their existing responsive layouts. -->
 <div class="small-screen">
   <div>
-    <div class="div-style">
-      <p-float-label style="margin-bottom: 2rem" [formGroup]="formGroup">
-        <input type="text" pInputText id="name-mobile" formControlName="name">
-        <label for="name-mobile">Nume</label>
-      </p-float-label>
-      <p-float-label style="margin-bottom: 2rem" [formGroup]="formGroup">
-        <input type="text" pInputText id="surname-mobile" formControlName="surname">
-        <label for="surname-mobile">Prenume</label>
-      </p-float-label>
-      <p-float-label style="margin-bottom: 2rem" [formGroup]="formGroup">
-        <input type="tel" pInputText id="phoneNumberMobile" formControlName="phoneNumber">
-        <label for="phoneNumberMobile">Telefon</label>
-      </p-float-label>
-      <p-float-label style="margin-bottom: 2rem" [formGroup]="formGroup">
-        <input pInputText id="mail-mobile" formControlName="mail">
-        <label for="mail-mobile">E-mail</label>
-      </p-float-label>
+    <div class="div-style" [formGroup]="formGroup">
+      <div class="form-field">
+        <p-float-label>
+          <input type="text" pInputText id="name-mobile" formControlName="name" autocomplete="family-name">
+          <label for="name-mobile">Nume (obligatoriu)</label>
+        </p-float-label>
+        <small class="field-error" *ngIf="showError('name', 'required')">Numele este obligatoriu.</small>
+      </div>
+      <div class="form-field">
+        <p-float-label>
+          <input type="text" pInputText id="surname-mobile" formControlName="surname" autocomplete="given-name">
+          <label for="surname-mobile">Prenume (obligatoriu)</label>
+        </p-float-label>
+        <small class="field-error" *ngIf="showError('surname', 'required')">Prenumele este obligatoriu.</small>
+      </div>
+      <div class="form-field">
+        <p-float-label>
+          <input type="tel" inputmode="numeric" pInputText id="phoneNumberMobile" formControlName="phoneNumber" autocomplete="tel">
+          <label for="phoneNumberMobile">Telefon (obligatoriu)</label>
+        </p-float-label>
+        <small class="field-error" *ngIf="showError('phoneNumber', 'required')">Telefonul este obligatoriu.</small>
+        <small class="field-error" *ngIf="showError('phoneNumber', 'pattern')">Numărul de telefon trebuie să conțină doar cifre.</small>
+        <small class="field-error" *ngIf="!showError('phoneNumber', 'pattern') && showError('phoneNumber', 'minlength')">Numărul de telefon trebuie să aibă minimum 10 cifre.</small>
+      </div>
+      <div class="form-field">
+        <p-float-label>
+          <input type="email" pInputText id="mail-mobile" formControlName="mail" autocomplete="email">
+          <label for="mail-mobile">E-mail (obligatoriu)</label>
+        </p-float-label>
+        <small class="field-error" *ngIf="showError('mail', 'required')">Adresa de e-mail este obligatorie.</small>
+        <small class="field-error" *ngIf="showError('mail', 'email')">Adresa de e-mail nu este validă.</small>
+      </div>
 
-      <p-float-label style="margin-bottom: 2rem" [formGroup]="formGroup">
-        <textarea style="width: 15.5rem" rows="5" pInputTextarea formControlName="details" id="details_mobile"></textarea>
-        <label for="details_mobile">Detalii</label>
-      </p-float-label>
+      <div class="form-field">
+        <p-float-label>
+          <textarea style="width: 15.5rem" rows="5" pInputTextarea formControlName="details" id="details_mobile"></textarea>
+          <label for="details_mobile">Detalii (obligatoriu)</label>
+        </p-float-label>
+        <small class="field-error" *ngIf="showError('details', 'required')">Spune-ne pe scurt ce cauți.</small>
+      </div>
 
-      <div class="property-type-section" [formGroup]="formGroup">
+      <div class="property-type-section">
         <h2 class="property-type-title">Ce cauți?</h2>
         <div class="property-type-options">
+          <!-- Alt nume de grup decât pe desktop: radiourile native cu același name formau un singur grup peste ambele
+               variante, iar varianta vizibilă rămânea nebifată nativ (cititoarele de ecran anunțau „nebifat”). -->
           <div class="property-type-option">
-            <!-- Name must match formControlName to avoid Angular runtime error -->
-            <p-radioButton name="propertyType" [value]="PropertyType.HOUSE" formControlName="propertyType" inputId="optHouseMobile"></p-radioButton>
+            <p-radioButton [autofocus]="false" name="propertyTypeMobile" [value]="PropertyType.HOUSE" formControlName="propertyType" inputId="optHouseMobile"></p-radioButton>
             <label for="optHouseMobile" class="pill-label">CASĂ</label>
           </div>
           <div class="property-type-option">
-            <!-- Name must match formControlName to avoid Angular runtime error -->
-            <p-radioButton name="propertyType" [value]="PropertyType.LAND" formControlName="propertyType" inputId="optLandMobile"></p-radioButton>
+            <p-radioButton [autofocus]="false" name="propertyTypeMobile" [value]="PropertyType.LAND" formControlName="propertyType" inputId="optLandMobile"></p-radioButton>
             <label for="optLandMobile" class="pill-label">TEREN</label>
           </div>
         </div>
       </div>
 
-      <div [formGroup]="formGroup" style="display: flex; align-items: center; gap: 0.5rem; padding-left: 4rem; padding-right: 4rem">
-        <p-checkbox formControlName="terms" [binary]="true" inputId="terms_mobile"></p-checkbox>
-        <p class="consent-text consent-mobile" style="padding-left: 0.5rem">Sunt de acord cu <a href="javascript:void(0)" (click)="openTermenii()">termenii si condițiile</a> și <a href="javascript:void(0)" (click)="openPolitica()">politica de confidențialitate</a></p>
+      <div style="display: flex; align-items: center; gap: 0.5rem; padding-left: 4rem; padding-right: 4rem">
+        <p-checkbox [autofocus]="false" formControlName="terms" [binary]="true" inputId="terms_mobile" ariaLabelledBy="consent-text-mobile"></p-checkbox>
+        <p class="consent-text consent-mobile" id="consent-text-mobile" style="padding-left: 0.5rem"><label for="terms_mobile">Sunt de acord cu</label> <button type="button" class="link-button" (click)="openTermenii()">termenii și condițiile</button> și <button type="button" class="link-button" (click)="openPolitica()">politica de confidențialitate</button> (obligatoriu)</p>
       </div>
+      <small class="field-error field-error--consent" *ngIf="showError('terms', 'required')">Bifează acordul ca să-ți putem trimite variante.</small>
 <!--      //TODO dezactivat temporar-->
 <!--      <div [formGroup]="formGroup" style="display: flex; align-items: center; gap: 0.5rem; padding-left: 0.5rem; margin-top: 0.5rem;">-->
 <!--        <p-checkbox formControlName="newsletter" [binary]="true" inputId="newsletter_mobile"></p-checkbox>-->
@@ -116,7 +157,7 @@
 <!--      </div>-->
 
       <span>
-        <button style="background: #f59533; border-color: #f59533; margin-bottom: 1.25rem;" pButton pRipple label="HAI IN SAT" class="p-button-success" (click)="sendRequest()"></button>
+        <button type="button" style="background: #f59533; border-color: #f59533; color: #0b2f6b; margin-bottom: 1.25rem;" pButton pRipple label="HAI ÎN SAT" class="p-button-success" (click)="sendRequest()"></button>
       </span>
     </div>
   </div>

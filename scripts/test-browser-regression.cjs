@@ -152,19 +152,19 @@ async function runViewport(viewport) {
   const countCards = async count => page.waitForFunction(expected => document.querySelectorAll('.property-card, .property-list-item').length === expected, count);
   try {
     await go('/');
-    result.initialMenuFocus = await page.locator('.topbar__menu-button button').evaluate(el => ({
+    result.initialMenuFocus = await page.locator('button.topbar__menu-button').evaluate(el => ({
       autofocus:el.hasAttribute('autofocus'), focused:el === document.activeElement,
       focusVisible:el.matches(':focus-visible'), outline:getComputedStyle(el).outline,
       boxShadow:getComputedStyle(el).boxShadow,
     }));
-    assert.equal(await page.locator('p-button button[autofocus]').count(), 0, 'Buttons must not acquire native autofocus on page load');
+    assert.equal(await page.locator('[autofocus]').count(), 0, 'Buttons, radios and checkboxes must not acquire native autofocus on page load');
     assert.equal(result.initialMenuFocus.focused, false, 'Mobile menu must not steal initial focus');
     await capture(page, viewport.name, 'home');
-    assert.equal(await page.locator('.footer-links a').count(), 7);
-    pass('homepage and seven footer links');
+    assert.equal(await page.locator('.footer-links a').count(), 5);
+    pass('homepage and five footer links');
     if (viewport.width < 600) {
-      for(let tab=0;tab<10 && !(await page.locator('.topbar__menu-button button').evaluate(el => el === document.activeElement));tab++) await page.keyboard.press('Tab');
-      const keyboardFocus = await page.locator('.topbar__menu-button button').evaluate(el => {
+      for(let tab=0;tab<10 && !(await page.locator('button.topbar__menu-button').evaluate(el => el === document.activeElement));tab++) await page.keyboard.press('Tab');
+      const keyboardFocus = await page.locator('button.topbar__menu-button').evaluate(el => {
         const style=getComputedStyle(el);
         return { focused:el === document.activeElement, visible:el.matches(':focus-visible'), outline:style.outline, boxShadow:style.boxShadow, hasIndicator:(style.outlineStyle !== 'none' && parseFloat(style.outlineWidth) > 0) || style.boxShadow !== 'none' };
       });
@@ -175,7 +175,7 @@ async function runViewport(viewport) {
       await page.keyboard.press('Escape');
       await page.locator('.mobile-menu-panel').waitFor({state:'hidden'});
       pass('mobile menu keyboard Tab focus indicator, Enter and Escape');
-      await page.locator('.topbar__menu-button button').click();
+      await page.locator('button.topbar__menu-button').click();
       await page.locator('.mobile-menu-panel').waitFor({state:'visible'});
       await capture(page, viewport.name, 'menu');
       await page.locator('.mobile-menu-panel a[href="/properties"]').click();
@@ -206,9 +206,9 @@ async function runViewport(viewport) {
     assert.match(page.url(), /page=1/);
     await page.goBack(); await countCards(6);
     pass('filter, pagination, browser Back restore page and totals');
-    result.layoutToggleCount = await page.locator('p-selectbutton button').count();
+    result.layoutToggleCount = await page.locator('p-selectbutton .p-togglebutton').count();
     if (result.layoutToggleCount) {
-      await page.locator('p-selectbutton button').first().click();
+      await page.locator('p-selectbutton .p-togglebutton').first().click();
       await page.locator('.property-list-item').first().waitFor();
       await capture(page, viewport.name, 'properties-list');
     }
@@ -248,13 +248,16 @@ async function runViewport(viewport) {
     await visible('textarea[formcontrolname="details"]').fill('Cerere locală pentru verificarea dependențelor.');
     await page.locator('label.pill-label:visible', {hasText:'TEREN'}).click();
     await visible('input[type="checkbox"]').check();
-    await page.getByRole('button',{name:'HAI IN SAT',exact:true}).filter({visible:true}).click();
+    await page.getByRole('button',{name:'HAI ÎN SAT',exact:true}).filter({visible:true}).click();
     await page.getByText('Formularul a fost trimis cu succes').first().waitFor();
     assert.ok(report.requests.some(r => r.viewport === viewport.name && r.url === '/home-form' && r.method === 'POST' && JSON.parse(r.body).propertyType === 'land'));
     pass('home form radio/checkbox and mocked submission');
-    await page.locator('.footer-links a[href="/contact-us"]').click();
+    // Pagina /contact-us a fost scoasă: butonul Contact din subsol deschide fereastra pe orice ecran.
+    await page.locator('.footer-legal button', {hasText:'Contact'}).click();
+    await page.locator('.p-dialog .contact-info a[href="tel:+40728140628"]').waitFor();
     await capture(page, viewport.name, 'contact');
-    pass('footer navigation to contact');
+    await page.keyboard.press('Escape');
+    pass('footer contact dialog');
     await go('/properties');
     assert.equal(await page.locator('p-button button[autofocus]').count(), 0, 'Direct properties load must not autofocus buttons');
     pass('direct home/properties loads preserve initial focus');
@@ -321,20 +324,6 @@ async function runViewport(viewport) {
     }
     await swipe(page.locator('swiper-container'));
     pass('Swiper village carousel responds to drag/touch');
-    await go('/see-the-area');
-    await capture(page, viewport.name, 'area-choice');
-    result.areaChoiceButtonCount = await page.locator('p-card:visible button').count();
-    // Record an inaccessible pre-existing flow instead of invoking Angular internals.
-    for(const [label, kind] of result.areaChoiceButtonCount ? [['Cumpără','buy'],['Închiriază','rent']] : []) {
-      await page.locator('p-card:visible').filter({hasText:label}).locator('button').click();
-      const swiper = page.locator(`app-see-the-area-${kind}:visible .mySwiper:visible`).last();
-      await swiper.waitFor();
-      assert.ok(await swiper.evaluate(el => el.swiper?.initialized), `${kind} Swiper initializes`);
-      await capture(page, viewport.name, `area-${kind}`);
-      await swipe(swiper);
-      pass(`Swiper ${kind} carousel initialized and responds to drag/touch`);
-      await page.locator('p-button.back-desktop:visible button, p-button.back-mobile:visible button').click();
-    }
     assert.deepEqual(result.pageErrors, [], 'Uncaught browser errors including Swiper routes');
   } catch(error) {
     report.failures.push({viewport:viewport.name, suite:'swiper', error:String(error), stack:error.stack});
