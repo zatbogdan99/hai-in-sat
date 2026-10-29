@@ -40,6 +40,11 @@ export function app(): express.Express {
     max: 100,
     ttl: 300000,
     updateAgeOnGet: false,
+    // Limita de memorie a instanței F2: paginile cu poze base64 aveau 20–30 MB, iar 100 de intrări
+    // puteau ține gigabytes în memorie. Paginile peste 4 MB nu se mai păstrează în cache.
+    maxSize: 96 * 1024 * 1024,
+    maxEntrySize: 4 * 1024 * 1024,
+    sizeCalculation: (entry) => entry.html.length,
   }));
 
   server.set('view engine', 'html');
@@ -76,12 +81,44 @@ export function app(): express.Express {
         "default-src 'self'; " +
         "script-src 'self' 'unsafe-inline' https://www.youtube.com https://www.gstatic.com https://www.googleapis.com; " +
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
-        "font-src 'self' https://fonts.gstatic.com; " +
+        // data: pentru fontul de iconițe PrimeIcons, încorporat în CSS.
+        "font-src 'self' data: https://fonts.gstatic.com; " +
         "img-src 'self' data: https:; " +
+        // Videoclipurile de prezentare ale proprietăților vin din bucketul public din GCS.
+        "media-src 'self' https://storage.googleapis.com; " +
         "connect-src 'self' https://hai-in-sat-api.lm.r.appspot.com https://*.firebaseio.com https://*.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com; " +
-        'frame-src https://www.youtube.com;',
+        'frame-src https://www.youtube.com https://www.youtube-nocookie.com; ' +
+        // Fără report-uri, politica Report-Only nu avea unde raporta (Safari avertiza pe fiecare pagină).
+        'report-uri /csp-report;',
     });
     next();
+  });
+
+  // Rapoartele CSP ajung în logul App Engine (scurtate), ca să vedem ce ar bloca politica înainte s-o facem obligatorie.
+  server.post('/csp-report', express.json({
+    type: ['application/csp-report', 'application/reports+json', 'application/json'],
+    limit: '16kb',
+  }), (req: express.Request, res: express.Response) => {
+    console.warn('[CSP] ' + JSON.stringify(req.body ?? null).slice(0, 2000));
+    res.status(204).end();
+  });
+
+  // Pagina /contact-us a fost scoasă: adresele vechi (Google, linkuri externe) ajung pe prima pagină,
+  // unde subsolul are telefonul, emailul și fereastra Contact.
+  server.get(['/contact-us', '/contact-us/'], (_req: express.Request, res: express.Response) => {
+    res.redirect(301, '/');
+  });
+
+  // Pagina „Vezi zona” a fost scoasă: terenurile din ramura „Cumpără” sunt anunțuri în /properties,
+  // iar „Închiriază” n-avea oferte. Adresa veche (sitemap, linkuri externe) duce la listă.
+  server.get(['/see-the-area', '/see-the-area/'], (_req: express.Request, res: express.Response) => {
+    res.redirect(301, '/properties');
+  });
+
+  // /info-page arăta satul ales anterior în memorie (direct: satul lunii). Fiecare sat are acum /sate/:slug,
+  // iar adresa veche duce la lista satelor.
+  server.get(['/info-page', '/info-page/'], (_req: express.Request, res: express.Response) => {
+    res.redirect(301, '/under-the-mountain');
   });
 
   // Paginile administrative rămân accesibile, dar nu trebuie indexate.

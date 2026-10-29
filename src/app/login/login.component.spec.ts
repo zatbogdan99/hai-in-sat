@@ -34,4 +34,9 @@ describe('LoginComponent', () => {
     expect(TestBed.inject(Meta).getTag('name="robots"')?.content).toBe('noindex, nofollow');
     expect(ssrRenderState.cacheable).toBeFalse();
   });
+
+  it('gives the back link a real address to the home page', () => {
+    const back = fixture.nativeElement.querySelector('a.back-link') as HTMLAnchorElement;
+    expect(back.getAttribute('href')).toBe('/');
+  });
 });

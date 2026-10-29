@@ -1,150 +1,22 @@
-.card {
-  background: var(--surface-card);
-  padding: 2rem;
-  border-radius: 10px;
+/* Învelișul aplicației: antet, conținut, subsol. Subsolul stă jos și pe paginile scurte. */
+.app-shell {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
 }
 
-.vertical-center {
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-}
-
-.clickable {
-  cursor: pointer;
-}
-
-/* Darker gray background for footer buttons */
-::ng-deep .p-chip.clickable {
-  background-color: #F4EFE5 !important; /* beige per request */
-}
-
-.contact-info {
-  margin: 10px;
-  padding: 15px;
-}
-
-.contact-info h2 {
-  font-size: 24px;
-}
-
-.contact-info li {
-  font-size: 18px;
-}
-
-.images-style {
-  height: 1.5rem;
-  width: 1.5rem;
-  margin-right: 0.5rem
-}
-
-/* Make social media icons fully opaque */
-fa-icon {
-  opacity: 1 !important;
-  color: white !important;
-}
-
-/* Footer bottom bar background */
-.large-screen .card,
-.small-screen .card {
-  background-color: #042677 !important;
-  color: white;
-  border-radius: 0 !important;
-}
-
-//mobile or smaller screens
-@media only screen and (max-width: 1199px), only screen and (max-height: 599px) {
-  .small-screen {
-    display: block;
-  }
-  .large-screen {
-    display: none;
-  }
-}
-
-//desktop or larger screens
-@media only screen and (min-width: 1200px) and (min-height: 600px) {
-  .small-screen {
-    display: none;
-  }
-  .large-screen {
-    display: block;
-  }
-}
-
-::ng-deep .p-menubar .p-menuitem-text {
-  color: #1b3a2a !important; /* dark green text on chips */
-}
-
-/* Header menubar hover/focus: keep beige chip and green text */
-::ng-deep .p-menubar .p-menuitem-link:hover,
-::ng-deep .p-menubar .p-menuitem-link:focus {
-  background-color: #E9DFC9 !important;
-  color: #1b3a2a !important;
-}
-
-::ng-deep .p-menubar .p-menuitem-link:hover .p-menuitem-text,
-::ng-deep .p-menubar .p-menuitem-link:focus .p-menuitem-text,
-::ng-deep .p-menubar .p-menuitem-link:hover .p-menuitem-icon,
-::ng-deep .p-menubar .p-menuitem-link:focus .p-menuitem-icon {
-  color: #1b3a2a !important;
-}
-
-/* Also cover PrimeNG 17+ markup using .p-menuitem-content */
-::ng-deep .p-menubar .p-menuitem:hover > .p-menuitem-content,
-::ng-deep .p-menubar .p-menuitem:focus-within > .p-menuitem-content {
-  background-color: #E9DFC9 !important;
-}
-
-::ng-deep .p-menubar .p-menuitem:hover > .p-menuitem-content .p-menuitem-text,
-::ng-deep .p-menubar .p-menuitem:hover > .p-menuitem-content .p-menuitem-icon,
-::ng-deep .p-menubar .p-menuitem:focus-within > .p-menuitem-content .p-menuitem-text,
-::ng-deep .p-menubar .p-menuitem:focus-within > .p-menuitem-content .p-menuitem-icon {
-  color: #1b3a2a !important;
-}
-
-.card {
-  background: var(--surface-card);
-  padding: 2rem;
-  border-radius: 10px;
-}
-
-.vertical-center {
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
+.app-main {
+  flex: 1 0 auto;
 }
 
 .clickable {
   cursor: pointer;
 }
 
-/* Darker gray background for footer buttons */
+/* Cipurile din meniu (antet și meniul de telefon) rămân bej. */
 ::ng-deep .p-chip.clickable {
-  background-color: #F4EFE5 !important; /* beige per request */
-}
-
-.contact-info {
-  margin: 10px;
-  padding: 15px;
-}
-
-.contact-info h2 {
-  font-size: 24px;
-}
-
-.contact-info li {
-  font-size: 18px;
-}
-
-.images-style {
-  height: 1.5rem;
-  width: 1.5rem;
-  margin-right: 0.5rem
+  background-color: #F4EFE5 !important;
 }
 
 /* Make social media icons fully opaque */
@@ -190,82 +62,50 @@ fa-icon {
   gap: 0.5rem;
 }
 
+/* Butonul de meniu: același aspect ca vechiul p-button rotund cu text (iconiță verde pe albastru). */
 .topbar__menu-button {
   display: none; /* hidden on desktop by default */
-  color: #ffffff;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #10b981;
+  font-size: 1.1rem;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  &:focus-visible {
+    outline: 2px solid #f4efe5;
+    outline-offset: 2px;
+  }
 }
 
 .topbar__icon {
-  padding-left: 1rem;
-  padding-right: 1rem;
-  cursor: pointer;
-}
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0 0.5rem;
+  border-radius: 50%;
+  color: inherit;
 
-/* Footer bottom bar background */
-.large-screen .card,
-.small-screen .card {
-  background-color: #042677 !important;
-  color: white;
-  border-radius: 0 !important;
-}
-
-//mobile or smaller screens
-@media only screen and (max-width: 1199px), only screen and (max-height: 599px) {
-  .small-screen {
-    display: block;
-  }
-  .large-screen {
-    display: none;
+  &:focus-visible {
+    outline: 2px solid #f4efe5;
+    outline-offset: 2px;
   }
 }
-
-//desktop or larger screens
-@media only screen and (min-width: 1200px) and (min-height: 600px) {
-  .small-screen {
-    display: none;
-  }
-  .large-screen {
-    display: block;
-  }
-}
-
-::ng-deep .p-menubar .p-menuitem-text {
-  color: #1b3a2a !important; /* dark green text on chips */
-}
-
-/* Header menubar hover/focus: keep beige chip and green text */
-::ng-deep .p-menubar .p-menuitem-link:hover,
-::ng-deep .p-menubar .p-menuitem-link:focus {
-  background-color: #E9DFC9 !important;
-  color: #1b3a2a !important;
-}
-
-::ng-deep .p-menubar .p-menuitem-link:hover .p-menuitem-text,
-::ng-deep .p-menubar .p-menuitem-link:focus .p-menuitem-text,
-::ng-deep .p-menubar .p-menuitem-link:hover .p-menuitem-icon,
-::ng-deep .p-menubar .p-menuitem-link:focus .p-menuitem-icon {
-  color: #1b3a2a !important;
-}
-
-/* Also cover PrimeNG 17+ markup using .p-menuitem-content */
-::ng-deep .p-menubar .p-menuitem:hover > .p-menuitem-content,
-::ng-deep .p-menubar .p-menuitem:focus-within > .p-menuitem-content {
-  background-color: #E9DFC9 !important;
-}
-
-::ng-deep .p-menubar .p-menuitem:hover > .p-menuitem-content .p-menuitem-text,
-::ng-deep .p-menubar .p-menuitem:hover > .p-menuitem-content .p-menuitem-icon,
-::ng-deep .p-menubar .p-menuitem:focus-within > .p-menuitem-content .p-menuitem-text,
-::ng-deep .p-menubar .p-menuitem:focus-within > .p-menuitem-content .p-menuitem-icon {
-  color: #1b3a2a !important;
-}
-
 
 /* Mobile behavior: replace chips with menu button and vertical list */
 @media only screen and (max-width: 1199px), only screen and (max-height: 599px) {
   .nav-chips { display: none; }
-  .topbar__menu-button { display: inline-flex; align-items: center; justify-content: center; }
-  .mobile-menu-list { display: flex; flex-direction: column; gap: 0.5rem; padding: 0.25rem; }
+  .topbar__menu-button { display: inline-flex; }
 }
 
 /* Desktop behavior: keep chips visible and hide the menu button */
@@ -274,12 +114,20 @@ fa-icon {
   .topbar__menu-button { display: none; }
 }
 
+.mobile-menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.25rem;
+}
+
 /* Overlay/Popover fine-tuning */
 :host ::ng-deep .mobile-menu-panel .p-overlaypanel-content,
 :host ::ng-deep .mobile-menu-panel .p-popover-content {
   padding: 0.5rem !important;
   background: transparent;
 }
+
 .topbar__logo-link,
 .navigation-link {
   display: inline-flex;
@@ -290,7 +138,9 @@ fa-icon {
 
 .navigation-link:focus-visible,
 .topbar__logo-link:focus-visible,
-.footer-links a:focus-visible {
+.footer-links a:focus-visible,
+.footer-contact a:focus-visible,
+.footer-social a:focus-visible {
   outline: 2px solid #f4efe5;
   outline-offset: 4px;
 }
@@ -303,14 +153,23 @@ fa-icon {
   outline-color: #042677;
 }
 
+/* Subsolul: un singur bloc responsiv (înainte erau două variante, pentru ecran mare și mic). */
+.site-footer {
+  background: #042677;
+  color: #f4efe5;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  text-align: center;
+}
+
 .footer-links {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.75rem 1.5rem;
-  padding: 2rem 1.5rem 0;
-  background: #042677;
-  color: #f4efe5;
 
   a {
     color: inherit;
@@ -321,5 +180,156 @@ fa-icon {
 
   a:hover {
     text-decoration: underline;
+  }
+}
+
+/* Telefonul și emailul vizibile în subsol, pe toate paginile. */
+.footer-contact {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem 1.5rem;
+  margin: 0;
+
+  a {
+    color: #ffffff;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    overflow-wrap: anywhere;
+  }
+}
+
+.footer-social {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    color: inherit;
+    border-radius: 0.5rem;
+  }
+}
+
+.footer-legal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem 2rem;
+}
+
+/* Aceleași culori ca vechile p-chip din subsol, dar butoane reale (merg și din tastatură). */
+.footer-chip {
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #334155;
+  background-color: #F4EFE5;
+  border: 0;
+  border-radius: 16px;
+  padding: 0.25rem 0.75rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #E9DFC9;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #f4efe5;
+    outline-offset: 3px;
+  }
+}
+
+@media only screen and (max-width: 1199px), only screen and (max-height: 599px) {
+  .footer-legal {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+}
+
+/* Ferestrele cu texte lungi: zona derulabilă se poate focaliza și derula din tastatură. */
+.dialog-scroll {
+  max-height: 65vh;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+
+  &:focus-visible {
+    outline: 2px solid #042677;
+    outline-offset: 2px;
+  }
+}
+
+.contact-info {
+  margin: 0;
+  padding: 0.25rem;
+}
+
+.contact-info__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+
+  h2 {
+    font-size: 24px;
+    margin: 0;
+    flex: 1 1 12rem;
+  }
+}
+
+.contact-info__logo {
+  width: 6rem;
+  height: 6rem;
+}
+
+.contact-info__list {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.5rem;
+    color: inherit;
+    text-decoration: none;
+    min-height: 2.75rem;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+}
+
+.contact-info__email {
+  font-size: 1.15rem;
+  overflow-wrap: anywhere;
+}
+
+.images-style {
+  height: 1.5rem;
+  width: 1.5rem;
+  flex: 0 0 auto;
+}
+
+/* Sub 576 px sigla trece deasupra titlului, ca titlul să nu se rupă lângă ea. */
+@media (max-width: 575px) {
+  .contact-info__head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .contact-info__list a {
+    font-size: 1.25rem;
   }
 }

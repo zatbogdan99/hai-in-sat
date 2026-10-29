@@ -122,6 +122,8 @@
 
       .property-list-content {
         flex: 1;
+        min-width: 0;
+        overflow-wrap: anywhere;
 
         h2 {
           font-size: 1.25rem;
@@ -155,6 +157,9 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
+      max-width: 100%;
+      /* Un email sau o adresă fără spații nu mai iese din card la 320 px. */
+      overflow-wrap: anywhere;
 
       img {
         width: 100%;
@@ -303,9 +308,10 @@
   border: 2px solid #0b2f6b;
 }
 
+/* Text bleumarin pe portocaliu: 6:1 (albul avea 2,1:1). */
 .filter-button-orange {
   background-color: #ff9900;
-  color: white;
+  color: #0b2f6b;
   border: 2px solid #ff9900;
 }
 
@@ -373,6 +379,28 @@
   a.disabled {
     opacity: var(--p-disabled-opacity, 0.6);
     pointer-events: none;
+  }
+}
+
+/* Pe telefoanele înguste, paginarea încape pe un rând: „prima”/„ultima” se ascund (numerele rămân). */
+@media (max-width: 400px) {
+  .property-pagination {
+    gap: 0.125rem;
+    padding: 0.5rem 0.25rem;
+
+    .pagination-pages {
+      gap: 0.125rem;
+    }
+
+    a {
+      min-width: 2.25rem;
+      height: 2.25rem;
+    }
+
+    a[aria-label='Prima pagină'],
+    a[aria-label='Ultima pagină'] {
+      display: none;
+    }
   }
 }
 

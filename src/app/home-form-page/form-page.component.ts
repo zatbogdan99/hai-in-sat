@@ -77,7 +77,8 @@ export class FormPageComponent implements OnInit, AfterViewInit{
       {
         name: ['', Validators.required],
         surname: ['', Validators.required],
-        phoneNumber: ['', Validators.required],
+        // Aceleași reguli ca la „Vreau și eu!”: doar cifre, minimum 10.
+        phoneNumber: ['', [Validators.required, Validators.pattern(/^\d+$/), Validators.minLength(10)]],
         mail: ['', [Validators.required, Validators.email]],
         details: new FormControl('', { validators: [Validators.required] }),
         propertyType: new FormControl<PropertyType | null>(PropertyType.HOUSE, { validators: [Validators.required] }),
@@ -85,6 +86,19 @@ export class FormPageComponent implements OnInit, AfterViewInit{
         newsletter: new FormControl<boolean>(false)
       }
     );
+
+    // Radiourile din varianta desktop și cea mobilă au grupuri native diferite; valoarea aleasă într-una
+    // se scrie înapoi în control, ca să apară bifată și în cealaltă (de exemplu după rotirea ecranului).
+    const propertyType = this.formGroup.get('propertyType')!;
+    propertyType.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(value => propertyType.setValue(value, { emitEvent: false }));
+  }
+
+  /** Mesajul de sub câmp apare după ce omul a atins câmpul sau a apăsat „HAI ÎN SAT”. */
+  showError(controlName: string, errorCode: string): boolean {
+    const control = this.formGroup.get(controlName);
+    return !!control && (control.touched || control.dirty) && control.hasError(errorCode);
   }
 
   ngAfterViewInit() {
@@ -108,7 +122,7 @@ export class FormPageComponent implements OnInit, AfterViewInit{
           next: () => {
             this.messageService.add({
               severity: 'success',
-              summary: 'HAI IN SAT',
+              summary: 'HAI ÎN SAT',
               detail: 'Formularul a fost trimis cu succes'
             });
             this.formGroup.reset({
@@ -131,14 +145,14 @@ export class FormPageComponent implements OnInit, AfterViewInit{
       } else {
         this.messageService.add({
           severity: 'error',
-          summary: 'HAI IN SAT',
-          detail: 'Trebuie să acceptați termenii si condițiile și politica de confindețialitate!'
+          summary: 'HAI ÎN SAT',
+          detail: 'Trebuie să acceptați termenii și condițiile și politica de confidențialitate!'
         });
       }
     } else {
       this.messageService.add({
         severity: 'warn',
-        summary: 'HAI IN SAT',
+        summary: 'HAI ÎN SAT',
         detail: 'Vă rugăm completați toate câmpurile obligatorii!'
       });
       this.formGroup.markAllAsTouched();

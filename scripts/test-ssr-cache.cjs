@@ -20,7 +20,7 @@ let server;
 let serverLog = '';
 const evidence = [];
 
-function request(url, { method = 'GET', headers = {} } = {}) {
+function request(url, { method = 'GET', headers = {}, body } = {}) {
   return new Promise((resolve, reject) => {
     const req = http.request({ hostname: 'localhost', port, path: url, method, headers }, res => {
       let html = '';
@@ -34,7 +34,7 @@ function request(url, { method = 'GET', headers = {} } = {}) {
     });
     req.setTimeout(35000, () => req.destroy(new Error(`Request timed out: ${url}`)));
     req.on('error', reject);
-    req.end();
+    req.end(body);
   });
 }
 
@@ -166,16 +166,53 @@ async function main() {
     verify(unavailable, 503, 'MISS');
     assert.equal(unavailable.headers['retry-after'], '60');
     assert.equal(unavailable.headers['x-robots-tag'], 'noindex, nofollow');
-    verify(await request('/property/33333333-3333-3333-3333-333333333333/teren-de-vanzare-proprietate-test'), 200, 'MISS');
   }
+  // Pozele nu se mai cer pe server (le cere browserul după hidratare), deci un /get-photos căzut nu mai
+  // degradează HTML-ul: pagina rămâne publică și intră în cache.
+  const photosDown = '/property/33333333-3333-3333-3333-333333333333/teren-de-vanzare-proprietate-test';
+  verify(await request(photosDown), 200, 'MISS', true);
+  verify(await request(photosDown), 200, 'HIT', true);
   const valid = '/property/11111111-1111-1111-1111-111111111111/teren-de-vanzare-proprietate-test';
   verify(await request(valid), 200, 'MISS', true);
   verify(await request(valid), 200, 'HIT', true);
 
-  verify(await request('/contact-us', { method: 'HEAD' }), 200, 'MISS');
-  verify(await request('/contact-us'), 200, 'MISS', true);
-  verify(await request('/contact-us', { method: 'HEAD' }), 200, 'MISS');
-  verify(await request('/contact-us'), 200, 'HIT', true);
+  verify(await request('/about-us', { method: 'HEAD' }), 200, 'MISS');
+  verify(await request('/about-us'), 200, 'MISS', true);
+  verify(await request('/about-us', { method: 'HEAD' }), 200, 'MISS');
+  verify(await request('/about-us'), 200, 'HIT', true);
+  // Pagina de contact a fost scoasă: adresa veche duce permanent la prima pagină.
+  for (const old of ['/contact-us', '/contact-us/']) {
+    const moved = await request(old);
+    assert.equal(moved.status, 301, `${old} must redirect permanently`);
+    assert.equal(moved.headers.location, '/');
+  }
+  // „Vezi zona” a fost scoasă; terenurile ei sunt anunțuri în /properties.
+  for (const old of ['/see-the-area', '/see-the-area/']) {
+    const moved = await request(old);
+    assert.equal(moved.status, 301, `${old} must redirect permanently`);
+    assert.equal(moved.headers.location, '/properties');
+  }
+  // /info-page depindea de satul ales în memorie; fiecare sat are acum /sate/:slug, iar adresa veche duce la listă.
+  for (const old of ['/info-page', '/info-page/']) {
+    const moved = await request(old);
+    assert.equal(moved.status, 301, `${old} must redirect permanently`);
+    assert.equal(moved.headers.location, '/under-the-mountain');
+  }
+  const village = await request('/sate/polovragi');
+  verify(village, 200, 'MISS', true);
+  assert.ok(village.html.includes('<title>Polovragi – sat în Oltenia de sub Munte | Hai în Sat</title>'), 'village title');
+  assert.ok(village.html.includes('<link rel="canonical" href="https://hai-în-sat.ro/sate/polovragi">'), 'village canonical');
+  verify(await request('/sate/necunoscut'), 404, 'MISS');
+  console.log('PASS /sate/polovragi -> own title and canonical; /sate/necunoscut -> 404; /info-page -> 301');
+  // Politica Report-Only are unde raporta: serverul primește raportul și răspunde 204.
+  assert.ok(village.headers['content-security-policy-report-only'].includes('report-uri /csp-report'), 'CSP report-uri');
+  const cspReport = await request('/csp-report', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/csp-report' },
+    body: JSON.stringify({ 'csp-report': { 'document-uri': 'http://localhost/test', 'violated-directive': 'img-src' } }),
+  });
+  assert.equal(cspReport.status, 204);
+  console.log('PASS POST /csp-report -> 204');
   const redirect = await request('/properties?type=land', { headers: {
     Host: 'www.xn--hai-n-sat-t5a.ro', 'X-Forwarded-Proto': 'https',
   } });
@@ -218,17 +255,16 @@ async function main() {
     verify(await request(url), 404, 'MISS');
   }
   // TASK-118: toate rutele statice, plus un anunț cu telefoane în nume/descriere.
-  for (const url of ['/', '/homes', '/about-us', '/info-page', '/contact-us', '/under-the-mountain',
-    '/see-the-area', '/properties', '/village-of-the-month', '/login', '/add-property']) {
+  for (const url of ['/', '/homes', '/about-us', '/sate/horezu', '/under-the-mountain',
+    '/properties', '/village-of-the-month', '/login', '/add-property']) {
     const result = await request(url);
     const { nodes } = verifySeoPhones(result);
-    if (url === '/contact-us') {
-      const phones = nodes.filter(node => node.tagName === 'a' && attr(node, 'href')?.startsWith('tel:'));
-      assert.ok(phones.length >= 2);
-      for (const phone of phones) {
-        assert.equal(attr(phone, 'href'), 'tel:+40728140628');
-        assert.equal(textContent(phone).replace(/\s/g, ''), '0728140628');
-      }
+    // Subsolul are pe fiecare pagină telefonul oficial (în locul fostei pagini /contact-us).
+    const phones = nodes.filter(node => node.tagName === 'a' && attr(node, 'href')?.startsWith('tel:'));
+    assert.ok(phones.length >= 1, `${url} must show the official phone in the footer`);
+    for (const phone of phones) {
+      assert.equal(attr(phone, 'href'), 'tel:+40728140628');
+      assert.equal(textContent(phone).replace(/\s/g, ''), '0728140628');
     }
   }
   const seoProperty = {

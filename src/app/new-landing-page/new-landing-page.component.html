@@ -1,4 +1,10 @@
 <div class="hero">
+  <!-- Poza e <img> cu prioritate mare, nu fundal CSS: browserul o găsește direct în HTML și o descarcă o singură
+       dată. Preîncărcarea globală din index.html cerea altă adresă decât CSS-ul (copia cu hash) și se pierdea. -->
+  <picture class="hero__media">
+    <source media="(max-width: 767px)" srcset="assets/poza_landing1_mobile.avif" type="image/avif">
+    <img class="hero__img" src="assets/poza_landing1.avif" alt="" fetchpriority="high">
+  </picture>
   <div class="overlay"></div>
   <div class="content">
     <h1 class="title">E timpul să te întorci la liniște</h1>
