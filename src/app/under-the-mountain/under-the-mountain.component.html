@@ -29,7 +29,9 @@
   <div class="discover__overlay"></div>
   <div class="discover__container">
     <h2 class="discover__title">Descoperă Oltenia de sub Munte</h2>
-    <div class="discover__cards">
+    <div class="discover__cards"
+         (pointerenter)="onCardsPointer($event, true)" (pointerleave)="onCardsPointer($event, false)"
+         (focusin)="onCardsFocus($event, true)" (focusout)="onCardsFocus($event, false)">
       <button #prevNav type="button" class="discover__nav discover-prev" aria-label="Imaginea anterioară">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -53,6 +55,21 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
+      </button>
+    </div>
+    <!-- Derularea automată se poate opri oricând (WCAG 2.2.2); eticheta spune ce face butonul acum. -->
+    <div class="discover__controls">
+      <button type="button" class="discover__autoplay" (click)="toggleAutoplay()"
+              [attr.aria-label]="autoplayRunning() ? 'Oprește derularea automată' : 'Pornește derularea automată'">
+        @if (autoplayRunning()) {
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M9 6v12M15 6v12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        } @else {
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/>
+          </svg>
+        }
       </button>
     </div>
   </div>

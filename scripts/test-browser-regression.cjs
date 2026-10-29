@@ -354,6 +354,50 @@ async function runViewport(viewport) {
   } finally { await context.close(); }
 }
 
+// TASK-136: în browser real, fără „mișcare redusă”: autoplay la 5 s, pauză la hover, oprire definitivă la săgeată.
+async function checkVillageAutoplay(viewport) {
+  const context = await browser.newContext({ viewport: { width: viewport.width, height: viewport.height }, deviceScaleFactor: 1, isMobile: viewport.width < 600, hasTouch: viewport.width < 600, reducedMotion: 'no-preference' });
+  await context.route('**/*', route => new URL(route.request().url()).origin === origin ? route.continue() : route.abort('blockedbyclient'));
+  const page = await context.newPage();
+  const index = () => page.locator('swiper-container').evaluate(el => el.swiper.realIndex);
+  try {
+    await page.goto(origin + '/under-the-mountain');
+    await page.waitForFunction(() => document.querySelector('swiper-container')?.swiper?.autoplay?.running);
+    await page.locator('.discover__autoplay').scrollIntoViewIfNeeded();
+    const layout = await page.evaluate(() => {
+      const box = el => el.getBoundingClientRect();
+      const button = box(document.querySelector('.discover__autoplay'));
+      const overlaps = el => { const b = box(el); return !(button.right <= b.left || button.left >= b.right || button.bottom <= b.top || button.top >= b.bottom); };
+      return { cards: overlaps(document.querySelector('.discover__cards')), arrows: [...document.querySelectorAll('.discover__nav')].some(overlaps), width: document.documentElement.scrollWidth, viewport: innerWidth };
+    });
+    assert.deepEqual(layout, { cards: false, arrows: false, width: layout.viewport, viewport: layout.viewport }, `Autoplay button must not overlap: ${JSON.stringify(layout)}`);
+    const first = await index();
+    await page.waitForFunction(start => document.querySelector('swiper-container').swiper.realIndex !== start, first, { timeout: 7000 });
+    assert.equal(await page.locator('.discover__autoplay').getAttribute('aria-label'), 'Oprește derularea automată');
+    if (viewport.width >= 600) {
+      await page.locator('.discover__cards').hover();
+      const paused = await index();
+      await page.waitForTimeout(6000);
+      assert.equal(await index(), paused, 'Hover must pause the autoplay');
+      await page.mouse.move(0, 0);
+      await page.waitForFunction(start => document.querySelector('swiper-container').swiper.realIndex !== start, paused, { timeout: 7000 });
+    }
+    await page.locator('.discover-next').click();
+    await page.waitForTimeout(500);
+    const stopped = await index();
+    await page.mouse.move(0, 0);
+    await page.waitForTimeout(10000);
+    assert.equal(await index(), stopped, 'An arrow click must stop the autoplay for good');
+    assert.equal(await page.locator('.discover__autoplay').getAttribute('aria-label'), 'Pornește derularea automată');
+    await page.locator('.discover__autoplay').click();
+    await page.waitForFunction(start => document.querySelector('swiper-container').swiper.realIndex !== start, stopped, { timeout: 7000 });
+    await page.locator('.discover__autoplay').click();
+    assert.equal(await page.locator('swiper-container').evaluate(el => el.swiper.autoplay.running), false);
+    await page.locator('.discover__controls').screenshot({ path: path.join(output, `${viewport.name}-villages-autoplay-button.png`) });
+    console.log(`PASS ${viewport.name}: village autoplay every 5 s, ${viewport.width >= 600 ? 'hover pause, ' : ''}stop on arrow, Pause/Play button`);
+  } finally { await context.close(); }
+}
+
 async function compare() {
   if (!baseline) return;
   const before = JSON.parse(fs.readFileSync(path.join(baseline,'report.json'),'utf8'));
@@ -379,7 +423,10 @@ async function compare() {
     await startServer();
     browser = await chromium.launch({ headless:true, channel:process.env.BROWSER_CHANNEL || 'chrome' });
     report.browser = browser.version();
-    for (const viewport of [{name:'desktop',width:1440,height:1000},{name:'mobile',width:390,height:844},{name:'small-mobile',width:320,height:740}].filter(item => !option('--viewport') || item.name === option('--viewport'))) await runViewport(viewport);
+    for (const viewport of [{name:'desktop',width:1440,height:1000},{name:'mobile',width:390,height:844},{name:'small-mobile',width:320,height:740}].filter(item => !option('--viewport') || item.name === option('--viewport'))) {
+      await runViewport(viewport);
+      await checkVillageAutoplay(viewport).catch(error => { report.failures.push({ viewport: viewport.name, suite: 'autoplay', error: String(error), stack: error.stack }); console.error(`FAIL ${viewport.name} autoplay: ${error.stack}`); });
+    }
     if (!option('--viewport')) {
       // Telefon ținut orizontal (înălțime sub 600 px): antetul se derulează, ca pe telefon.
       const context = await browser.newContext({ viewport: { width: 844, height: 390 }, deviceScaleFactor: 1, isMobile: true, hasTouch: true, reducedMotion: 'reduce' });
