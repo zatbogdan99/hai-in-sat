@@ -27,7 +27,7 @@ Se scot complet, la cererea owner-ului (2026-10-29):
 
 ## Starea de pornire
 
-Footerul descris aici este cel din branch-ul `ticket/qa-vizual-2026-10` (commit `c53d63b`, 2026-10-29, „modificari vizuale si sters componente vechi”). Branch-ul nu era încă în `master` când s-a scris task-ul. Implementarea pornește din `master` după merge-ul lui. Dacă merge-ul nu s-a făcut, implementarea se face peste acel branch. Pe `master`-ul vechi (înainte de QA) footerul are altă structură (7 linkuri, fără `.footer-contact`). Nu aplica task-ul pe structura veche.
+Footerul descris aici este cel din `master` de după merge-ul PR #26 (`ticket/qa-vizual-2026-10`, commit `c53d63b`, 2026-10-29, „modificari vizuale si sters componente vechi”). Implementarea pornește din `master` la commit-ul `7bc1223` sau mai nou.
 
 ## Istoric: de unde vin elementele scoase
 
