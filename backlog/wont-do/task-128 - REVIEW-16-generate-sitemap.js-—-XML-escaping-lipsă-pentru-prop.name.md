@@ -4,7 +4,7 @@ title: 'REVIEW-16: generate-sitemap.js — XML escaping lipsă pentru prop.name'
 status: To Do
 assignee: []
 created_date: '2026-05-07 08:47'
-updated_date: '2026-07-27'
+updated_date: '2026-10-29'
 labels:
   - review
   - bug
@@ -145,4 +145,5 @@ Alte ambiguitati eliminate:
 2. AC-ul vechi #3 („decizie luata privind forma canonica") era un criteriu care cerea o decizie, nu o verificare → inlocuit cu criteriul concret: `BASE_URL` ramane unicode.
 3. AC-ul vechi #4 (validare in Google Search Console) cere productie → eliminat; resubmit-ul sitemap-ului e deja acoperit de TASK-MANUAL-2.
 4. Adaugat criteriul de ordine a inlocuirilor in `xmlEscape` — o implementare care escapeaza `&` la final produce `&amp;lt;` in loc de `&lt;`, bug clasic si tacut.
+Închis 2026-10-29 ca wont-do (decizie owner): task-ul însuși constata că nu există un bug real. Toate valorile interpolate în `buildUrlEntry` sunt constante (`BASE_URL`, `STATIC_PAGES`, `changefreq`, `priority`, data), UUID-uri sau sluguri reduse de `slugify` la `[a-z0-9-]`, deci nu pot conține caractere XML speciale. Escaping-ul ar fi fost doar defensiv. Se redeschide dacă sitemap-ul primește vreodată text liber (de exemplu titluri în image/video/news sitemap).
 <!-- SECTION:NOTES:END -->
