@@ -40,7 +40,7 @@ curl -sI -H "Host: www.xn--hai-n-sat-t5a.ro" -H "X-Forwarded-Proto: https" http:
 curl -s -o /dev/null -w "%{size_download}\n" http://localhost:4000/
 
 # numarul de H1 dintr-o pagina
-curl -s http://localhost:4000/about-us | grep -o "<h1" | wc -l
+curl -s http://localhost:4000/under-the-mountain | grep -o "<h1" | wc -l
 
 # link-uri interne crawlabile
 curl -s http://localhost:4000/properties | grep -o 'href="/[^"]*"' | sort -u
