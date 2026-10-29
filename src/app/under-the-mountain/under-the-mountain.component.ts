@@ -40,6 +40,8 @@ export class UnderTheMountainComponent implements AfterViewInit, OnInit {
   private swiperEl?: HTMLElement & { swiper?: any };
   private cardsHovered = false;
   private cardsFocused = false;
+  /** Oprit doar cât timp mouse-ul sau focusul e pe carusel; butonul arată în continuare „Oprește”. */
+  private pausedTemporarily = false;
 
   constructor(
     private seo: SeoService,
@@ -325,6 +327,13 @@ export class UnderTheMountainComponent implements AfterViewInit, OnInit {
         }
         swiperEl.swiper?.on('autoplayStart', () => this.syncAutoplay());
         swiperEl.swiper?.on('autoplayStop', () => this.syncAutoplay());
+        // În pauza temporară caruselul stă pe loc: orice schimbare de slide e a utilizatorului, deci oprire definitivă.
+        swiperEl.swiper?.on('slideChange', () => {
+          if (this.pausedTemporarily) {
+            this.pausedTemporarily = false;
+            this.syncAutoplay();
+          }
+        });
         this.syncAutoplay();
       }
     });
@@ -335,11 +344,10 @@ export class UnderTheMountainComponent implements AfterViewInit, OnInit {
     if (!autoplay) {
       return;
     }
-    if (autoplay.running) {
+    if (autoplay.running || this.pausedTemporarily) {
+      this.pausedTemporarily = false;
       autoplay.stop();
     } else {
-      // stop() lasă `paused` cum era (de exemplu oprit de o săgeată în timpul pauzei la hover); pornim curat.
-      autoplay.paused = false;
       autoplay.start();
     }
   }
@@ -360,24 +368,29 @@ export class UnderTheMountainComponent implements AfterViewInit, OnInit {
     this.updateAutoplayPause();
   }
 
+  /**
+   * Pauza temporară folosește stop()/start(): autoplay.pause() din Swiper e gândit pentru tranziții și se reia
+   * singur la următorul transitionend, deci nu ține cât timp mouse-ul stă pe carusel.
+   */
   private updateAutoplayPause(): void {
     const autoplay = this.swiperEl?.swiper?.autoplay;
-    if (!autoplay?.running) {
+    if (!autoplay) {
       return;
     }
-    if (this.cardsHovered || this.cardsFocused) {
-      if (!autoplay.paused) {
-        autoplay.pause();
-      }
-    } else if (autoplay.paused) {
-      autoplay.resume();
+    const hold = this.cardsHovered || this.cardsFocused;
+    if (hold && autoplay.running) {
+      this.pausedTemporarily = true;
+      autoplay.stop();
+    } else if (!hold && this.pausedTemporarily) {
+      this.pausedTemporarily = false;
+      autoplay.start();
     }
   }
 
   /** Starea butonului și aria-live: cât timp derulează singur, schimbările de slide nu se anunță. */
   private syncAutoplay(): void {
     const swiper = this.swiperEl?.swiper;
-    const running = !!swiper?.autoplay?.running;
+    const running = !!swiper?.autoplay?.running || this.pausedTemporarily;
     this.autoplayRunning.set(running);
     swiper?.wrapperEl?.setAttribute('aria-live', running ? 'off' : 'polite');
   }

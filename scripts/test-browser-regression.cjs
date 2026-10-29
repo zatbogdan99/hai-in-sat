@@ -374,14 +374,19 @@ async function checkVillageAutoplay(viewport) {
     const first = await index();
     await page.waitForFunction(start => document.querySelector('swiper-container').swiper.realIndex !== start, first, { timeout: 7000 });
     assert.equal(await page.locator('.discover__autoplay').getAttribute('aria-label'), 'Oprește derularea automată');
+    // Swiper ignoră intenționat un click venit în timpul unei tranziții (loopPreventsSliding): așteptăm finalul ei.
+    const idle = () => page.waitForFunction(() => !document.querySelector('swiper-container').swiper.animating);
     if (viewport.width >= 600) {
+      await idle();
       await page.locator('.discover__cards').hover();
       const paused = await index();
       await page.waitForTimeout(6000);
       assert.equal(await index(), paused, 'Hover must pause the autoplay');
+      assert.equal(await page.locator('.discover__autoplay').getAttribute('aria-label'), 'Oprește derularea automată', 'A hover pause keeps the button state');
       await page.mouse.move(0, 0);
       await page.waitForFunction(start => document.querySelector('swiper-container').swiper.realIndex !== start, paused, { timeout: 7000 });
     }
+    await idle();
     await page.locator('.discover-next').click();
     await page.waitForTimeout(500);
     const stopped = await index();

@@ -99,14 +99,31 @@ describe('UnderTheMountainComponent', () => {
       const next = fixture.nativeElement.querySelector('.discover-next') as HTMLButtonElement;
 
       next.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
-      expect(swiper.autoplay.paused).toBeTrue();
-      expect(swiper.autoplay.running).toBeTrue();
+      fixture.detectChanges();
+      expect(swiper.autoplay.running).toBeFalse();
+      expect(toggle(fixture).getAttribute('aria-label')).toBe('Oprește derularea automată');
+      expect(swiper.wrapperEl.getAttribute('aria-live')).toBe('off');
 
       next.dispatchEvent(new FocusEvent('focusout', { bubbles: true, relatedTarget: document.body }));
-      expect(swiper.autoplay.paused).toBeFalse();
+      fixture.detectChanges();
       expect(swiper.autoplay.running).toBeTrue();
       expect(cards.contains(next)).toBeTrue();
       expect(toggle(fixture).getAttribute('aria-label')).toBe('Oprește derularea automată');
+    });
+
+    it('treats an arrow used during the temporary pause as a definitive stop', async () => {
+      await initialized(fixture);
+      const swiper = swiperOf(fixture).swiper;
+      const next = fixture.nativeElement.querySelector('.discover-next') as HTMLButtonElement;
+
+      next.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+      next.click();
+      next.dispatchEvent(new FocusEvent('focusout', { bubbles: true, relatedTarget: document.body }));
+      fixture.detectChanges();
+
+      expect(swiper.autoplay.running).toBeFalse();
+      expect(toggle(fixture).getAttribute('aria-label')).toBe('Pornește derularea automată');
+      expect(swiper.wrapperEl.getAttribute('aria-live')).toBe('polite');
     });
 
     it('starts stopped when the visitor prefers reduced motion', async () => {
