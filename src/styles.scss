@@ -198,31 +198,6 @@ img {
   z-index: 100;
 }
 
-.swiper-slide-one {
-  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./assets/hai_sa_vezi_zona1.avif) no-repeat 50% 50%/cover;
-}
-
-.swiper-slide-two {
-  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./assets/hai-sa-vezi-zona2.avif) no-repeat 50% 50%/cover;
-}
-
-.swiper-slide-three {
-  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./assets/hai-sa-vezi-zona3.avif) no-repeat 50% 50%/cover;
-}
-
-.swiper-slide-four {
-  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./assets/hai-sa-vezi-zona-4.avif) no-repeat 50% 50%/cover;
-}
-
-.swiper-slide-five {
-  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./assets/hai-sa-vezi-zona-5.avif) no-repeat 50% 50%/cover;
-}
-
-.swiper-slide-six {
-  background: linear-gradient(to top, #0f2027, #203a4300, #2c536400), url(./assets/hai-sa-vezi-zona-6.avif) no-repeat 50% 50%/cover;
-}
-
-
 @import 'swiper/css';
 
 //mobile or smaller screens
@@ -294,4 +269,28 @@ img {
 .p-dialog-footer {
   display: flex;
   justify-content: flex-start !important;
+}
+
+/* Safari până la 17 aplică blur-ul din spatele toast-urilor PrimeNG doar cu prefixul -webkit-. */
+.p-toast .p-toast-message {
+  -webkit-backdrop-filter: blur(var(--p-toast-blur));
+}
+
+/* Butoanele „info” (Detalii, Trimite): albastrul Lara implicit (#0ea5e9) are contrast 2,8:1 cu textul alb,
+   sky-700 are 5,9:1. :root:root bate variabilele temei PrimeNG, injectate tot pe :root. */
+:root:root {
+  --p-button-info-background: #0369a1;
+  --p-button-info-border-color: #0369a1;
+  --p-button-info-hover-background: #075985;
+  --p-button-info-hover-border-color: #075985;
+  --p-button-info-active-background: #0c4a6e;
+  --p-button-info-active-border-color: #0c4a6e;
+  /* Butoanele principale (verde) și eticheta plutitoare în focus: emerald-700 are 5,5:1 cu albul (emerald-500 avea 2,5:1). */
+  --p-button-primary-background: #047857;
+  --p-button-primary-border-color: #047857;
+  --p-button-primary-hover-background: #065f46;
+  --p-button-primary-hover-border-color: #065f46;
+  --p-button-primary-active-background: #064e3b;
+  --p-button-primary-active-border-color: #064e3b;
+  --p-floatlabel-focus-color: #047857;
 }

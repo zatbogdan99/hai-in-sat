@@ -1,80 +1,38 @@
-import {AfterViewInit, Component, ElementRef, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild} from '@angular/core';
-import {LoggerService} from "../service/logger.service";
+import {Component, inject, Input, OnChanges} from '@angular/core';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 
-declare var YT: any;
-
+/**
+ * Videoul YouTube ca simplu iframe youtube-nocookie, încărcat leneș.
+ *
+ * Înainte, index.html încărca sincron API-ul IFrame pe toate paginile, iar playerul ieșea fără să mai încerce
+ * dacă API-ul nu era încă gata: la una din două încărcări, pe /village-of-the-month nu apărea niciun video.
+ * Iframe-ul nu depinde de niciun script și se încarcă abia când ajunge aproape de ecran.
+ */
 @Component({
   selector: 'app-youtube-player',
   templateUrl: './youtube-player.component.html',
   styleUrls: ['./youtube-player.component.scss'],
   standalone: true
 })
-export class YoutubePlayerComponent implements AfterViewInit, OnChanges, OnDestroy {
-  @ViewChild('player') playerElementRef: ElementRef | undefined;
-
-  player: any;
+export class YoutubePlayerComponent implements OnChanges {
+  private readonly sanitizer = inject(DomSanitizer);
 
   @Input() videoId: string = 'CKiPdxYl0MA';
   @Input() height: string = '60%';
   @Input() width: string = '100%';
+  @Input() title: string = 'Video Hai în Sat pe YouTube';
 
-  constructor(private logger: LoggerService) {}
+  src: SafeResourceUrl | null = this.embedUrl(this.videoId);
 
-  ngAfterViewInit(): void {
-    this.initPlayer();
+  ngOnChanges(): void {
+    this.src = this.embedUrl(this.videoId);
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['videoId'] && !changes['videoId'].isFirstChange()) {
-      this.updateVideo(changes['videoId'].currentValue);
+  private embedUrl(videoId: string): SafeResourceUrl | null {
+    // Id-urile YouTube au doar litere, cifre, „-” și „_”; orice altceva nu ajunge în adresa iframe-ului.
+    if (!/^[\w-]{6,20}$/.test(videoId ?? '')) {
+      return null;
     }
+    return this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube-nocookie.com/embed/${videoId}`);
   }
-
-  initPlayer(): void {
-    if (this.playerElementRef == undefined) {
-      this.logger.error('Eroare la initializarea playerului de youtube');
-      return;
-    }
-
-    // In unit tests / SSR, the YouTube IFrame API may be missing.
-    // Guard against crashing the app when `YT` is not available.
-    if (typeof YT === 'undefined' || !YT?.Player) {
-      return;
-    }
-
-    this.player = new YT.Player(this.playerElementRef.nativeElement, {
-      height: this.height,
-      width: this.width,
-      videoId: this.videoId,
-      events: {
-        'onReady': this.onPlayerReady,
-        'onStateChange': this.onPlayerStateChange
-      }
-    });
-  }
-
-  updateVideo(newVideoId: string): void {
-    if (this.player && this.player.loadVideoById) {
-      this.player.cueVideoById(newVideoId);
-    } else {
-      this.initPlayer();
-    }
-  }
-
-  onPlayerReady(event: { target: { playVideo: () => void; }; }) {
-    // event.target.playVideo();
-  }
-
-  onPlayerStateChange(event: { data: any; }) {
-    if (event.data == YT.PlayerState.PAUSED) {
-      // Handle PAUSED state
-    }
-  }
-
-  ngOnDestroy() {
-    if (this.player?.destroy) {
-      this.player.destroy();
-    }
-  }
-
 }

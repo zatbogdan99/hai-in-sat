@@ -28,7 +28,7 @@
 <section class="discover-odsm">
   <div class="discover__overlay"></div>
   <div class="discover__container">
-    <h2 class="discover__title">Descopera Oltenia de sub Munte</h2>
+    <h2 class="discover__title">Descoperă Oltenia de sub Munte</h2>
     <div class="discover__cards">
       <button #prevNav type="button" class="discover__nav discover-prev" aria-label="Imaginea anterioară">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -36,16 +36,17 @@
         </svg>
       </button>
       <swiper-container #villageSwiper init="false" class="village-swiper" style="width: 100%; grid-column: 1 / -1;" space-between="16" centered-slides="true" loop="true" grab-cursor="true" initial-slide="1">
+        <!-- Un singur element interactiv pe card: un link real spre pagina satului (fără buton în buton). -->
         <swiper-slide *ngFor="let item of data">
-          <div class="discover-card" role="button" tabindex="0" (click)="goToVillage(item.id)" (keydown.enter)="goToVillage(item.id)">
+          <a class="discover-card" [routerLink]="villagePath(item.id)">
             <div class="discover-card__img">
-              <img [src]="item.photo" [alt]="item.title" />
+              <img [src]="item.photo" alt="" />
             </div>
             <div class="discover-card__body">
               <h3>{{ item.title }}</h3>
-              <button type="button" class="discover-card__link">Mai multe</button>
+              <span class="discover-card__link" aria-hidden="true">Mai multe</span>
             </div>
-          </div>
+          </a>
         </swiper-slide>
       </swiper-container>
       <button #nextNav type="button" class="discover__nav discover-next" aria-label="Imaginea următoare">

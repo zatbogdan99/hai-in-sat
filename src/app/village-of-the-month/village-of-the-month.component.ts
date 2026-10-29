@@ -143,9 +143,15 @@ export class VillageOfTheMonthComponent implements OnInit {
 
     if (isPlatformBrowser(this.platformId)) {
       gsap.registerPlugin(ScrollTrigger);
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       let revealContainers = document.querySelectorAll(".reveal");
       revealContainers.forEach((container) => {
+        if (reduceMotion) {
+          // Containerele sunt ascunse din CSS până la animație: cu mișcare redusă apar direct, fără alunecare.
+          gsap.set(container, {autoAlpha: 1});
+          return;
+        }
         let image = container.querySelector("img");
         let t1 = gsap.timeline({
           scrollTrigger: {
@@ -157,12 +163,15 @@ export class VillageOfTheMonthComponent implements OnInit {
           xPercent: -100,
           ease: Power2.easeOut
         });
-        t1.from(image, 1.5, {
-          xPercent: 100,
-          scale: 1.3,
-          delay: -1.5,
-          ease: Power2.easeOut
-        });
+        // Cardurile cu video n-au imagine: fără verificare, GSAP scria „target null not found” în consolă.
+        if (image) {
+          t1.from(image, 1.5, {
+            xPercent: 100,
+            scale: 1.3,
+            delay: -1.5,
+            ease: Power2.easeOut
+          });
+        }
       });
     }
 

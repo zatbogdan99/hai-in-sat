@@ -41,7 +41,8 @@ export class AboutUsComponent implements OnInit, AfterViewInit{
     if (!isPlatformBrowser(this.platformId)) return;
     const animations = gsap.matchMedia();
     this.destroyRef.onDestroy(() => animations.revert());
-    animations.add('(min-width: 1200px) and (min-height: 600px)', () => {
+    // Cine a cerut mișcare redusă vede pagina direct, fără intrările animate (titlul apărea abia după 2–4 s).
+    animations.add('(min-width: 1200px) and (min-height: 600px) and (prefers-reduced-motion: no-preference)', () => {
       gsap.from(".left-container", 2, {
         width: "0",
         ease: "Expo.easeInOut"
@@ -58,7 +59,7 @@ export class AboutUsComponent implements OnInit, AfterViewInit{
         x: -20,
         ease: "Expo.easeInOut"
       });
-      gsap.from(".logo", 2, {
+      gsap.from(".menu-container img", 2, {
         delay: 1,
         y: 20,
         opacity: 0,
@@ -75,13 +76,6 @@ export class AboutUsComponent implements OnInit, AfterViewInit{
         delay: 2,
         y: 20,
         opacity: 0,
-        ease: "Expo.easeInOut"
-      });
-      gsap.from(".menu", 2, {
-        delay: 2.5,
-        y: 20,
-        opacity: 0,
-        rotation: 90,
         ease: "Expo.easeInOut"
       });
     }, this.element.nativeElement);

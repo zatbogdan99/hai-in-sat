@@ -4,11 +4,11 @@
 
 <app-not-found *ngIf="propertyNotFound"></app-not-found>
 
-<main *ngIf="!propertyNotFound" class="property-details-container">
+<article *ngIf="!propertyNotFound" class="property-details-container">
   <span class="category-chip" *ngIf="propertyKind">{{ categoryLabel }}</span>
 
   <div class="title-row">
-    <h1 class="property-title">{{ propertyName }}</h1>
+    <h1 class="property-title" [class.property-title--long]="propertyName.length > 70">{{ propertyName }}</h1>
     <a class="back-btn back-btn--inline" routerLink="/properties" [queryParams]="propertiesQueryParams">
       <span aria-hidden="true">←</span> Înapoi la lista de proprietăți
     </a>
@@ -19,26 +19,38 @@
   <!-- LAYOUT FĂRĂ VIDEO (TASK-42 mobile + TASK-44 desktop float) -->
   <section *ngIf="!propertyVideoUrl" class="content-section">
     <aside class="media-column">
-      <div class="gallery">
+      <!-- Galeria rămâne vizibilă cât se încarcă pozele (pe server nu se încarcă deloc); fără poze, un mesaj. -->
+      <div class="gallery" *ngIf="photoSlides.length || !photosLoaded; else noPhotos"
+           tabindex="0" role="group" aria-roledescription="galerie" aria-label="Fotografiile proprietății"
+           (keydown)="onGalleryKeydown($event, 'photos')"
+           (pointerdown)="onSwipeStart($event)" (pointerup)="onSwipeEnd($event, 'photos')" (pointercancel)="onSwipeCancel()">
         <div #photoTrack class="gallery-track">
           <div *ngFor="let slide of photoSlides; let i = index"
                class="gsap-carousel-slide"
                [class.active]="i === currentIndex">
-            <img [src]="slide.src" [alt]="slide.alt" class="slide-media" />
+            <img [src]="slide.src" [alt]="slide.alt" class="slide-media" draggable="false" />
           </div>
         </div>
-        <button type="button" class="gallery-nav prev" (click)="prevSlide()" aria-label="Imagine anterioară">‹</button>
-        <button type="button" class="gallery-nav next" (click)="nextSlide()" aria-label="Imagine următoare">›</button>
-        <div class="gallery-counter" *ngIf="photoSlides.length">{{ currentIndex + 1 }} / {{ photoSlides.length }}</div>
+        <ng-container *ngIf="photoSlides.length > 1">
+          <button type="button" class="gallery-nav prev" (click)="prevSlide()" aria-label="Imagine anterioară">‹</button>
+          <button type="button" class="gallery-nav next" (click)="nextSlide()" aria-label="Imagine următoare">›</button>
+        </ng-container>
+        <div class="gallery-counter" *ngIf="photoSlides.length" aria-live="polite">{{ currentIndex + 1 }} / {{ photoSlides.length }}</div>
       </div>
 
-      <div class="thumb-strip" *ngIf="photoSlides.length > 1">
-        <div *ngFor="let slide of photoSlides.slice(0, 4); let i = index"
-             class="thumb"
-             [class.active]="i === currentIndex"
-             (click)="goToSlide(i)">
-          <img [src]="slide.src" alt="" />
-        </div>
+      <!-- Cât se încarcă pozele, banda își păstrează locul (altfel textul de dedesubt sau de alături se muta: CLS 0,26–0,34). -->
+      <div class="thumb-strip" *ngIf="!photosLoaded" aria-hidden="true">
+        <span class="thumb thumb--pending" *ngFor="let slot of thumbPlaceholders"></span>
+      </div>
+      <div #photoThumbs class="thumb-strip" *ngIf="photoSlides.length > 1">
+        <button type="button" *ngFor="let slide of photoSlides; let i = index"
+                class="thumb"
+                [class.active]="i === currentIndex"
+                [attr.aria-label]="'Fotografia ' + (i + 1) + ' din ' + photoSlides.length"
+                [attr.aria-current]="i === currentIndex ? 'true' : null"
+                (click)="goToSlide(i)">
+          <img [src]="slide.src" alt="" loading="lazy" draggable="false" />
+        </button>
       </div>
     </aside>
 
@@ -49,7 +61,10 @@
   <ng-container *ngIf="propertyVideoUrl">
     <!-- Mobil: video integrat ca prim slide în carusel (ascuns pe desktop via CSS) -->
     <section class="mobile-with-video">
-      <div class="gallery">
+      <div class="gallery"
+           tabindex="0" role="group" aria-roledescription="galerie" aria-label="Turul video și fotografiile proprietății"
+           (keydown)="onGalleryKeydown($event, 'mobile')"
+           (pointerdown)="onSwipeStart($event)" (pointerup)="onSwipeEnd($event, 'mobile')" (pointercancel)="onSwipeCancel()">
         <div #mobileTrack class="gallery-track">
           <div *ngFor="let slide of mobileSlides; let i = index"
                class="gsap-carousel-slide"
@@ -57,30 +72,41 @@
             <img *ngIf="slide.type === 'image'"
                  [src]="slide.src"
                  [alt]="slide.alt"
-                 class="slide-media" />
+                 class="slide-media"
+                 draggable="false" />
             <video *ngIf="slide.type === 'video'" #mobileVideoEl
                    class="slide-media slide-video"
                    [src]="slide.src"
-                   [poster]="slide.poster || null"
+                   [attr.poster]="slide.poster || null"
                    preload="none"
                    playsinline
                    controls
                    [attr.aria-label]="slide.alt"></video>
           </div>
         </div>
-        <button type="button" class="gallery-nav prev" (click)="mobilePrev()" aria-label="Anterior">‹</button>
-        <button type="button" class="gallery-nav next" (click)="mobileNext()" aria-label="Următor">›</button>
-        <div class="gallery-counter" *ngIf="mobileSlides.length">{{ mobileIndex + 1 }} / {{ mobileSlides.length }}</div>
+        <ng-container *ngIf="mobileSlides.length > 1">
+          <button type="button" class="gallery-nav prev" (click)="mobilePrev()" aria-label="Anterior">‹</button>
+          <button type="button" class="gallery-nav next" (click)="mobileNext()" aria-label="Următor">›</button>
+        </ng-container>
+        <!-- Pe slide-ul video, contorul urcă sus, ca să nu acopere bara de control a videoului. -->
+        <div class="gallery-counter" *ngIf="mobileSlides.length > 1" aria-live="polite"
+             [class.gallery-counter--top]="mobileSlides[mobileIndex]?.type === 'video'">{{ mobileIndex + 1 }} / {{ mobileSlides.length }}</div>
       </div>
 
-      <div class="thumb-strip" *ngIf="mobileSlides.length > 1">
-        <div *ngFor="let slide of mobileSlides.slice(0, 4); let i = index"
-             class="thumb"
-             [class.active]="i === mobileIndex"
-             [class.video-thumb]="slide.type === 'video'"
-             (click)="goToMobileSlide(i)">
-          <img [src]="(slide.type === 'video' ? slide.poster : slide.src) || ''" alt="" />
-        </div>
+      <!-- Cât se încarcă pozele, banda își păstrează locul (altfel textul de dedesubt sau de alături se muta: CLS 0,26–0,34). -->
+      <div class="thumb-strip" *ngIf="!photosLoaded" aria-hidden="true">
+        <span class="thumb thumb--pending" *ngFor="let slot of thumbPlaceholders"></span>
+      </div>
+      <div #mobileThumbs class="thumb-strip" *ngIf="mobileSlides.length > 1">
+        <button type="button" *ngFor="let slide of mobileSlides; let i = index"
+                class="thumb"
+                [class.active]="i === mobileIndex"
+                [class.video-thumb]="slide.type === 'video'"
+                [attr.aria-label]="slide.type === 'video' ? 'Turul video' : 'Fotografia ' + (videoSlide ? i : i + 1) + ' din ' + photoSlides.length"
+                [attr.aria-current]="i === mobileIndex ? 'true' : null"
+                (click)="goToMobileSlide(i)">
+          <img [src]="(slide.type === 'video' ? slide.poster : slide.src) || ''" alt="" loading="lazy" draggable="false" />
+        </button>
       </div>
     </section>
 
@@ -89,7 +115,7 @@
       <aside class="video-column">
         <div class="video-wrapper">
           <video [src]="propertyVideoUrl"
-                 [poster]="propertyVideoPoster || null"
+                 [attr.poster]="propertyVideoPoster || null"
                  preload="none"
                  playsinline
                  controls
@@ -97,17 +123,22 @@
         </div>
       </aside>
 
-      <div class="gallery desktop-photo-gallery">
+      <div class="gallery desktop-photo-gallery" *ngIf="photoSlides.length || !photosLoaded; else noPhotos"
+           tabindex="0" role="group" aria-roledescription="galerie" aria-label="Fotografiile proprietății"
+           (keydown)="onGalleryKeydown($event, 'photos')"
+           (pointerdown)="onSwipeStart($event)" (pointerup)="onSwipeEnd($event, 'photos')" (pointercancel)="onSwipeCancel()">
         <div #photoTrack class="gallery-track">
           <div *ngFor="let slide of photoSlides; let i = index"
                class="gsap-carousel-slide"
                [class.active]="i === currentIndex">
-            <img [src]="slide.src" [alt]="slide.alt" class="slide-media" />
+            <img [src]="slide.src" [alt]="slide.alt" class="slide-media" draggable="false" />
           </div>
         </div>
-        <button type="button" class="gallery-nav prev" (click)="prevSlide()" aria-label="Imagine anterioară">‹</button>
-        <button type="button" class="gallery-nav next" (click)="nextSlide()" aria-label="Imagine următoare">›</button>
-        <div class="gallery-counter" *ngIf="photoSlides.length">{{ currentIndex + 1 }} / {{ photoSlides.length }}</div>
+        <ng-container *ngIf="photoSlides.length > 1">
+          <button type="button" class="gallery-nav prev" (click)="prevSlide()" aria-label="Imagine anterioară">‹</button>
+          <button type="button" class="gallery-nav next" (click)="nextSlide()" aria-label="Imagine următoare">›</button>
+        </ng-container>
+        <div class="gallery-counter" *ngIf="photoSlides.length" aria-live="polite">{{ currentIndex + 1 }} / {{ photoSlides.length }}</div>
       </div>
     </section>
 
@@ -115,20 +146,31 @@
     <div class="below-media-row">
       <div class="property-description property-description--video" [innerHTML]="propertyDescription | phoneLink"></div>
 
-      <div class="thumb-strip thumb-strip--video-desktop" *ngIf="photoSlides.length > 1">
-        <div *ngFor="let slide of photoSlides.slice(0, 4); let i = index"
-             class="thumb"
-             [class.active]="i === currentIndex"
-             (click)="goToSlide(i)">
-          <img [src]="slide.src" alt="" />
-        </div>
+      <!-- Cât se încarcă pozele, banda își păstrează locul (altfel textul de dedesubt sau de alături se muta: CLS 0,26–0,34). -->
+      <div class="thumb-strip thumb-strip--video-desktop" *ngIf="!photosLoaded" aria-hidden="true">
+        <span class="thumb thumb--pending" *ngFor="let slot of thumbPlaceholders"></span>
+      </div>
+      <div #photoThumbs class="thumb-strip thumb-strip--video-desktop" *ngIf="photoSlides.length > 1">
+        <button type="button" *ngFor="let slide of photoSlides; let i = index"
+                class="thumb"
+                [class.active]="i === currentIndex"
+                [attr.aria-label]="'Fotografia ' + (i + 1) + ' din ' + photoSlides.length"
+                [attr.aria-current]="i === currentIndex ? 'true' : null"
+                (click)="goToSlide(i)">
+          <img [src]="slide.src" alt="" loading="lazy" draggable="false" />
+        </button>
       </div>
     </div>
   </ng-container>
+
+  <!-- Locul galeriei când proprietatea nu are poze sau cererea lor a eșuat (folosit de ambele layouturi). -->
+  <ng-template #noPhotos>
+    <p class="gallery-empty">{{ photosError ? 'Fotografiile nu s-au putut încărca. Reîncarcă pagina peste câteva momente.' : 'Proprietatea nu are încă fotografii.' }}</p>
+  </ng-template>
 
   <div class="back-action back-action--bottom">
     <a class="back-btn back-btn--bottom" routerLink="/properties" [queryParams]="propertiesQueryParams">
       <span aria-hidden="true">←</span> Înapoi la lista de proprietăți
     </a>
   </div>
-</main>
+</article>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Fără fotografie">
+  <rect width="400" height="300" fill="#F4EFE5"/>
+  <path d="M60 230 L150 120 L205 185 L245 145 L340 230 Z" fill="#D9CBAE"/>
+  <circle cx="290" cy="95" r="22" fill="#E3D6BB"/>
+  <text x="200" y="268" text-anchor="middle" font-family="Georgia, serif" font-size="20" fill="#7A6A4F">Fără fotografie</text>
+</svg>

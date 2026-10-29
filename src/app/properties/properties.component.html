@@ -9,17 +9,20 @@
     <p-button [buttonProps]="{ autofocus: false }" label="Vreau și eu!" class="hero-cta" (click)="showAddPropertyModal()"></p-button>
   </section>
 
-  <p-dialog
+  <p-dialog closeAriaLabel="Închide"
+    #propertyDialog
     [(visible)]="displayModal"
     [modal]="true"
     [style]="{ width: '50vw' }"
+    [breakpoints]="{ '1199px': '75vw', '768px': 'calc(100vw - 2rem)' }"
     styleClass="centered-dialog-header"
     [closable]="true"
   >
     <ng-template pTemplate="header">
       <div style="text-align: center;">
-        <h2 style="margin-bottom: 5px;">Hai să ne cunoaștem!</h2>
-        <p style="margin-top: 0; font-size: 0.9rem; color: #666;">Spune-ne despre proprietatea ta si te contactam in cel mai scurt timp</p>
+        <!-- Fereastra se numește după acest titlu: PrimeNG trimite aria-labelledby spre id-ul lui generat. -->
+        <h2 [id]="propertyDialog.ariaLabelledBy" style="margin-bottom: 5px;">Hai să ne cunoaștem!</h2>
+        <p style="margin-top: 0; font-size: 0.9rem; color: #555;">Spune-ne despre proprietatea ta și te contactăm în cel mai scurt timp</p>
       </div>
     </ng-template>
     <div class="property-dialog-content">
@@ -65,7 +68,7 @@
             Numărul de telefon trebuie să aibă minimum 10 cifre.
           </small>
           <small class="field-error" *ngIf="shouldShowContactError()">
-            Completați cel putin telefonul sau e-mailul.
+            Completați cel puțin telefonul sau e-mailul.
           </small>
         </div>
 
@@ -90,6 +93,7 @@
                 inputId="propertyType"
                 formControlName="propertyType"
                 [dropdown]="true"
+                dropdownAriaLabel="Arată tipurile de proprietate"
                 [forceSelection]="true"
                 [suggestions]="filteredPropertyTypeOptions"
                 (completeMethod)="filterPropertyType($event)"
@@ -119,26 +123,27 @@
       <div class="property-dialog-right">
         <h3>Ne puteți contacta prin:</h3>
         <div class="contact-info">
+          <!-- Iconițele sunt decorative: numele rețelei e deja scris lângă ele. -->
           <a class="contact-item" href="https://www.instagram.com/hai.in.sat?igsh=MXh5NmFqcXhjdThtYQ%3D%3D&utm_source=qr" target="_blank" rel="noopener">
-            <img src="assets/instagram.avif" alt="Instagram" />
+            <img src="assets/instagram.avif" alt="" />
             <span>Instagram</span>
           </a>
           <a class="contact-item" href="https://www.facebook.com/profile.php?id=61560478122728&is_tour_dismissed" target="_blank" rel="noopener">
-            <img src="assets/facebook.avif" alt="Facebook" />
+            <img src="assets/facebook.avif" alt="" />
             <span>Facebook</span>
           </a>
           <a class="contact-item" href="https://www.tiktok.com/@hai.in.sat?_t=8n1yemWQQMr&_r=1" target="_blank" rel="noopener">
-            <img src="assets/tiktok.avif" alt="Tiktok" />
-            <span>Tiktok</span>
+            <img src="assets/tiktok.avif" alt="" />
+            <span>TikTok</span>
           </a>
           <a class="contact-item" href="tel:+40728140628" (click)="callPhone($event)">
             <img src="assets/phone.avif" alt="Telefon" />
             <span>0728 140 628</span>
           </a>
-          <div class="contact-item">
-            <img src="assets/envelope-solid.svg" alt="Email" />
+          <a class="contact-item" href="mailto:contact@xn--hai-n-sat-t5a.ro">
+            <img src="assets/envelope-solid.svg" alt="E-mail" />
             <span>contact&#64;hai-în-sat.ro</span>
-          </div>
+          </a>
         </div>
       </div>
     </div>
@@ -150,7 +155,7 @@
         </div>
         <div class="dialog-footer-right">
           <i class="pi pi-lock privacy-icon" aria-hidden="true"></i>
-          <span>Datele tale raman confidentiale</span>
+          <span>Datele tale rămân confidențiale</span>
         </div>
       </div>
     </ng-template>
@@ -164,11 +169,14 @@
 
 <div class="card property-data-view">
   <p-dataView #dv [value]="getFilteredProperties()" [layout]="layout">
-    <ng-template pTemplate="header">
+    <!-- PrimeNG 20.4 citește antetul DataView doar din #header (pTemplate="header" era ignorat și comutatorul lipsea). -->
+    <ng-template #header>
       <div class="dataView-header">
-        <p-selectbutton [(ngModel)]="layout" [options]="options" [allowEmpty]="false">
-          <ng-template let-item pTemplate="item">
-            <i class="pi" [ngClass]="{ 'pi-bars': item.value === 'list', 'pi-table': item.value === 'grid' }"></i>
+        <span id="layout-switch-label" class="p-hidden-accessible">Mod de afișare</span>
+        <p-selectbutton [(ngModel)]="layout" [options]="options" optionLabel="label" optionValue="value" [allowEmpty]="false" ariaLabelledBy="layout-switch-label">
+          <ng-template #item let-item>
+            <i class="pi" [ngClass]="{ 'pi-bars': item.value === 'list', 'pi-table': item.value === 'grid' }" aria-hidden="true"></i>
+            <span class="p-hidden-accessible">{{ item.label }}</span>
           </ng-template>
         </p-selectbutton>
       </div>
@@ -177,7 +185,7 @@
     <ng-template #list let-items>
       <div class="property-list">
         <div *ngFor="let property of items; let first = first" class="property-list-item">
-          <img [src]="property.thumbnail"
+          <img [src]="cardImage(property)"
                [alt]="getImageAlt(property)"
                loading="lazy" />
           <div class="property-list-content">
@@ -192,7 +200,7 @@
     <ng-template #grid let-items>
       <div class="property-grid">
         <div *ngFor="let property of items" class="property-card">
-          <img [src]="property.thumbnail"
+          <img [src]="cardImage(property)"
                [alt]="getImageAlt(property)"
                loading="lazy" />
           <h2><a class="property-name-link" [routerLink]="propertyLink(property)" [queryParams]="{page: page, size: size, type: propertyType}" [attr.aria-label]="property.name">{{ truncate(property.name, 40) }}</a></h2>
@@ -204,13 +212,13 @@
   </p-dataView>
   <div style="display: flex; justify-content: center; padding: 1rem 0 2rem 0;">
     <nav class="property-pagination" aria-label="Paginarea proprietăților">
-      <a [routerLink]="page > 0 ? ['/properties'] : null" [queryParams]="{page: 0, size: size, type: propertyType}" [class.disabled]="page <= 0" [attr.aria-disabled]="page <= 0 ? true : null" aria-label="Prima pagină"><svg data-p-icon="angle-double-left" aria-hidden="true" /></a>
-      <a [routerLink]="page > 0 ? ['/properties'] : null" [queryParams]="{page: page - 1, size: size, type: propertyType}" [class.disabled]="page <= 0" [attr.aria-disabled]="page <= 0 ? true : null" aria-label="Pagina anterioară"><svg data-p-icon="angle-left" aria-hidden="true" /></a>
+      <a [routerLink]="page > 0 ? ['/properties'] : null" [queryParams]="{page: 0, size: size, type: propertyType}" [class.disabled]="page <= 0" [attr.aria-disabled]="page <= 0 ? true : null" [attr.role]="page <= 0 ? 'link' : null" aria-label="Prima pagină"><svg data-p-icon="angle-double-left" aria-hidden="true" /></a>
+      <a [routerLink]="page > 0 ? ['/properties'] : null" [queryParams]="{page: page - 1, size: size, type: propertyType}" [class.disabled]="page <= 0" [attr.aria-disabled]="page <= 0 ? true : null" [attr.role]="page <= 0 ? 'link' : null" aria-label="Pagina anterioară"><svg data-p-icon="angle-left" aria-hidden="true" /></a>
       <span class="pagination-pages">
         <a *ngFor="let pageNumber of pageNumbers" routerLink="/properties" [queryParams]="{page: pageNumber, size: size, type: propertyType}" [attr.aria-current]="pageNumber === page ? 'page' : null" [attr.aria-label]="'Pagina ' + (pageNumber + 1)">{{ pageNumber + 1 }}</a>
       </span>
-      <a [routerLink]="page + 1 < totalPages ? ['/properties'] : null" [queryParams]="{page: page + 1, size: size, type: propertyType}" [class.disabled]="page + 1 >= totalPages" [attr.aria-disabled]="page + 1 >= totalPages ? true : null" aria-label="Pagina următoare"><svg data-p-icon="angle-right" aria-hidden="true" /></a>
-      <a [routerLink]="page + 1 < totalPages ? ['/properties'] : null" [queryParams]="{page: totalPages - 1, size: size, type: propertyType}" [class.disabled]="page + 1 >= totalPages" [attr.aria-disabled]="page + 1 >= totalPages ? true : null" aria-label="Ultima pagină"><svg data-p-icon="angle-double-right" aria-hidden="true" /></a>
+      <a [routerLink]="page + 1 < totalPages ? ['/properties'] : null" [queryParams]="{page: page + 1, size: size, type: propertyType}" [class.disabled]="page + 1 >= totalPages" [attr.aria-disabled]="page + 1 >= totalPages ? true : null" [attr.role]="page + 1 >= totalPages ? 'link' : null" aria-label="Pagina următoare"><svg data-p-icon="angle-right" aria-hidden="true" /></a>
+      <a [routerLink]="page + 1 < totalPages ? ['/properties'] : null" [queryParams]="{page: totalPages - 1, size: size, type: propertyType}" [class.disabled]="page + 1 >= totalPages" [attr.aria-disabled]="page + 1 >= totalPages ? true : null" [attr.role]="page + 1 >= totalPages ? 'link' : null" aria-label="Ultima pagină"><svg data-p-icon="angle-double-right" aria-hidden="true" /></a>
     </nav>
   </div>
 </div>

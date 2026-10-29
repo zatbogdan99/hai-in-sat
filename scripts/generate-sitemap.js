@@ -17,10 +17,16 @@ const STATIC_PAGES = [
   { path: '/properties', changefreq: 'daily', priority: '0.9' },
   { path: '/under-the-mountain', changefreq: 'monthly', priority: '0.8' },
   { path: '/village-of-the-month', changefreq: 'monthly', priority: '0.8' },
+  // Paginile satelor; aceeași listă e în src/app/utils/villages.ts.
+  { path: '/sate/horezu', changefreq: 'monthly', priority: '0.7' },
+  { path: '/sate/polovragi', changefreq: 'monthly', priority: '0.7' },
+  { path: '/sate/baia-de-fier', changefreq: 'monthly', priority: '0.7' },
+  { path: '/sate/vaideeni', changefreq: 'monthly', priority: '0.7' },
+  { path: '/sate/slatioara', changefreq: 'monthly', priority: '0.7' },
+  { path: '/sate/costesti', changefreq: 'monthly', priority: '0.7' },
+  { path: '/sate/barbatesti', changefreq: 'monthly', priority: '0.7' },
   { path: '/homes', changefreq: 'monthly', priority: '0.7' },
-  { path: '/see-the-area', changefreq: 'monthly', priority: '0.6' },
   { path: '/about-us', changefreq: 'monthly', priority: '0.5' },
-  { path: '/contact-us', changefreq: 'monthly', priority: '0.5' },
 ];
 
 const DIACRITICS_MAP = {

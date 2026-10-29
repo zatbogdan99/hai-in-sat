@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, DestroyRef, inject, Input, OnInit, PLATFORM_ID} from '@angular/core';
+import {AfterViewInit, Component, DestroyRef, HostListener, inject, Input, OnInit, PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {gsap, Power2} from "gsap";
@@ -7,18 +7,24 @@ import SplitType from "split-type";
 import {PhotoService} from "../service/photo-service";
 import {TextDataModel} from "../dto/text-data.model";
 import {DataDto} from "../dto/data.dto";
-import {DataService} from "../service/data-service";
 import {VgApiService} from "@videogular/ngx-videogular/core";
-import {Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {Card} from "primeng/card";
 import {GalleriaModule} from "primeng/galleria";
+import {SeoService} from "../service/seo.service";
+import {NotFoundComponent} from "../not-found/not-found.component";
+import {villageBySlug} from "../utils/villages";
+
+/** Distanța orizontală minimă (px) a unei glisări cu degetul care schimbă poza în galeria pe tot ecranul. */
+const SWIPE_THRESHOLD_PX = 40;
 
 @Component({
   selector: 'app-info-page',
   templateUrl: './info-page.component.html',
   imports: [
     Card,
-    GalleriaModule
+    GalleriaModule,
+    NotFoundComponent
   ],
   styleUrls: ['./info-page.component.scss']
 })
@@ -37,7 +43,9 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
   private featuresLeft: { [key: number]: string[] } = {};
   private featuresRight: { [key: number]: string[] } = {};
 
-  villageId: number = 0;
+  villageId: number = 1;
+  /** Adresa /sate/:slug nu corespunde niciunui sat: pagina 404 (cu noindex și status 404 pe server). */
+  villageNotFound = false;
 
   preload: string = 'auto';
   api: VgApiService = new VgApiService;
@@ -47,19 +55,18 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
   // Galleria fullscreen state
   displayFullScreen = false;
   activeIndex = 0;
+  /** Poza afișată în galeria pe tot ecranul (se schimbă și din tastatură sau prin glisare). */
+  fullScreenIndex = 0;
 
   private destroyRef = inject(DestroyRef);
   private platformId = inject(PLATFORM_ID);
+  private route = inject(ActivatedRoute);
+  private seo = inject(SeoService);
+  /** Butonul care a deschis galeria pe tot ecranul: primește focusul înapoi la închidere. */
+  private fullScreenOpener: HTMLElement | null = null;
+  private swipeStart: { x: number; y: number } | null = null;
 
-  constructor(private photoService: PhotoService, private service: DataService, private router: Router) {
-    this.service.village$
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(value => {
-        this.villageId = value;
-        if (this.villageId == 0) {
-          this.router.navigateByUrl("/village-of-the-month");
-        }
-      });
+  constructor(private photoService: PhotoService) {
 
     // Populate features for villages
     // Horezu (exact texts as in the mock)
@@ -276,11 +283,21 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.route.paramMap
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(params => this.selectVillage(params.get('slug')));
+
     if (isPlatformBrowser(this.platformId)) {
       gsap.registerPlugin(ScrollTrigger);
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       let revealContainers = document.querySelectorAll(".reveal");
       revealContainers.forEach((container) => {
+        if (reduceMotion) {
+          // Containerele sunt ascunse din CSS până la animație: cu mișcare redusă apar direct, fără alunecare.
+          gsap.set(container, {autoAlpha: 1});
+          return;
+        }
         let image = container.querySelector("img");
         let t1 = gsap.timeline({
           scrollTrigger: {
@@ -292,12 +309,15 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
           xPercent: -100,
           ease: Power2.easeOut
         });
-        t1.from(image, 1.5, {
-          xPercent: 100,
-          scale: 1.3,
-          delay: -1.5,
-          ease: Power2.easeOut
-        });
+        // Containerele fără imagine (video) nu mai produc „GSAP target null not found” în consolă.
+        if (image) {
+          t1.from(image, 1.5, {
+            xPercent: 100,
+            scale: 1.3,
+            delay: -1.5,
+            ease: Power2.easeOut
+          });
+        }
       });
     }
 
@@ -334,16 +354,93 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
     this.api.play();
   }
 
+  /** Satul din adresă: titlu, descriere, canonical și breadcrumbs proprii (înainte rămâneau cele de pe /under-the-mountain). */
+  private selectVillage(slug: string | null): void {
+    const village = villageBySlug(slug);
+    this.villageNotFound = !village;
+    this.displayFullScreen = false;
+    if (!village) {
+      return;
+    }
+
+    this.villageId = village.id;
+    this.activeIndex = 0;
+    const path = `/sate/${village.slug}`;
+    const data = this.data[village.id];
+    this.seo.updatePageMeta({
+      title: `${village.name} – sat în Oltenia de sub Munte | Hai în Sat`,
+      description: this.metaDescription(data.desc),
+      ogImage: `https://hai-în-sat.ro/${data.photo}`,
+      canonicalPath: path
+    });
+    this.seo.setBreadcrumbs([
+      { name: 'Acasă', path: '/' },
+      { name: 'Oltenia de sub Munte', path: '/under-the-mountain' },
+      { name: village.name, path }
+    ]);
+  }
+
+  /** Prima frază (sau primele ~155 de caractere, tăiate la un cuvânt întreg) din descrierea satului. */
+  private metaDescription(text: string): string {
+    const clean = text.replace(/s+/g, ' ').trim();
+    if (clean.length <= 155) return clean;
+    const cut = clean.slice(0, 155);
+    return `${cut.slice(0, cut.lastIndexOf(' '))}…`;
+  }
+
   // Open PrimeNG Galleria in fullscreen at the clicked image index
-  openFullScreen(index: number) {
+  openFullScreen(index: number, event?: Event) {
+    this.fullScreenOpener = (event?.currentTarget as HTMLElement | null) ?? null;
     this.activeIndex = index ?? 0;
+    this.fullScreenIndex = this.activeIndex;
     this.displayFullScreen = true;
   }
 
-  // Handle PrimeNG Galleria onItemChange event safely
-  onGalleryItemChange(e: any) {
-    // PrimeNG emits an object like { index: number } for onItemChange
-    this.activeIndex = (e && typeof e.index === 'number') ? e.index : 0;
+  /** Închiderea din butonul ×, din clic pe mască sau din Escape: focusul revine pe poza care a deschis galeria. */
+  onFullScreenVisibleChange(visible: boolean): void {
+    this.displayFullScreen = visible;
+    if (!visible) {
+      const opener = this.fullScreenOpener;
+      this.fullScreenOpener = null;
+      // După ce galeria își scoate capcana de focus.
+      setTimeout(() => opener?.focus());
+    }
+  }
+
+  /** PrimeNG 20.4 nu tratează tastatura în galeria pe tot ecranul: Escape o închide, săgețile schimbă poza. */
+  @HostListener('document:keydown', ['$event'])
+  onDocumentKeydown(event: KeyboardEvent): void {
+    if (!this.displayFullScreen) return;
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      this.onFullScreenVisibleChange(false);
+    } else if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+      event.preventDefault();
+      this.stepFullScreen(event.key === 'ArrowRight');
+    }
+  }
+
+  onSwipeStart(event: PointerEvent): void {
+    this.swipeStart = event.pointerType === 'mouse' || !event.isPrimary ? null : { x: event.clientX, y: event.clientY };
+  }
+
+  onSwipeEnd(event: PointerEvent): void {
+    const start = this.swipeStart;
+    this.swipeStart = null;
+    if (!start) return;
+    const dx = event.clientX - start.x;
+    if (Math.abs(dx) < SWIPE_THRESHOLD_PX || Math.abs(dx) <= Math.abs(event.clientY - start.y)) return;
+    this.stepFullScreen(dx < 0);
+  }
+
+  onSwipeCancel(): void {
+    this.swipeStart = null;
+  }
+
+  private stepFullScreen(forward: boolean): void {
+    const count = this.getImagesForSelected()?.length ?? 0;
+    if (count < 2) return;
+    this.fullScreenIndex = (this.fullScreenIndex + (forward ? 1 : -1) + count) % count;
   }
 
   // Mobile-only fix: on Polovragi (villageId = 2) a stray leading character
