@@ -9,6 +9,14 @@ html {
   box-sizing: border-box;
   background-color: #ffffff; /* fundal explicit alb pentru UA */
 }
+
+/* Pe desktop antetul e fix (app.component.scss, ~88 px): elementul focusat cu Tab nu ajunge sub el. */
+@media only screen and (min-width: 1200px) and (min-height: 600px) {
+  html {
+    scroll-padding-top: 6rem;
+  }
+}
+
 body {
   font-family: var(--font-base);
   box-sizing: inherit;

@@ -101,6 +101,15 @@ async function capture(page, viewport, name) {
   console.log(`CAPTURE ${file} (${metrics.documentWidth} x ${metrics.documentHeight})`);
 }
 
+// TASK-135: după derulare, antetul rămâne sus doar pe desktop (cel puțin 1200 x 600); pe telefon pleacă din ecran.
+async function headerAfterScroll(page) {
+  await page.evaluate(() => window.scrollTo(0, 1200));
+  await page.waitForFunction(() => scrollY >= 1000);
+  const header = await page.locator('.topbar').evaluate(el => { const box = el.getBoundingClientRect(); return { top: box.top, bottom: box.bottom, position: getComputedStyle(el).position, scrollY }; });
+  await page.evaluate(() => window.scrollTo(0, 0));
+  return header;
+}
+
 async function runViewport(viewport) {
   const context = await browser.newContext({ viewport: { width: viewport.width, height: viewport.height }, deviceScaleFactor: 1, isMobile: viewport.width < 600, hasTouch: viewport.width < 600, reducedMotion: 'reduce', serviceWorkers: 'block', locale: 'ro-RO', timezoneId: 'Europe/Bucharest' });
   const result = { name: viewport.name, checks: [], pageErrors: [] };
@@ -301,6 +310,11 @@ async function runViewport(viewport) {
   }
   try {
     await go('/under-the-mountain');
+    const header = await headerAfterScroll(page);
+    if (viewport.width >= 1200) assert.equal(header.top, 0, `Desktop header must stay at the top: ${JSON.stringify(header)}`);
+    else assert.ok(header.bottom <= 0, `Phone header must scroll away: ${JSON.stringify(header)}`);
+    result.headerAfterScroll = header;
+    pass(viewport.width >= 1200 ? 'header stays at the top after scrolling' : 'header scrolls away with the page');
     await page.waitForFunction(() => document.querySelector('swiper-container')?.swiper?.initialized);
     const initial = await page.locator('swiper-container').evaluate(el => el.swiper.realIndex);
     await capture(page, viewport.name, 'villages');
@@ -366,6 +380,19 @@ async function compare() {
     browser = await chromium.launch({ headless:true, channel:process.env.BROWSER_CHANNEL || 'chrome' });
     report.browser = browser.version();
     for (const viewport of [{name:'desktop',width:1440,height:1000},{name:'mobile',width:390,height:844},{name:'small-mobile',width:320,height:740}].filter(item => !option('--viewport') || item.name === option('--viewport'))) await runViewport(viewport);
+    if (!option('--viewport')) {
+      // Telefon ținut orizontal (înălțime sub 600 px): antetul se derulează, ca pe telefon.
+      const context = await browser.newContext({ viewport: { width: 844, height: 390 }, deviceScaleFactor: 1, isMobile: true, hasTouch: true, reducedMotion: 'reduce' });
+      await context.route('**/*', route => new URL(route.request().url()).origin === origin ? route.continue() : route.abort('blockedbyclient'));
+      const page = await context.newPage();
+      await page.goto(origin + '/under-the-mountain');
+      await settled(page);
+      const header = await headerAfterScroll(page);
+      await context.close();
+      assert.ok(header.bottom <= 0, `Landscape phone header must scroll away: ${JSON.stringify(header)}`);
+      report.landscapeHeader = header;
+      console.log('PASS landscape-phone: header scrolls away with the page');
+    }
     await compare();
   } catch(error) { report.failures.push({error:String(error), stack:error.stack}); console.error(error); }
   finally {

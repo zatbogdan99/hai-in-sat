@@ -112,6 +112,14 @@ fa-icon {
 @media only screen and (min-width: 1200px) and (min-height: 600px) {
   .nav-chips { display: flex; }
   .topbar__menu-button { display: none; }
+
+  /* Antetul rămâne sus la derulare doar pe desktop; pe telefon și tabletă ar ocupa prea mult din ecran.
+     z-index: peste conținutul paginilor (1–100), sub spinnere (1000, 2000), dialoguri și toast-uri PrimeNG (1100+). */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 500;
+  }
 }
 
 .mobile-menu-list {
