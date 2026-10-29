@@ -448,6 +448,38 @@ async function checkTypography(viewport) {
   } finally { await context.close(); }
 }
 
+// TASK-138: pe paginile de sat coloana dreaptă are aceleași margini, cardurile aceeași înălțime, galeria fără chenar.
+async function checkVillageLayout(width) {
+  const context = await browser.newContext({ viewport: { width, height: 900 }, deviceScaleFactor: 1, reducedMotion: 'reduce' });
+  await context.route('**/*', route => new URL(route.request().url()).origin === origin ? route.continue() : route.abort('blockedbyclient'));
+  const page = await context.newPage();
+  try {
+    for (const slug of ['horezu', 'polovragi', 'baia-de-fier', 'vaideeni', 'slatioara', 'costesti', 'barbatesti']) {
+      await page.goto(`${origin}/sate/${slug}`);
+      await settled(page);
+      const layout = await page.evaluate(() => {
+        const box = selector => { const el = document.querySelector(selector); const b = el?.getBoundingClientRect(); return b && b.width ? { left: b.left, right: b.right, top: b.top + scrollY, bottom: b.bottom + scrollY, height: b.height } : null; };
+        return {
+          gallery: box('.large-screen .gallery-wrap .p-galleria'), cardLeft: box('.large-screen .feature-card-left .p-card'),
+          cardRight: box('.large-screen .feature-card .p-card'), image: box('.large-screen .horezu-image, .large-screen .polovragi-image'),
+          next: box('.large-screen .features-row + *'), border: getComputedStyle(document.querySelector('.large-screen .p-galleria')).borderTopWidth,
+          documentWidth: document.documentElement.scrollWidth, viewport: innerWidth,
+        };
+      });
+      const close = (a, b, label) => assert.ok(Math.abs(a - b) <= 1, `/sate/${slug} @${width}: ${label} ${a} vs ${b}`);
+      for (const part of ['gallery', 'image']) {
+        close(layout[part].left, layout.cardRight.left, `${part} left edge`);
+        close(layout[part].right, layout.cardRight.right, `${part} right edge`);
+      }
+      close(layout.cardLeft.height, layout.cardRight.height, 'card heights');
+      assert.ok(layout.image.top - layout.cardRight.bottom >= 32, `/sate/${slug} @${width}: space under the cards ${layout.image.top - layout.cardRight.bottom}`);
+      assert.equal(layout.border, '0px', `/sate/${slug} @${width}: gallery border`);
+      assert.equal(layout.documentWidth, layout.viewport, `/sate/${slug} @${width}: horizontal scroll`);
+    }
+    console.log(`PASS village-layout-${width}: right column aligned, equal card heights, no gallery border on 7 villages`);
+  } finally { await context.close(); }
+}
+
 async function compare() {
   if (!baseline) return;
   const before = JSON.parse(fs.readFileSync(path.join(baseline,'report.json'),'utf8'));
@@ -479,6 +511,7 @@ async function compare() {
       await checkVillageAutoplay(viewport).catch(error => { report.failures.push({ viewport: viewport.name, suite: 'autoplay', error: String(error), stack: error.stack }); console.error(`FAIL ${viewport.name} autoplay: ${error.stack}`); });
     }
     if (!option('--viewport')) {
+      for (const width of [1280, 1440]) await checkVillageLayout(width).catch(error => { report.failures.push({ suite: `village-layout-${width}`, error: String(error), stack: error.stack }); console.error(`FAIL village layout ${width}: ${error.stack}`); });
       // Telefon ținut orizontal (înălțime sub 600 px): antetul se derulează, ca pe telefon.
       const context = await browser.newContext({ viewport: { width: 844, height: 390 }, deviceScaleFactor: 1, isMobile: true, hasTouch: true, reducedMotion: 'reduce' });
       await context.route('**/*', route => new URL(route.request().url()).origin === origin ? route.continue() : route.abort('blockedbyclient'));
