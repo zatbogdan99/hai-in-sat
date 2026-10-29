@@ -398,6 +398,56 @@ async function checkVillageAutoplay(viewport) {
   } finally { await context.close(); }
 }
 
+// TASK-137: paragrafele din scope au același font, aceeași mărime, rând 1,9 și 16 px până la paragraful următor.
+async function checkTypography(viewport) {
+  const context = await browser.newContext({ viewport: { width: viewport.width, height: viewport.height }, deviceScaleFactor: 1, isMobile: viewport.width < 600, hasTouch: viewport.width < 600, reducedMotion: 'reduce' });
+  await context.route('**/*', route => {
+    const url = new URL(route.request().url());
+    if (url.origin === origin) return route.continue();
+    if (url.origin === apiOrigin) return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(apiResponse(url)) });
+    return route.abort('blockedbyclient');
+  });
+  const page = await context.newPage();
+  const pages = [
+    ['/', '.about__text p'],
+    ['/under-the-mountain', '.why__text p, .feel__text p'],
+    ['/village-of-the-month', '.text-style p'],
+    ['/sate/horezu', '.info-page-bg p, .info-page-bg li:not(.p-galleria-indicator)'],
+    ['/sate/vaideeni', '.info-page-bg p, .info-page-bg li:not(.p-galleria-indicator)'],
+    [`/property/${catalog[0].id}/teren-de-vanzare-teren-cu-livada-in-costesti-1`, '.property-description'],
+    ['dialog', '.dialog-scroll p'],
+  ];
+  const samples = [];
+  try {
+    for (const [url, selector] of pages) {
+      if (url === 'dialog') {
+        await page.locator('.footer-legal button', { hasText: 'Politica de confidențialitate' }).click();
+        await page.locator('.dialog-scroll p').first().waitFor();
+      } else {
+        await page.goto(origin + url);
+        await settled(page);
+      }
+      const found = await page.locator(selector).evaluateAll((nodes, url) => nodes.filter(node => node.getBoundingClientRect().height > 0).map(node => {
+        const style = getComputedStyle(node);
+        const next = node.nextElementSibling;
+        return { url, tag: node.tagName, font: style.fontFamily.split(',')[0].replace(/["']/g, ''), size: parseFloat(style.fontSize), line: parseFloat(style.lineHeight), margin: parseFloat(style.marginBottom), pre: style.whiteSpace === 'pre-wrap', nextIsText: !!next && ['P', 'UL'].includes(next.tagName) && node.tagName === 'P' };
+      }), url);
+      assert.ok(found.length > 0, `${url}: no paragraphs found for ${selector}`);
+      samples.push(...found);
+    }
+    const size = samples[0].size;
+    for (const sample of samples) {
+      assert.equal(sample.font, 'Libre Baskerville', JSON.stringify(sample));
+      assert.ok(Math.abs(sample.size - size) <= 0.5, `Font size differs: ${JSON.stringify(sample)} vs ${size}`);
+      assert.ok(Math.abs(sample.line - 1.9 * sample.size) <= 0.5, `Line height must be 1.9x: ${JSON.stringify(sample)}`);
+      if (sample.nextIsText && !sample.pre) assert.ok(Math.abs(sample.margin - 16) <= 0.5, `Paragraph gap must be 16 px: ${JSON.stringify(sample)}`);
+    }
+    report.typography = report.typography || {};
+    report.typography[viewport.name] = { size, count: samples.length };
+    console.log(`PASS ${viewport.name}: ${samples.length} paragraphs on ${pages.length} pages share ${size}px Libre Baskerville, line 1.9, 16px gap`);
+  } finally { await context.close(); }
+}
+
 async function compare() {
   if (!baseline) return;
   const before = JSON.parse(fs.readFileSync(path.join(baseline,'report.json'),'utf8'));
@@ -425,6 +475,7 @@ async function compare() {
     report.browser = browser.version();
     for (const viewport of [{name:'desktop',width:1440,height:1000},{name:'mobile',width:390,height:844},{name:'small-mobile',width:320,height:740}].filter(item => !option('--viewport') || item.name === option('--viewport'))) {
       await runViewport(viewport);
+      if (viewport.name !== 'small-mobile') await checkTypography(viewport).catch(error => { report.failures.push({ viewport: viewport.name, suite: 'typography', error: String(error), stack: error.stack }); console.error(`FAIL ${viewport.name} typography: ${error.stack}`); });
       await checkVillageAutoplay(viewport).catch(error => { report.failures.push({ viewport: viewport.name, suite: 'autoplay', error: String(error), stack: error.stack }); console.error(`FAIL ${viewport.name} autoplay: ${error.stack}`); });
     }
     if (!option('--viewport')) {

@@ -22,29 +22,41 @@
             <h2 id="card-info-title" style="font-family: 'Libre Baskerville', serif; font-size: 2.5rem;">Prezentarea satului</h2>
           </div>
         </div>
-        <p *ngIf="villageId === 0" class="m-0 text-style">
-          Racovița, un sat al comunei Polovragi, un sat unde copiii dacilor se jucau de-a războiul, un sat unde energiile se contopesc și se armonizează cu Universul.
-        </p>
-        <p *ngIf="villageId === 1" class="m-0 text-style">
-          Într-o după amiază cu soarele agățat pe albastrul boltei, cutreieram pădurea virgină și plină de viață în cătutarea gustoaselor ciuperci.
-          Eram într-o lume verde cu simfonii vesele interpretate de păsările pădurii, iar mintea mea se afla într-o stare de pauză prelungită...
-          <br><br>
-          Eram unit cu pădurea, respiram aerul acesteia... Eu însumi eram pădurea...
-          <br>
-          Coborând brusc o pantă abruptă am auzit cântecul unui cocoș. Atunci m-am trezit. Civilizație. Am ajuns în curtea bunicilor ancestrali. Bunicul bătea coasa, bunica întorcea fânul.
-          I-am întrebat „Pot să traversez curtea? Unde sunt aici? Câți ani aveți?". M-am îndrăgostit ireversibil de tot ceea ce era în jurul lor. Aveau o energie pozitivă ce-mi inunda existența.
-          „Da, poți să vii! E satul Râpa... Ai fost după ciuperci, nu? Tataie are 90 de ani, iar eu 80. Ne rânduim cum putem. Vaca e viața noastră."
-          <br><br>
-          I-am iubit din prima clipă, iar apoi i-am căutat... tataie căzuse la pat, mamaia era puternică.
-          După un timp am revenit și am văzut doliu la poartă. M-am gândit "A murit tataie!". Nu, mamaie murise și tataie era la pat, dar eu îi iubeam…
-        </p>
-        <p *ngIf="villageId === 2" class="m-0 text-style">
-          Satul Olari, situat în orașul Horezu, județul Vâlcea, este renumit datorită faptului că foarte mulți săteni practică meșteșugul olăritului. Arta tradițională a olăritului din satul Olari este recunoscută la nivel mondial, Horezu fiind capitala ceramicii românești.
-          În fiecare an, în prima săptămână din iunie, la Horezu se organizează târgul ceramicii populare, la care participă olari din toată țara. La acest târg sunt premiate cele mai frumoase creații din anul respectiv.
-          <br><br>Meșteșugarii olari participă în fiecare an la târguri internaționale de ceramică, fiind renumiți și recunoscuți pentru puritatea și complexitatea artei populare pe care o propun.
-          Satul Olari poate fi vizitat în orice perioadă a anului, unde puteți admira atât expozițiile meșteșugarilor populari, cât și peisajele pitorești din acest sat.
-          <br><br>Vă invităm cu drag în satul Olari!
-        </p>
+        <div *ngIf="villageId === 0" class="text-style">
+          <p>
+            Racovița, un sat al comunei Polovragi, un sat unde copiii dacilor se jucau de-a războiul, un sat unde energiile se contopesc și se armonizează cu Universul.
+          </p>
+        </div>
+        <div *ngIf="villageId === 1" class="text-style">
+          <p>
+            Într-o după amiază cu soarele agățat pe albastrul boltei, cutreieram pădurea virgină și plină de viață în cătutarea gustoaselor ciuperci.
+            Eram într-o lume verde cu simfonii vesele interpretate de păsările pădurii, iar mintea mea se afla într-o stare de pauză prelungită...
+          </p>
+          <p>
+            Eram unit cu pădurea, respiram aerul acesteia... Eu însumi eram pădurea...
+            <br>
+            Coborând brusc o pantă abruptă am auzit cântecul unui cocoș. Atunci m-am trezit. Civilizație. Am ajuns în curtea bunicilor ancestrali. Bunicul bătea coasa, bunica întorcea fânul.
+            I-am întrebat „Pot să traversez curtea? Unde sunt aici? Câți ani aveți?". M-am îndrăgostit ireversibil de tot ceea ce era în jurul lor. Aveau o energie pozitivă ce-mi inunda existența.
+            „Da, poți să vii! E satul Râpa... Ai fost după ciuperci, nu? Tataie are 90 de ani, iar eu 80. Ne rânduim cum putem. Vaca e viața noastră."
+          </p>
+          <p>
+            I-am iubit din prima clipă, iar apoi i-am căutat... tataie căzuse la pat, mamaia era puternică.
+            După un timp am revenit și am văzut doliu la poartă. M-am gândit "A murit tataie!". Nu, mamaie murise și tataie era la pat, dar eu îi iubeam…
+          </p>
+        </div>
+        <div *ngIf="villageId === 2" class="text-style">
+          <p>
+            Satul Olari, situat în orașul Horezu, județul Vâlcea, este renumit datorită faptului că foarte mulți săteni practică meșteșugul olăritului. Arta tradițională a olăritului din satul Olari este recunoscută la nivel mondial, Horezu fiind capitala ceramicii românești.
+            În fiecare an, în prima săptămână din iunie, la Horezu se organizează târgul ceramicii populare, la care participă olari din toată țara. La acest târg sunt premiate cele mai frumoase creații din anul respectiv.
+          </p>
+          <p>
+            Meșteșugarii olari participă în fiecare an la târguri internaționale de ceramică, fiind renumiți și recunoscuți pentru puritatea și complexitatea artei populare pe care o propun.
+            Satul Olari poate fi vizitat în orice perioadă a anului, unde puteți admira atât expozițiile meșteșugarilor populari, cât și peisajele pitorești din acest sat.
+          </p>
+          <p>
+            Vă invităm cu drag în satul Olari!
+          </p>
+        </div>
       </div>
 
       <div style="flex: 1; margin-left: 20px; height: 30rem;">
@@ -86,29 +98,41 @@
         <h2 style="text-align: center; font-size: 2rem; margin-bottom: 1.5rem !important;" class="m-0">
           Prezentarea satului
         </h2>
-        <p *ngIf="villageId === 0" class="m-0 text-style">
-          Racovița, un sat al comunei Polovragi, un sat unde copiii dacilor se jucau de-a războiul, un sat unde energiile se contopesc și se armonizează cu Universul.
-        </p>
-        <p *ngIf="villageId === 1" class="m-0 text-style">
-          Într-o după amiază cu soarele agățat pe albastrul boltei, cutreieram pădurea virgină și plină de viață în cătutarea gustoaselor ciuperci.
-          Eram într-o lume verde cu simfonii vesele interpretate de păsările pădurii, iar mintea mea se afla într-o stare de pauză prelungită...
-          <br><br>
-          Eram unit cu pădurea, respiram aerul acesteia... Eu însumi eram pădurea...
-          <br>
-          Coborând brusc o pantă abruptă am auzit cântecul unui cocoș. Atunci m-am trezit. Civilizație. Am ajuns în curtea bunicilor ancestrali. Bunicul bătea coasa, bunica întorcea fânul.
-          I-am întrebat „Pot să traversez curtea? Unde sunt aici? Câți ani aveți?". M-am îndrăgostit ireversibil de tot ceea ce era în jurul lor. Aveau o energie pozitivă ce-mi inunda existența.
-          „Da, poți să vii! E satul Râpa... Ai fost după ciuperci, nu? Tataie are 90 de ani, iar eu 80. Ne rânduim cum putem. Vaca e viața noastră."
-          <br><br>
-          I-am iubit din prima clipă, iar apoi i-am căutat... tataie căzuse la pat, mamaia era puternică.
-          După un timp am revenit și am văzut doliu la poartă. M-am gândit "A murit tataie!". Nu, mamaie murise și tataie era la pat, dar eu îi iubeam…
-        </p>
-        <p *ngIf="villageId === 2" class="m-0 text-style">
-          Satul Olari, situat în orașul Horezu, județul Vâlcea, este renumit datorită faptului că foarte mulți săteni practică meșteșugul olăritului. Arta tradițională a olăritului din satul Olari este recunoscută la nivel mondial, Horezu fiind capitala ceramicii românești.
-          În fiecare an, în prima săptămână din iunie, la Horezu se organizează târgul ceramicii populare, la care participă olari din toată țara. La acest târg sunt premiate cele mai frumoase creații din anul respectiv.
-          <br><br>Meșteșugarii olari participă în fiecare an la târguri internaționale de ceramică, fiind renumiți și recunoscuți pentru puritatea și complexitatea artei populare pe care o propun.
-          Satul Olari poate fi vizitat în orice perioadă a anului, unde puteți admira atât expozițiile meșteșugarilor populari, cât și peisajele pitorești din acest sat.
-          <br><br>Vă invităm cu drag în satul Olari!
-        </p>
+        <div *ngIf="villageId === 0" class="text-style">
+          <p>
+            Racovița, un sat al comunei Polovragi, un sat unde copiii dacilor se jucau de-a războiul, un sat unde energiile se contopesc și se armonizează cu Universul.
+          </p>
+        </div>
+        <div *ngIf="villageId === 1" class="text-style">
+          <p>
+            Într-o după amiază cu soarele agățat pe albastrul boltei, cutreieram pădurea virgină și plină de viață în cătutarea gustoaselor ciuperci.
+            Eram într-o lume verde cu simfonii vesele interpretate de păsările pădurii, iar mintea mea se afla într-o stare de pauză prelungită...
+          </p>
+          <p>
+            Eram unit cu pădurea, respiram aerul acesteia... Eu însumi eram pădurea...
+            <br>
+            Coborând brusc o pantă abruptă am auzit cântecul unui cocoș. Atunci m-am trezit. Civilizație. Am ajuns în curtea bunicilor ancestrali. Bunicul bătea coasa, bunica întorcea fânul.
+            I-am întrebat „Pot să traversez curtea? Unde sunt aici? Câți ani aveți?". M-am îndrăgostit ireversibil de tot ceea ce era în jurul lor. Aveau o energie pozitivă ce-mi inunda existența.
+            „Da, poți să vii! E satul Râpa... Ai fost după ciuperci, nu? Tataie are 90 de ani, iar eu 80. Ne rânduim cum putem. Vaca e viața noastră."
+          </p>
+          <p>
+            I-am iubit din prima clipă, iar apoi i-am căutat... tataie căzuse la pat, mamaia era puternică.
+            După un timp am revenit și am văzut doliu la poartă. M-am gândit "A murit tataie!". Nu, mamaie murise și tataie era la pat, dar eu îi iubeam…
+          </p>
+        </div>
+        <div *ngIf="villageId === 2" class="text-style">
+          <p>
+            Satul Olari, situat în orașul Horezu, județul Vâlcea, este renumit datorită faptului că foarte mulți săteni practică meșteșugul olăritului. Arta tradițională a olăritului din satul Olari este recunoscută la nivel mondial, Horezu fiind capitala ceramicii românești.
+            În fiecare an, în prima săptămână din iunie, la Horezu se organizează târgul ceramicii populare, la care participă olari din toată țara. La acest târg sunt premiate cele mai frumoase creații din anul respectiv.
+          </p>
+          <p>
+            Meșteșugarii olari participă în fiecare an la târguri internaționale de ceramică, fiind renumiți și recunoscuți pentru puritatea și complexitatea artei populare pe care o propun.
+            Satul Olari poate fi vizitat în orice perioadă a anului, unde puteți admira atât expozițiile meșteșugarilor populari, cât și peisajele pitorești din acest sat.
+          </p>
+          <p>
+            Vă invităm cu drag în satul Olari!
+          </p>
+        </div>
       </p-card>
     </div>
     <div class="youtube-container">

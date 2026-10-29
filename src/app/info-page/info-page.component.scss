@@ -67,7 +67,6 @@
 .features-list {
   list-style: disc;
   padding-left: 1.5rem;
-  line-height: 1.6;
 }
 
 /* Galeria are 36rem ca în producție (poza nu mai are lățime inline), iar textul ia restul rândului; pe laptopurile
@@ -136,7 +135,7 @@
 }
 
 .polovragi-bottom {
-  margin-top: 1.5rem;
+  margin-top: var(--text-paragraph-gap);
   clear: both;
 }
 
@@ -404,27 +403,14 @@ img {
 
 .horezu-paragraph {
   max-width: none;
-  line-height: 1.7;
-  margin: 0 0 0.5rem 0;
 }
 
-.horezu-list {
-  list-style: disc;
-  padding-left: 1.5rem;
-  line-height: 1.7;
-  margin: 0 0 1rem 0;
-}
-
-.horezu-note {
-  line-height: 1.6;
-  margin: 0 0 0.25rem 0;
-}
-
+/* Listele din text au în jur aceeași distanță ca un paragraf. */
+.horezu-list,
 .horezu-note-list {
   list-style: disc;
   padding-left: 1.5rem;
-  line-height: 1.6;
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 var(--text-paragraph-gap) 0;
 }
 
 @media (max-width: 56.25rem) {
@@ -463,15 +449,20 @@ img {
   font-family: 'Libre Baskerville', serif;
 }
 
-/* Paragrafe */
+/* Paragrafe și liste: tipografia comună a site-ului (styles.scss), aceeași și pe telefon. */
 .info-page-bg p,
-.info-page-bg .text-style,
-.info-page-bg .polovragi-paragraph,
-.info-page-bg .polovragi-paragraph-2,
-.info-page-bg .horezu-paragraph,
-.info-page-bg .horezu-note {
-  font-size: 1.5625rem;
-  line-height: 1.7;
+.info-page-bg li {
+  font-size: var(--text-body-size);
+  line-height: var(--text-body-line-height);
+}
+
+.info-page-bg p {
+  margin: 0 0 var(--text-paragraph-gap) 0;
+}
+
+/* Ultimul paragraf dintr-un card sau dintr-o coloană nu adaugă spațiu gol dedesubt. */
+.info-page-bg p:last-child {
+  margin-bottom: 0;
 }
 
 /* Titluri din secțiunile info-page */
@@ -504,25 +495,6 @@ img {
   line-height: 1.2;
 }
 
-/* Dimensiuni pentru listele din cardurile „Ce găsești aici” */
-.info-page-bg .features-list,
-.info-page-bg .features-list li {
-  font-size: 1.5625rem;
-  line-height: 1.6;
-}
-
-/* Horezu: listele cu bullet points să aibă aceeași mărime ca paragrafele */
-.info-page-bg .horezu-list,
-.info-page-bg .horezu-list li,
-.info-page-bg .horezu-note-list,
-.info-page-bg .horezu-note-list li {
-  font-size: 1.5625rem;
-}
-
-/* Baia de Fier: al doilea paragraf continuă sub primul, în stânga imaginii */
-.baia-section .polovragi-paragraph-2 {
-  margin-top: 1.5rem;
-}
 
 /* Dimensiunea efectivă a imaginii (identică cu varianta anterioară) */
 .baia-section .polovragi-image {
@@ -591,11 +563,6 @@ img {
      (fixăm coloana dreaptă la 45rem, identic cu lățimea imaginii)
    - Comportament fluid pe mobil
    ============================================= */
-.vaideeni-section .polovragi-paragraph-2,
-.slatioara-section .polovragi-paragraph-2,
-.costesti-section .polovragi-paragraph-2 {
-  margin-top: 1.5rem;
-}
 
 /* Reglaj fin suplimentar: mai 0.25rem spre dreapta pentru a egala perfect
    verticala cardului alb (diferență totală 0.75rem între coloană și imagine) */
@@ -671,17 +638,6 @@ img {
 
   :host ::ng-deep .info-page-bg .p-card .p-card-body {
     padding: 1rem;
-  }
-
-  .info-page-bg p,
-  .info-page-bg .text-style,
-  .info-page-bg .features-list,
-  .info-page-bg .features-list li,
-  .info-page-bg .horezu-list,
-  .info-page-bg .horezu-list li,
-  .info-page-bg .horezu-note-list,
-  .info-page-bg .horezu-note-list li {
-    font-size: 1.25rem;
   }
 }
 

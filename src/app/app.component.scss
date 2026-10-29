@@ -225,6 +225,13 @@ fa-icon {
 }
 
 /* Ferestrele cu texte lungi: zona derulabilă se poate focaliza și derula din tastatură. */
+.dialog-scroll p {
+  font-family: var(--font-base);
+  font-size: var(--text-body-size);
+  line-height: var(--text-body-line-height);
+  margin: 0 0 var(--text-paragraph-gap) 0;
+}
+
 .dialog-scroll {
   max-height: 65vh;
   overflow-y: auto;

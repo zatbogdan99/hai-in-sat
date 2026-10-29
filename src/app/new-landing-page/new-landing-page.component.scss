@@ -133,9 +133,9 @@
 }
 
 .about__text {
-  font-family: 'Libre Baskerville', serif;
-  font-size: clamp(1rem, 1.6vw, 1.35rem);
-  line-height: 1.8;
+  font-family: var(--font-base);
+  font-size: var(--text-body-size);
+  line-height: var(--text-body-line-height);
 }
 
 .about__title {
@@ -148,7 +148,7 @@
 }
 
 .about__text p {
-  margin: 0 0 1rem 0;
+  margin: 0 0 var(--text-paragraph-gap) 0;
 }
 
 .about__text strong {
@@ -172,8 +172,5 @@
 @media (max-width: 640px) {
   .about {
     padding: 2rem 1rem;
-  }
-  .about__text {
-    font-size: 1.05rem;
   }
 }

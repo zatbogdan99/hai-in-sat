@@ -9,14 +9,14 @@
           <div class="header-wrap">
             <h1 class="title">{{ data[villageId].title }}</h1>
           </div>
-          <p class="m-0 text-style">
+          <p class="text-style">
             {{ data[villageId].desc }}
           </p>
         } @else {
           <div class="header-wrap">
             <h1 class="title">{{ data[villageId].title }}</h1>
           </div>
-          <p class="m-0 text-style">
+          <p class="text-style">
             {{ data[villageId].desc }}
           </p>
         }
@@ -75,11 +75,11 @@
             <img class="polovragi-image polovragi-image--float" [src]="getPolovragiSecondImage()" alt="Peisaj din zona Polovragi - Oltenia de sub Munte" />
           }
           <div class="polovragi-left">
-            <p class="m-0 text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
+            <p class="text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
           </div>
         </div>
         <div class="polovragi-bottom">
-          <p class="m-0 text-style polovragi-paragraph-2">{{ data[villageId].secondDesc2 }}</p>
+          <p class="text-style polovragi-paragraph-2">{{ data[villageId].secondDesc2 }}</p>
         </div>
       </div>
     } @else {
@@ -90,8 +90,8 @@
               <img class="polovragi-image polovragi-image--float" [src]="getBaiaSecondImage()" alt="Peisaj din zona Baia de Fier - Oltenia de sub Munte" />
             }
             <div class="polovragi-left">
-              <p class="m-0 text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
-              <p class="m-0 text-style polovragi-paragraph-2">{{ data[villageId].secondDesc2 }}</p>
+              <p class="text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
+              <p class="text-style polovragi-paragraph-2">{{ data[villageId].secondDesc2 }}</p>
             </div>
           </div>
         </div>
@@ -103,8 +103,8 @@
               <img class="polovragi-image polovragi-image--float" [src]="getVaideeniSecondImage()" alt="Peisaj din zona Vaideeni - Oltenia de sub Munte" />
             }
             <div class="polovragi-left">
-              <p class="m-0 text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
-              <p class="m-0 text-style polovragi-paragraph-2">{{ data[villageId].secondDesc2 }}</p>
+              <p class="text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
+              <p class="text-style polovragi-paragraph-2">{{ data[villageId].secondDesc2 }}</p>
             </div>
           </div>
         </div>
@@ -116,8 +116,8 @@
               <img class="polovragi-image polovragi-image--float" [src]="getSlatioaraSecondImage()" alt="Peisaj din zona Slătioara - Oltenia de sub Munte" />
             }
             <div class="polovragi-left">
-              <p class="m-0 text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
-              <p class="m-0 text-style polovragi-paragraph-2">{{ data[villageId].secondDesc2 }}</p>
+              <p class="text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
+              <p class="text-style polovragi-paragraph-2">{{ data[villageId].secondDesc2 }}</p>
             </div>
           </div>
         </div>
@@ -129,8 +129,8 @@
               <img class="polovragi-image polovragi-image--float" [src]="getCostestiSecondImage()" alt="Peisaj din zona Costești - Oltenia de sub Munte" />
             }
             <div class="polovragi-left">
-              <p class="m-0 text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
-              <p class="m-0 text-style polovragi-paragraph-2">{{ data[villageId].secondDesc2 }}</p>
+              <p class="text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
+              <p class="text-style polovragi-paragraph-2">{{ data[villageId].secondDesc2 }}</p>
             </div>
           </div>
         </div>
@@ -145,7 +145,7 @@
               <div class="header-wrap">
                 <h2 class="title">Inima spirituală a Bărbăteștiului</h2>
               </div>
-              <p class="m-0 text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
+              <p class="text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
             </div>
           </div>
         </div>
@@ -202,7 +202,7 @@
           <div class="container2">
             <div class="p-card-custom" style="padding-top: 1rem">
               <p-card>
-                <p class="m-0 text-style">{{ data[villageId].secondDesc1 }}</p>
+                <p class="text-style">{{ data[villageId].secondDesc1 }}</p>
               </p-card>
             </div>
           </div>
@@ -210,7 +210,7 @@
           <div class="container2">
             <div class="p-card-custom" style="padding-top: 1rem">
               <p-card>
-                <p class="m-0 text-style">{{ data[villageId].secondDesc2 }}</p>
+                <p class="text-style">{{ data[villageId].secondDesc2 }}</p>
               </p-card>
             </div>
           </div>
@@ -219,7 +219,7 @@
             <div class="container2">
               <div class="p-card-custom" style="padding-top: 3rem">
                 <p-card>
-                  <p class="m-0 text-style">{{ data[villageId].secondDesc3 }}</p>
+                  <p class="text-style">{{ data[villageId].secondDesc3 }}</p>
                 </p-card>
               </div>
             </div>
@@ -240,7 +240,7 @@
         @if (villageId === 1) {
           <div class="p-card-custom" style="padding-top: 1rem" *ngIf="data[villageId].desc !== null">
             <p-card>
-              <p class="m-0 text-style">
+              <p class="text-style">
                 {{ data[villageId].desc }}
               </p>
             </p-card>
@@ -275,7 +275,7 @@
       <div class="container2">
         <div style="padding-top: 1rem" class="p-card-custom">
           <p-card>
-            <p class="m-0 text-style">
+            <p class="text-style">
               {{ data[villageId].desc }}
             </p>
           </p-card>
@@ -305,7 +305,7 @@
     <div class="container2">
       <div style="padding-top: 1rem" class="p-card-custom">
         <p-card>
-          <p class="m-0 text-style" [ngClass]="{ 'polovragi-paragraph': villageId === 2 }">{{ villageId === 2 ? removeLeadingMarker(data[villageId].secondDesc1) : data[villageId].secondDesc1 }}</p>
+          <p class="text-style" [ngClass]="{ 'polovragi-paragraph': villageId === 2 }">{{ villageId === 2 ? removeLeadingMarker(data[villageId].secondDesc1) : data[villageId].secondDesc1 }}</p>
         </p-card>
       </div>
     </div>
@@ -313,7 +313,7 @@
     <div class="container2">
       <div style="padding-top: 1rem" class="p-card-custom">
         <p-card>
-          <p class="m-0 text-style" [ngClass]="{ 'polovragi-paragraph': villageId === 2 }">{{ villageId === 2 ? removeLeadingMarker(data[villageId].secondDesc2) : data[villageId].secondDesc2 }}</p>
+          <p class="text-style" [ngClass]="{ 'polovragi-paragraph': villageId === 2 }">{{ villageId === 2 ? removeLeadingMarker(data[villageId].secondDesc2) : data[villageId].secondDesc2 }}</p>
         </p-card>
       </div>
     </div>
@@ -322,7 +322,7 @@
       <div class="container2">
         <div style="padding-top: 3rem" class="p-card-custom">
           <p-card>
-            <p class="m-0 text-style">{{ villageId === 2 ? removeLeadingMarker(data[villageId].secondDesc3) : data[villageId].secondDesc3 }}</p>
+            <p class="text-style">{{ villageId === 2 ? removeLeadingMarker(data[villageId].secondDesc3) : data[villageId].secondDesc3 }}</p>
           </p-card>
         </div>
       </div>

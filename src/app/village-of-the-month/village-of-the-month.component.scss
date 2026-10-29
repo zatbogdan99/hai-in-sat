@@ -50,8 +50,15 @@
   background-color: #fafafa;
 }
 
+/* Textul „Prezentarea satului”: tipografia comună a paragrafelor (styles.scss). */
 .text-style {
-  font-size: 1.1rem;
+  font-family: var(--font-base);
+  font-size: var(--text-body-size);
+  line-height: var(--text-body-line-height);
+}
+
+.text-style p {
+  margin: 0 0 var(--text-paragraph-gap) 0;
 }
 
 .galeria-style {

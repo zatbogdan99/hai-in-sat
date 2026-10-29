@@ -3,6 +3,10 @@
   color-scheme: light;
   forced-color-adjust: none;
   --font-base: 'Libre Baskerville', serif;
+  /* Textul paragrafelor, la fel pe tot site-ul (referința: „De ce Oltenia de sub Munte?”), și pe telefon. */
+  --text-body-size: clamp(1rem, 1.6vw, 1.3rem);
+  --text-body-line-height: 1.9;
+  --text-paragraph-gap: 1rem;
 }
 
 html {
