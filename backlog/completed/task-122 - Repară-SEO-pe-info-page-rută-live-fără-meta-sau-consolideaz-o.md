@@ -1,8 +1,8 @@
 ---
 id: TASK-122
-updated_date: '2026-07-27'
+updated_date: '2026-10-29'
 title: 'Repară SEO pe /info-page (rută live fără meta) sau consolideaz-o'
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-07-06'
 labels:
@@ -86,4 +86,11 @@ Revizuire 2026-07-27 (pregatire pentru pipeline). DECIZIE owner: **Varianta A, c
 De ce parametrizarea si nu varianta minimala: pasul 3 din descrierea veche lasa alegerea intre „canonical spre /under-the-mountain" si „ruta parametrizata", ceea ce e un fork de arhitectura. Parametrizarea rezolva si problema de fond semnalata in „De ce" — continutul depinde azi de stare interna, deci un crawler (sau un refresh) vede altceva decat utilizatorul.
 
 AC-urile vechi #1 („decizia A vs B e luata de owner") si #3/#4 (conditionate de varianta aleasa) au disparut — un criteriu care cere o decizie ar fi oprit pipeline-ul. AC-ul vechi #5 („nicio pagina publica fara updatePageMeta") era o verificare sitewide care depaseste scope-ul acestui task; acoperirea celorlalte pagini e deja confirmata prin grep (2026-07-06).
+Închis 2026-10-29 (decizie owner): obiectivul a fost atins de PR #26 (`ticket/qa-vizual-2026-10`, commit `c53d63b`), pe altă cale decât Varianta A. Fiecare sat are ruta proprie `/sate/:slug` (`InfoPageComponent`, sluguri în `src/app/utils/villages.ts`), cu `updatePageMeta` (titlu, descriere, `og:image`, canonical `/sate/<slug>`) și `setBreadcrumbs`. Cele 7 pagini sunt în sitemap, iar un slug necunoscut dă 404. `/info-page` și `/info-page/` răspund cu 301 spre `/under-the-mountain` (`server.ts` și `redirectTo` în router). AC-urile de mai sus descriu varianta `/info-page/:village` și nu au mai fost implementate ca atare.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Rezolvat de PR #26: paginile de sat au rute proprii `/sate/:slug` cu meta, canonical, breadcrumbs și sitemap, iar `/info-page` face 301 spre `/under-the-mountain`. Închis fără implementare separată.
+<!-- SECTION:FINAL_SUMMARY:END -->

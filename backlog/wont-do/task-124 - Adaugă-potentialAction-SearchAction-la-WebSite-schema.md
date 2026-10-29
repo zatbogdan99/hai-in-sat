@@ -4,7 +4,7 @@ title: Adaugă potentialAction SearchAction la WebSite schema
 status: To Do
 assignee: []
 created_date: '2026-05-07 08:02'
-updated_date: '2026-07-27'
+updated_date: '2026-10-29'
 labels:
   - seo
   - schema
@@ -91,4 +91,5 @@ Revizuire 2026-07-27 (pregatire pentru pipeline). Ambiguitati eliminate:
 2. AC-ul vechi #4 spunea „poate fi simplu — substring in nume sau locatie", desi descrierea cerea `name` + `description` fara diacritice — doua specificatii diferite in acelasi task. Aliniate pe varianta din descriere.
 3. AC-ul vechi #3 (Google Rich Results Test) cere productie → mutat in `## Verificare post-deploy (owner)`.
 4. Adaugata precizarea ca `urlTemplate` foloseste forma unicode IDN, consecvent cu TASK-128.
+Închis 2026-10-29 ca wont-do (decizie owner): Google a scos căutarea din sitelinks („sitelinks search box”) din rezultate începând cu 21 noiembrie 2024 și i-a arhivat documentația (https://developers.google.com/search/blog/2024/10/sitelinks-search-box). Marcajul `SearchAction` nu mai produce niciun efect în Google. Câmpul de căutare `?q=` pe `/properties` exista doar ca precondiție pentru marcaj, iar la ~16 anunțuri nu e justificat separat. Dacă va fi nevoie de căutare în listă, se deschide un task nou, motivat de UX, nu de schema.
 <!-- SECTION:NOTES:END -->
