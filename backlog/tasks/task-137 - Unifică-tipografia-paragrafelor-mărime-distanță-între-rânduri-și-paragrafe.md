@@ -1,9 +1,10 @@
 ---
 id: TASK-137
 title: 'Unifică tipografia paragrafelor: mărime, distanță între rânduri și paragrafe'
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-10-29 23:10'
+updated_date: '2026-10-29 23:59'
 labels:
   - frontend
   - ui
@@ -82,15 +83,15 @@ TASK-136 modifică tot `under-the-mountain.component.scss` (butonul Pauză/Redar
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 `src/styles.scss` definește în `:root` `--text-body-size: clamp(1rem, 1.6vw, 1.3rem)`, `--text-body-line-height: 1.9` și `--text-paragraph-gap: 1rem`. Toate zonele din scope, inclusiv `.why__text`, le folosesc. Nu rămân valori proprii de `font-size` sau `line-height` pentru paragrafele din scope, nici pe mobil.
-- [ ] #2 Pe `/village-of-the-month`, în ambele ramuri (desktop și mobil) și pentru toate cele 3 sate, fiecare `<br><br>` a devenit graniță între `<p>`-uri separate. Textul e identic cu cel dinainte (aceleași cuvinte, aceeași ordine).
-- [ ] #3 Paragrafele de text din scope nu mai au clasele PrimeFlex `m-0` sau `mb-*` și nici `style="font-size…"` inline.
-- [ ] #4 Pe `/sate/*`, paragrafele și itemii de listă au mărimea și rândul standard. Distanța dintre paragrafe și din jurul listelor este `--text-paragraph-gap`.
-- [ ] #5 Descrierea anunțului (cu și fără video) și textul celor 3 dialoguri legale au mărimea și rândul standard. Dialogurile au distanța standard între paragrafe.
-- [ ] #6 `scripts/test-browser-regression.cjs` verifică automat, la 1440 și la 390 px, pe `/`, `/under-the-mountain`, `/village-of-the-month`, o pagină `/sate/*`, o pagină de anunț și dialogul „Politica de confidențialitate” deschis, că toate paragrafele din scope au același `font-family`, același `font-size`, `line-height` = 1.9 × `font-size` și `margin-bottom` = 16 px. Toleranța e de ±0,5 px. Excepția e descrierea anunțului (`pre-wrap`), unde se verifică doar fontul și rândul.
-- [ ] #7 Elementele din afara scope-ului (titluri, hero, citatul „Pastilă pentru suflet”, butoane, formulare, cardurile din `/properties`, footer) arată ca înainte. Se verifică prin capturi înainte/după.
-- [ ] #8 `npm run build` trece fără erori de buget. Nicio componentă nu trece de 10 KB, iar `angular.json` nu e modificat. `npm run test:ci`, `npm run test:ssr` și `npm run test:ssr:http` trec, fără teste `fdescribe`/`fit`/`xdescribe`/`xit`.
-- [ ] #9 Capturile înainte/după la 1440, 390 și 320 px pentru toate zonele din scope sunt documentate în `## Implementation Notes`, fără scroll orizontal și fără text tăiat.
+- [x] #1 `src/styles.scss` definește în `:root` `--text-body-size: clamp(1rem, 1.6vw, 1.3rem)`, `--text-body-line-height: 1.9` și `--text-paragraph-gap: 1rem`. Toate zonele din scope, inclusiv `.why__text`, le folosesc. Nu rămân valori proprii de `font-size` sau `line-height` pentru paragrafele din scope, nici pe mobil.
+- [x] #2 Pe `/village-of-the-month`, în ambele ramuri (desktop și mobil) și pentru toate cele 3 sate, fiecare `<br><br>` a devenit graniță între `<p>`-uri separate. Textul e identic cu cel dinainte (aceleași cuvinte, aceeași ordine).
+- [x] #3 Paragrafele de text din scope nu mai au clasele PrimeFlex `m-0` sau `mb-*` și nici `style="font-size…"` inline.
+- [x] #4 Pe `/sate/*`, paragrafele și itemii de listă au mărimea și rândul standard. Distanța dintre paragrafe și din jurul listelor este `--text-paragraph-gap`.
+- [x] #5 Descrierea anunțului (cu și fără video) și textul celor 3 dialoguri legale au mărimea și rândul standard. Dialogurile au distanța standard între paragrafe.
+- [x] #6 `scripts/test-browser-regression.cjs` verifică automat, la 1440 și la 390 px, pe `/`, `/under-the-mountain`, `/village-of-the-month`, o pagină `/sate/*`, o pagină de anunț și dialogul „Politica de confidențialitate” deschis, că toate paragrafele din scope au același `font-family`, același `font-size`, `line-height` = 1.9 × `font-size` și `margin-bottom` = 16 px. Toleranța e de ±0,5 px. Excepția e descrierea anunțului (`pre-wrap`), unde se verifică doar fontul și rândul.
+- [x] #7 Elementele din afara scope-ului (titluri, hero, citatul „Pastilă pentru suflet”, butoane, formulare, cardurile din `/properties`, footer) arată ca înainte. Se verifică prin capturi înainte/după.
+- [x] #8 `npm run build` trece fără erori de buget. Nicio componentă nu trece de 10 KB, iar `angular.json` nu e modificat. `npm run test:ci`, `npm run test:ssr` și `npm run test:ssr:http` trec, fără teste `fdescribe`/`fit`/`xdescribe`/`xit`.
+- [x] #9 Capturile înainte/după la 1440, 390 și 320 px pentru toate zonele din scope sunt documentate în `## Implementation Notes`, fără scroll orizontal și fără text tăiat.
 <!-- AC:END -->
 
 ## Verificare post-deploy (owner)
@@ -98,3 +99,17 @@ TASK-136 modifică tot `under-the-mountain.component.scss` (butonul Pauză/Redar
 NU fac parte din criteriile de acceptare: livrarea se oprește la PR, fără deploy.
 
 1. Deschide pe rând `/under-the-mountain`, `/village-of-the-month`, o pagină de sat și un anunț, pe desktop și pe telefon. Textul paragrafelor arată la fel peste tot.
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Commit `f049b5b`. Măsurat automat în regresie: la 1440 px, 57 de paragrafe pe 7 pagini au 20,8 px Libre Baskerville, rând 39,52 px (1,9×), 16 px până la paragraful următor; la 390 px, 44 de paragrafe au 16 px / 30,4 px. Dialogurile Termenii și condițiile și Politica de cookies au fost verificate separat (20,8 / 39,52 px). Pe `village-of-the-month` cele 6 blocuri au fost transformate în `<p>`-uri separate, cu textul verificat identic cuvânt cu cuvânt. Scoase: 21 de `m-0` de pe paragrafele din `/sate/*` și 11 `mb-5` din dialoguri. În `/sate/*`, ultimul paragraf dintr-un card sau dintr-o coloană nu mai adaugă spațiu dedesubt (`p:last-child`). Regula moartă `.card-info*` din `under-the-mountain.component.scss` a fost ștearsă. Punctele galeriei (`li` interne PrimeNG) nu sunt text și sunt excluse din verificare.
+
+Validare finală 2026-10-29 pe build-ul final (branch `claude/pensive-heisenberg-2m6ix7`): `npm run build` PASS, fără erori de buget (info-page sub pragul de avertisment, under-the-mountain 8,92 KB, properties 9,32 KB neschimbat); `npm run test:ci` 133/133; `npm run test:ssr` 26/26; `npm run test:ssr:http` PASS: „redirect, static assets, SEO phones, 28 sitemap headings and incoming links, 16 discovered properties; 128 HTTP responses checked”, minimum 5 href-uri interne distincte pe fiecare rută. Regresia din browser (`scripts/test-browser-regression.cjs`, 1440/390/320 px + telefon orizontal + layout sate la 1280/1440) 55 PASS, 0 FAIL. Capturi înainte/după: 91 de pagini (7 ecrane: 1920, 1440, 1280, 1000, 390, 320, 844×390 × 13 pagini), 0 scroll orizontal, 0 erori JavaScript. Verificări suplimentare în browser real: 8/8 PASS. Fără merge și fără deploy.
+<!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Paragrafele din toate zonele din scope folosesc tokenurile globale (16→20,8 px, rând 1,9, 1rem între paragrafe), inclusiv pe telefon; verificare automată pe 6 pagini și în dialoguri. Fără merge și fără deploy.
+<!-- SECTION:FINAL_SUMMARY:END -->

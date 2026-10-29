@@ -1,9 +1,10 @@
 ---
 id: TASK-136
 title: Derulare automată la 5 secunde în caruselul de sate din /under-the-mountain
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-10-29 22:50'
+updated_date: '2026-10-29 23:59'
 labels:
   - frontend
   - ui
@@ -64,17 +65,17 @@ Caruselul „Descoperă Oltenia de sub Munte” de pe `/under-the-mountain` trec
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 În browser, fără `prefers-reduced-motion`, caruselul trece la satul următor la fiecare 5 secunde și continuă după ultimul sat cu primul, datorită buclei.
-- [ ] #2 Cu `prefers-reduced-motion: reduce`, caruselul nu se mișcă singur la încărcare, iar butonul arată „Pornește derularea automată”.
-- [ ] #3 Hover și focus de tastatură în carusel îl pun pe pauză temporar. La ieșire, derularea se reia, iar starea butonului rămâne neschimbată.
-- [ ] #4 Click pe săgeata stânga/dreapta sau o glisare manuală oprește definitiv autoplay-ul: nu mai pornește singur nici după 10 secunde, nici după ieșirea mouse-ului sau a focusului. Butonul trece pe „Pornește derularea automată”.
-- [ ] #5 Butonul Pauză/Redare este un `<button type="button">` cu `aria-label` în română care descrie acțiunea curentă. Funcționează cu mouse, Enter și Space, are focus vizibil și nu se suprapune peste carduri sau săgeți la 1440, 390 și 320 px.
-- [ ] #6 Cât timp autoplay-ul rulează, wrapper-ul Swiper are `aria-live="off"`. După oprire, are `aria-live="polite"`.
-- [ ] #7 Cardurile nevăzute rămân scoase din ordinea de Tab după schimbările automate de slide (`syncSlideFocus`).
-- [ ] #8 Pe server nu se pornește niciun timer. HTML-ul SSR al `/under-the-mountain` conține butonul, iar `npm run test:ssr:http` trece (un singur `h1`, linkuri interne, cache).
-- [ ] #9 `under-the-mountain.component.spec.ts` are teste pentru: parametrii autoplay (5000 ms, oprire la interacțiune), comutarea butonului (`autoplay.stop()` / `autoplay.start()` și eticheta), pornirea oprită la `prefers-reduced-motion` și oprirea definitivă la navigare. Swiper-ul real sau `matchMedia` sunt înlocuite cu dubluri unde e nevoie.
-- [ ] #10 `npm run build` trece fără eroare de buget. Stilul compilat al componentei rămâne sub 10 KB, iar `angular.json` nu este modificat. `npm run test:ci` trece, fără teste `fdescribe`/`fit`/`xdescribe`/`xit`.
-- [ ] #11 Verificarea în browser la 1440, 390 și 320 px e documentată în `## Implementation Notes`: derulare automată, pauză la hover/focus, oprire la săgeată/glisare, buton, capturi.
+- [x] #1 În browser, fără `prefers-reduced-motion`, caruselul trece la satul următor la fiecare 5 secunde și continuă după ultimul sat cu primul, datorită buclei.
+- [x] #2 Cu `prefers-reduced-motion: reduce`, caruselul nu se mișcă singur la încărcare, iar butonul arată „Pornește derularea automată”.
+- [x] #3 Hover și focus de tastatură în carusel îl pun pe pauză temporar. La ieșire, derularea se reia, iar starea butonului rămâne neschimbată.
+- [x] #4 Click pe săgeata stânga/dreapta sau o glisare manuală oprește definitiv autoplay-ul: nu mai pornește singur nici după 10 secunde, nici după ieșirea mouse-ului sau a focusului. Butonul trece pe „Pornește derularea automată”.
+- [x] #5 Butonul Pauză/Redare este un `<button type="button">` cu `aria-label` în română care descrie acțiunea curentă. Funcționează cu mouse, Enter și Space, are focus vizibil și nu se suprapune peste carduri sau săgeți la 1440, 390 și 320 px.
+- [x] #6 Cât timp autoplay-ul rulează, wrapper-ul Swiper are `aria-live="off"`. După oprire, are `aria-live="polite"`.
+- [x] #7 Cardurile nevăzute rămân scoase din ordinea de Tab după schimbările automate de slide (`syncSlideFocus`).
+- [x] #8 Pe server nu se pornește niciun timer. HTML-ul SSR al `/under-the-mountain` conține butonul, iar `npm run test:ssr:http` trece (un singur `h1`, linkuri interne, cache).
+- [x] #9 `under-the-mountain.component.spec.ts` are teste pentru: parametrii autoplay (5000 ms, oprire la interacțiune), comutarea butonului (`autoplay.stop()` / `autoplay.start()` și eticheta), pornirea oprită la `prefers-reduced-motion` și oprirea definitivă la navigare. Swiper-ul real sau `matchMedia` sunt înlocuite cu dubluri unde e nevoie.
+- [x] #10 `npm run build` trece fără eroare de buget. Stilul compilat al componentei rămâne sub 10 KB, iar `angular.json` nu este modificat. `npm run test:ci` trece, fără teste `fdescribe`/`fit`/`xdescribe`/`xit`.
+- [x] #11 Verificarea în browser la 1440, 390 și 320 px e documentată în `## Implementation Notes`: derulare automată, pauză la hover/focus, oprire la săgeată/glisare, buton, capturi.
 <!-- AC:END -->
 
 ## Verificare post-deploy (owner)
@@ -82,3 +83,17 @@ Caruselul „Descoperă Oltenia de sub Munte” de pe `/under-the-mountain` trec
 NU fac parte din criteriile de acceptare: livrarea se oprește la PR, fără deploy.
 
 1. Pe `/under-the-mountain`, desktop și telefon: caruselul de sate se mută singur la 5 secunde. Butonul Pauză îl oprește, iar o săgeată apăsată îl oprește definitiv.
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Commit-uri `68b1ae4` și `4e8f211`. Swiper 12.2: `autoplay` cu `delay: 5000`, `disableOnInteraction: true`. Descoperit la testarea în browser real: `swiper.autoplay.pause()` se reia singur la următorul `transitionend`, deci pauza la hover/focus folosește `stop()`/`start()` cu o stare „pauză temporară” (butonul arată în continuare „Oprește”); o schimbare de slide în pauză devine oprire definitivă. `aria-live` e setat de componentă (`off` cât derulează, `polite` oprit), pentru că modulul a11y îl setează doar la inițializare. Butonul: `<button type="button">` cu SVG inline, centrat sub carusel, fără suprapuneri la 1440/390/320; funcționează cu Enter și Space, are focus vizibil (inelul implicit al browserului). În SSR butonul apare cu „Oprește derularea automată”; pe server nu pornește niciun timer. Verificat în browser real: avansare la 5 s, pauză la hover 6 s, oprire definitivă la săgeată (10 s fără mișcare), repornire din buton; cardurile nevăzute rămân scoase din Tab după avansarea automată. Notă: un click pe săgeată venit exact în timpul unei tranziții e ignorat de Swiper (`loopPreventsSliding`), comportament existent.
+
+Validare finală 2026-10-29 pe build-ul final (branch `claude/pensive-heisenberg-2m6ix7`): `npm run build` PASS, fără erori de buget (info-page sub pragul de avertisment, under-the-mountain 8,92 KB, properties 9,32 KB neschimbat); `npm run test:ci` 133/133; `npm run test:ssr` 26/26; `npm run test:ssr:http` PASS: „redirect, static assets, SEO phones, 28 sitemap headings and incoming links, 16 discovered properties; 128 HTTP responses checked”, minimum 5 href-uri interne distincte pe fiecare rută. Regresia din browser (`scripts/test-browser-regression.cjs`, 1440/390/320 px + telefon orizontal + layout sate la 1280/1440) 55 PASS, 0 FAIL. Capturi înainte/după: 91 de pagini (7 ecrane: 1920, 1440, 1280, 1000, 390, 320, 844×390 × 13 pagini), 0 scroll orizontal, 0 erori JavaScript. Verificări suplimentare în browser real: 8/8 PASS. Fără merge și fără deploy.
+<!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Caruselul de sate derulează automat la 5 s, cu buton Pauză/Redare, pauză la hover/focus, oprire definitivă la interacțiune și fără autoplay la mișcare redusă. Fără merge și fără deploy.
+<!-- SECTION:FINAL_SUMMARY:END -->
