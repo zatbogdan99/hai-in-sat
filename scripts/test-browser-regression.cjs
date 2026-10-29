@@ -86,7 +86,7 @@ async function capture(page, viewport, name) {
   const file = `${viewport}-${name}.png`;
   const metrics = await page.evaluate(() => {
     const result = { viewport: innerWidth, documentWidth: document.documentElement.scrollWidth, documentHeight: document.documentElement.scrollHeight, elements: [] };
-    for (const selector of ['.topbar', '.hero', 'h1', '.footer-links', '.property-filter-buttons', '.property-card', '.property-list-item', '.property-pagination', '.property-details-container', '.gallery', '.login-card', '.p-dialog', '.p-popover', '.parent-container', '.add-property-container', '.form-grid', '.village-swiper', '.mySwiper']) {
+    for (const selector of ['.topbar', '.hero', 'h1', '.site-footer', '.property-filter-buttons', '.property-card', '.property-list-item', '.property-pagination', '.property-details-container', '.gallery', '.login-card', '.p-dialog', '.p-popover', '.parent-container', '.add-property-container', '.form-grid', '.village-swiper', '.mySwiper']) {
       for (const el of document.querySelectorAll(selector)) {
         const rect = el.getBoundingClientRect();
         if (!rect.width || !rect.height) continue;
@@ -160,8 +160,12 @@ async function runViewport(viewport) {
     assert.equal(await page.locator('[autofocus]').count(), 0, 'Buttons, radios and checkboxes must not acquire native autofocus on page load');
     assert.equal(result.initialMenuFocus.focused, false, 'Mobile menu must not steal initial focus');
     await capture(page, viewport.name, 'home');
-    assert.equal(await page.locator('.footer-links a').count(), 5);
-    pass('homepage and five footer links');
+    // TASK-133: subsolul are doar rețelele sociale și cele 4 butoane legale.
+    assert.deepEqual(await page.locator('footer.site-footer > *').evaluateAll(nodes => nodes.map(node => node.className)), ['footer-social', 'footer-legal']);
+    assert.equal(await page.locator('footer.site-footer a[href^="/"], footer.site-footer a[href^="tel:"]').count(), 0);
+    assert.equal(await page.locator('.footer-social a').count(), 3);
+    assert.equal(await page.locator('.footer-legal button').count(), 4);
+    pass('homepage and footer with social links and legal buttons only');
     if (viewport.width < 600) {
       for(let tab=0;tab<10 && !(await page.locator('button.topbar__menu-button').evaluate(el => el === document.activeElement));tab++) await page.keyboard.press('Tab');
       const keyboardFocus = await page.locator('button.topbar__menu-button').evaluate(el => {
@@ -237,7 +241,10 @@ async function runViewport(viewport) {
     await page.locator('.p-dialog').waitFor({state:'hidden'});
     assert.ok(report.requests.some(r => r.viewport === viewport.name && r.url === '/properties-form' && r.method === 'POST'));
     pass('property contact validation, autocomplete, mocked submission');
-    await page.locator('.footer-links a[href="/homes"]').click();
+    if (viewport.width < 1200) {
+      await page.locator('button.topbar__menu-button').click();
+      await page.locator('.mobile-menu-panel a[href="/homes"]').click();
+    } else await page.locator('.nav-chips a[href="/homes"]').click();
     await page.locator('.form-hero-title').waitFor();
     await capture(page, viewport.name, 'home-form');
     const visible = selector => page.locator(`${selector}:visible`);

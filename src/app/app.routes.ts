@@ -21,7 +21,7 @@ export const appRoutes: Routes = [
   // și, încărcată direct, arăta satul lunii; acum duce la lista satelor (server.ts răspunde cu 301).
   { path: 'sate/:slug', component: InfoPageComponent },
   { path: 'info-page', redirectTo: 'under-the-mountain', pathMatch: 'full' },
-  // Pagina de contact a fost scoasă: datele de contact sunt în subsol și în fereastra Contact.
+  // Pagina de contact a fost scoasă: datele de contact sunt în fereastra Contact (butonul din subsol).
   { path: 'contact-us', redirectTo: '', pathMatch: 'full' },
   { path: 'under-the-mountain', component: UnderTheMountainComponent },
   // „Vezi zona” a fost scoasă: „Cumpără” repeta două anunțuri din /properties, iar „Închiriază” era doar „Va urma”.

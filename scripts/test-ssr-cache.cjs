@@ -259,9 +259,8 @@ async function main() {
     '/properties', '/village-of-the-month', '/login', '/add-property']) {
     const result = await request(url);
     const { nodes } = verifySeoPhones(result);
-    // Subsolul are pe fiecare pagină telefonul oficial (în locul fostei pagini /contact-us).
+    // Telefonul oficial stă în fereastra Contact (nu e în HTML-ul SSR); orice link tel: randat e numărul oficial.
     const phones = nodes.filter(node => node.tagName === 'a' && attr(node, 'href')?.startsWith('tel:'));
-    assert.ok(phones.length >= 1, `${url} must show the official phone in the footer`);
     for (const phone of phones) {
       assert.equal(attr(phone, 'href'), 'tel:+40728140628');
       assert.equal(textContent(phone).replace(/\s/g, ''), '0728140628');
@@ -410,8 +409,14 @@ async function main() {
   }
   assert.deepEqual([...discoveredProperties].sort(), propertyUrls.map(url => url.pathname).sort(),
     'Following SSR listing/filter/pagination hrefs must discover every property in the sitemap.');
+  // TASK-133: subsolul nu mai leagă /about-us. Excepție temporară, doar pentru ea, până la ștergerea paginii (TASK-134).
+  const withoutIncomingLinks = new Set(['/about-us']);
   for (const page of indexedPages) {
     const sources = [...incoming.get(new URL(page.url, localOrigin).pathname)].sort();
+    if (withoutIncomingLinks.has(new URL(page.url, localOrigin).pathname)) {
+      console.log(`SKIP LINKS ${page.url}: orfană până la TASK-134`);
+      continue;
+    }
     assert.ok(sources.length > 0, `${page.url}: no incoming link from another page`);
     page.incomingFrom = sources;
     console.log(`PASS LINKS ${page.url}: ${page.internalLinkCount} distinct internal hrefs; incoming from ${sources[0]}`);

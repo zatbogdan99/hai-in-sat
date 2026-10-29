@@ -104,7 +104,7 @@ export function app(): express.Express {
   });
 
   // Pagina /contact-us a fost scoasă: adresele vechi (Google, linkuri externe) ajung pe prima pagină,
-  // unde subsolul are telefonul, emailul și fereastra Contact.
+  // de unde fereastra Contact (butonul din subsol) dă telefonul și emailul.
   server.get(['/contact-us', '/contact-us/'], (_req: express.Request, res: express.Response) => {
     res.redirect(301, '/');
   });

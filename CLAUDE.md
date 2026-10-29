@@ -15,7 +15,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm test` (= `ng test`) — local, interactive Karma + Jasmine run.
 - `npm run test:ci` — single headless test run used for automated verification. Run one spec with `npm run test:ci -- --include=src/app/path/to.spec.ts`.
 - `npm run test:ssr` — Node tests for the SSR HTML cache, including expiry and HTTP freshness.
-- `npm run test:ssr:http` — after `npm run build`, starts a temporary SSR server with local API fixtures and checks real GET/HEAD/304 responses, SEO phone filtering and the official contact number. Also checks internal links on every sitemap route and discovers property pages by following the rendered filter/pagination links; saves `internal-links.json` as evidence. Port 4000 must be free, or set `SSR_CACHE_TEST_PORT`. Stops its server and prints the evidence directory on completion.
+- `npm run test:ssr:http` — after `npm run build`, starts a temporary SSR server with local API fixtures and checks real GET/HEAD/304 responses, SEO phone filtering and that any rendered `tel:` link is the official number (the footer no longer shows it; the Contact dialog does). Also checks internal links on every sitemap route and discovers property pages by following the rendered filter/pagination links; saves `internal-links.json` as evidence. Port 4000 must be free, or set `SSR_CACHE_TEST_PORT`. Stops its server and prints the evidence directory on completion.
 - Never leave focused or disabled Jasmine tests (`fdescribe`, `fit`, `xdescribe`, `xit`) in committed code.
 - `npm run generate-sitemap` — fetches every property from the live API and writes `src/sitemap.xml`. Run **before** `ng build` when properties have changed; the sitemap is bundled as a static asset.
 
