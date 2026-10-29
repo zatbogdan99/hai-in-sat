@@ -51,6 +51,7 @@ După scoaterea linkurilor, `/about-us` nu mai primește link de pe nicio pagin�
   - verificarea incoming links: excepția temporară pentru `/about-us`, descrisă mai sus.
 - `scripts/test-browser-regression.cjs` — linia ~163 (`.footer-links a` count 5) și linia ~240 (navigare la `/homes` prin `.footer-links`) se adaptează. Footerul are doar social + butoane legale; navigarea spre `/homes` se face prin meniul principal (`.nav-chips` pe desktop, popover-ul pe mobil). Linia ~89 nu mai cere selectorul `.footer-links`.
 - `CLAUDE.md` — dacă descrierea `npm run test:ssr:http` sau alte rânduri mai presupun telefonul în footer, le actualizezi.
+- Comentariile care spun că datele de contact sunt în subsol devin false și se corectează (contactul rămâne în fereastra Contact): `src/server.ts` (în jurul liniei 106, redirectul `/contact-us`) și `src/app/app.routes.ts` (rândul de deasupra rutei `contact-us`).
 
 ## În afara scope-ului
 
