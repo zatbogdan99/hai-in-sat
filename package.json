@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve --open",
     "generate-sitemap": "node scripts/generate-sitemap.js",
+    "generate-village-images": "node scripts/generate-village-images.js",
     "build": "ng build && ng run hai-in-sat:server",
     "build:browser": "ng build",
     "watch": "ng build --watch --configuration development",

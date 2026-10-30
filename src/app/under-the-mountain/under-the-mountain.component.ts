@@ -9,6 +9,7 @@ import { SeoService } from "../service/seo.service";
 import { LoggerService } from "../service/logger.service";
 import { villagePath } from "../utils/villages";
 import { ImageLoadTracker } from "../utils/image-load-tracker";
+import { villageImageSize, villageImageSrc, villageImageSrcset } from "../utils/village-image";
 
 @Component({
   selector: 'app-under-the-mountain',
@@ -36,6 +37,10 @@ export class UnderTheMountainComponent implements AfterViewInit, OnInit {
 
   /** Pozele cardurilor: scheletul de încărcare stă pe ele până se descarcă (pe internet slab durează). */
   readonly photos = new ImageLoadTracker();
+  /** Cardurile au ~400 px: varianta de 800 px ca src, iar srcset până la 1280 px pentru ecranele dense. */
+  readonly cardPhoto = (src: string) => villageImageSrc(src, 800);
+  readonly cardSrcset = (src: string) => villageImageSrcset(src, 1280);
+  readonly photoSize = villageImageSize;
   /**
    * Swiper a pornit. Până atunci, cardurile stau din CSS pe un rând, ca în carusel (fără listă verticală).
    * `swiper-container` se definește (register) abia chiar înainte de initialize(): un element definit, dar

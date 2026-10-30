@@ -15,6 +15,7 @@ import {SeoService} from "../service/seo.service";
 import {NotFoundComponent} from "../not-found/not-found.component";
 import {villageBySlug} from "../utils/villages";
 import {ImageLoadTracker} from "../utils/image-load-tracker";
+import {villageImageSrc, villageImageSrcset} from "../utils/village-image";
 
 /** Distanța orizontală minimă (px) a unei glisări cu degetul care schimbă poza în galeria pe tot ecranul. */
 const SWIPE_THRESHOLD_PX = 40;
@@ -64,6 +65,10 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
   private host = inject(ElementRef<HTMLElement>);
   /** Pozele galeriilor și poza din secțiunea a doua: scheletul de încărcare stă pe ele până se descarcă. */
   readonly photos = new ImageLoadTracker();
+  /** Variantele redimensionate ale pozelor (src = 1280 px; srcset alege după lățimea coloanei și densitatea ecranului). */
+  readonly galleryPhoto = (src: string | undefined) => villageImageSrc(src, 1280);
+  readonly fullscreenPhoto = (src: string | undefined) => villageImageSrc(src, 2048);
+  readonly photoSrcset = (src: string | undefined) => villageImageSrcset(src);
   private route = inject(ActivatedRoute);
   private seo = inject(SeoService);
   /** Butonul care a deschis galeria pe tot ecranul: primește focusul înapoi la închidere. */
