@@ -103,8 +103,14 @@ export function app(): express.Express {
     res.status(204).end();
   });
 
+  // Pagina „Despre noi” a fost scoasă: adresa veche (sitemap, Google, linkuri externe) duce la prima pagină,
+  // unde secțiunea „Cu ce ne ocupăm” are cel mai apropiat conținut.
+  server.get(['/about-us', '/about-us/'], (_req: express.Request, res: express.Response) => {
+    res.redirect(301, '/');
+  });
+
   // Pagina /contact-us a fost scoasă: adresele vechi (Google, linkuri externe) ajung pe prima pagină,
-  // unde subsolul are telefonul, emailul și fereastra Contact.
+  // de unde fereastra Contact (butonul din subsol) dă telefonul și emailul.
   server.get(['/contact-us', '/contact-us/'], (_req: express.Request, res: express.Response) => {
     res.redirect(301, '/');
   });

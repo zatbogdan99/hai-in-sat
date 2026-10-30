@@ -26,7 +26,6 @@ const STATIC_PAGES = [
   { path: '/sate/costesti', changefreq: 'monthly', priority: '0.7' },
   { path: '/sate/barbatesti', changefreq: 'monthly', priority: '0.7' },
   { path: '/homes', changefreq: 'monthly', priority: '0.7' },
-  { path: '/about-us', changefreq: 'monthly', priority: '0.5' },
 ];
 
 const DIACRITICS_MAP = {

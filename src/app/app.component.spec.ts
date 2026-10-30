@@ -38,7 +38,7 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('hai-in-sat');
   });
 
-  it('exposes the logo, desktop menu and six footer destinations as real links', () => {
+  it('exposes the logo and desktop menu as real links, without a page-link block in the footer', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const root = fixture.nativeElement as HTMLElement;
@@ -47,19 +47,19 @@ describe('AppComponent', () => {
     expect(Array.from(root.querySelectorAll('.nav-chips a')).map(link => link.getAttribute('href'))).toEqual([
       '/under-the-mountain', '/village-of-the-month', '/properties', '/homes'
     ]);
-    expect(root.querySelectorAll('nav.footer-links').length).toBe(1);
-    expect(Array.from(root.querySelectorAll('nav.footer-links a')).map(link => link.getAttribute('href')).sort()).toEqual([
-      '/about-us', '/homes', '/properties', '/under-the-mountain', '/village-of-the-month'
-    ].sort());
+    expect(root.querySelector('nav.footer-links')).toBeNull();
+    expect(root.querySelectorAll('footer.site-footer a[href^="/"]').length).toBe(0);
   });
 
-  it('shows the official phone and email in the footer and the social networks as real links', () => {
+  it('keeps only the social networks and the legal buttons in the footer, all social links real', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const root = fixture.nativeElement as HTMLElement;
 
-    expect(root.querySelector('.footer-contact a[href^="tel:"]')?.getAttribute('href')).toBe('tel:+40728140628');
-    expect(root.querySelector('.footer-contact a[href^="mailto:"]')?.getAttribute('href')).toBe('mailto:contact@xn--hai-n-sat-t5a.ro');
+    const footer = root.querySelector('footer.site-footer')!;
+    expect(Array.from(footer.children).map(child => child.className)).toEqual(['footer-social', 'footer-legal']);
+    expect(root.querySelector('.footer-contact')).toBeNull();
+    expect(footer.querySelectorAll('a[href^="tel:"], a[href^="mailto:"]').length).toBe(0);
     const social = Array.from(root.querySelectorAll<HTMLAnchorElement>('.topbar__right a, .footer-social a'));
     expect(social.length).toBe(6);
     for (const link of social) {
@@ -120,6 +120,21 @@ describe('AppComponent', () => {
     expect(fixture.componentInstance.politica).toBeTrue();
     expect(fixture.componentInstance.contact).toBeTrue();
     expect(navigateSpy).not.toHaveBeenCalled();
+  });
+
+  it('shows the official phone and email in the Contact dialog', async () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    fixture.debugElement.queryAll(By.css('.footer-legal button'))
+      .find(button => button.nativeElement.textContent.trim() === 'Contact')!.nativeElement.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const contact = document.querySelector('.contact-info')!;
+    expect(contact.querySelector('a[href^="tel:"]')?.getAttribute('href')).toBe('tel:+40728140628');
+    expect(contact.querySelector('a[href^="tel:"]')?.textContent?.trim()).toBe('0728 140 628');
+    expect(contact.querySelector('a[href^="mailto:"]')?.getAttribute('href')).toBe('mailto:contact@xn--hai-n-sat-t5a.ro');
   });
 
   it('renders real links in the opened mobile menu and closes it after navigation', async () => {

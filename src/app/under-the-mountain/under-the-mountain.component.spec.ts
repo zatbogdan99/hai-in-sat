@@ -38,4 +38,79 @@ describe('UnderTheMountainComponent', () => {
       expect(card.querySelectorAll('a, button, [role="button"]').length).toBe(1);
     }
   });
+
+  describe('autoplay (TASK-136)', () => {
+    type SwiperHost = HTMLElement & { swiper: any };
+    const swiperOf = (target: ComponentFixture<UnderTheMountainComponent>) =>
+      (target.nativeElement as HTMLElement).querySelector('swiper-container') as SwiperHost;
+    // Swiper se inițializează într-un setTimeout din ngAfterViewInit.
+    const initialized = async (target: ComponentFixture<UnderTheMountainComponent>) => {
+      for (let i = 0; i < 50 && !swiperOf(target).swiper?.initialized; i++) {
+        await new Promise(resolve => setTimeout(resolve, 20));
+      }
+      target.detectChanges();
+    };
+
+    it('advances every 5 seconds and stops for good on manual interaction, without a control button', async () => {
+      await initialized(fixture);
+      const swiper = swiperOf(fixture).swiper;
+
+      expect(swiper.params.autoplay.enabled).toBeTrue();
+      expect(swiper.params.autoplay.delay).toBe(5000);
+      expect(swiper.params.autoplay.disableOnInteraction).toBeTrue();
+      expect(swiper.autoplay.running).toBeTrue();
+      expect(swiper.wrapperEl.getAttribute('aria-live')).toBe('off');
+      expect(fixture.nativeElement.querySelector('.discover__autoplay')).toBeNull();
+    });
+
+    it('stops for good when an arrow is used', async () => {
+      await initialized(fixture);
+      (fixture.nativeElement.querySelector('.discover-next') as HTMLButtonElement).click();
+      await new Promise(resolve => setTimeout(resolve, 0));
+
+      expect(swiperOf(fixture).swiper.autoplay.running).toBeFalse();
+      expect(swiperOf(fixture).swiper.wrapperEl.getAttribute('aria-live')).toBe('polite');
+    });
+
+    it('pauses while keyboard focus is inside the carousel and resumes when it leaves', async () => {
+      await initialized(fixture);
+      const swiper = swiperOf(fixture).swiper;
+      const next = fixture.nativeElement.querySelector('.discover-next') as HTMLButtonElement;
+
+      next.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+      expect(swiper.autoplay.running).toBeFalse();
+      expect(swiper.wrapperEl.getAttribute('aria-live')).toBe('off');
+
+      next.dispatchEvent(new FocusEvent('focusout', { bubbles: true, relatedTarget: document.body }));
+      expect(swiper.autoplay.running).toBeTrue();
+    });
+
+    it('treats an arrow used during the temporary pause as a definitive stop', async () => {
+      await initialized(fixture);
+      const swiper = swiperOf(fixture).swiper;
+      const next = fixture.nativeElement.querySelector('.discover-next') as HTMLButtonElement;
+
+      next.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+      next.click();
+      next.dispatchEvent(new FocusEvent('focusout', { bubbles: true, relatedTarget: document.body }));
+
+      expect(swiper.autoplay.running).toBeFalse();
+      expect(swiper.wrapperEl.getAttribute('aria-live')).toBe('polite');
+    });
+
+    it('starts stopped when the visitor prefers reduced motion', async () => {
+      const realMatchMedia = window.matchMedia.bind(window);
+      spyOn(window, 'matchMedia').and.callFake((query: string) => query.includes('prefers-reduced-motion')
+        ? { matches: true, media: query, onchange: null, addEventListener() {}, removeEventListener() {},
+            addListener() {}, removeListener() {}, dispatchEvent: () => false } as MediaQueryList
+        : realMatchMedia(query));
+      const reduced = TestBed.createComponent(UnderTheMountainComponent);
+      reduced.detectChanges();
+      await initialized(reduced);
+
+      expect(swiperOf(reduced).swiper.autoplay.running).toBeFalse();
+      expect(swiperOf(reduced).swiper.wrapperEl.getAttribute('aria-live')).toBe('polite');
+      reduced.destroy();
+    });
+  });
 });

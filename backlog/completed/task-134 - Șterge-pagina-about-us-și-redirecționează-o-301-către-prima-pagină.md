@@ -1,9 +1,10 @@
 ---
 id: TASK-134
 title: Șterge pagina /about-us și redirecționează-o 301 către prima pagină
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-10-29 22:20'
+updated_date: '2026-10-29 23:59'
 labels:
   - frontend
   - ssr
@@ -64,15 +65,15 @@ Pagina „Despre noi” (`/about-us`) este veche și se scoate complet din site:
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Directorul `src/app/about-us/` nu mai există. `git grep -n "AboutUsComponent\|app-about-us"` nu găsește nimic în afara `backlog/`.
-- [ ] #2 `src/assets/contact.avif` este șters, iar `git grep -n "contact.avif" -- src` nu găsește nimic.
-- [ ] #3 `app.routes.ts` are `{ path: 'about-us', redirectTo: '', pathMatch: 'full' }`. Navigarea client-side spre `/about-us` ajunge pe prima pagină.
-- [ ] #4 `server.ts` răspunde la `GET /about-us` și `GET /about-us/` cu `301` și `Location: /`, fără randare SSR. `scripts/test-ssr-cache.cjs` verifică ambele adrese.
-- [ ] #5 `scripts/generate-sitemap.js`, `src/sitemap.xml` și `src/llms.txt` nu mai conțin `/about-us`. Restul intrărilor din `sitemap.xml` sunt identice cu cele dinainte.
-- [ ] #6 `scripts/test-ssr-cache.cjs` nu mai are excepția de incoming links pentru `/about-us` și nicio altă excepție. Toate rutele din sitemap au cel puțin un incoming link și cel puțin 5 href-uri interne distincte. Testul de cache HIT/MISS pentru o pagină statică rulează pe altă pagină publică, cu aceleași așteptări.
-- [ ] #7 `CLAUDE.md` și `backlog/docs/verificare-locala-ssr.md` nu mai prezintă `/about-us` ca pagină existentă. `CLAUDE.md` menționează redirectul `/about-us` → `/`.
-- [ ] #8 `package.json`, `package-lock.json` și `yarn.lock` sunt neschimbate.
-- [ ] #9 `npm run build`, `npm run test:ci`, `npm run test:ssr` și `npm run test:ssr:http` trec, fără teste `fdescribe`/`fit`/`xdescribe`/`xit`. Rezumatul `test:ssr:http` (rute din sitemap, incoming links, anunțuri descoperite) este lipit în `## Implementation Notes`.
+- [x] #1 Directorul `src/app/about-us/` nu mai există. `git grep -n "AboutUsComponent\|app-about-us"` nu găsește nimic în afara `backlog/`.
+- [x] #2 `src/assets/contact.avif` este șters, iar `git grep -n "contact.avif" -- src` nu găsește nimic.
+- [x] #3 `app.routes.ts` are `{ path: 'about-us', redirectTo: '', pathMatch: 'full' }`. Navigarea client-side spre `/about-us` ajunge pe prima pagină.
+- [x] #4 `server.ts` răspunde la `GET /about-us` și `GET /about-us/` cu `301` și `Location: /`, fără randare SSR. `scripts/test-ssr-cache.cjs` verifică ambele adrese.
+- [x] #5 `scripts/generate-sitemap.js`, `src/sitemap.xml` și `src/llms.txt` nu mai conțin `/about-us`. Restul intrărilor din `sitemap.xml` sunt identice cu cele dinainte.
+- [x] #6 `scripts/test-ssr-cache.cjs` nu mai are excepția de incoming links pentru `/about-us` și nicio altă excepție. Toate rutele din sitemap au cel puțin un incoming link și cel puțin 5 href-uri interne distincte. Testul de cache HIT/MISS pentru o pagină statică rulează pe altă pagină publică, cu aceleași așteptări.
+- [x] #7 `CLAUDE.md` și `backlog/docs/verificare-locala-ssr.md` nu mai prezintă `/about-us` ca pagină existentă. `CLAUDE.md` menționează redirectul `/about-us` → `/`.
+- [x] #8 `package.json`, `package-lock.json` și `yarn.lock` sunt neschimbate.
+- [x] #9 `npm run build`, `npm run test:ci`, `npm run test:ssr` și `npm run test:ssr:http` trec, fără teste `fdescribe`/`fit`/`xdescribe`/`xit`. Rezumatul `test:ssr:http` (rute din sitemap, incoming links, anunțuri descoperite) este lipit în `## Implementation Notes`.
 <!-- AC:END -->
 
 ## Verificare post-deploy (owner)
@@ -82,3 +83,17 @@ NU fac parte din criteriile de acceptare: livrarea se oprește la PR, fără dep
 1. `curl -sI https://xn--hai-n-sat-t5a.ro/about-us` → `301`, `Location: /`.
 2. După `npm run generate-sitemap` pe API-ul live, `src/sitemap.xml` nu conține `/about-us`. Retrimite sitemap-ul în Google Search Console și Bing Webmaster.
 3. În Google Search Console, la „Pagini”, `/about-us` apare în timp ca „Pagină cu redirecționare”.
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Commit `59021c0`. Șterse: `src/app/about-us/`, `src/assets/contact.avif` și stilul global `.despreNoiStyle`, rămas fără folosință. `/about-us` și `/about-us/` → 301 `Location: /` (handler în `server.ts` și `redirectTo` în router), verificat în `test:ssr:http` și cu curl pe serverul SSR local. Sitemap: 28 de rute (înainte 29), toate cu incoming link, fără excepții. Testul de cache HIT/MISS rulează pe `/under-the-mountain`. `package.json`, `package-lock.json` și `yarn.lock` neschimbate (`npm ci` rescrisese `yarn.lock` local; modificarea a fost anulată, nu a fost comisă).
+
+Validare finală 2026-10-29 pe build-ul final (branch `claude/pensive-heisenberg-2m6ix7`): `npm run build` PASS, fără erori de buget (info-page sub pragul de avertisment, under-the-mountain 8,92 KB, properties 9,32 KB neschimbat); `npm run test:ci` 133/133; `npm run test:ssr` 26/26; `npm run test:ssr:http` PASS: „redirect, static assets, SEO phones, 28 sitemap headings and incoming links, 16 discovered properties; 128 HTTP responses checked”, minimum 5 href-uri interne distincte pe fiecare rută. Regresia din browser (`scripts/test-browser-regression.cjs`, 1440/390/320 px + telefon orizontal + layout sate la 1280/1440) 55 PASS, 0 FAIL. Capturi înainte/după: 91 de pagini (7 ecrane: 1920, 1440, 1280, 1000, 390, 320, 844×390 × 13 pagini), 0 scroll orizontal, 0 erori JavaScript. Verificări suplimentare în browser real: 8/8 PASS. Fără deploy.
+<!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Pagina /about-us a fost ștearsă complet, cu redirect 301 spre prima pagină, sitemap/llms.txt/teste/documentație actualizate. Fără deploy.
+<!-- SECTION:FINAL_SUMMARY:END -->

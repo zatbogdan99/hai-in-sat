@@ -7,6 +7,11 @@
 }
 
 .info-page-bg {
+  /* Coloana dreaptă de pe desktop (galeria, cardul din dreapta, poza din secțiunea a doua), definită o singură
+     dată: aceleași margini stânga/dreapta la orice lățime. Procentul se raportează la lățimea conținutului. */
+  --sat-gap: 2rem;
+  --sat-col-max: 40rem;
+  --sat-col-right: clamp(20rem, 45%, var(--sat-col-max));
   background-color: #f4efe5;
   padding: 2rem 0 4rem 0;
   padding-left: clamp(1rem, 6vw, 8rem);
@@ -20,12 +25,9 @@
 
 .features-row {
   display: flex;
-  gap: 2rem;
+  gap: var(--sat-gap);
   align-items: stretch;
-  padding-left: 0;
-  padding-right: 0rem;
   padding-top: 4rem;
-  justify-content: space-between;
 }
 
 .features-column {
@@ -36,28 +38,11 @@
   padding: 1rem 1rem 2rem 1rem;
 }
 
-.feature-card {
-  width: 40rem;
-  /* eliminăm marginea suplimentară din stânga pentru a alinia perfect cu spațiul din dreapta */
-  margin-left: 0;
-  height: 26rem;
-}
-
-.feature-card-left {
-  width: 56.5rem;
-  height: 25rem;
-}
-
-.feature-card .p-card {
+/* Cele două carduri albe au aceeași înălțime: a celui cu mai mult conținut (celulele rândului se întind). */
+.feature-card .p-card,
+.feature-card-left .p-card {
   background: #ffffff;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-:host ::ng-deep .feature-card .p-card .p-card-body {
-  height: 18.5rem !important;
-  width: 36rem;
 }
 
 .features-title {
@@ -67,25 +52,12 @@
 .features-list {
   list-style: disc;
   padding-left: 1.5rem;
-  line-height: 1.6;
 }
 
-/* Galeria are 36rem ca în producție (poza nu mai are lățime inline), iar textul ia restul rândului; pe laptopurile
-   mici se strâng amândouă, ca textul să nu rămână la ~270 px. Doar în rândul variantei desktop: .left-text
-   apare și în varianta de telefon, într-un container flex. */
-.top-row > .left-text {
-  flex: 1 1 20rem;
-  min-width: 0;
-}
-
+/* Pe o singură coloană (sub 900 px) galeria e centrată, cu lățimea maximă a coloanei de desktop. */
 .gallery-wrap {
-  max-width: 36rem;
-  margin-left: auto;
-}
-
-.top-row > .gallery-wrap {
-  flex: 0 1 36rem;
-  min-width: 0;
+  max-width: var(--sat-col-max);
+  margin: 0 auto;
 }
 
 .galleria-card {
@@ -96,19 +68,33 @@
 /* top row: left text + gallery side by side on desktop */
 .top-row {
   display: flex;
-  gap: 2rem;
+  gap: var(--sat-gap);
   align-items: flex-start;
-  justify-content: flex-start; /* left aligns content */
 }
 
-/* Desktop: keep long paragraphs aligned with the right edge of the gallery image
-   The gallery wrapper uses padding-right: 12rem; apply the same right padding
-   to the village description texts so they never extend further right than the image above. */
-@media (min-width: 901px) {
+/* Desktop pe două coloane: aceeași coloană dreaptă în toate rândurile. Pozele din secțiunea a doua rămân float,
+   ca textul să curgă sub ele, dar cu lățimea coloanei. Sub rândul cu carduri, același spațiu pe toate satele. */
+@media (min-width: 56.3125rem) {
+  .top-row,
+  .features-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--sat-col-right);
+  }
 
-  .polovragi-row .polovragi-left .text-style,
-  .horezu-row .horezu-left .text-style {
-    padding-right: 0;
+  .features-row {
+    padding-bottom: 4rem;
+  }
+
+  .gallery-wrap {
+    max-width: none;
+    margin: 0;
+  }
+
+  .info-page-bg .polovragi-image--float,
+  .info-page-bg .horezu-image--float {
+    width: var(--sat-col-right);
+    max-width: none;
+    margin-left: var(--sat-gap);
   }
 }
 
@@ -124,19 +110,19 @@
 
 .polovragi-image--float {
   float: right;
-  margin-left: 2rem;
   margin-bottom: 1rem;
 }
 
-.polovragi-image {
-  width: 36rem;
+.polovragi-image,
+.horezu-image {
+  width: var(--sat-col-max);
   max-width: 100%;
   max-height: 30rem;
   border-radius: 0.25rem;
 }
 
 .polovragi-bottom {
-  margin-top: 1.5rem;
+  margin-top: var(--text-paragraph-gap);
   clear: both;
 }
 
@@ -184,16 +170,11 @@
   .top-row > .gallery-wrap { flex: none; width: 100%; }
   .gallery-wrap { padding-right: 0; margin: 0 auto; }
 
-  /* Între 500 și 900 px cardurile au lățimea coloanei: corpul lor avea 36rem și ieșea din ecran la 600 px. */
-  .feature-card,
-  .feature-card-left { width: 100%; max-width: 100%; height: auto; }
-  :host ::ng-deep .feature-card .p-card .p-card-body,
-  :host ::ng-deep .feature-card-left .p-card .p-card-body { width: 100%; }
+  /* Între 500 și 900 px cardurile au lățimea coloanei, unul sub altul, cu înălțimea după conținut. */
   .feature-card .p-card,
   .feature-card-left .p-card { height: auto; }
   :host ::ng-deep .feature-card .p-card .p-card-body,
   :host ::ng-deep .feature-card-left .p-card .p-card-body {
-    height: auto !important;
     padding-top: 1rem;
     padding-bottom: 1rem;
   }
@@ -305,23 +286,6 @@ img {
     //position: relative;
   }
 
-  /* Mobile fixes: ensure feature cards fit viewport and adjust text padding */
-  .feature-card {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-  .feature-card .p-card {
-    width: 100%;
-    box-sizing: border-box;
-  }
-  :host ::ng-deep .feature-card .p-card .p-card-body {
-    width: 100% !important;
-    box-sizing: border-box;
-  }
-  .text-style {
-    //padding-left: 2rem;
-  }
 }
 
 //desktop
@@ -380,16 +344,7 @@ img {
 
 .horezu-image--float {
   float: right;
-  margin-left: 2rem;
   margin-bottom: 1rem;
-}
-
-.horezu-image {
-  /* Reglaj fin pentru potrivire 1:1 cu al doilea card alb */
-  width: 38.375rem; /* +0.875rem total spre dreapta față de 39.25rem (încă 0.125rem cerut) */
-  max-width: 100%;
-  max-height: 30rem;
-  border-radius: 0.25rem;
 }
 
 .horezu-title {
@@ -404,27 +359,14 @@ img {
 
 .horezu-paragraph {
   max-width: none;
-  line-height: 1.7;
-  margin: 0 0 0.5rem 0;
 }
 
-.horezu-list {
-  list-style: disc;
-  padding-left: 1.5rem;
-  line-height: 1.7;
-  margin: 0 0 1rem 0;
-}
-
-.horezu-note {
-  line-height: 1.6;
-  margin: 0 0 0.25rem 0;
-}
-
+/* Listele din text au în jur aceeași distanță ca un paragraf. */
+.horezu-list,
 .horezu-note-list {
   list-style: disc;
   padding-left: 1.5rem;
-  line-height: 1.6;
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 var(--text-paragraph-gap) 0;
 }
 
 @media (max-width: 56.25rem) {
@@ -463,15 +405,20 @@ img {
   font-family: 'Libre Baskerville', serif;
 }
 
-/* Paragrafe */
+/* Paragrafe și liste: tipografia comună a site-ului (styles.scss), aceeași și pe telefon. */
 .info-page-bg p,
-.info-page-bg .text-style,
-.info-page-bg .polovragi-paragraph,
-.info-page-bg .polovragi-paragraph-2,
-.info-page-bg .horezu-paragraph,
-.info-page-bg .horezu-note {
-  font-size: 1.5625rem;
-  line-height: 1.7;
+.info-page-bg li {
+  font-size: var(--text-body-size);
+  line-height: var(--text-body-line-height);
+}
+
+.info-page-bg p {
+  margin: 0 0 var(--text-paragraph-gap) 0;
+}
+
+/* Ultimul paragraf dintr-un card sau dintr-o coloană nu adaugă spațiu gol dedesubt. */
+.info-page-bg p:last-child {
+  margin-bottom: 0;
 }
 
 /* Titluri din secțiunile info-page */
@@ -504,25 +451,6 @@ img {
   line-height: 1.2;
 }
 
-/* Dimensiuni pentru listele din cardurile „Ce găsești aici” */
-.info-page-bg .features-list,
-.info-page-bg .features-list li {
-  font-size: 1.5625rem;
-  line-height: 1.6;
-}
-
-/* Horezu: listele cu bullet points să aibă aceeași mărime ca paragrafele */
-.info-page-bg .horezu-list,
-.info-page-bg .horezu-list li,
-.info-page-bg .horezu-note-list,
-.info-page-bg .horezu-note-list li {
-  font-size: 1.5625rem;
-}
-
-/* Baia de Fier: al doilea paragraf continuă sub primul, în stânga imaginii */
-.baia-section .polovragi-paragraph-2 {
-  margin-top: 1.5rem;
-}
 
 /* Dimensiunea efectivă a imaginii (identică cu varianta anterioară) */
 .baia-section .polovragi-image {
@@ -536,13 +464,6 @@ img {
     width: 100%;
     max-height: none;
   }
-}
-
-/* DOAR pentru Horezu: centrarea verticală a conținutului din cardurile albe */
-:host ::ng-deep .horezu-context .feature-card .p-card .p-card-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* centrează vertical lista în card */
 }
 
 /* =============================================
@@ -582,28 +503,6 @@ img {
   .barbatesti-section .header-wrap {
     padding-left: 0;
   }
-}
-
-/* =============================================
-   Vaideeni (4), Slătioara (5), Costești (6)
-   - Al doilea paragraf continuă sub primul în stânga imaginii
-   - Imaginea din dreapta își păstrează dimensiunea/poziția ca înainte
-     (fixăm coloana dreaptă la 45rem, identic cu lățimea imaginii)
-   - Comportament fluid pe mobil
-   ============================================= */
-.vaideeni-section .polovragi-paragraph-2,
-.slatioara-section .polovragi-paragraph-2,
-.costesti-section .polovragi-paragraph-2 {
-  margin-top: 1.5rem;
-}
-
-/* Reglaj fin suplimentar: mai 0.25rem spre dreapta pentru a egala perfect
-   verticala cardului alb (diferență totală 0.75rem între coloană și imagine) */
-.vaideeni-section .polovragi-image,
-.slatioara-section .polovragi-image,
-.costesti-section .polovragi-image {
-  width: 39.25rem;
-  max-width: 100%;
 }
 
 
@@ -672,17 +571,11 @@ img {
   :host ::ng-deep .info-page-bg .p-card .p-card-body {
     padding: 1rem;
   }
+}
 
-  .info-page-bg p,
-  .info-page-bg .text-style,
-  .info-page-bg .features-list,
-  .info-page-bg .features-list li,
-  .info-page-bg .horezu-list,
-  .info-page-bg .horezu-list li,
-  .info-page-bg .horezu-note-list,
-  .info-page-bg .horezu-note-list li {
-    font-size: 1.25rem;
-  }
+/* Galeria fără chenar: bordura preset-ului Lara se vedea doar în jurul punctelor, sub poză. */
+:host ::ng-deep .p-galleria {
+  border: 0;
 }
 
 /* Indicatorii galeriei: punctul e un span în tab-ul PrimeNG (fără buton în el), cu țintă de atingere de 24 px. */

@@ -232,8 +232,9 @@ $text-strong: #1e1e1e;
 
 .property-description {
   color: #111;
-  line-height: 1.7;
-  font-size: 1rem;
+  font-family: var(--font-base);
+  font-size: var(--text-body-size);
+  line-height: var(--text-body-line-height);
   overflow-wrap: anywhere;
   white-space: pre-wrap;
   tab-size: 4;
@@ -425,8 +426,6 @@ $text-strong: #1e1e1e;
   }
 
   .property-description {
-    line-height: 1.75;
-    font-size: 1.0625rem;
     max-width: none;
     margin: 0;
 
@@ -497,6 +496,5 @@ $text-strong: #1e1e1e;
   .property-description--video {
     max-width: none;
     margin: 0;
-    line-height: 1.8;
   }
 }

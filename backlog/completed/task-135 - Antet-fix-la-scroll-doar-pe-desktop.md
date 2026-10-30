@@ -1,9 +1,10 @@
 ---
 id: TASK-135
 title: Antet fix la scroll doar pe desktop
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-10-29 22:35'
+updated_date: '2026-10-29 23:59'
 labels:
   - frontend
   - ui
@@ -58,15 +59,15 @@ Pe desktop, antetul (bara albastră `.topbar` cu logo, meniul cu chip-uri și re
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 La 1440×900 px, pe orice pagină publică, după o derulare de minimum 1000 px, `.topbar` rămâne lipit sus (`top === 0`), cu același aspect ca la încărcare. Chip-urile de meniu, logo-ul și rețelele sociale rămân clickabile.
-- [ ] #2 La 390 px și 320 px lățime, și în viewport-ul de telefon orizontal (înălțime sub 600 px), antetul se derulează odată cu pagina, ca înainte de task.
-- [ ] #3 `position: sticky` și `scroll-padding-top` sunt definite doar în breakpoint-ul de desktop existent. Nu s-a adăugat JavaScript și nici `overflow` pe `html`, `body`, `app-root` sau `.app-shell`.
-- [ ] #4 Pe desktop, antetul stă peste conținutul paginilor (galerii, carduri, secțiuni hero) și sub dialogurile PrimeNG (Termeni, Politica, Cookies, Contact), sub toast-uri, sub galeria fullscreen și sub spinnerele de încărcare. Toate au fost verificate deschise după derulare.
-- [ ] #5 Pe desktop, navigarea cu Tab printr-o pagină lungă nu lasă niciun element focusat ascuns sub antet. `scroll-padding-top` este cel puțin egal cu înălțimea măsurată a antetului, iar valoarea măsurată e notată în `## Implementation Notes`.
-- [ ] #6 Back/Forward păstrează restaurarea poziției de scroll (`withInMemoryScrolling`), iar o navigare nouă pornește de sus, cu antetul vizibil.
-- [ ] #7 `scripts/test-browser-regression.cjs` acoperă cazurile #1 și #2 (1440 px lipit sus; 390, 320 px și telefon orizontal derulat).
-- [ ] #8 `npm run build` și `npm run test:ci` trec. Bugetul de stil per componentă din `angular.json` nu e depășit. Nu există teste `fdescribe`/`fit`/`xdescribe`/`xit`.
-- [ ] #9 Verificarea vizuală la 1440, 390 și 320 px e documentată în `## Implementation Notes`, cu capturi după derulare.
+- [x] #1 La 1440×900 px, pe orice pagină publică, după o derulare de minimum 1000 px, `.topbar` rămâne lipit sus (`top === 0`), cu același aspect ca la încărcare. Chip-urile de meniu, logo-ul și rețelele sociale rămân clickabile.
+- [x] #2 La 390 px și 320 px lățime, și în viewport-ul de telefon orizontal (înălțime sub 600 px), antetul se derulează odată cu pagina, ca înainte de task.
+- [x] #3 `position: sticky` și `scroll-padding-top` sunt definite doar în breakpoint-ul de desktop existent. Nu s-a adăugat JavaScript și nici `overflow` pe `html`, `body`, `app-root` sau `.app-shell`.
+- [x] #4 Pe desktop, antetul stă peste conținutul paginilor (galerii, carduri, secțiuni hero) și sub dialogurile PrimeNG (Termeni, Politica, Cookies, Contact), sub toast-uri, sub galeria fullscreen și sub spinnerele de încărcare. Toate au fost verificate deschise după derulare.
+- [x] #5 Pe desktop, navigarea cu Tab printr-o pagină lungă nu lasă niciun element focusat ascuns sub antet. `scroll-padding-top` este cel puțin egal cu înălțimea măsurată a antetului, iar valoarea măsurată e notată în `## Implementation Notes`.
+- [x] #6 Back/Forward păstrează restaurarea poziției de scroll (`withInMemoryScrolling`), iar o navigare nouă pornește de sus, cu antetul vizibil.
+- [x] #7 `scripts/test-browser-regression.cjs` acoperă cazurile #1 și #2 (1440 px lipit sus; 390, 320 px și telefon orizontal derulat).
+- [x] #8 `npm run build` și `npm run test:ci` trec. Bugetul de stil per componentă din `angular.json` nu e depășit. Nu există teste `fdescribe`/`fit`/`xdescribe`/`xit`.
+- [x] #9 Verificarea vizuală la 1440, 390 și 320 px e documentată în `## Implementation Notes`, cu capturi după derulare.
 <!-- AC:END -->
 
 ## Verificare post-deploy (owner)
@@ -75,3 +76,17 @@ NU fac parte din criteriile de acceptare: livrarea se oprește la PR, fără dep
 
 1. Pe desktop, derulează pagina de proprietăți și o pagină de anunț: antetul rămâne sus.
 2. Pe telefon, antetul pleacă din ecran la derulare, ca înainte.
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Commit `0c3d465`. Înălțimea măsurată a antetului la 1440×900: 88 px; `scroll-padding-top: 6rem` (96 px). `z-index: 500`. Verificat: la 1920/1440/1280 antetul rămâne la `top: 0` după derulare; la 1000, 390, 320 și 844×390 pleacă din ecran. Galeria fullscreen și cele 3 dialoguri legale, deschise după derulare, acoperă antetul; toast-ul apare peste el. Tab prin `/under-the-mountain`: niciun element focusat ascuns sub antet. Back pe `/properties` restaurează scroll-ul (700 px), o navigare nouă pornește de sus.
+
+Validare finală 2026-10-29 pe build-ul final (branch `claude/pensive-heisenberg-2m6ix7`): `npm run build` PASS, fără erori de buget (info-page sub pragul de avertisment, under-the-mountain 8,92 KB, properties 9,32 KB neschimbat); `npm run test:ci` 133/133; `npm run test:ssr` 26/26; `npm run test:ssr:http` PASS: „redirect, static assets, SEO phones, 28 sitemap headings and incoming links, 16 discovered properties; 128 HTTP responses checked”, minimum 5 href-uri interne distincte pe fiecare rută. Regresia din browser (`scripts/test-browser-regression.cjs`, 1440/390/320 px + telefon orizontal + layout sate la 1280/1440) 55 PASS, 0 FAIL. Capturi înainte/după: 91 de pagini (7 ecrane: 1920, 1440, 1280, 1000, 390, 320, 844×390 × 13 pagini), 0 scroll orizontal, 0 erori JavaScript. Verificări suplimentare în browser real: 8/8 PASS. Fără deploy.
+<!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Antetul e sticky doar în breakpoint-ul de desktop (min 1200 × 600), cu z-index sub overlay-uri și scroll-padding pentru focus; pe telefon/tabletă se derulează ca înainte. Fără deploy.
+<!-- SECTION:FINAL_SUMMARY:END -->

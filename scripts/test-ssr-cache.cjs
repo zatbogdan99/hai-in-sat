@@ -176,10 +176,16 @@ async function main() {
   verify(await request(valid), 200, 'MISS', true);
   verify(await request(valid), 200, 'HIT', true);
 
-  verify(await request('/about-us', { method: 'HEAD' }), 200, 'MISS');
-  verify(await request('/about-us'), 200, 'MISS', true);
-  verify(await request('/about-us', { method: 'HEAD' }), 200, 'MISS');
-  verify(await request('/about-us'), 200, 'HIT', true);
+  verify(await request('/under-the-mountain', { method: 'HEAD' }), 200, 'MISS');
+  verify(await request('/under-the-mountain'), 200, 'MISS', true);
+  verify(await request('/under-the-mountain', { method: 'HEAD' }), 200, 'MISS');
+  verify(await request('/under-the-mountain'), 200, 'HIT', true);
+  // Pagina „Despre noi” a fost scoasă: adresa veche duce permanent la prima pagină.
+  for (const old of ['/about-us', '/about-us/']) {
+    const moved = await request(old);
+    assert.equal(moved.status, 301, `${old} must redirect permanently`);
+    assert.equal(moved.headers.location, '/');
+  }
   // Pagina de contact a fost scoasă: adresa veche duce permanent la prima pagină.
   for (const old of ['/contact-us', '/contact-us/']) {
     const moved = await request(old);
@@ -255,13 +261,12 @@ async function main() {
     verify(await request(url), 404, 'MISS');
   }
   // TASK-118: toate rutele statice, plus un anunț cu telefoane în nume/descriere.
-  for (const url of ['/', '/homes', '/about-us', '/sate/horezu', '/under-the-mountain',
+  for (const url of ['/', '/homes', '/sate/horezu', '/under-the-mountain',
     '/properties', '/village-of-the-month', '/login', '/add-property']) {
     const result = await request(url);
     const { nodes } = verifySeoPhones(result);
-    // Subsolul are pe fiecare pagină telefonul oficial (în locul fostei pagini /contact-us).
+    // Telefonul oficial stă în fereastra Contact (nu e în HTML-ul SSR); orice link tel: randat e numărul oficial.
     const phones = nodes.filter(node => node.tagName === 'a' && attr(node, 'href')?.startsWith('tel:'));
-    assert.ok(phones.length >= 1, `${url} must show the official phone in the footer`);
     for (const phone of phones) {
       assert.equal(attr(phone, 'href'), 'tel:+40728140628');
       assert.equal(textContent(phone).replace(/\s/g, ''), '0728140628');

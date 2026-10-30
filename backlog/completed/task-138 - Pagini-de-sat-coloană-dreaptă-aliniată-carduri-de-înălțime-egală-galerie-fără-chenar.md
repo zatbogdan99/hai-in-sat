@@ -3,9 +3,10 @@ id: TASK-138
 title: >-
   Pagini de sat: coloană dreaptă aliniată, carduri de înălțime egală, galerie
   fără chenar
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-10-29 23:30'
+updated_date: '2026-10-29 23:59'
 labels:
   - frontend
   - ui
@@ -67,15 +68,15 @@ TASK-137 (tipografia paragrafelor) modifică același SCSS și elimină `m-0` di
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Pe toate cele 7 pagini `/sate/*`, la 1000, 1280, 1440 și 1920 px lățime, marginea stângă a galeriei de sus, a cardului alb din dreapta și a pozei din secțiunea a doua sunt la aceeași coordonată X. Același lucru e valabil pentru marginea dreaptă. Toleranța e de ±1 px, măsurată cu `getBoundingClientRect()`.
-- [ ] #2 La aceleași lățimi, cele două carduri albe din rândul „Ce găsești aici” au aceeași înălțime (±1 px), egală cu înălțimea necesară cardului cu mai mult conținut. Niciun text nu e tăiat sau ascuns.
-- [ ] #3 Între rândul cu carduri și secțiunea următoare există pe toate paginile de sat același spațiu vertical, de cel puțin 2rem. Cardul din dreapta nu mai atinge poza de dedesubt.
-- [ ] #4 Galeriile desktop și mobil nu mai au bordură: `border-width` calculat al rădăcinii `.p-galleria` e `0px`. Punctele indicatoare, săgețile, deschiderea pe tot ecranul și focusul vizibil funcționează ca înainte.
-- [ ] #5 `scripts/test-browser-regression.cjs` verifică automat AC #1, #2 și #4 pe toate paginile `/sate/*`, la 1280 și 1440 px.
-- [ ] #6 `info-page.component.scss` nu mai conține lățimile și înălțimile fixe enumerate în „Cauza” (`56.5rem`, `40rem`, `25rem`, `26rem`, `18.5rem !important`, `36rem`, `38.375rem`, `39.25rem`) pentru carduri, galerie și pozele din secțiunea a doua. Coloana dreaptă e definită o singură dată, prin variabile CSS.
-- [ ] #7 Sub 900 px layoutul rămâne pe o coloană, ca înainte, fără scroll orizontal la 390 și 320 px. Capturile înainte/după sunt documentate.
-- [ ] #8 `npm run build` trece fără eroare de buget și fără modificări în `angular.json`. `npm run test:ci`, `npm run test:ssr` și `npm run test:ssr:http` trec (un singur `h1` pe pagină, linkuri interne), fără teste `fdescribe`/`fit`/`xdescribe`/`xit`.
-- [ ] #9 Capturile înainte/după pentru `/sate/horezu` și încă două sate, la 1280, 1440 și 1920 px, sunt documentate în `## Implementation Notes`.
+- [x] #1 Pe toate cele 7 pagini `/sate/*`, la 1000, 1280, 1440 și 1920 px lățime, marginea stângă a galeriei de sus, a cardului alb din dreapta și a pozei din secțiunea a doua sunt la aceeași coordonată X. Același lucru e valabil pentru marginea dreaptă. Toleranța e de ±1 px, măsurată cu `getBoundingClientRect()`.
+- [x] #2 La aceleași lățimi, cele două carduri albe din rândul „Ce găsești aici” au aceeași înălțime (±1 px), egală cu înălțimea necesară cardului cu mai mult conținut. Niciun text nu e tăiat sau ascuns.
+- [x] #3 Între rândul cu carduri și secțiunea următoare există pe toate paginile de sat același spațiu vertical, de cel puțin 2rem. Cardul din dreapta nu mai atinge poza de dedesubt.
+- [x] #4 Galeriile desktop și mobil nu mai au bordură: `border-width` calculat al rădăcinii `.p-galleria` e `0px`. Punctele indicatoare, săgețile, deschiderea pe tot ecranul și focusul vizibil funcționează ca înainte.
+- [x] #5 `scripts/test-browser-regression.cjs` verifică automat AC #1, #2 și #4 pe toate paginile `/sate/*`, la 1280 și 1440 px.
+- [x] #6 `info-page.component.scss` nu mai conține lățimile și înălțimile fixe enumerate în „Cauza” (`56.5rem`, `40rem`, `25rem`, `26rem`, `18.5rem !important`, `36rem`, `38.375rem`, `39.25rem`) pentru carduri, galerie și pozele din secțiunea a doua. Coloana dreaptă e definită o singură dată, prin variabile CSS.
+- [x] #7 Sub 900 px layoutul rămâne pe o coloană, ca înainte, fără scroll orizontal la 390 și 320 px. Capturile înainte/după sunt documentate.
+- [x] #8 `npm run build` trece fără eroare de buget și fără modificări în `angular.json`. `npm run test:ci`, `npm run test:ssr` și `npm run test:ssr:http` trec (un singur `h1` pe pagină, linkuri interne), fără teste `fdescribe`/`fit`/`xdescribe`/`xit`.
+- [x] #9 Capturile înainte/după pentru `/sate/horezu` și încă două sate, la 1280, 1440 și 1920 px, sunt documentate în `## Implementation Notes`.
 <!-- AC:END -->
 
 ## Verificare post-deploy (owner)
@@ -83,3 +84,17 @@ TASK-137 (tipografia paragrafelor) modifică același SCSS și elimină `m-0` di
 NU fac parte din criteriile de acceptare: livrarea se oprește la PR, fără deploy.
 
 1. Pe `/sate/horezu` și încă un sat, pe laptop și pe monitor mare: galeria, cardul din dreapta și poza de dedesubt au aceeași margine stângă. Cardurile au aceeași înălțime. Sub galerie nu mai e nicio linie în jurul punctelor.
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Commit `5b09503`. Coloana dreaptă: `--sat-col-right: clamp(20rem, 45%, var(--sat-col-max))`, `--sat-col-max: 40rem`, `--sat-gap: 2rem`, definite o singură dată pe `.info-page-bg`; valoarea de 40rem apare doar în definiția variabilei. Măsurători după (marginea stângă a galeriei = a cardului din dreapta = a pozei din secțiunea a doua, pe toate cele 7 sate): 1920 px x=1126,4; 1440 px x=767,5; 1280 px x=682,3; 1000 px x=533; marginile drepte identice; cardurile egale (de ex. 276,4 / 276,4 px la 1920). Înainte, la 1920: galeria la 1190,4, cardul la 1126,4, poza între 1138,4 și 1190,4, iar cardurile aveau 296 și 416 px. Spațiu sub carduri: 4rem pe toate satele. Chenarul galeriei: 0 px pe desktop și pe telefon. SCSS-ul componentei a scăzut sub pragul de avertisment de 7,5 KB. Sub 900 px layoutul rămâne pe o coloană, fără scroll orizontal la 390/320.
+
+Validare finală 2026-10-29 pe build-ul final (branch `claude/pensive-heisenberg-2m6ix7`): `npm run build` PASS, fără erori de buget (info-page sub pragul de avertisment, under-the-mountain 8,92 KB, properties 9,32 KB neschimbat); `npm run test:ci` 133/133; `npm run test:ssr` 26/26; `npm run test:ssr:http` PASS: „redirect, static assets, SEO phones, 28 sitemap headings and incoming links, 16 discovered properties; 128 HTTP responses checked”, minimum 5 href-uri interne distincte pe fiecare rută. Regresia din browser (`scripts/test-browser-regression.cjs`, 1440/390/320 px + telefon orizontal + layout sate la 1280/1440) 55 PASS, 0 FAIL. Capturi înainte/după: 91 de pagini (7 ecrane: 1920, 1440, 1280, 1000, 390, 320, 844×390 × 13 pagini), 0 scroll orizontal, 0 erori JavaScript. Verificări suplimentare în browser real: 8/8 PASS. Fără deploy.
+<!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Pe paginile de sat, galeria, cardul din dreapta și poza din secțiunea a doua împart aceeași coloană la orice lățime de desktop; cardurile au aceeași înălțime, iar galeria nu mai are chenar. Fără deploy.
+<!-- SECTION:FINAL_SUMMARY:END -->

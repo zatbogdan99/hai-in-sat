@@ -1,9 +1,10 @@
 ---
 id: TASK-133
 title: Simplifică footerul — doar rețele sociale și butoanele legale
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-10-29 22:05'
+updated_date: '2026-10-29 23:59'
 labels:
   - frontend
   - ui
@@ -62,16 +63,16 @@ După scoaterea linkurilor, `/about-us` nu mai primește link de pe nicio pagin�
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 `app.component.html` nu mai conține `nav.footer-links` și nici `p.footer-contact`. Footerul (`footer.site-footer`) conține, în ordine, doar `.footer-social` (TikTok, Facebook, Instagram, neschimbate) și `.footer-legal` (cele 4 butoane, neschimbate).
-- [ ] #2 Cele 4 butoane din footer deschid în continuare dialogurile lor fără schimbare de rută. Dialogul „Contact” afișează în continuare `tel:+40728140628` / `0728 140 628` și `mailto:contact@xn--hai-n-sat-t5a.ro`.
-- [ ] #3 `app.component.scss` nu mai conține selectori `.footer-links` sau `.footer-contact`. Niciun alt selector din fișier nu a fost șters sau modificat în afara ajustării opționale de spațiere a `.site-footer`.
-- [ ] #4 Meniul de sus (desktop și mobil) și linkurile sociale din topbar sunt neschimbate.
-- [ ] #5 `app.component.spec.ts` verifică absența `nav.footer-links` și `.footer-contact` și prezența celor 6 linkuri sociale reale. Titlurile testelor descriu comportamentul nou. Nu există teste `fdescribe`/`fit`/`xdescribe`/`xit`.
-- [ ] #6 `scripts/test-ssr-cache.cjs` acceptă pagini fără link `tel:`, dar cere ca orice link `tel:` existent să fie numărul oficial.
-- [ ] #7 `scripts/test-ssr-cache.cjs` are o singură excepție de incoming links, pentru `/about-us`, marcată cu un comentariu care trimite la TASK-134. Toate celelalte rute din sitemap au în continuare cel puțin un incoming link și cel puțin 5 href-uri interne distincte.
-- [ ] #8 `scripts/test-browser-regression.cjs` nu mai referă `.footer-links`. Navigarea spre `/homes` trece prin meniul principal.
-- [ ] #9 `npm run build`, `npm run test:ci`, `npm run test:ssr` și `npm run test:ssr:http` trec. Rezumatul `test:ssr:http` (rute, incoming links, anunțuri descoperite) e lipit în `## Implementation Notes`.
-- [ ] #10 Verificare vizuală la 1440, 390 și 320 px, documentată în `## Implementation Notes`: footerul are doar cele două rânduri, centrate, fără spațiu gol în locul blocurilor scoase și fără scroll orizontal.
+- [x] #1 `app.component.html` nu mai conține `nav.footer-links` și nici `p.footer-contact`. Footerul (`footer.site-footer`) conține, în ordine, doar `.footer-social` (TikTok, Facebook, Instagram, neschimbate) și `.footer-legal` (cele 4 butoane, neschimbate).
+- [x] #2 Cele 4 butoane din footer deschid în continuare dialogurile lor fără schimbare de rută. Dialogul „Contact” afișează în continuare `tel:+40728140628` / `0728 140 628` și `mailto:contact@xn--hai-n-sat-t5a.ro`.
+- [x] #3 `app.component.scss` nu mai conține selectori `.footer-links` sau `.footer-contact`. Niciun alt selector din fișier nu a fost șters sau modificat în afara ajustării opționale de spațiere a `.site-footer`.
+- [x] #4 Meniul de sus (desktop și mobil) și linkurile sociale din topbar sunt neschimbate.
+- [x] #5 `app.component.spec.ts` verifică absența `nav.footer-links` și `.footer-contact` și prezența celor 6 linkuri sociale reale. Titlurile testelor descriu comportamentul nou. Nu există teste `fdescribe`/`fit`/`xdescribe`/`xit`.
+- [x] #6 `scripts/test-ssr-cache.cjs` acceptă pagini fără link `tel:`, dar cere ca orice link `tel:` existent să fie numărul oficial.
+- [x] #7 `scripts/test-ssr-cache.cjs` are o singură excepție de incoming links, pentru `/about-us`, marcată cu un comentariu care trimite la TASK-134. Toate celelalte rute din sitemap au în continuare cel puțin un incoming link și cel puțin 5 href-uri interne distincte.
+- [x] #8 `scripts/test-browser-regression.cjs` nu mai referă `.footer-links`. Navigarea spre `/homes` trece prin meniul principal.
+- [x] #9 `npm run build`, `npm run test:ci`, `npm run test:ssr` și `npm run test:ssr:http` trec. Rezumatul `test:ssr:http` (rute, incoming links, anunțuri descoperite) e lipit în `## Implementation Notes`.
+- [x] #10 Verificare vizuală la 1440, 390 și 320 px, documentată în `## Implementation Notes`: footerul are doar cele două rânduri, centrate, fără spațiu gol în locul blocurilor scoase și fără scroll orizontal.
 <!-- AC:END -->
 
 ## Verificare post-deploy (owner)
@@ -80,3 +81,17 @@ NU fac parte din criteriile de acceptare: livrarea se oprește la PR, fără dep
 
 1. Pe site-ul live, desktop și mobil: footerul arată doar iconițele sociale și cele 4 butoane.
 2. Butonul „Contact” din footer deschide dialogul cu telefonul și emailul. Linkul `tel:` pornește apelul pe telefon.
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Commit `43e14b6`. Subsolul are acum doar `.footer-social` și `.footer-legal` (verificat în spec, în SSR și în regresie pe 1440/390/320). Telefonul și emailul rămân în fereastra Contact (spec nou). `test-ssr-cache.cjs`: orice `tel:` randat trebuie să fie numărul oficial; excepția temporară de incoming links pentru `/about-us` a fost adăugată aici și scoasă în TASK-134, cum s-a decis. Comentariile din `server.ts` și `app.routes.ts` și descrierea din `CLAUDE.md` au fost corectate. Spațierea `.site-footer` a rămas neschimbată: cu două rânduri arată echilibrat (capturi la 1440/390/320).
+
+Validare finală 2026-10-29 pe build-ul final (branch `claude/pensive-heisenberg-2m6ix7`): `npm run build` PASS, fără erori de buget (info-page sub pragul de avertisment, under-the-mountain 8,92 KB, properties 9,32 KB neschimbat); `npm run test:ci` 133/133; `npm run test:ssr` 26/26; `npm run test:ssr:http` PASS: „redirect, static assets, SEO phones, 28 sitemap headings and incoming links, 16 discovered properties; 128 HTTP responses checked”, minimum 5 href-uri interne distincte pe fiecare rută. Regresia din browser (`scripts/test-browser-regression.cjs`, 1440/390/320 px + telefon orizontal + layout sate la 1280/1440) 55 PASS, 0 FAIL. Capturi înainte/după: 91 de pagini (7 ecrane: 1920, 1440, 1280, 1000, 390, 320, 844×390 × 13 pagini), 0 scroll orizontal, 0 erori JavaScript. Verificări suplimentare în browser real: 8/8 PASS. Fără deploy.
+<!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Footerul păstrează doar rețelele sociale și cele 4 butoane legale; linkurile de pagini și linia cu telefon/email au fost scoase, cu stilurile lor. Teste actualizate (spec, SSR HTTP, regresie browser). Fără deploy.
+<!-- SECTION:FINAL_SUMMARY:END -->
