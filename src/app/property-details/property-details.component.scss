@@ -369,12 +369,31 @@ $text-strong: #1e1e1e;
     margin: 22px 0 28px;
   }
 
-  /* ─── No-video desktop: float layout (TASK-44) ─── */
+  /* ─── No-video desktop: descrierea în stânga, pe mijlocul pozei din dreapta; dacă e mai înaltă, începe sus ─── */
+  .content-section {
+    container-type: inline-size;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 55%;
+    column-gap: 32px;
+    align-items: start;
+  }
+
   .media-column {
-    float: right;
-    width: 55%;
-    margin-left: 32px;
+    grid-column: 2;
+    grid-row: 1;
     margin-bottom: 24px;
+  }
+
+  .content-section > .property-description {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+  }
+
+  /* Sub poză mai stau miniaturile și marginea coloanei: textul se centrează pe poză, nu pe tot blocul. Banda are
+     înălțimea fixă față de lățimea coloanei (55cqw): 4 miniaturi 4/3 pe rând, padding 6 px, margine 4 px, plus 24 px. */
+  .content-section:has(.thumb-strip) > .property-description {
+    margin-bottom: calc(35.5px + 10.3125cqw);
   }
 
   /* Galeria default pe desktop fără video: 16:10 (TASK-44) */

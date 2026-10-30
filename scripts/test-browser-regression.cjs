@@ -27,7 +27,10 @@ const catalog = Array.from({ length: 10 }, (_, index) => ({
   id: `11111111-1111-1111-1111-${String(index + 1).padStart(12, '0')}`,
   name: index === 9 ? 'Casă tradițională în Horezu' : `Teren cu livadă în Costești ${index + 1}`,
   type: index === 9 ? 'house' : 'land',
-  description: '<p>Loc liniștit, cu priveliște spre munți, livadă și acces la drum.</p><p>Suprafață: 2500 mp. Utilități la limita proprietății. Telefon: 0728 140 628.</p>',
+  // Al doilea anunț are o descriere mai înaltă decât poza (TASK-141); restul, una scurtă.
+  description: index === 1
+    ? Array.from({ length: 9 }, (_, p) => `<p>Paragraful ${p + 1}: teren însorit, cu livadă, drum de acces, utilități la limită și priveliște spre munți, aproape de sat.</p>`).join('')
+    : '<p>Loc liniștit, cu priveliște spre munți, livadă și acces la drum.</p><p>Suprafață: 2500 mp. Utilități la limita proprietății. Telefon: 0728 140 628.</p>',
   thumbnail: images[index % 2], sortOrder: index + 1, videoUrl: null,
 }));
 const report = { root, started: new Date().toISOString(), viewports: [], requests: [], blockedExternal: [], screenshots: [], failures: [] };
@@ -553,6 +556,101 @@ async function checkLoadingStates(viewport) {
   } finally { await context.close(); }
 }
 
+// TASK-141: pe desktop, descrierea anunțului fără video stă pe mijlocul pozei; dacă e mai înaltă, începe sus.
+async function checkDescriptionCentering(width) {
+  const context = await browser.newContext({ viewport: { width, height: 900 }, deviceScaleFactor: 1, reducedMotion: 'reduce' });
+  await context.route('**/*', route => {
+    const url = new URL(route.request().url());
+    if (url.origin === origin) return route.continue();
+    if (url.origin === apiOrigin) return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(apiResponse(url)) });
+    return route.abort('blockedbyclient');
+  });
+  const page = await context.newPage();
+  try {
+    for (const [index, kind] of [[0, 'short'], [1, 'long']]) {
+      const property = catalog[index];
+      await page.goto(`${origin}/proprietati/${property.id}/teren-de-vanzare-test`);
+      await page.waitForFunction(() => document.querySelector('.gallery-counter')?.textContent?.trim() === '1 / 3');
+      await page.waitForFunction(() => document.querySelectorAll('.content-section .thumb-strip button.thumb').length === 3);
+      await settled(page);
+      const m = await page.evaluate(() => {
+        const r = s => document.querySelector(s).getBoundingClientRect();
+        const text = r('.content-section > .property-description'), photo = r('.content-section .gallery'), thumbs = r('.content-section .thumb-strip');
+        return { textTop: text.top, textCenter: (text.top + text.bottom) / 2, textHeight: text.height, photoTop: photo.top, photoCenter: (photo.top + photo.bottom) / 2,
+          photoHeight: photo.height, gap: thumbs.top - photo.bottom, width: document.documentElement.scrollWidth, viewport: innerWidth };
+      });
+      if (kind === 'short') {
+        assert.ok(m.textHeight < m.photoHeight, `short description must be lower than the photo ${JSON.stringify(m)}`);
+        assert.ok(Math.abs(m.textCenter - m.photoCenter) <= 4, `description centre ${m.textCenter} vs photo centre ${m.photoCenter}`);
+      } else {
+        assert.ok(m.textHeight > m.photoHeight, `long description must be taller than the photo ${JSON.stringify(m)}`);
+        assert.ok(Math.abs(m.textTop - m.photoTop) <= 2, `long description top ${m.textTop} vs photo top ${m.photoTop}`);
+      }
+      assert.ok(Math.abs(m.gap - 4) <= 1, `thumbnails stay right under the photo (gap ${m.gap})`);
+      assert.equal(m.width, m.viewport, 'no horizontal scroll');
+    }
+    console.log(`PASS description-${width}: short description centred on the photo, long one starts at the photo top, thumbnails under the photo`);
+  } finally { await context.close(); }
+}
+
+// TASK-141: pe desktop, descrierea anunțului fără video stă pe mijlocul pozei; dacă e mai înaltă, începe sus.
+async function checkDescriptionCentering(width) {
+  const context = await browser.newContext({ viewport: { width, height: 900 }, deviceScaleFactor: 1, reducedMotion: 'reduce' });
+  await context.route('**/*', route => {
+    const url = new URL(route.request().url());
+    if (url.origin === origin) return route.continue();
+    if (url.origin === apiOrigin) return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(apiResponse(url)) });
+    return route.abort('blockedbyclient');
+  });
+  const page = await context.newPage();
+  try {
+    for (const [index, kind] of [[0, 'short'], [1, 'long']]) {
+      const property = catalog[index];
+      await page.goto(`${origin}/proprietati/${property.id}/teren-de-vanzare-test`);
+      await page.waitForFunction(() => document.querySelector('.gallery-counter')?.textContent?.trim() === '1 / 3');
+      await page.waitForFunction(() => document.querySelectorAll('.content-section .thumb-strip button.thumb').length === 3);
+      await settled(page);
+      const m = await page.evaluate(() => {
+        const r = s => document.querySelector(s).getBoundingClientRect();
+        const text = r('.content-section > .property-description'), photo = r('.content-section .gallery'), thumbs = r('.content-section .thumb-strip');
+        return { textTop: text.top, textCenter: (text.top + text.bottom) / 2, textHeight: text.height, photoTop: photo.top, photoCenter: (photo.top + photo.bottom) / 2,
+          photoHeight: photo.height, gap: thumbs.top - photo.bottom, width: document.documentElement.scrollWidth, viewport: innerWidth };
+      });
+      if (kind === 'short') {
+        assert.ok(m.textHeight < m.photoHeight, `short description must be lower than the photo ${JSON.stringify(m)}`);
+        assert.ok(Math.abs(m.textCenter - m.photoCenter) <= 4, `description centre ${m.textCenter} vs photo centre ${m.photoCenter}`);
+      } else {
+        assert.ok(m.textHeight > m.photoHeight, `long description must be taller than the photo ${JSON.stringify(m)}`);
+        assert.ok(Math.abs(m.textTop - m.photoTop) <= 2, `long description top ${m.textTop} vs photo top ${m.photoTop}`);
+      }
+      assert.ok(Math.abs(m.gap - 4) <= 1, `thumbnails stay right under the photo (gap ${m.gap})`);
+      assert.equal(m.width, m.viewport, 'no horizontal scroll');
+    }
+    console.log(`PASS description-${width}: short description centred on the photo, long one starts at the photo top, thumbnails under the photo`);
+  } finally { await context.close(); }
+}
+
+// TASK-142: „Pastilă pentru suflet” se termină cu cel puțin 48 px deasupra footerului, iar video-ul încape sub antet.
+async function checkSoulSection(width, height) {
+  const context = await browser.newContext({ viewport: { width, height }, deviceScaleFactor: 1, reducedMotion: 'reduce' });
+  await context.route('**/*', route => new URL(route.request().url()).origin === origin ? route.continue() : route.abort('blockedbyclient'));
+  const page = await context.newPage();
+  try {
+    await page.goto(origin + '/satul-lunii');
+    await settled(page);
+    await page.evaluate(() => scrollTo(0, document.body.scrollHeight));
+    await page.waitForTimeout(500);
+    const m = await page.evaluate(() => {
+      const r = s => document.querySelector(s).getBoundingClientRect();
+      const card = r('.large-screen .container1 p-card'), video = r('.large-screen .container1 .youtube-container'), footer = r('footer.site-footer');
+      return { card: footer.top - card.bottom, video: footer.top - video.bottom, videoHeight: video.height, viewport: innerHeight };
+    });
+    assert.ok(m.card >= 48 && m.video >= 48, `section must end 48 px above the footer ${JSON.stringify(m)}`);
+    assert.ok(m.videoHeight <= m.viewport - 88, `video must fit under the sticky header ${JSON.stringify(m)}`);
+    console.log(`PASS soul-${width}x${height}: card ${Math.round(m.card)} px / video ${Math.round(m.video)} px above the footer, video ${Math.round(m.videoHeight)} px tall`);
+  } finally { await context.close(); }
+}
+
 async function compare() {
   if (!baseline) return;
   const before = JSON.parse(fs.readFileSync(path.join(baseline,'report.json'),'utf8'));
@@ -585,6 +683,7 @@ async function compare() {
       await checkVillageAutoplay(viewport).catch(error => { report.failures.push({ viewport: viewport.name, suite: 'autoplay', error: String(error), stack: error.stack }); console.error(`FAIL ${viewport.name} autoplay: ${error.stack}`); });
     }
     if (!option('--viewport')) {
+      for (const width of [1280, 1440]) await checkDescriptionCentering(width).catch(error => { report.failures.push({ suite: `description-${width}`, error: String(error), stack: error.stack }); console.error(`FAIL description ${width}: ${error.stack}`); });
       for (const width of [1280, 1440]) await checkVillageLayout(width).catch(error => { report.failures.push({ suite: `village-layout-${width}`, error: String(error), stack: error.stack }); console.error(`FAIL village layout ${width}: ${error.stack}`); });
       // Telefon ținut orizontal (înălțime sub 600 px): antetul se derulează, ca pe telefon.
       const context = await browser.newContext({ viewport: { width: 844, height: 390 }, deviceScaleFactor: 1, isMobile: true, hasTouch: true, reducedMotion: 'reduce' });
