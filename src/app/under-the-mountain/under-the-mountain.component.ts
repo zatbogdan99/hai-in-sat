@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, AfterViewInit, ElementRef, ViewChild, OnInit, signal } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, AfterViewInit, ElementRef, ViewChild, OnInit } from '@angular/core';
 import {RouterLink} from "@angular/router";
 import {gsap} from "gsap";
 import {DataDto} from "../dto/data.dto";
@@ -35,12 +35,11 @@ export class UnderTheMountainComponent implements AfterViewInit, OnInit {
 
   readonly villagePath = villagePath;
 
-  /** Derularea automată a satelor (la 5 s). Pornită implicit; în browser se sincronizează cu Swiper după inițializare. */
-  readonly autoplayRunning = signal(true);
+  /** Caruselul de sate derulează singur la 5 s; după o săgeată sau o glisare rămâne oprit până la o nouă intrare pe pagină. */
   private swiperEl?: HTMLElement & { swiper?: any };
   private cardsHovered = false;
   private cardsFocused = false;
-  /** Oprit doar cât timp mouse-ul sau focusul e pe carusel; butonul arată în continuare „Oprește”. */
+  /** Oprit doar cât timp mouse-ul sau focusul e pe carusel (ca un card să nu fugă de sub cursor). */
   private pausedTemporarily = false;
 
   constructor(
@@ -294,7 +293,7 @@ export class UnderTheMountainComponent implements AfterViewInit, OnInit {
         prevEl,
         nextEl
       },
-      // Spre dreapta la 5 s, la nesfârșit (loop). Săgețile sau glisarea o opresc definitiv; butonul o repornește.
+      // Spre dreapta la 5 s, la nesfârșit (loop). Săgețile sau glisarea o opresc până la o nouă intrare pe pagină.
       autoplay: {
         delay: 5000,
         disableOnInteraction: true
@@ -321,7 +320,7 @@ export class UnderTheMountainComponent implements AfterViewInit, OnInit {
         swiperEl.swiper?.on('slideChangeTransitionEnd', () => this.syncSlideFocus(swiperEl));
         swiperEl.swiper?.on('resize', () => this.syncSlideFocus(swiperEl));
         this.swiperEl = swiperEl;
-        // Cine a cerut mișcare redusă vede caruselul oprit; îl poate porni din buton.
+        // Cine a cerut mișcare redusă vede caruselul oprit.
         if (this.prefersReducedMotion()) {
           swiperEl.swiper?.autoplay?.stop();
         }
@@ -337,19 +336,6 @@ export class UnderTheMountainComponent implements AfterViewInit, OnInit {
         this.syncAutoplay();
       }
     });
-  }
-
-  toggleAutoplay(): void {
-    const autoplay = this.swiperEl?.swiper?.autoplay;
-    if (!autoplay) {
-      return;
-    }
-    if (autoplay.running || this.pausedTemporarily) {
-      this.pausedTemporarily = false;
-      autoplay.stop();
-    } else {
-      autoplay.start();
-    }
   }
 
   /** Pauză cât timp mouse-ul e pe carusel; atingerea pe telefon e glisare, care oprește oricum derularea. */
@@ -387,11 +373,10 @@ export class UnderTheMountainComponent implements AfterViewInit, OnInit {
     }
   }
 
-  /** Starea butonului și aria-live: cât timp derulează singur, schimbările de slide nu se anunță. */
+  /** aria-live: cât timp derulează singur, schimbările de slide nu se anunță; oprit, se anunță din nou. */
   private syncAutoplay(): void {
     const swiper = this.swiperEl?.swiper;
     const running = !!swiper?.autoplay?.running || this.pausedTemporarily;
-    this.autoplayRunning.set(running);
     swiper?.wrapperEl?.setAttribute('aria-live', running ? 'off' : 'polite');
   }
 

@@ -43,8 +43,6 @@ describe('UnderTheMountainComponent', () => {
     type SwiperHost = HTMLElement & { swiper: any };
     const swiperOf = (target: ComponentFixture<UnderTheMountainComponent>) =>
       (target.nativeElement as HTMLElement).querySelector('swiper-container') as SwiperHost;
-    const toggle = (target: ComponentFixture<UnderTheMountainComponent>) =>
-      (target.nativeElement as HTMLElement).querySelector('.discover__autoplay') as HTMLButtonElement;
     // Swiper se inițializează într-un setTimeout din ngAfterViewInit.
     const initialized = async (target: ComponentFixture<UnderTheMountainComponent>) => {
       for (let i = 0; i < 50 && !swiperOf(target).swiper?.initialized; i++) {
@@ -53,7 +51,7 @@ describe('UnderTheMountainComponent', () => {
       target.detectChanges();
     };
 
-    it('advances every 5 seconds and stops for good on manual interaction', async () => {
+    it('advances every 5 seconds and stops for good on manual interaction, without a control button', async () => {
       await initialized(fixture);
       const swiper = swiperOf(fixture).swiper;
 
@@ -62,53 +60,29 @@ describe('UnderTheMountainComponent', () => {
       expect(swiper.params.autoplay.disableOnInteraction).toBeTrue();
       expect(swiper.autoplay.running).toBeTrue();
       expect(swiper.wrapperEl.getAttribute('aria-live')).toBe('off');
-      expect(toggle(fixture).getAttribute('aria-label')).toBe('Oprește derularea automată');
+      expect(fixture.nativeElement.querySelector('.discover__autoplay')).toBeNull();
     });
 
-    it('stops for good when an arrow is used, and the button shows Play', async () => {
+    it('stops for good when an arrow is used', async () => {
       await initialized(fixture);
       (fixture.nativeElement.querySelector('.discover-next') as HTMLButtonElement).click();
       await new Promise(resolve => setTimeout(resolve, 0));
-      fixture.detectChanges();
 
       expect(swiperOf(fixture).swiper.autoplay.running).toBeFalse();
-      expect(toggle(fixture).getAttribute('aria-label')).toBe('Pornește derularea automată');
       expect(swiperOf(fixture).swiper.wrapperEl.getAttribute('aria-live')).toBe('polite');
-    });
-
-    it('toggles with the Pause/Play button', async () => {
-      await initialized(fixture);
-      const swiper = swiperOf(fixture).swiper;
-
-      toggle(fixture).click();
-      fixture.detectChanges();
-      expect(swiper.autoplay.running).toBeFalse();
-      expect(toggle(fixture).getAttribute('aria-label')).toBe('Pornește derularea automată');
-      expect(toggle(fixture).type).toBe('button');
-
-      toggle(fixture).click();
-      fixture.detectChanges();
-      expect(swiper.autoplay.running).toBeTrue();
-      expect(toggle(fixture).getAttribute('aria-label')).toBe('Oprește derularea automată');
     });
 
     it('pauses while keyboard focus is inside the carousel and resumes when it leaves', async () => {
       await initialized(fixture);
       const swiper = swiperOf(fixture).swiper;
-      const cards = fixture.nativeElement.querySelector('.discover__cards') as HTMLElement;
       const next = fixture.nativeElement.querySelector('.discover-next') as HTMLButtonElement;
 
       next.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
-      fixture.detectChanges();
       expect(swiper.autoplay.running).toBeFalse();
-      expect(toggle(fixture).getAttribute('aria-label')).toBe('Oprește derularea automată');
       expect(swiper.wrapperEl.getAttribute('aria-live')).toBe('off');
 
       next.dispatchEvent(new FocusEvent('focusout', { bubbles: true, relatedTarget: document.body }));
-      fixture.detectChanges();
       expect(swiper.autoplay.running).toBeTrue();
-      expect(cards.contains(next)).toBeTrue();
-      expect(toggle(fixture).getAttribute('aria-label')).toBe('Oprește derularea automată');
     });
 
     it('treats an arrow used during the temporary pause as a definitive stop', async () => {
@@ -119,10 +93,8 @@ describe('UnderTheMountainComponent', () => {
       next.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
       next.click();
       next.dispatchEvent(new FocusEvent('focusout', { bubbles: true, relatedTarget: document.body }));
-      fixture.detectChanges();
 
       expect(swiper.autoplay.running).toBeFalse();
-      expect(toggle(fixture).getAttribute('aria-label')).toBe('Pornește derularea automată');
       expect(swiper.wrapperEl.getAttribute('aria-live')).toBe('polite');
     });
 
@@ -137,7 +109,7 @@ describe('UnderTheMountainComponent', () => {
       await initialized(reduced);
 
       expect(swiperOf(reduced).swiper.autoplay.running).toBeFalse();
-      expect(toggle(reduced).getAttribute('aria-label')).toBe('Pornește derularea automată');
+      expect(swiperOf(reduced).swiper.wrapperEl.getAttribute('aria-live')).toBe('polite');
       reduced.destroy();
     });
   });

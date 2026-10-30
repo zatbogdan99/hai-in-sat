@@ -604,22 +604,12 @@ section {
 }
 
 
-/* Discover section: custom swiper arrows (și butonul Pauză/Redare, cu același aspect, sub carusel) */
+/* Discover section: custom swiper arrows */
 .discover__nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   z-index: 5;
-}
-
-.discover__controls {
-  display: flex;
-  justify-content: center;
-  margin-top: 1rem;
-}
-
-.discover__nav,
-.discover__autoplay {
   width: clamp(36px, 3.5vw, 44px);
   height: clamp(36px, 3.5vw, 44px);
   border-radius: 999px;
@@ -641,10 +631,6 @@ section {
 
 .discover__nav:active {
   transform: translateY(-50%) scale(0.98);
-}
-
-.discover__autoplay:hover {
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
 }
 
 .discover-prev { left: calc(-1 * clamp(8px, 1.2vw, 16px)); }

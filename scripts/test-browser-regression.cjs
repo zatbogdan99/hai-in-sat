@@ -354,37 +354,28 @@ async function runViewport(viewport) {
   } finally { await context.close(); }
 }
 
-// TASK-136: în browser real, fără „mișcare redusă”: autoplay la 5 s, pauză la hover, oprire definitivă la săgeată.
+// TASK-136: în browser real, fără „mișcare redusă”: autoplay la 5 s, pauză la hover, oprire la săgeată până la o nouă intrare.
 async function checkVillageAutoplay(viewport) {
   const context = await browser.newContext({ viewport: { width: viewport.width, height: viewport.height }, deviceScaleFactor: 1, isMobile: viewport.width < 600, hasTouch: viewport.width < 600, reducedMotion: 'no-preference' });
   await context.route('**/*', route => new URL(route.request().url()).origin === origin ? route.continue() : route.abort('blockedbyclient'));
   const page = await context.newPage();
   const index = () => page.locator('swiper-container').evaluate(el => el.swiper.realIndex);
+  const advances = start => page.waitForFunction(value => document.querySelector('swiper-container').swiper.realIndex !== value, start, { timeout: 7000 });
+  // Swiper ignoră intenționat un click venit în timpul unei tranziții (loopPreventsSliding): așteptăm finalul ei.
+  const idle = () => page.waitForFunction(() => !document.querySelector('swiper-container').swiper.animating);
   try {
     await page.goto(origin + '/under-the-mountain');
     await page.waitForFunction(() => document.querySelector('swiper-container')?.swiper?.autoplay?.running);
-    await page.locator('.discover__autoplay').scrollIntoViewIfNeeded();
-    const layout = await page.evaluate(() => {
-      const box = el => el.getBoundingClientRect();
-      const button = box(document.querySelector('.discover__autoplay'));
-      const overlaps = el => { const b = box(el); return !(button.right <= b.left || button.left >= b.right || button.bottom <= b.top || button.top >= b.bottom); };
-      return { cards: overlaps(document.querySelector('.discover__cards')), arrows: [...document.querySelectorAll('.discover__nav')].some(overlaps), width: document.documentElement.scrollWidth, viewport: innerWidth };
-    });
-    assert.deepEqual(layout, { cards: false, arrows: false, width: layout.viewport, viewport: layout.viewport }, `Autoplay button must not overlap: ${JSON.stringify(layout)}`);
-    const first = await index();
-    await page.waitForFunction(start => document.querySelector('swiper-container').swiper.realIndex !== start, first, { timeout: 7000 });
-    assert.equal(await page.locator('.discover__autoplay').getAttribute('aria-label'), 'Oprește derularea automată');
-    // Swiper ignoră intenționat un click venit în timpul unei tranziții (loopPreventsSliding): așteptăm finalul ei.
-    const idle = () => page.waitForFunction(() => !document.querySelector('swiper-container').swiper.animating);
+    assert.equal(await page.locator('.discover__autoplay').count(), 0, 'The carousel has no Pause/Play button');
+    await advances(await index());
     if (viewport.width >= 600) {
       await idle();
       await page.locator('.discover__cards').hover();
       const paused = await index();
       await page.waitForTimeout(6000);
       assert.equal(await index(), paused, 'Hover must pause the autoplay');
-      assert.equal(await page.locator('.discover__autoplay').getAttribute('aria-label'), 'Oprește derularea automată', 'A hover pause keeps the button state');
       await page.mouse.move(0, 0);
-      await page.waitForFunction(start => document.querySelector('swiper-container').swiper.realIndex !== start, paused, { timeout: 7000 });
+      await advances(paused);
     }
     await idle();
     await page.locator('.discover-next').click();
@@ -392,14 +383,12 @@ async function checkVillageAutoplay(viewport) {
     const stopped = await index();
     await page.mouse.move(0, 0);
     await page.waitForTimeout(10000);
-    assert.equal(await index(), stopped, 'An arrow click must stop the autoplay for good');
-    assert.equal(await page.locator('.discover__autoplay').getAttribute('aria-label'), 'Pornește derularea automată');
-    await page.locator('.discover__autoplay').click();
-    await page.waitForFunction(start => document.querySelector('swiper-container').swiper.realIndex !== start, stopped, { timeout: 7000 });
-    await page.locator('.discover__autoplay').click();
-    assert.equal(await page.locator('swiper-container').evaluate(el => el.swiper.autoplay.running), false);
-    await page.locator('.discover__controls').screenshot({ path: path.join(output, `${viewport.name}-villages-autoplay-button.png`) });
-    console.log(`PASS ${viewport.name}: village autoplay every 5 s, ${viewport.width >= 600 ? 'hover pause, ' : ''}stop on arrow, Pause/Play button`);
+    assert.equal(await index(), stopped, 'An arrow click must stop the autoplay until the page is entered again');
+    await page.goto(origin + '/properties');
+    await page.goto(origin + '/under-the-mountain');
+    await page.waitForFunction(() => document.querySelector('swiper-container')?.swiper?.autoplay?.running);
+    await advances(await index());
+    console.log(`PASS ${viewport.name}: village autoplay every 5 s, ${viewport.width >= 600 ? 'hover pause, ' : ''}stop on arrow, restart on a new visit`);
   } finally { await context.close(); }
 }
 
