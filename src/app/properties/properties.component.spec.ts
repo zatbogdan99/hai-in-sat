@@ -282,7 +282,7 @@ describe('PropertiesComponent', () => {
 
     const titleLink = fixture.nativeElement.querySelector('.property-card h2 a') as HTMLAnchorElement;
     expect(titleLink.getAttribute('href'))
-      .toBe('/property/invalid-1/teren-de-vanzare-lot-experimental?page=0&size=6&type=land');
+      .toBe('/proprietati/invalid-1/teren-de-vanzare-lot-experimental?page=0&size=6&type=land');
   });
 
   it('renders title and details links with the current list state in both layouts', () => {
@@ -300,7 +300,7 @@ describe('PropertiesComponent', () => {
       const links = Array.from(container.querySelectorAll('a'));
       expect(links.length).toBe(2);
       for (const link of links) {
-        expect(link.getAttribute('href')).toBe('/property/house-1/casa-de-vanzare-casa-in-sat?page=2&size=12&type=house');
+        expect(link.getAttribute('href')).toBe('/proprietati/house-1/casa-de-vanzare-casa-in-sat?page=2&size=12&type=house');
       }
     }
   });
@@ -328,14 +328,14 @@ describe('PropertiesComponent', () => {
 
     const filters = Array.from(fixture.nativeElement.querySelectorAll('a.filter-button')) as HTMLAnchorElement[];
     expect(filters.map(link => link.getAttribute('href'))).toEqual([
-      '/properties?page=0&size=12&type=house',
-      '/properties?page=0&size=12&type=land'
+      '/proprietati?page=0&size=12&type=house',
+      '/proprietati?page=0&size=12&type=land'
     ]);
     const pages = Array.from(fixture.nativeElement.querySelectorAll('.property-pagination a[href]')) as HTMLAnchorElement[];
     expect(pages.length).toBeGreaterThan(0);
     const pageIndexes = pages.map(link => {
       const url = new URL(link.href);
-      expect(url.pathname).toBe('/properties');
+      expect(url.pathname).toBe('/proprietati');
       expect(url.searchParams.get('size')).toBe('12');
       expect(url.searchParams.get('type')).toBe('house');
       return url.searchParams.get('page');

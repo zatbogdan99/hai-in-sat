@@ -168,11 +168,11 @@ export class PropertiesComponent implements OnInit {
     this.seo.updatePageMeta({
       title: 'Case și terenuri de vânzare în Oltenia de sub Munte',
       description: 'Explorează proprietăți de vânzare: case tradiționale și terenuri în sate din Oltenia de sub Munte, județul Vâlcea. Prețuri accesibile, locuri autentice.',
-      canonicalPath: '/properties'
+      canonicalPath: '/proprietati'
     });
     this.seo.setBreadcrumbs([
       { name: 'Acasă', path: '/' },
-      { name: 'Proprietăți', path: '/properties' }
+      { name: 'Proprietăți', path: '/proprietati' }
     ]);
     this.seo.removeJsonLd('real-estate-listing');
 
@@ -318,7 +318,7 @@ export class PropertiesComponent implements OnInit {
 
   propertyLink(property: PropertyDTO): string[] | null {
     return property?.id
-      ? ['/property', property.id, generateSlug(toPropertyType(property.type), property.name)]
+      ? ['/proprietati', property.id, generateSlug(toPropertyType(property.type), property.name)]
       : null;
   }
 

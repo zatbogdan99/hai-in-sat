@@ -474,6 +474,20 @@ section {
   outline-offset: 2px;
 }
 
+/* Până pornește Swiper (pe internet slab JS-ul vine târziu), cardurile stau deja pe un rând, ca în carusel:
+   3 pe ecran mare, 1 pe telefon (cel din mijloc, Polovragi, ca după inițializare). Apoi Swiper preia aranjarea. */
+.discover__cards:not(.is-ready) swiper-container {
+  display: flex;
+  gap: 16px;
+  overflow: hidden;
+}
+
+.discover__cards:not(.is-ready) swiper-slide {
+  display: block;
+  flex: 0 0 calc((100% - 32px) / 3);
+  min-width: 0;
+}
+
 .discover-card__img img {
   display: block;
   width: 100%;
@@ -529,6 +543,11 @@ section {
   }
   .discover-card {
     width: min(92vw, 420px);
+  }
+  .discover__cards:not(.is-ready) {
+    swiper-container { display: flex; }
+    swiper-slide { display: flex; flex-basis: 100%; }
+    swiper-slide:first-child { display: none; }
   }
 }
 

@@ -138,7 +138,7 @@ describe('PropertyDetailsComponent', () => {
     const links = fixture.nativeElement.querySelectorAll('a.back-btn') as NodeListOf<HTMLAnchorElement>;
     expect(links.length).toBe(2);
     for (const link of Array.from(links)) {
-      expect(link.getAttribute('href')).toBe('/properties?page=2&size=12&type=house');
+      expect(link.getAttribute('href')).toBe('/proprietati?page=2&size=12&type=house');
     }
   });
 
@@ -154,7 +154,7 @@ describe('PropertyDetailsComponent', () => {
       const links = fixture.nativeElement.querySelectorAll('a.back-btn') as NodeListOf<HTMLAnchorElement>;
       expect(links.length).toBe(2);
       for (const link of Array.from(links)) {
-        expect(link.getAttribute('href')).toBe('/properties?page=3&size=12&type=house');
+        expect(link.getAttribute('href')).toBe('/proprietati?page=3&size=12&type=house');
       }
     });
   }
@@ -185,7 +185,7 @@ describe('PropertyDetailsComponent', () => {
     expect(() => component.loadPropertyDetails()).not.toThrow();
 
     expect(loadingOffSpy).toHaveBeenCalled();
-    expect(navigateSpy).toHaveBeenCalledWith(['/properties']);
+    expect(navigateSpy).toHaveBeenCalledWith(['/proprietati']);
   });
 
   it('marks transient upstream errors on the server so SSR can return 503', () => {
@@ -224,7 +224,7 @@ describe('PropertyDetailsComponent', () => {
       expect(navigateSpy).not.toHaveBeenCalled();
       expect(propertyApiService.getPhotos).not.toHaveBeenCalled();
       expect(fixture.nativeElement.querySelector('h1').textContent).toContain('Pagina nu a fost găsită');
-      expect(fixture.nativeElement.querySelector('a[href="/properties"]')).toBeTruthy();
+      expect(fixture.nativeElement.querySelector('a[href="/proprietati"]')).toBeTruthy();
       expect(TestBed.inject(Meta).getTag('name="robots"')?.content).toBe('noindex, nofollow');
       expect(TestBed.inject(TransferState).get(makeStateKey<boolean>('property-not-found:missing-property'), false)).toBeTrue();
     });
@@ -244,7 +244,7 @@ describe('PropertyDetailsComponent', () => {
     expect(propertyApiService.getPropertyById).not.toHaveBeenCalled();
     expect(transferState.hasKey(key)).toBeFalse();
     expect(ssrRenderState.notFound).toBeFalse();
-    expect(fixture.nativeElement.querySelector('a[href="/properties"]')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('a[href="/proprietati"]')).toBeTruthy();
   });
 
   it('restores indexable metadata when the reused component loads an existing property', () => {
@@ -477,14 +477,14 @@ describe('PropertyDetailsComponent', () => {
     );
     expect(component.propertyKind).toBe(PropertyType.LAND);
     expect(navigateSpy).toHaveBeenCalledWith(
-      ['/property', 'prop-invalid', 'teren-de-vanzare-proprietate-experimentala'],
+      ['/proprietati', 'prop-invalid', 'teren-de-vanzare-proprietate-experimentala'],
       {
         replaceUrl: true,
         queryParamsHandling: 'preserve'
       }
     );
     expect(setRealEstateListingSpy).toHaveBeenCalledWith(jasmine.objectContaining({
-      url: '/property/prop-invalid/teren-de-vanzare-proprietate-experimentala',
+      url: '/proprietati/prop-invalid/teren-de-vanzare-proprietate-experimentala',
       propertyType: 'land'
     }));
   });

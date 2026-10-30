@@ -205,8 +205,11 @@ img {
     height: 50rem;
   }
 
+  /* „Pastilă pentru suflet”: video-ul încape întreg pe ecran sub antetul fix (88 px), cu proporția de acum (40 × 53,5). */
   .reveal > div:nth-child(2) {
-    height: 53.5rem;
+    --soul-video-height: min(53.5rem, calc(100vh - 88px - 4rem));
+    height: var(--soul-video-height);
+    width: calc(var(--soul-video-height) * 40 / 53.5);
   }
 
   .reveal {
@@ -221,13 +224,15 @@ img {
     display: flex;
   }
 
+  /* Înălțimea vine din conținut (cu 75vh, cardul și video-ul erau tăiate de footer pe laptop), cu același spațiu
+     până la footer la orice înălțime de fereastră. */
   .container1 {
     padding-top: 6rem;
+    padding-bottom: 4rem;
     display: flex;
     justify-content: center;
     align-content: center;
     width: 100%;
-    height: 75vh;
     position: relative;
     background-color: transparent;
   }

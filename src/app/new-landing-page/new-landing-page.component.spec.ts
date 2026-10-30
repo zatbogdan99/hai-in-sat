@@ -10,7 +10,7 @@ describe('NewLandingPageComponent', () => {
     fixture.detectChanges();
 
     const link = fixture.nativeElement.querySelector('a.cta') as HTMLAnchorElement;
-    expect(link.getAttribute('href')).toBe('/homes');
+    expect(link.getAttribute('href')).toBe('/gaseste-mi-locul');
     expect(link.textContent?.trim()).toBe('Completează formularul');
   });
 });

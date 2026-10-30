@@ -14,9 +14,9 @@ const path = require('path');
 
 const STATIC_PAGES = [
   { path: '/', changefreq: 'weekly', priority: '1.0' },
-  { path: '/properties', changefreq: 'daily', priority: '0.9' },
-  { path: '/under-the-mountain', changefreq: 'monthly', priority: '0.8' },
-  { path: '/village-of-the-month', changefreq: 'monthly', priority: '0.8' },
+  { path: '/proprietati', changefreq: 'daily', priority: '0.9' },
+  { path: '/oltenia-de-sub-munte', changefreq: 'monthly', priority: '0.8' },
+  { path: '/satul-lunii', changefreq: 'monthly', priority: '0.8' },
   // Paginile satelor; aceeași listă e în src/app/utils/villages.ts.
   { path: '/sate/horezu', changefreq: 'monthly', priority: '0.7' },
   { path: '/sate/polovragi', changefreq: 'monthly', priority: '0.7' },
@@ -25,7 +25,7 @@ const STATIC_PAGES = [
   { path: '/sate/slatioara', changefreq: 'monthly', priority: '0.7' },
   { path: '/sate/costesti', changefreq: 'monthly', priority: '0.7' },
   { path: '/sate/barbatesti', changefreq: 'monthly', priority: '0.7' },
-  { path: '/homes', changefreq: 'monthly', priority: '0.7' },
+  { path: '/gaseste-mi-locul', changefreq: 'monthly', priority: '0.7' },
 ];
 
 const DIACRITICS_MAP = {
@@ -108,7 +108,7 @@ async function main() {
   for (const prop of properties) {
     if (!prop.id || !prop.name) continue;
     const slug = generateSlug(prop.type, prop.name);
-    const propPath = `/property/${prop.id}/${slug}`;
+    const propPath = `/proprietati/${prop.id}/${slug}`;
     entries.push(buildUrlEntry(propPath, 'weekly', '0.7', today));
   }
 

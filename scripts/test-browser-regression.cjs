@@ -27,7 +27,10 @@ const catalog = Array.from({ length: 10 }, (_, index) => ({
   id: `11111111-1111-1111-1111-${String(index + 1).padStart(12, '0')}`,
   name: index === 9 ? 'Casă tradițională în Horezu' : `Teren cu livadă în Costești ${index + 1}`,
   type: index === 9 ? 'house' : 'land',
-  description: '<p>Loc liniștit, cu priveliște spre munți, livadă și acces la drum.</p><p>Suprafață: 2500 mp. Utilități la limita proprietății. Telefon: 0728 140 628.</p>',
+  // Al doilea anunț are o descriere mai înaltă decât poza (TASK-141); restul, una scurtă.
+  description: index === 1
+    ? Array.from({ length: 9 }, (_, p) => `<p>Paragraful ${p + 1}: teren însorit, cu livadă, drum de acces, utilități la limită și priveliște spre munți, aproape de sat.</p>`).join('')
+    : '<p>Loc liniștit, cu priveliște spre munți, livadă și acces la drum.</p><p>Suprafață: 2500 mp. Utilități la limita proprietății. Telefon: 0728 140 628.</p>',
   thumbnail: images[index % 2], sortOrder: index + 1, videoUrl: null,
 }));
 const report = { root, started: new Date().toISOString(), viewports: [], requests: [], blockedExternal: [], screenshots: [], failures: [] };
@@ -191,9 +194,9 @@ async function runViewport(viewport) {
       await page.locator('button.topbar__menu-button').click();
       await page.locator('.mobile-menu-panel').waitFor({state:'visible'});
       await capture(page, viewport.name, 'menu');
-      await page.locator('.mobile-menu-panel a[href="/properties"]').click();
+      await page.locator('.mobile-menu-panel a[href="/proprietati"]').click();
       await page.locator('.mobile-menu-panel').waitFor({state:'hidden'});
-    } else await page.locator('.nav-chips a[href="/properties"]').click();
+    } else await page.locator('.nav-chips a[href="/proprietati"]').click();
     await countCards(6);
     assert.equal(await page.locator('p-button button[autofocus]').count(), 0, 'Properties buttons must not acquire native autofocus');
     pass('desktop/mobile menu navigation');
@@ -204,7 +207,7 @@ async function runViewport(viewport) {
     await newTab.bringToFront();
     await newTab.waitForLoadState('domcontentloaded');
     await newTab.locator('.property-title').waitFor();
-    assert.match(newTab.url(), /\/property\//);
+    assert.match(newTab.url(), /\/proprietati\//);
     await newTab.close();
     await page.bringToFront();
     pass('property opens in a new tab');
@@ -252,8 +255,8 @@ async function runViewport(viewport) {
     pass('property contact validation, autocomplete, mocked submission');
     if (viewport.width < 1200) {
       await page.locator('button.topbar__menu-button').click();
-      await page.locator('.mobile-menu-panel a[href="/homes"]').click();
-    } else await page.locator('.nav-chips a[href="/homes"]').click();
+      await page.locator('.mobile-menu-panel a[href="/gaseste-mi-locul"]').click();
+    } else await page.locator('.nav-chips a[href="/gaseste-mi-locul"]').click();
     await page.locator('.form-hero-title').waitFor();
     await capture(page, viewport.name, 'home-form');
     const visible = selector => page.locator(`${selector}:visible`);
@@ -274,7 +277,7 @@ async function runViewport(viewport) {
     await capture(page, viewport.name, 'contact');
     await page.keyboard.press('Escape');
     pass('footer contact dialog');
-    await go('/properties');
+    await go('/proprietati');
     assert.equal(await page.locator('p-button button[autofocus]').count(), 0, 'Direct properties load must not autofocus buttons');
     pass('direct home/properties loads preserve initial focus');
     await go('/add-property');
@@ -309,7 +312,7 @@ async function runViewport(viewport) {
     console.error(`FAIL ${viewport.name}: ${error.stack}`);
   }
   try {
-    await go('/under-the-mountain');
+    await go('/oltenia-de-sub-munte');
     const header = await headerAfterScroll(page);
     if (viewport.width >= 1200) assert.equal(header.top, 0, `Desktop header must stay at the top: ${JSON.stringify(header)}`);
     else assert.ok(header.bottom <= 0, `Phone header must scroll away: ${JSON.stringify(header)}`);
@@ -364,7 +367,7 @@ async function checkVillageAutoplay(viewport) {
   // Swiper ignoră intenționat un click venit în timpul unei tranziții (loopPreventsSliding): așteptăm finalul ei.
   const idle = () => page.waitForFunction(() => !document.querySelector('swiper-container').swiper.animating);
   try {
-    await page.goto(origin + '/under-the-mountain');
+    await page.goto(origin + '/oltenia-de-sub-munte');
     await page.waitForFunction(() => document.querySelector('swiper-container')?.swiper?.autoplay?.running);
     assert.equal(await page.locator('.discover__autoplay').count(), 0, 'The carousel has no Pause/Play button');
     await advances(await index());
@@ -384,8 +387,8 @@ async function checkVillageAutoplay(viewport) {
     await page.mouse.move(0, 0);
     await page.waitForTimeout(10000);
     assert.equal(await index(), stopped, 'An arrow click must stop the autoplay until the page is entered again');
-    await page.goto(origin + '/properties');
-    await page.goto(origin + '/under-the-mountain');
+    await page.goto(origin + '/proprietati');
+    await page.goto(origin + '/oltenia-de-sub-munte');
     await page.waitForFunction(() => document.querySelector('swiper-container')?.swiper?.autoplay?.running);
     await advances(await index());
     console.log(`PASS ${viewport.name}: village autoplay every 5 s, ${viewport.width >= 600 ? 'hover pause, ' : ''}stop on arrow, restart on a new visit`);
@@ -404,11 +407,11 @@ async function checkTypography(viewport) {
   const page = await context.newPage();
   const pages = [
     ['/', '.about__text p'],
-    ['/under-the-mountain', '.why__text p, .feel__text p'],
-    ['/village-of-the-month', '.text-style p'],
+    ['/oltenia-de-sub-munte', '.why__text p, .feel__text p'],
+    ['/satul-lunii', '.text-style p'],
     ['/sate/horezu', '.info-page-bg p, .info-page-bg li:not(.p-galleria-indicator)'],
     ['/sate/vaideeni', '.info-page-bg p, .info-page-bg li:not(.p-galleria-indicator)'],
-    [`/property/${catalog[0].id}/teren-de-vanzare-teren-cu-livada-in-costesti-1`, '.property-description'],
+    [`/proprietati/${catalog[0].id}/teren-de-vanzare-teren-cu-livada-in-costesti-1`, '.property-description'],
     ['dialog', '.dialog-scroll p'],
   ];
   const samples = [];
@@ -474,6 +477,143 @@ async function checkVillageLayout(width) {
   } finally { await context.close(); }
 }
 
+// TASK-139: stările de încărcare, deterministic: pozele (și, la început, JS-ul) sunt ținute până le eliberăm.
+async function checkLoadingStates(viewport) {
+  const context = await browser.newContext({ viewport: { width: viewport.width, height: viewport.height }, deviceScaleFactor: 1, isMobile: viewport.width < 600, hasTouch: viewport.width < 600, reducedMotion: 'no-preference' });
+  const held = { images: [], scripts: [] };
+  const holding = { images: true, scripts: true };
+  await context.route('**/*', route => {
+    const url = new URL(route.request().url());
+    if (url.origin !== origin) return route.abort('blockedbyclient');
+    if (holding.images && /\.avif$/.test(url.pathname) && /assets\/(sate\/)?[a-z]+\d/.test(url.pathname)) { held.images.push(route); return; }
+    if (holding.scripts && /\.js$/.test(url.pathname)) { held.scripts.push(route); return; }
+    return route.continue();
+  });
+  const release = async kind => { holding[kind] = false; for (const route of held[kind].splice(0)) await route.continue().catch(() => {}); };
+  const page = await context.newPage();
+  const box = selector => page.locator(selector).first().evaluate(el => { const b = el.getBoundingClientRect(); return { top: b.top + scrollY, height: b.height, bottom: b.bottom + scrollY }; });
+  try {
+    // Caruselul înainte de JS: rândul final, nu listă verticală; schelet pe poze.
+    await page.goto(origin + '/oltenia-de-sub-munte', { waitUntil: 'commit' });
+    await page.locator('.discover__cards').waitFor();
+    await page.waitForTimeout(300);
+    const before = await page.evaluate(() => {
+      const cards = document.querySelector('.discover__cards').getBoundingClientRect();
+      const visible = [...document.querySelectorAll('swiper-slide')].filter(slide => { const b = slide.getBoundingClientRect(); return b.width > 0 && b.left >= cards.left - 1 && b.right <= cards.right + 1; });
+      return { height: cards.height, visible: visible.map(slide => slide.querySelector('h3').textContent.trim()), skeleton: document.querySelectorAll('.discover-card__img img.skeleton').length };
+    });
+    await release('scripts');
+    await page.waitForFunction(() => document.querySelector('swiper-container')?.swiper?.initialized);
+    await page.waitForTimeout(500);
+    const after = await page.evaluate(() => {
+      const cards = document.querySelector('.discover__cards').getBoundingClientRect();
+      const visible = [...document.querySelectorAll('swiper-slide.swiper-slide-visible')].map(slide => slide.querySelector('h3').textContent.trim());
+      return { height: cards.height, visible };
+    });
+    const expected = viewport.width > 640 ? ['Horezu', 'Polovragi', 'Baia de Fier'] : ['Polovragi'];
+    assert.deepEqual(before.visible, expected, `pre-init cards ${JSON.stringify(before)}`);
+    assert.deepEqual(after.visible, expected, `post-init cards ${JSON.stringify(after)}`);
+    assert.ok(Math.abs(before.height - after.height) <= after.height * 0.1, `carousel height pre ${before.height} / post ${after.height}`);
+    assert.equal(before.skeleton, 7, 'every card photo starts with a skeleton');
+    await release('images');
+    await page.waitForFunction(() => document.querySelectorAll('.discover-card__img img.skeleton').length === 0, null, { timeout: 30000 });
+    const animations = await page.locator('.discover-card__img img').evaluateAll(images => images.reduce((sum, img) => sum + img.getAnimations().length, 0));
+    assert.equal(animations, 0, 'no animation left behind loaded card photos');
+    console.log(`PASS ${viewport.name}: carousel row before JS ${JSON.stringify(before.visible)}, height ${Math.round(before.height)} -> ${Math.round(after.height)}, skeleton until load`);
+
+    // Pagina de sat: schelet pe galerie (și la trecerea la o poză nedescărcată), spațiu rezervat pentru poza a doua.
+    holding.images = true;
+    await page.goto(origin + '/sate/horezu', { waitUntil: 'domcontentloaded' });
+    await page.locator('.p-galleria-next-button').first().waitFor({ state: 'attached' });
+    await page.waitForTimeout(1500);
+    const gallery = viewport.width < 500 ? '.small-screen .gallery-open img' : '.large-screen .gallery-open img';
+    assert.ok(await page.locator(gallery).first().evaluate(img => img.classList.contains('skeleton')), 'gallery photo shows the skeleton while loading');
+    const nextArrow = page.locator(viewport.width < 500 ? '.small-screen .p-galleria-next-button' : '.large-screen .p-galleria-next-button').first();
+    await nextArrow.click();
+    await page.waitForTimeout(300);
+    assert.ok(await page.locator(gallery).first().evaluate(img => img.classList.contains('skeleton')), 'an unloaded next photo shows the skeleton again');
+    if (viewport.width >= 500) {
+      // Galeria pe tot ecranul, cu poza încă nedescărcată: indicatorul de încărcare e centrat pe mască.
+      await page.locator('.large-screen .gallery-open').first().click();
+      const loader = page.locator('.p-galleria-mask .fullscreen-loader').first();
+      await loader.waitFor({ state: 'visible' });
+      const centred = await loader.evaluate(el => { const b = el.getBoundingClientRect(); return Math.abs((b.left + b.right) / 2 - innerWidth / 2) < 40; });
+      assert.ok(centred, 'fullscreen loader is centred');
+      await page.keyboard.press('Escape');
+      await page.locator('.p-galleria-mask').waitFor({ state: 'detached' }).catch(() => {});
+    }
+    const nextBlock = viewport.width < 500 ? null : '.large-screen .horezu-unesco-full';
+    const reserved = nextBlock ? await box(nextBlock) : null;
+    await release('images');
+    await page.waitForFunction(selector => [...document.querySelectorAll(selector)].every(img => !img.classList.contains('skeleton')), gallery, { timeout: 30000 });
+    await page.waitForFunction(() => [...document.querySelectorAll('.horezu-image')].every(img => img.complete));
+    if (nextBlock) {
+      const loaded = await box(nextBlock);
+      assert.ok(Math.abs(loaded.top - reserved.top) <= 2, `text below the second photo moved ${reserved.top} -> ${loaded.top}`);
+    }
+    console.log(`PASS ${viewport.name}: village gallery skeleton while loading (also after next), second photo space reserved`);
+    assert.equal(await page.locator('.skeleton').count(), 0, 'no skeleton left after loading');
+  } finally { await context.close(); }
+}
+
+// TASK-141: pe desktop, descrierea anunțului fără video stă pe mijlocul pozei; dacă e mai înaltă, începe sus.
+async function checkDescriptionCentering(width) {
+  const context = await browser.newContext({ viewport: { width, height: 900 }, deviceScaleFactor: 1, reducedMotion: 'reduce' });
+  await context.route('**/*', route => {
+    const url = new URL(route.request().url());
+    if (url.origin === origin) return route.continue();
+    if (url.origin === apiOrigin) return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(apiResponse(url)) });
+    return route.abort('blockedbyclient');
+  });
+  const page = await context.newPage();
+  try {
+    for (const [index, kind] of [[0, 'short'], [1, 'long']]) {
+      const property = catalog[index];
+      await page.goto(`${origin}/proprietati/${property.id}/teren-de-vanzare-test`);
+      await page.waitForFunction(() => document.querySelector('.gallery-counter')?.textContent?.trim() === '1 / 3');
+      await page.waitForFunction(() => document.querySelectorAll('.content-section .thumb-strip button.thumb').length === 3);
+      await settled(page);
+      const m = await page.evaluate(() => {
+        const r = s => document.querySelector(s).getBoundingClientRect();
+        const text = r('.content-section > .property-description'), photo = r('.content-section .gallery'), thumbs = r('.content-section .thumb-strip');
+        return { textTop: text.top, textCenter: (text.top + text.bottom) / 2, textHeight: text.height, photoTop: photo.top, photoCenter: (photo.top + photo.bottom) / 2,
+          photoHeight: photo.height, gap: thumbs.top - photo.bottom, width: document.documentElement.scrollWidth, viewport: innerWidth };
+      });
+      if (kind === 'short') {
+        assert.ok(m.textHeight < m.photoHeight, `short description must be lower than the photo ${JSON.stringify(m)}`);
+        assert.ok(Math.abs(m.textCenter - m.photoCenter) <= 4, `description centre ${m.textCenter} vs photo centre ${m.photoCenter}`);
+      } else {
+        assert.ok(m.textHeight > m.photoHeight, `long description must be taller than the photo ${JSON.stringify(m)}`);
+        assert.ok(Math.abs(m.textTop - m.photoTop) <= 2, `long description top ${m.textTop} vs photo top ${m.photoTop}`);
+      }
+      assert.ok(Math.abs(m.gap - 4) <= 1, `thumbnails stay right under the photo (gap ${m.gap})`);
+      assert.equal(m.width, m.viewport, 'no horizontal scroll');
+    }
+    console.log(`PASS description-${width}: short description centred on the photo, long one starts at the photo top, thumbnails under the photo`);
+  } finally { await context.close(); }
+}
+
+// TASK-142: „Pastilă pentru suflet” se termină cu cel puțin 48 px deasupra footerului, iar video-ul încape sub antet.
+async function checkSoulSection(width, height) {
+  const context = await browser.newContext({ viewport: { width, height }, deviceScaleFactor: 1, reducedMotion: 'reduce' });
+  await context.route('**/*', route => new URL(route.request().url()).origin === origin ? route.continue() : route.abort('blockedbyclient'));
+  const page = await context.newPage();
+  try {
+    await page.goto(origin + '/satul-lunii');
+    await settled(page);
+    await page.evaluate(() => scrollTo(0, document.body.scrollHeight));
+    await page.waitForTimeout(500);
+    const m = await page.evaluate(() => {
+      const r = s => document.querySelector(s).getBoundingClientRect();
+      const card = r('.large-screen .container1 p-card'), video = r('.large-screen .container1 .youtube-container'), footer = r('footer.site-footer');
+      return { card: footer.top - card.bottom, video: footer.top - video.bottom, videoHeight: video.height, viewport: innerHeight };
+    });
+    assert.ok(m.card >= 48 && m.video >= 48, `section must end 48 px above the footer ${JSON.stringify(m)}`);
+    assert.ok(m.videoHeight <= m.viewport - 88, `video must fit under the sticky header ${JSON.stringify(m)}`);
+    console.log(`PASS soul-${width}x${height}: card ${Math.round(m.card)} px / video ${Math.round(m.video)} px above the footer, video ${Math.round(m.videoHeight)} px tall`);
+  } finally { await context.close(); }
+}
+
 async function compare() {
   if (!baseline) return;
   const before = JSON.parse(fs.readFileSync(path.join(baseline,'report.json'),'utf8'));
@@ -502,15 +642,18 @@ async function compare() {
     for (const viewport of [{name:'desktop',width:1440,height:1000},{name:'mobile',width:390,height:844},{name:'small-mobile',width:320,height:740}].filter(item => !option('--viewport') || item.name === option('--viewport'))) {
       await runViewport(viewport);
       if (viewport.name !== 'small-mobile') await checkTypography(viewport).catch(error => { report.failures.push({ viewport: viewport.name, suite: 'typography', error: String(error), stack: error.stack }); console.error(`FAIL ${viewport.name} typography: ${error.stack}`); });
+      await checkLoadingStates(viewport).catch(error => { report.failures.push({ viewport: viewport.name, suite: 'loading', error: String(error), stack: error.stack }); console.error(`FAIL ${viewport.name} loading: ${error.stack}`); });
       await checkVillageAutoplay(viewport).catch(error => { report.failures.push({ viewport: viewport.name, suite: 'autoplay', error: String(error), stack: error.stack }); console.error(`FAIL ${viewport.name} autoplay: ${error.stack}`); });
     }
     if (!option('--viewport')) {
+      for (const [width, height] of [[1440, 789], [1920, 960]]) await checkSoulSection(width, height).catch(error => { report.failures.push({ suite: `soul-${width}`, error: String(error), stack: error.stack }); console.error(`FAIL soul ${width}x${height}: ${error.stack}`); });
+      for (const width of [1280, 1440]) await checkDescriptionCentering(width).catch(error => { report.failures.push({ suite: `description-${width}`, error: String(error), stack: error.stack }); console.error(`FAIL description ${width}: ${error.stack}`); });
       for (const width of [1280, 1440]) await checkVillageLayout(width).catch(error => { report.failures.push({ suite: `village-layout-${width}`, error: String(error), stack: error.stack }); console.error(`FAIL village layout ${width}: ${error.stack}`); });
       // Telefon ținut orizontal (înălțime sub 600 px): antetul se derulează, ca pe telefon.
       const context = await browser.newContext({ viewport: { width: 844, height: 390 }, deviceScaleFactor: 1, isMobile: true, hasTouch: true, reducedMotion: 'reduce' });
       await context.route('**/*', route => new URL(route.request().url()).origin === origin ? route.continue() : route.abort('blockedbyclient'));
       const page = await context.newPage();
-      await page.goto(origin + '/under-the-mountain');
+      await page.goto(origin + '/oltenia-de-sub-munte');
       await settled(page);
       const header = await headerAfterScroll(page);
       await context.close();

@@ -67,3 +67,9 @@ M (1–2 zile cu backend pentru alt per poză; srcset după TASK-3).
 - [ ] #5 (după TASK-3) `srcset`+`sizes` pe galerii și carduri; pe viewport 390px se descarcă varianta mică, nu cea full (verificabil în DevTools Network)
 - [ ] #6 Alt-urile urmează formatul descriptiv „{tip} {suprafață} {sat}, {județ} — {detaliu}", nu „poza1"/„image"
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Notă 2026-10-30 (TASK-140): pozele statice ale satelor (caruselul de pe /oltenia-de-sub-munte și galeriile de pe /sate/:slug) au acum variante redimensionate (scripts/generate-village-images.js), cu srcset/sizes și width/height reale. Partea de poze statice a satelor e rezolvată. Rămân pozele anunțurilor din API (base64), care depind de TASK-3.
+<!-- SECTION:NOTES:END -->
