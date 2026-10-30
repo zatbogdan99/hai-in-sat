@@ -1,9 +1,10 @@
 ---
 id: TASK-142
 title: '/village-of-the-month: „Pastilă pentru suflet” nu mai e tăiată de footer'
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-10-30 11:15'
+updated_date: '2026-10-30 18:00'
 labels:
   - frontend
   - ui
@@ -56,14 +57,14 @@ Măsurat cu Playwright (cardul și video-ul față de marginea de sus a footerul
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 La 1280×689, 1440×789, 1470×845, 1440×900 și 1920×960, cardul „Pastilă pentru suflet” și containerul video se termină cu cel puțin 3rem (48 px) deasupra footerului. Nimic din secțiune nu e tăiat și nimic nu se suprapune peste footer. Se măsoară cu `getBoundingClientRect()`.
-- [ ] #2 La aceleași ferestre, video-ul încape întreg pe ecran sub antetul fix: înălțimea lui ≤ înălțimea ferestrei − 88 px.
-- [ ] #3 Spațiul dintre secțiune și footer e același (±1 px) la toate înălțimile de fereastră de mai sus, adică nu mai depinde de `vh`.
-- [ ] #4 Cardul are toate colțurile rotunjite vizibile, iar animația de apariție a secțiunii funcționează.
-- [ ] #5 La 390 și 320 px, varianta de telefon e neschimbată față de capturile dinainte.
-- [ ] #6 `scripts/test-browser-regression.cjs` verifică AC #1 la 1440×789 și 1920×960.
-- [ ] #7 `npm run build` trece fără eroare de buget. `npm run test:ci`, `npm run test:ssr` și `npm run test:ssr:http` trec, fără `fdescribe`/`fit`/`xdescribe`/`xit`.
-- [ ] #8 Capturile înainte/după la ferestrele de la AC #1 sunt documentate în `## Implementation Notes`.
+- [x] #1 La 1280×689, 1440×789, 1470×845, 1440×900 și 1920×960, cardul „Pastilă pentru suflet” și containerul video se termină cu cel puțin 3rem (48 px) deasupra footerului. Nimic din secțiune nu e tăiat și nimic nu se suprapune peste footer. Se măsoară cu `getBoundingClientRect()`.
+- [x] #2 La aceleași ferestre, video-ul încape întreg pe ecran sub antetul fix: înălțimea lui ≤ înălțimea ferestrei − 88 px.
+- [x] #3 Spațiul dintre secțiune și footer e același (±1 px) la toate înălțimile de fereastră de mai sus, adică nu mai depinde de `vh`.
+- [x] #4 Cardul are toate colțurile rotunjite vizibile, iar animația de apariție a secțiunii funcționează.
+- [x] #5 La 390 și 320 px, varianta de telefon e neschimbată față de capturile dinainte.
+- [x] #6 `scripts/test-browser-regression.cjs` verifică AC #1 la 1440×789 și 1920×960.
+- [x] #7 `npm run build` trece fără eroare de buget. `npm run test:ci`, `npm run test:ssr` și `npm run test:ssr:http` trec, fără `fdescribe`/`fit`/`xdescribe`/`xit`.
+- [x] #8 Capturile înainte/după la ferestrele de la AC #1 sunt documentate în `## Implementation Notes`.
 <!-- AC:END -->
 
 ## Verificare post-deploy (owner)
@@ -71,3 +72,17 @@ Măsurat cu Playwright (cardul și video-ul față de marginea de sus a footerul
 NU fac parte din criteriile de acceptare: livrarea se oprește la PR, fără deploy.
 
 1. Pe MacBook Air, la finalul paginii `/village-of-the-month`: cardul și video-ul „Pastilă pentru suflet” se văd întregi, cu spațiu până la footer.
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Commit `53369f8`. `.container1` nu mai are `height: 75vh`; are `padding-bottom: 4rem`. Video-ul are `min(53.5rem, calc(100vh - 88px - 4rem))` înălțime, cu lățimea în aceeași proporție (40 × 53,5). Măsurat (regresia verifică 1440×789 și 1920×960): la 1280×689, 1440×789, 1470×845, 1440×900 și 1920×960, video-ul se termină la 64 px deasupra footerului (constant), cardul la 81–352 px, iar video-ul are 537–808 px, sub înălțimea ferestrei minus 88 px. Cardul are colțurile vizibile (captură 1440×789 înainte/după), iar animația `.reveal` funcționează. Pe telefon și tabletă (320, 390, 1000) captura e identică cu cea dinainte (0,00%).
+
+Validare finală 2026-10-30, pe build-ul cu TASK-139…143 (branch `claude/pensive-heisenberg-2m6ix7`): `npm run build` PASS, fără erori de buget; `npm run test:ci` 139/139; `npm run test:ssr` 26/26; `npm run test:ssr:http` PASS (28 de rute din sitemap cu incoming links, 16 anunțuri descoperite, 151 de răspunsuri HTTP, inclusiv 11 redirecturi 301 de la căile vechi). Regresia din browser: 65 PASS, 0 FAIL. Capturi pe 7 dimensiuni (1920, 1440, 1280, 1000, 390, 320, 844×390 × 13 pagini): 0 scroll orizontal, 0 erori JavaScript. Comparația pixel cu pixel cu reperul de dinainte: 0,00% pe homepage, /proprietati și varianta de telefon a /satul-lunii; diferențele rămase sunt cele intenționate. Fără deploy.
+<!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+„Pastilă pentru suflet” își ia înălțimea din conținut, are 64 px până la footer pe orice laptop, iar video-ul încape sub antetul fix. Fără deploy.
+<!-- SECTION:FINAL_SUMMARY:END -->

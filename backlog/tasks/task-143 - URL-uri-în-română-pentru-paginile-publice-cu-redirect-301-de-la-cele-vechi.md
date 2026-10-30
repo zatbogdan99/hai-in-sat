@@ -1,9 +1,10 @@
 ---
 id: TASK-143
 title: URL-uri în română pentru paginile publice, cu redirect 301 de la cele vechi
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-10-30 11:45'
+updated_date: '2026-10-30 18:00'
 labels:
   - seo
   - frontend
@@ -80,16 +81,16 @@ Căutarea după `properties`/`property` prinde și endpoint-uri ale backendului,
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Paginile publice răspund 200 la `/proprietati`, `/proprietati/:id/:slug`, `/oltenia-de-sub-munte`, `/satul-lunii` și `/gaseste-mi-locul`, cu canonical, `og:url` și breadcrumbs JSON-LD pe noile căi.
-- [ ] #2 Fiecare cale veche (`/properties`, `/property/:id/:slug`, `/property/:id`, `/under-the-mountain`, `/village-of-the-month`, `/homes`), cu și fără slash final, răspunde **301** direct la calea nouă, într-un singur pas. Query string-ul se păstrează, de exemplu `/properties?page=1&size=6&type=house` → `/proprietati?page=1&size=6&type=house`.
-- [ ] #3 Redirecturile existente duc direct la căile noi, fără lanț: `/see-the-area` → `/proprietati`, `/info-page` → `/oltenia-de-sub-munte`, `/about-us` și `/contact-us` → `/`.
-- [ ] #4 Navigarea în aplicație spre o cale veche (link vechi, Back) ajunge pe calea nouă, prin `redirectTo` în router.
-- [ ] #5 În HTML-ul SSR al tuturor rutelor din sitemap nu mai există niciun `href` intern spre o cale veche. Cele 28 de rute (actualizate) au incoming links și cel puțin 5 href-uri interne. `npm run test:ssr:http` verifică asta.
-- [ ] #6 `scripts/generate-sitemap.js`, `src/sitemap.xml` și `src/llms.txt` folosesc doar căile noi. Numărul de intrări din sitemap e neschimbat.
-- [ ] #7 Endpoint-urile API (`/properties-form`, `/properties/{id}/sort-order`, `/save-property`, `/get-*`, `/delete-*`) sunt neschimbate. `git diff` pe serviciile API arată doar schimbări de rute de frontend, dacă există.
-- [ ] #8 `/login` și `/add-property` funcționează ca înainte, iar `robots.txt` e neschimbat.
-- [ ] #9 `CLAUDE.md` descrie noile căi și redirecturile. TASK-131 are o notă cu redirecturile de reaplicat.
-- [ ] #10 `npm run build` trece fără eroare de buget. `npm run test:ci`, `npm run test:ssr`, `npm run test:ssr:http` și regresia din browser trec, fără `fdescribe`/`fit`/`xdescribe`/`xit`.
+- [x] #1 Paginile publice răspund 200 la `/proprietati`, `/proprietati/:id/:slug`, `/oltenia-de-sub-munte`, `/satul-lunii` și `/gaseste-mi-locul`, cu canonical, `og:url` și breadcrumbs JSON-LD pe noile căi.
+- [x] #2 Fiecare cale veche (`/properties`, `/property/:id/:slug`, `/property/:id`, `/under-the-mountain`, `/village-of-the-month`, `/homes`), cu și fără slash final, răspunde **301** direct la calea nouă, într-un singur pas. Query string-ul se păstrează, de exemplu `/properties?page=1&size=6&type=house` → `/proprietati?page=1&size=6&type=house`.
+- [x] #3 Redirecturile existente duc direct la căile noi, fără lanț: `/see-the-area` → `/proprietati`, `/info-page` → `/oltenia-de-sub-munte`, `/about-us` și `/contact-us` → `/`.
+- [x] #4 Navigarea în aplicație spre o cale veche (link vechi, Back) ajunge pe calea nouă, prin `redirectTo` în router.
+- [x] #5 În HTML-ul SSR al tuturor rutelor din sitemap nu mai există niciun `href` intern spre o cale veche. Cele 28 de rute (actualizate) au incoming links și cel puțin 5 href-uri interne. `npm run test:ssr:http` verifică asta.
+- [x] #6 `scripts/generate-sitemap.js`, `src/sitemap.xml` și `src/llms.txt` folosesc doar căile noi. Numărul de intrări din sitemap e neschimbat.
+- [x] #7 Endpoint-urile API (`/properties-form`, `/properties/{id}/sort-order`, `/save-property`, `/get-*`, `/delete-*`) sunt neschimbate. `git diff` pe serviciile API arată doar schimbări de rute de frontend, dacă există.
+- [x] #8 `/login` și `/add-property` funcționează ca înainte, iar `robots.txt` e neschimbat.
+- [x] #9 `CLAUDE.md` descrie noile căi și redirecturile. TASK-131 are o notă cu redirecturile de reaplicat.
+- [x] #10 `npm run build` trece fără eroare de buget. `npm run test:ci`, `npm run test:ssr`, `npm run test:ssr:http` și regresia din browser trec, fără `fdescribe`/`fit`/`xdescribe`/`xit`.
 <!-- AC:END -->
 
 ## Verificare post-deploy (owner)
@@ -101,3 +102,17 @@ NU fac parte din criteriile de acceptare: livrarea se oprește la PR, fără dep
 3. În Google Search Console: retrimite `sitemap.xml`, inspectează 2–3 URL-uri noi și urmărește „Pagini”. Vechile adrese apar treptat ca „Pagină cu redirecționare”.
 4. Redirecturile vechi se păstrează permanent, minimum un an.
 5. În Google Analytics/GTM, notează data schimbării: rapoartele pe pagini vor avea alte căi de la această dată.
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Commit `f6ae6f6`. Înlocuirea s-a făcut doar pe șiruri de rută (după ghilimele: `'/properties'`, `['/property', …]`, `` `/property/${…}` ``); serviciile API sunt neschimbate (0 modificări în `src/app/service`). `server.ts` are un middleware care răspunde 301 pentru căile vechi (cu și fără slash, query string păstrat), înaintea randării. Routerul are `redirectTo` pentru navigarea în aplicație (test unitar nou: `app.routes.spec.ts`). `test:ssr:http`: 11 căi vechi × GET/HEAD → 301 într-un pas, crawlerul verifică acum și că niciun link intern nu duce la o cale veche. `src/sitemap.xml` a fost actualizat determinist (aceleași 28 de intrări); owner-ul rulează `npm run generate-sitemap` înainte de deploy. Notă adăugată în TASK-131. Rămâne în engleză: parametrii `?page=&size=&type=` și `/login`, `/add-property` (decizie owner).
+
+Validare finală 2026-10-30, pe build-ul cu TASK-139…143 (branch `claude/pensive-heisenberg-2m6ix7`): `npm run build` PASS, fără erori de buget; `npm run test:ci` 139/139; `npm run test:ssr` 26/26; `npm run test:ssr:http` PASS (28 de rute din sitemap cu incoming links, 16 anunțuri descoperite, 151 de răspunsuri HTTP, inclusiv 11 redirecturi 301 de la căile vechi). Regresia din browser: 65 PASS, 0 FAIL. Capturi pe 7 dimensiuni (1920, 1440, 1280, 1000, 390, 320, 844×390 × 13 pagini): 0 scroll orizontal, 0 erori JavaScript. Comparația pixel cu pixel cu reperul de dinainte: 0,00% pe homepage, /proprietati și varianta de telefon a /satul-lunii; diferențele rămase sunt cele intenționate. Fără deploy.
+<!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Căile publice sunt în română (/proprietati, /proprietati/:id/:slug, /oltenia-de-sub-munte, /satul-lunii, /gaseste-mi-locul), cu 301 într-un pas de la cele vechi și toate referințele interne actualizate. Fără deploy.
+<!-- SECTION:FINAL_SUMMARY:END -->

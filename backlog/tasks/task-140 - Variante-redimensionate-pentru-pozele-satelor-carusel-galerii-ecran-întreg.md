@@ -1,9 +1,10 @@
 ---
 id: TASK-140
 title: 'Variante redimensionate pentru pozele satelor (carusel, galerii, ecran întreg)'
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-10-30 10:45'
+updated_date: '2026-10-30 18:00'
 labels:
   - frontend
   - performance
@@ -83,14 +84,14 @@ Depinde de TASK-139, care modifică aceleași `<img>`-uri (schelet, spațiu reze
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Există `scripts/generate-village-images.js` și scriptul `npm run generate-village-images`. Rulat de două ori la rând, scriptul produce aceleași fișiere și nu mărește nicio poză peste original. `package.json` nu are dependențe noi, iar `package-lock.json` și `yarn.lock` sunt neschimbate.
-- [ ] #2 Pentru fiecare poză folosită de carusel și de galeriile satelor există variantele de 480/800/1280/2048 px (sau mai puține, dacă originalul e mai mic), cu orientarea corectă.
-- [ ] #3 Caruselul, galeriile (desktop și telefon), poza din secțiunea a doua și galeria pe tot ecranul folosesc variantele, cu `srcset`/`sizes` și `width`/`height` reale. Nicio pagină nu mai cere un original din `src/assets/` pentru aceste poze. Se verifică cu Resource Timing în browser.
-- [ ] #4 La încărcarea inițială pe 1440 px, cu cache gol, pozele descărcate au cel mult 2 MB pe `/under-the-mountain` (azi 20,5 MB) și cel mult 1,5 MB pe fiecare pagină `/sate/*` (azi până la 8,9 MB). La 390 px, valorile sunt egale sau mai mici. Măsurătorile înainte/după sunt în Implementation Notes.
-- [ ] #5 Calitatea vizuală e verificată prin capturi înainte/după la 1440 (DPR 1 și 2) și la 390 px (DPR 3) pe carusel, galerie și galeria pe tot ecranul. Nu apar artefacte vizibile și nu se schimbă încadrarea.
-- [ ] #6 Caruselul derulează corect (automat și manual) cu toate cardurile încărcate, inclusiv cele care eventual sunt `loading="lazy"`.
-- [ ] #7 `npm run build` trece fără eroare de buget, fără modificări în `angular.json`. `npm run test:ci`, `npm run test:ssr`, `npm run test:ssr:http` și regresia din browser trec, fără `fdescribe`/`fit`/`xdescribe`/`xit`.
-- [ ] #8 TASK-24 (manual) are o notă că pozele statice ale satelor sunt rezolvate de TASK-140.
+- [x] #1 Există `scripts/generate-village-images.js` și scriptul `npm run generate-village-images`. Rulat de două ori la rând, scriptul produce aceleași fișiere și nu mărește nicio poză peste original. `package.json` nu are dependențe noi, iar `package-lock.json` și `yarn.lock` sunt neschimbate.
+- [x] #2 Pentru fiecare poză folosită de carusel și de galeriile satelor există variantele de 480/800/1280/2048 px (sau mai puține, dacă originalul e mai mic), cu orientarea corectă.
+- [x] #3 Caruselul, galeriile (desktop și telefon), poza din secțiunea a doua și galeria pe tot ecranul folosesc variantele, cu `srcset`/`sizes` și `width`/`height` reale. Nicio pagină nu mai cere un original din `src/assets/` pentru aceste poze. Se verifică cu Resource Timing în browser.
+- [x] #4 La încărcarea inițială pe 1440 px, cu cache gol, pozele descărcate au cel mult 2 MB pe `/under-the-mountain` (azi 20,5 MB) și cel mult 1,5 MB pe fiecare pagină `/sate/*` (azi până la 8,9 MB). La 390 px, valorile sunt egale sau mai mici. Măsurătorile înainte/după sunt în Implementation Notes.
+- [x] #5 Calitatea vizuală e verificată prin capturi înainte/după la 1440 (DPR 1 și 2) și la 390 px (DPR 3) pe carusel, galerie și galeria pe tot ecranul. Nu apar artefacte vizibile și nu se schimbă încadrarea.
+- [x] #6 Caruselul derulează corect (automat și manual) cu toate cardurile încărcate, inclusiv cele care eventual sunt `loading="lazy"`.
+- [x] #7 `npm run build` trece fără eroare de buget, fără modificări în `angular.json`. `npm run test:ci`, `npm run test:ssr`, `npm run test:ssr:http` și regresia din browser trec, fără `fdescribe`/`fit`/`xdescribe`/`xit`.
+- [x] #8 TASK-24 (manual) are o notă că pozele statice ale satelor sunt rezolvate de TASK-140.
 <!-- AC:END -->
 
 ## Verificare post-deploy (owner)
@@ -99,3 +100,17 @@ NU fac parte din criteriile de acceptare: livrarea se oprește la PR, fără dep
 
 1. PageSpeed Insights pe `/under-the-mountain` și pe o pagină de sat: „Properly size images” și „Total byte weight” nu mai semnalează pozele satelor.
 2. Pe telefon, cu internet slab, caruselul și galeriile se încarcă în câteva secunde.
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Commit `185225c`. `npm run generate-village-images` generează 71 de variante AVIF (calitate 55) pentru 19 poze, 9,9 MB în total; pozele mai înguste au mai puține variante (vaideeni1: 480/800, barbatesti: 480/800/1280). A doua rulare durează 0,2 s și lasă fișierele identice (sha256). Din `package.json` s-a schimbat doar scriptul; lockfile-urile nu. Galeria de telefon, ascunsă pe desktop, și poza a doua, ascunsă pe telefon, au `sizes` care cer varianta de 480 px; altfel browserul descărca și varianta de 2048 px a pozei ascunse. Măsurat cu Resource Timing, cu cache gol: la 1440 px DPR 1, /oltenia-de-sub-munte descarcă 1,53 MB de poze (înainte 20,5 MB), iar paginile de sat 0,16–0,74 MB (înainte până la 8,9 MB); la 390 px DPR 1, 1,07 MB și 0,10–0,13 MB. La DPR 2/3 (1440@2x, 390@3x): 2,39 MB / 1,93 MB pe /oltenia-de-sub-munte, ≤ 0,98 MB pe sate. Nicio pagină nu mai cere vreun original. Restul de pe /oltenia-de-sub-munte e din alte poze statice (fundalul poza_landing1 567 KB, poza3_oltenia-cismea 448 KB), în afara scope-ului. Calitate: decupaj din costesti1 la mărimea afișată pe 2x, original față de varianta de 1280 px, fără diferență vizibilă; încadrarea e aceeași (harta diferențelor: pixelii schimbați sunt doar în interiorul pozelor). Caruselul derulează automat și manual (regresia: autoplay, glisare, săgeți). Notă adăugată în TASK-24.
+
+Validare finală 2026-10-30, pe build-ul cu TASK-139…143 (branch `claude/pensive-heisenberg-2m6ix7`): `npm run build` PASS, fără erori de buget; `npm run test:ci` 139/139; `npm run test:ssr` 26/26; `npm run test:ssr:http` PASS (28 de rute din sitemap cu incoming links, 16 anunțuri descoperite, 151 de răspunsuri HTTP, inclusiv 11 redirecturi 301 de la căile vechi). Regresia din browser: 65 PASS, 0 FAIL. Capturi pe 7 dimensiuni (1920, 1440, 1280, 1000, 390, 320, 844×390 × 13 pagini): 0 scroll orizontal, 0 erori JavaScript. Comparația pixel cu pixel cu reperul de dinainte: 0,00% pe homepage, /proprietati și varianta de telefon a /satul-lunii; diferențele rămase sunt cele intenționate. Fără deploy.
+<!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Pozele satelor au variante redimensionate cu srcset; /oltenia-de-sub-munte descarcă 1,5 MB de poze în loc de 20,5 MB, iar paginile de sat sub 0,75 MB. Fără deploy.
+<!-- SECTION:FINAL_SUMMARY:END -->

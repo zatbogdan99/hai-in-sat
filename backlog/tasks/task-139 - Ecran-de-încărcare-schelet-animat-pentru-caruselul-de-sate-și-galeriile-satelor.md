@@ -1,9 +1,10 @@
 ---
 id: TASK-139
 title: Ecran de încărcare (schelet animat) pentru caruselul de sate și galeriile satelor
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-10-30 10:30'
+updated_date: '2026-10-30 18:00'
 labels:
   - frontend
   - ui
@@ -71,18 +72,18 @@ TASK-140 modifică aceleași `<img>`-uri (`src`/`srcset`, dimensiuni). Se implem
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Pe rețea limitată (1,6 Mbps, 150 ms, prin CDP), la 1440, 390 și 320 px, `/under-the-mountain` arată la 3 s și la 8 s rândul de carduri în geometria finală: 3 carduri pe desktop, 1 pe telefon, fiecare cu schelet în locul pozei. Nu apare lista verticală. Înălțimea `.discover__cards` înainte și după inițializarea Swiper diferă cu cel mult 10%.
-- [ ] #2 Pe desktop, cardurile vizibile înainte și după inițializare sunt aceleași (aceeași ordine, fără salt). Pe telefon, comportamentul e documentat în Implementation Notes.
-- [ ] #3 Scheletul fiecărui card dispare când poza s-a încărcat. După încărcare, cutia pozei nu mai are animații active (`getAnimations().length === 0`).
-- [ ] #4 Pe `/sate/*` (desktop și telefon), cutia galeriei arată scheletul până se încarcă poza curentă. Trecerea la o poză nedescărcată arată din nou scheletul. Săgețile, punctele și deschiderea pe tot ecranul funcționează în timpul încărcării.
-- [ ] #5 Poza din secțiunea a doua are spațiul rezervat: poziția titlului sau a paragrafului de lângă ea și a celui de sub ea se schimbă cu cel mult 2 px între „înainte de încărcare” și „după încărcare”, la 1440 și la 390 px.
-- [ ] #6 Galeria pe tot ecranul arată un indicator de încărcare centrat până se încarcă poza.
-- [ ] #7 Cu `prefers-reduced-motion: reduce`, scheletul e static, fără animație.
-- [ ] #8 Pe rețea normală nu rămâne niciun schelet blocat, inclusiv pentru pozele încărcate înainte de hidratare. La o poză care dă eroare, scheletul dispare.
-- [ ] #9 După ce totul s-a încărcat, caruselul și paginile de sat arată la fel ca înainte de task. Se verifică prin capturi pe rețea normală la 1440, 390 și 320 px.
-- [ ] #10 Testele unitare acoperă detectarea `load`/`complete`/`error`. `scripts/test-browser-regression.cjs` (sau un script nou din `scripts/`) verifică AC #1, #3, #4 și #5 pe rețea limitată.
-- [ ] #11 `npm run build` trece fără eroare de buget, fără modificări în `angular.json`. `npm run test:ci`, `npm run test:ssr` și `npm run test:ssr:http` trec, fără `fdescribe`/`fit`/`xdescribe`/`xit`.
-- [ ] #12 Capturile pe rețea limitată (la 3, 8, 15 și 30 s), înainte și după, la 1440 și 390 px, sunt documentate în `## Implementation Notes`.
+- [x] #1 Pe rețea limitată (1,6 Mbps, 150 ms, prin CDP), la 1440, 390 și 320 px, `/under-the-mountain` arată la 3 s și la 8 s rândul de carduri în geometria finală: 3 carduri pe desktop, 1 pe telefon, fiecare cu schelet în locul pozei. Nu apare lista verticală. Înălțimea `.discover__cards` înainte și după inițializarea Swiper diferă cu cel mult 10%.
+- [x] #2 Pe desktop, cardurile vizibile înainte și după inițializare sunt aceleași (aceeași ordine, fără salt). Pe telefon, comportamentul e documentat în Implementation Notes.
+- [x] #3 Scheletul fiecărui card dispare când poza s-a încărcat. După încărcare, cutia pozei nu mai are animații active (`getAnimations().length === 0`).
+- [x] #4 Pe `/sate/*` (desktop și telefon), cutia galeriei arată scheletul până se încarcă poza curentă. Trecerea la o poză nedescărcată arată din nou scheletul. Săgețile, punctele și deschiderea pe tot ecranul funcționează în timpul încărcării.
+- [x] #5 Poza din secțiunea a doua are spațiul rezervat: poziția titlului sau a paragrafului de lângă ea și a celui de sub ea se schimbă cu cel mult 2 px între „înainte de încărcare” și „după încărcare”, la 1440 și la 390 px.
+- [x] #6 Galeria pe tot ecranul arată un indicator de încărcare centrat până se încarcă poza.
+- [x] #7 Cu `prefers-reduced-motion: reduce`, scheletul e static, fără animație.
+- [x] #8 Pe rețea normală nu rămâne niciun schelet blocat, inclusiv pentru pozele încărcate înainte de hidratare. La o poză care dă eroare, scheletul dispare.
+- [x] #9 După ce totul s-a încărcat, caruselul și paginile de sat arată la fel ca înainte de task. Se verifică prin capturi pe rețea normală la 1440, 390 și 320 px.
+- [x] #10 Testele unitare acoperă detectarea `load`/`complete`/`error`. `scripts/test-browser-regression.cjs` (sau un script nou din `scripts/`) verifică AC #1, #3, #4 și #5 pe rețea limitată.
+- [x] #11 `npm run build` trece fără eroare de buget, fără modificări în `angular.json`. `npm run test:ci`, `npm run test:ssr` și `npm run test:ssr:http` trec, fără `fdescribe`/`fit`/`xdescribe`/`xit`.
+- [x] #12 Capturile pe rețea limitată (la 3, 8, 15 și 30 s), înainte și după, la 1440 și 390 px, sunt documentate în `## Implementation Notes`.
 <!-- AC:END -->
 
 ## Verificare post-deploy (owner)
@@ -90,3 +91,17 @@ TASK-140 modifică aceleași `<img>`-uri (`src`/`srcset`, dimensiuni). Se implem
 NU fac parte din criteriile de acceptare: livrarea se oprește la PR, fără deploy.
 
 1. Pe telefon, cu internet slab (sau Chrome DevTools → Network → „Slow 4G”), deschide `/under-the-mountain` și o pagină de sat. Cât timp se încarcă, caruselul și galeria arată scheletul în locul pozelor, nu zone goale sau poze uriașe.
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Commit `2601735`. Clasa globală `.skeleton` (styles.scss) se pune direct pe `<img>`: fundalul lui se vede până se descarcă poza. `ImageLoadTracker` (src/app/utils) ține starea după `src`, oprește scheletul și la `error` și citește din DOM pozele terminate înainte de hidratare. Descoperit în sursa Swiper 12: un `swiper-container` definit, dar neinițializat, are shadow DOM gol și nu arată nimic. De aceea `register()` se apelează acum chiar înainte de `initialize()`, în același pas, iar până atunci cardurile stau din CSS pe un rând. Regulile pre-init se scot înainte ca Swiper să măsoare cardurile; altfel, pe telefon, primul card ascuns muta caruselul pe Baia de Fier. Verificare deterministă în regresie (`checkLoadingStates`), cu JS-ul și pozele ținute până la eliberare, la 1440/390/320 (plus 768 separat): aceleași carduri înainte și după JS (desktop Horezu/Polovragi/Baia de Fier, telefon Polovragi), înălțime identică (437, 354, 301, 265 px), schelet pe toate cele 7 carduri, 0 animații după încărcare; schelet în galerie și la poza următoare nedescărcată; spațiul pozei a doua rezervat (±2 px) la 1440 și 768. La 390 și 320 px poza a doua nu se afișează: varianta sub 500 px nu o are. Indicatorul de pe galeria pe tot ecranul e centrat. Cu mișcare redusă: `animation: none`, fundal static. Capturi pe rețea limitată (1,6 Mbps, 150 ms) la 3, 8, 15 și 30 s, la 1440 și 390, înainte și după: înainte, un card alb uriaș (desktop) sau lista verticală (telefon) și galeria goală 15–30 s; după, rândul de carduri cu schelet. Cu TASK-140, toate pozele de pe /oltenia-de-sub-munte se încarcă în 15 s (înainte, 5 din 11 lipseau după 60 s), iar caruselul pornește sub 30 s (înainte, nici după 60 s).
+
+Validare finală 2026-10-30, pe build-ul cu TASK-139…143 (branch `claude/pensive-heisenberg-2m6ix7`): `npm run build` PASS, fără erori de buget; `npm run test:ci` 139/139; `npm run test:ssr` 26/26; `npm run test:ssr:http` PASS (28 de rute din sitemap cu incoming links, 16 anunțuri descoperite, 151 de răspunsuri HTTP, inclusiv 11 redirecturi 301 de la căile vechi). Regresia din browser: 65 PASS, 0 FAIL. Capturi pe 7 dimensiuni (1920, 1440, 1280, 1000, 390, 320, 844×390 × 13 pagini): 0 scroll orizontal, 0 erori JavaScript. Comparația pixel cu pixel cu reperul de dinainte: 0,00% pe homepage, /proprietati și varianta de telefon a /satul-lunii; diferențele rămase sunt cele intenționate. Fără deploy.
+<!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Schelet animat pe pozele caruselului, ale galeriilor și pe poza din secțiunea a doua (cu spațiul rezervat); până pornește Swiper, cardurile stau pe un rând, fără listă verticală; indicator pe galeria pe tot ecranul. Fără deploy.
+<!-- SECTION:FINAL_SUMMARY:END -->
