@@ -138,11 +138,11 @@ export class UnderTheMountainComponent implements AfterViewInit, OnInit {
       title: 'Oltenia de sub Munte – Sate autentice, tradiții și natură',
       description: 'Descoperă Oltenia de sub Munte: Horezu, Polovragi, Baia de Fier, Vaideeni, Costești, Slătioara, Bărbătești. Sate pitorești, tradiții ancestrale și peisaje montane spectaculoase.',
       ogImage: 'https://hai-în-sat.ro/assets/poza1_oltenia.avif',
-      canonicalPath: '/under-the-mountain'
+      canonicalPath: '/oltenia-de-sub-munte'
     });
     this.seo.setBreadcrumbs([
       { name: 'Acasă', path: '/' },
-      { name: 'Oltenia de sub Munte', path: '/under-the-mountain' }
+      { name: 'Oltenia de sub Munte', path: '/oltenia-de-sub-munte' }
     ]);
   }
 

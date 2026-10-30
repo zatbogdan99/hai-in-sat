@@ -131,4 +131,5 @@ Alte ambiguitati eliminate:
 4. AC-ul vechi #2 lasa la latitudinea agentului daca output path-ul se schimba sau se forteaza — acum se cere verificarea `entrypoint`-ului din `app.yaml` fata de continutul real al `dist/`.
 
 Nota: la 2026-07-06 output-ul era deja in `dist/hai-in-sat/browser/` si `app.yaml` era aliniat, deci pasul 3 din descriere e in mare parte rezolvat de la sine.
+Notă 2026-10-30 (TASK-143): inventarul de re-aplicat din `server.ts` a crescut din nou. Pe lângă punctele (a)–(e) din AC #3, noul `server.ts` trebuie să păstreze: redirecturile 301 de la căile vechi, în engleză, la cele în română (`/properties`, `/property/:id[/:slug]`, `/under-the-mountain`, `/village-of-the-month`, `/homes`, cu și fără slash final, cu query string-ul păstrat), redirecturile `/about-us`, `/contact-us`, `/see-the-area`, `/info-page`, endpoint-ul `POST /csp-report` și linkul `/proprietati` din pagina 503. Toate sunt verificate de `npm run test:ssr:http`.
 <!-- SECTION:NOTES:END -->

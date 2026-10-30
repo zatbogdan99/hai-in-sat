@@ -133,12 +133,12 @@ export class VillageOfTheMonthComponent implements OnInit {
     this.seo.updatePageMeta({
       title: `Satul ${this.data[this.villageId].title} – Sate în Oltenia de sub Munte | Hai în Sat`,
       description: `Descoperă satul ${this.data[this.villageId].title} din Oltenia de sub Munte. Locuri care spun povești, tradiții autentice și peisaje montane spectaculoase în județul Vâlcea.`,
-      canonicalPath: '/village-of-the-month'
+      canonicalPath: '/satul-lunii'
     });
     this.seo.setBreadcrumbs([
       { name: 'Acasă', path: '/' },
-      { name: 'Oltenia de sub Munte', path: '/under-the-mountain' },
-      { name: this.data[this.villageId].title, path: '/village-of-the-month' }
+      { name: 'Oltenia de sub Munte', path: '/oltenia-de-sub-munte' },
+      { name: this.data[this.villageId].title, path: '/satul-lunii' }
     ]);
 
     if (isPlatformBrowser(this.platformId)) {

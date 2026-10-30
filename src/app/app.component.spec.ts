@@ -19,7 +19,7 @@ describe('AppComponent', () => {
       { path: '', component: PublicTestPage },
       { path: 'login', component: LoginComponent },
       { path: 'public', component: PublicTestPage },
-      { path: 'properties', component: PublicTestPage },
+      { path: 'proprietati', component: PublicTestPage },
       { path: 'denied', component: PublicTestPage, canActivate: [() => false] },
       { path: '**', component: NotFoundComponent }
     ])],
@@ -45,7 +45,7 @@ describe('AppComponent', () => {
 
     expect(root.querySelector('.topbar__left a')?.getAttribute('href')).toBe('/');
     expect(Array.from(root.querySelectorAll('.nav-chips a')).map(link => link.getAttribute('href'))).toEqual([
-      '/under-the-mountain', '/village-of-the-month', '/properties', '/homes'
+      '/oltenia-de-sub-munte', '/satul-lunii', '/proprietati', '/gaseste-mi-locul'
     ]);
     expect(root.querySelector('nav.footer-links')).toBeNull();
     expect(root.querySelectorAll('footer.site-footer a[href^="/"]').length).toBe(0);
@@ -76,12 +76,12 @@ describe('AppComponent', () => {
     await router.navigateByUrl('/public');
     fixture.detectChanges();
 
-    const link = fixture.nativeElement.querySelector('.nav-chips a[href="/properties"]') as HTMLAnchorElement;
+    const link = fixture.nativeElement.querySelector('.nav-chips a[href="/proprietati"]') as HTMLAnchorElement;
     link.click();
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(router.url).toBe('/properties');
+    expect(router.url).toBe('/proprietati');
     expect(fixture.nativeElement.querySelector('router-outlet + *')?.textContent).toContain('Pagină publică');
   });
 
@@ -89,7 +89,7 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const navigateSpy = spyOn(TestBed.inject(Router), 'navigateByUrl').and.resolveTo(true);
-    const link = fixture.debugElement.query(By.css('.nav-chips a[href="/properties"]'));
+    const link = fixture.debugElement.query(By.css('.nav-chips a[href="/proprietati"]'));
 
     for (const event of [
       new MouseEvent('click', { ctrlKey: true, button: 0 }),
@@ -154,14 +154,14 @@ describe('AppComponent', () => {
     // PrimeNG appends the open popover to document.body, outside the fixture root.
     const links = Array.from(document.querySelectorAll('.mobile-menu-panel .mobile-menu-list a')) as HTMLAnchorElement[];
     expect(links.map(link => link.getAttribute('href'))).toEqual([
-      '/under-the-mountain', '/village-of-the-month', '/properties', '/homes'
+      '/oltenia-de-sub-munte', '/satul-lunii', '/proprietati', '/gaseste-mi-locul'
     ]);
-    links.find(link => link.getAttribute('href') === '/properties')!.click();
+    links.find(link => link.getAttribute('href') === '/proprietati')!.click();
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(router.url).toBe('/properties');
+    expect(router.url).toBe('/proprietati');
     expect(document.querySelector('.mobile-menu-panel .mobile-menu-list')).toBeNull();
   });
 
@@ -202,7 +202,7 @@ describe('AppComponent', () => {
       expect(meta.getTag('name="robots"')?.content).toBe('noindex, nofollow');
       if (path === '/missing-page') {
         expect(TestBed.inject(Title).getTitle()).toContain('Pagina nu a fost găsită');
-        expect(fixture.nativeElement.querySelector('a[href="/properties"]')).toBeTruthy();
+        expect(fixture.nativeElement.querySelector('a[href="/proprietati"]')).toBeTruthy();
       }
 
       await router.navigateByUrl('/public');

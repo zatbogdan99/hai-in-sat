@@ -66,11 +66,11 @@ export class FormPageComponent implements OnInit, AfterViewInit{
     this.seo.updatePageMeta({
       title: 'Găsește-ți casa sau terenul ideal în Oltenia de sub Munte',
       description: 'Completează formularul și echipa noastră te ajută să găsești casa tradițională sau terenul perfect în sate din Oltenia de sub Munte, județul Vâlcea.',
-      canonicalPath: '/homes'
+      canonicalPath: '/gaseste-mi-locul'
     });
     this.seo.setBreadcrumbs([
       { name: 'Acasă', path: '/' },
-      { name: 'Găsește-mi locul', path: '/homes' }
+      { name: 'Găsește-mi locul', path: '/gaseste-mi-locul' }
     ]);
 
     this.formGroup = this.formBuilder.group(

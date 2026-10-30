@@ -354,7 +354,7 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
     this.api.play();
   }
 
-  /** Satul din adresă: titlu, descriere, canonical și breadcrumbs proprii (înainte rămâneau cele de pe /under-the-mountain). */
+  /** Satul din adresă: titlu, descriere, canonical și breadcrumbs proprii (înainte rămâneau cele de pe /oltenia-de-sub-munte). */
   private selectVillage(slug: string | null): void {
     const village = villageBySlug(slug);
     this.villageNotFound = !village;
@@ -375,7 +375,7 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
     });
     this.seo.setBreadcrumbs([
       { name: 'Acasă', path: '/' },
-      { name: 'Oltenia de sub Munte', path: '/under-the-mountain' },
+      { name: 'Oltenia de sub Munte', path: '/oltenia-de-sub-munte' },
       { name: village.name, path }
     ]);
   }

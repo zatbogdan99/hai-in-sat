@@ -115,9 +115,9 @@ async function main() {
     assert.equal(elements(parse(result.html)).filter(node => node.tagName === 'h1').length, 1,
       `${host}: expected fully rendered HTML, not a CSR fallback`);
   }
-  const unknownHost = await request('/properties?type=land', { headers: { Host: 'untrusted.invalid' } });
+  const unknownHost = await request('/proprietati?type=land', { headers: { Host: 'untrusted.invalid' } });
   assert.equal(unknownHost.status, 301);
-  assert.equal(unknownHost.headers.location, 'https://xn--hai-n-sat-t5a.ro/properties?type=land');
+  assert.equal(unknownHost.headers.location, 'https://xn--hai-n-sat-t5a.ro/proprietati?type=land');
 
   const first = await request('/');
   verify(first, 200, 'MISS', true);
@@ -142,44 +142,44 @@ async function main() {
     }
   }
 
-  for (let count = 0; count < 2; count++) verify(await request('/properties'), 200, 'MISS');
+  for (let count = 0; count < 2; count++) verify(await request('/proprietati'), 200, 'MISS');
   writeFileSync(fixtureState, JSON.stringify({ listError: false }));
-  verify(await request('/properties'), 200, 'MISS', true);
-  verify(await request('/properties'), 200, 'HIT', true);
+  verify(await request('/proprietati'), 200, 'MISS', true);
+  verify(await request('/proprietati'), 200, 'HIT', true);
   // TASK-132 / GHSA-ff3f-86qr-9cv3: a single short numeric matrix-parameter
   // request exercises the patched router without running a DoS load test.
   verify(await request('/properties;990;2522'), 200, 'MISS', true);
-  verify(await request('/properties'), 200, 'HIT', true);
-  for (const url of ['/properties?page=2', '/properties?__proto__=ignored', '/properties?']) {
+  verify(await request('/proprietati'), 200, 'HIT', true);
+  for (const url of ['/proprietati?page=2', '/proprietati?__proto__=ignored', '/proprietati?']) {
     for (let count = 0; count < 2; count++) verify(await request(url), 200, 'MISS');
   }
 
   for (let count = 0; count < 2; count++) {
     for (const url of ['/this-page-does-not-exist', '/.well-known/ai-policy',
-      '/property/00000000-0000-0000-0000-000000000000/orice-slug']) {
+      '/proprietati/00000000-0000-0000-0000-000000000000/orice-slug']) {
       const result = await request(url);
       verify(result, 404, 'MISS');
       assert.equal(result.headers['x-robots-tag'], 'noindex, nofollow');
-      assert.ok(result.html.includes('href="/properties"'));
+      assert.ok(result.html.includes('href="/proprietati"'));
     }
-    const unavailable = await request('/property/22222222-2222-2222-2222-222222222222/orice-slug');
+    const unavailable = await request('/proprietati/22222222-2222-2222-2222-222222222222/orice-slug');
     verify(unavailable, 503, 'MISS');
     assert.equal(unavailable.headers['retry-after'], '60');
     assert.equal(unavailable.headers['x-robots-tag'], 'noindex, nofollow');
   }
   // Pozele nu se mai cer pe server (le cere browserul după hidratare), deci un /get-photos căzut nu mai
   // degradează HTML-ul: pagina rămâne publică și intră în cache.
-  const photosDown = '/property/33333333-3333-3333-3333-333333333333/teren-de-vanzare-proprietate-test';
+  const photosDown = '/proprietati/33333333-3333-3333-3333-333333333333/teren-de-vanzare-proprietate-test';
   verify(await request(photosDown), 200, 'MISS', true);
   verify(await request(photosDown), 200, 'HIT', true);
-  const valid = '/property/11111111-1111-1111-1111-111111111111/teren-de-vanzare-proprietate-test';
+  const valid = '/proprietati/11111111-1111-1111-1111-111111111111/teren-de-vanzare-proprietate-test';
   verify(await request(valid), 200, 'MISS', true);
   verify(await request(valid), 200, 'HIT', true);
 
-  verify(await request('/under-the-mountain', { method: 'HEAD' }), 200, 'MISS');
-  verify(await request('/under-the-mountain'), 200, 'MISS', true);
-  verify(await request('/under-the-mountain', { method: 'HEAD' }), 200, 'MISS');
-  verify(await request('/under-the-mountain'), 200, 'HIT', true);
+  verify(await request('/oltenia-de-sub-munte', { method: 'HEAD' }), 200, 'MISS');
+  verify(await request('/oltenia-de-sub-munte'), 200, 'MISS', true);
+  verify(await request('/oltenia-de-sub-munte', { method: 'HEAD' }), 200, 'MISS');
+  verify(await request('/oltenia-de-sub-munte'), 200, 'HIT', true);
   // Pagina „Despre noi” a fost scoasă: adresa veche duce permanent la prima pagină.
   for (const old of ['/about-us', '/about-us/']) {
     const moved = await request(old);
@@ -192,18 +192,39 @@ async function main() {
     assert.equal(moved.status, 301, `${old} must redirect permanently`);
     assert.equal(moved.headers.location, '/');
   }
-  // „Vezi zona” a fost scoasă; terenurile ei sunt anunțuri în /properties.
+  // „Vezi zona” a fost scoasă; terenurile ei sunt anunțuri în /proprietati.
   for (const old of ['/see-the-area', '/see-the-area/']) {
     const moved = await request(old);
     assert.equal(moved.status, 301, `${old} must redirect permanently`);
-    assert.equal(moved.headers.location, '/properties');
+    assert.equal(moved.headers.location, '/proprietati');
   }
   // /info-page depindea de satul ales în memorie; fiecare sat are acum /sate/:slug, iar adresa veche duce la listă.
   for (const old of ['/info-page', '/info-page/']) {
     const moved = await request(old);
     assert.equal(moved.status, 301, `${old} must redirect permanently`);
-    assert.equal(moved.headers.location, '/under-the-mountain');
+    assert.equal(moved.headers.location, '/oltenia-de-sub-munte');
   }
+  // TASK-143: căile vechi, în engleză, duc într-un singur pas la cele în română, cu query string-ul păstrat.
+  const renamed = [
+    ['/properties', '/proprietati'], ['/properties/', '/proprietati'],
+    ['/properties?page=1&size=6&type=house', '/proprietati?page=1&size=6&type=house'],
+    ['/under-the-mountain', '/oltenia-de-sub-munte'], ['/under-the-mountain/', '/oltenia-de-sub-munte'],
+    ['/village-of-the-month', '/satul-lunii'], ['/homes', '/gaseste-mi-locul'], ['/homes/', '/gaseste-mi-locul'],
+    ['/property/11111111-1111-1111-1111-111111111111/teren-de-vanzare-proprietate-test',
+      '/proprietati/11111111-1111-1111-1111-111111111111/teren-de-vanzare-proprietate-test'],
+    ['/property/11111111-1111-1111-1111-111111111111/teren-de-vanzare-proprietate-test?page=1&size=6&type=land',
+      '/proprietati/11111111-1111-1111-1111-111111111111/teren-de-vanzare-proprietate-test?page=1&size=6&type=land'],
+    ['/property/11111111-1111-1111-1111-111111111111', '/proprietati/11111111-1111-1111-1111-111111111111'],
+  ];
+  for (const [old, target] of renamed) {
+    for (const method of ['GET', 'HEAD']) {
+      const moved = await request(old, { method });
+      assert.equal(moved.status, 301, `${method} ${old} must redirect permanently`);
+      assert.equal(moved.headers.location, target, `${old} must redirect in one step to ${target}`);
+    }
+  }
+  verify(await request('/proprietati/11111111-1111-1111-1111-111111111111/teren-de-vanzare-proprietate-test'), 200, 'HIT', true);
+  console.log(`PASS ${renamed.length} English paths -> 301 to the Romanian ones, query string kept`);
   const village = await request('/sate/polovragi');
   verify(village, 200, 'MISS', true);
   assert.ok(village.html.includes('<title>Polovragi – sat în Oltenia de sub Munte | Hai în Sat</title>'), 'village title');
@@ -219,11 +240,11 @@ async function main() {
   });
   assert.equal(cspReport.status, 204);
   console.log('PASS POST /csp-report -> 204');
-  const redirect = await request('/properties?type=land', { headers: {
+  const redirect = await request('/proprietati?type=land', { headers: {
     Host: 'www.xn--hai-n-sat-t5a.ro', 'X-Forwarded-Proto': 'https',
   } });
   assert.equal(redirect.status, 301);
-  assert.equal(redirect.headers.location, 'https://xn--hai-n-sat-t5a.ro/properties?type=land');
+  assert.equal(redirect.headers.location, 'https://xn--hai-n-sat-t5a.ro/proprietati?type=land');
 
   // Politicile statice sunt independente de cache-ul HTML și de query string.
   const browser = path.join(root, 'dist/hai-in-sat/browser');
@@ -261,8 +282,8 @@ async function main() {
     verify(await request(url), 404, 'MISS');
   }
   // TASK-118: toate rutele statice, plus un anunț cu telefoane în nume/descriere.
-  for (const url of ['/', '/homes', '/sate/horezu', '/under-the-mountain',
-    '/properties', '/village-of-the-month', '/login', '/add-property']) {
+  for (const url of ['/', '/gaseste-mi-locul', '/sate/horezu', '/oltenia-de-sub-munte',
+    '/proprietati', '/satul-lunii', '/login', '/add-property']) {
     const result = await request(url);
     const { nodes } = verifySeoPhones(result);
     // Telefonul oficial stă în fereastra Contact (nu e în HTML-ul SSR); orice link tel: randat e numărul oficial.
@@ -278,7 +299,7 @@ async function main() {
     thumbnail: '/assets/poza_landing1.avif',
   };
   writeFileSync(fixtureState, JSON.stringify({ property: seoProperty, properties: [seoProperty] }));
-  const listingUrl = `/property/${seoProperty.id}/teren-de-vanzare-proprietate-test-40-768-915-198`;
+  const listingUrl = `/proprietati/${seoProperty.id}/teren-de-vanzare-proprietate-test-40-768-915-198`;
   for (const expectedCache of ['MISS', 'HIT']) {
     const result = await request(listingUrl);
     verify(result, 200, expectedCache, true);
@@ -290,8 +311,8 @@ async function main() {
     assert.ok(nodes.some(node => attr(node, 'class')?.split(' ').includes('property-description') &&
       textContent(node).includes('+40\u00a0728\u00a0140\u00a0628')));
   }
-  // Query-ul evită intrarea goală /properties deja salvată în cache în scenariile anterioare.
-  const cards = verifySeoPhones(await request('/properties?seo-test=1')).nodes;
+  // Query-ul evită intrarea goală /proprietati deja salvată în cache în scenariile anterioare.
+  const cards = verifySeoPhones(await request('/proprietati?seo-test=1')).nodes;
   const imageAlts = cards.filter(node => node.tagName === 'img').map(node => attr(node, 'alt'));
   assert.ok(imageAlts.includes('Teren de vânzare: Proprietate test - Teren 1.250 mp, preț 75.000 euro. Telefon: și'));
   const llms = await request('/llms.txt');
@@ -311,9 +332,9 @@ async function main() {
   // TASK-120: represent every indexed property with local data whose name/type
   // reproduces its real slug. The fixture respects filtering and pagination;
   // no sitemap rewrite or production API request is needed for this crawl.
-  const propertyUrls = sitemapUrls.filter(url => url.pathname.startsWith('/property/'));
+  const propertyUrls = sitemapUrls.filter(url => url.pathname.startsWith('/proprietati/'));
   const catalog = propertyUrls.map((url, sortOrder) => {
-    const match = url.pathname.match(/^\/property\/([^/]+)\/(teren|casa)-de-vanzare-(.+)$/);
+    const match = url.pathname.match(/^\/proprietati\/([^/]+)\/(teren|casa)-de-vanzare-(.+)$/);
     assert.ok(match, `Unsupported property sitemap URL: ${url.pathname}`);
     return {
       id: match[1], type: match[2] === 'casa' ? 'house' : 'land',
@@ -342,6 +363,9 @@ async function main() {
       const destination = new URL(href, localOrigin);
       assert.equal(destination.origin, localOrigin, `${result.url}: expected a local internal href`);
       assert.ok(!['/sate', '/articole'].includes(destination.pathname), `${result.url}: link to a route that does not exist`);
+      // TASK-143: niciun link intern spre căile vechi, în engleză (ar trece printr-un 301).
+      assert.ok(!/^\/(properties|property|under-the-mountain|village-of-the-month|homes)(\/|$)/.test(destination.pathname),
+        `${result.url}: internal link to an old English path ${href}`);
       if (destination.pathname !== sourcePath) incoming.get(destination.pathname)?.add(result.url);
     }
     return { anchors, hrefs };
@@ -364,10 +388,10 @@ async function main() {
     indexedPages.push({ url: result.url, internalLinkCount: hrefs.length, internalLinks: hrefs });
   }
 
-  // The initial query bypasses /properties cached while the earlier API-failure
+  // The initial query bypasses /proprietati cached while the earlier API-failure
   // scenario had an empty list. Every later listing URL must be discovered in
   // rendered HTML, including the house filter and subsequent land pages.
-  const queue = ['/properties?type=land&page=0&size=6'];
+  const queue = ['/proprietati?type=land&page=0&size=6'];
   const visited = new Set();
   while (queue.length) {
     const next = new URL(queue.shift(), localOrigin);
@@ -389,10 +413,10 @@ async function main() {
     const actualPropertyPaths = new Set();
     for (const anchor of anchors) {
       const destination = new URL(attr(anchor, 'href'), localOrigin);
-      if (destination.pathname === '/properties' && destination.search) {
+      if (destination.pathname === '/proprietati' && destination.search) {
         queue.push(destination.pathname + destination.search);
       }
-      if (!destination.pathname.startsWith('/property/')) continue;
+      if (!destination.pathname.startsWith('/proprietati/')) continue;
       const id = destination.pathname.split('/')[2];
       assert.equal(destination.pathname, propertyPaths.get(id), `${requestPath}: incorrect property ID or slug`);
       for (const [key, expected] of [['page', String(page)], ['size', String(size)], ['type', type]]) {

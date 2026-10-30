@@ -99,7 +99,7 @@ test('only the 100 most recently used pages remain; a HIT affects eviction but n
   assert.equal(h.cache.tryServe(request('/page-0'), response().res), true);
 });
 
-for (const url of ['/properties?page=2', '/properties?__proto__=ignored', '/properties?',
+for (const url of ['/proprietati?page=2', '/proprietati?__proto__=ignored', '/proprietati?',
   '/login', '/add-property', '/login/', '/login;source=test', '/%6cogin',
   '//login', '/(primary:login)', '/(primary:add-property)', '/%invalid']) {
   test(`bypasses both read and write for ${url}`, () => {
@@ -171,5 +171,5 @@ test('administrative path recognition covers Angular encoded, matrix and outlet 
     assert.equal(isPrivateSsrPath(path), true, path);
   }
   assert.equal(isPrivateSsrPath('/login-help'), false);
-  assert.equal(isPrivateSsrPath('/properties'), false);
+  assert.equal(isPrivateSsrPath('/proprietati'), false);
 });

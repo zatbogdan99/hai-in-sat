@@ -171,13 +171,13 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
         const slug = generateSlug(type, prop.name);
         const currentSlug = this.route.snapshot.params['slug'];
         if (!currentSlug || currentSlug !== slug) {
-          this.router.navigate(['/property', this.propertyId, slug], {
+          this.router.navigate(['/proprietati', this.propertyId, slug], {
             replaceUrl: true,
             queryParamsHandling: 'preserve'
           });
         }
 
-        const canonicalPath = `/property/${this.propertyId}/${slug}`;
+        const canonicalPath = `/proprietati/${this.propertyId}/${slug}`;
         const seoName = stripPhones(prop.name);
         const plainDescription = stripPhones(this.htmlText.htmlToText(prop.description));
         const seoImage = this.seoImageFor(prop.thumbnail);
@@ -198,7 +198,7 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
 
         this.seo.setBreadcrumbs([
           { name: 'Acasă', path: '/' },
-          { name: 'Proprietăți', path: '/properties' },
+          { name: 'Proprietăți', path: '/proprietati' },
           { name: prop.name, path: canonicalPath }
         ]);
 
@@ -225,7 +225,7 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
         this.logger.error('Failed to load property details', err);
         if (this.isTransientUpstreamError(err)) {
           this.loadingService.loadingOff();
-          this.router.navigate(['/properties']);
+          this.router.navigate(['/proprietati']);
           return;
         }
         this.showNotFound();

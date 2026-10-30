@@ -191,9 +191,9 @@ async function runViewport(viewport) {
       await page.locator('button.topbar__menu-button').click();
       await page.locator('.mobile-menu-panel').waitFor({state:'visible'});
       await capture(page, viewport.name, 'menu');
-      await page.locator('.mobile-menu-panel a[href="/properties"]').click();
+      await page.locator('.mobile-menu-panel a[href="/proprietati"]').click();
       await page.locator('.mobile-menu-panel').waitFor({state:'hidden'});
-    } else await page.locator('.nav-chips a[href="/properties"]').click();
+    } else await page.locator('.nav-chips a[href="/proprietati"]').click();
     await countCards(6);
     assert.equal(await page.locator('p-button button[autofocus]').count(), 0, 'Properties buttons must not acquire native autofocus');
     pass('desktop/mobile menu navigation');
@@ -204,7 +204,7 @@ async function runViewport(viewport) {
     await newTab.bringToFront();
     await newTab.waitForLoadState('domcontentloaded');
     await newTab.locator('.property-title').waitFor();
-    assert.match(newTab.url(), /\/property\//);
+    assert.match(newTab.url(), /\/proprietati\//);
     await newTab.close();
     await page.bringToFront();
     pass('property opens in a new tab');
@@ -252,8 +252,8 @@ async function runViewport(viewport) {
     pass('property contact validation, autocomplete, mocked submission');
     if (viewport.width < 1200) {
       await page.locator('button.topbar__menu-button').click();
-      await page.locator('.mobile-menu-panel a[href="/homes"]').click();
-    } else await page.locator('.nav-chips a[href="/homes"]').click();
+      await page.locator('.mobile-menu-panel a[href="/gaseste-mi-locul"]').click();
+    } else await page.locator('.nav-chips a[href="/gaseste-mi-locul"]').click();
     await page.locator('.form-hero-title').waitFor();
     await capture(page, viewport.name, 'home-form');
     const visible = selector => page.locator(`${selector}:visible`);
@@ -274,7 +274,7 @@ async function runViewport(viewport) {
     await capture(page, viewport.name, 'contact');
     await page.keyboard.press('Escape');
     pass('footer contact dialog');
-    await go('/properties');
+    await go('/proprietati');
     assert.equal(await page.locator('p-button button[autofocus]').count(), 0, 'Direct properties load must not autofocus buttons');
     pass('direct home/properties loads preserve initial focus');
     await go('/add-property');
@@ -309,7 +309,7 @@ async function runViewport(viewport) {
     console.error(`FAIL ${viewport.name}: ${error.stack}`);
   }
   try {
-    await go('/under-the-mountain');
+    await go('/oltenia-de-sub-munte');
     const header = await headerAfterScroll(page);
     if (viewport.width >= 1200) assert.equal(header.top, 0, `Desktop header must stay at the top: ${JSON.stringify(header)}`);
     else assert.ok(header.bottom <= 0, `Phone header must scroll away: ${JSON.stringify(header)}`);
@@ -364,7 +364,7 @@ async function checkVillageAutoplay(viewport) {
   // Swiper ignoră intenționat un click venit în timpul unei tranziții (loopPreventsSliding): așteptăm finalul ei.
   const idle = () => page.waitForFunction(() => !document.querySelector('swiper-container').swiper.animating);
   try {
-    await page.goto(origin + '/under-the-mountain');
+    await page.goto(origin + '/oltenia-de-sub-munte');
     await page.waitForFunction(() => document.querySelector('swiper-container')?.swiper?.autoplay?.running);
     assert.equal(await page.locator('.discover__autoplay').count(), 0, 'The carousel has no Pause/Play button');
     await advances(await index());
@@ -384,8 +384,8 @@ async function checkVillageAutoplay(viewport) {
     await page.mouse.move(0, 0);
     await page.waitForTimeout(10000);
     assert.equal(await index(), stopped, 'An arrow click must stop the autoplay until the page is entered again');
-    await page.goto(origin + '/properties');
-    await page.goto(origin + '/under-the-mountain');
+    await page.goto(origin + '/proprietati');
+    await page.goto(origin + '/oltenia-de-sub-munte');
     await page.waitForFunction(() => document.querySelector('swiper-container')?.swiper?.autoplay?.running);
     await advances(await index());
     console.log(`PASS ${viewport.name}: village autoplay every 5 s, ${viewport.width >= 600 ? 'hover pause, ' : ''}stop on arrow, restart on a new visit`);
@@ -404,11 +404,11 @@ async function checkTypography(viewport) {
   const page = await context.newPage();
   const pages = [
     ['/', '.about__text p'],
-    ['/under-the-mountain', '.why__text p, .feel__text p'],
-    ['/village-of-the-month', '.text-style p'],
+    ['/oltenia-de-sub-munte', '.why__text p, .feel__text p'],
+    ['/satul-lunii', '.text-style p'],
     ['/sate/horezu', '.info-page-bg p, .info-page-bg li:not(.p-galleria-indicator)'],
     ['/sate/vaideeni', '.info-page-bg p, .info-page-bg li:not(.p-galleria-indicator)'],
-    [`/property/${catalog[0].id}/teren-de-vanzare-teren-cu-livada-in-costesti-1`, '.property-description'],
+    [`/proprietati/${catalog[0].id}/teren-de-vanzare-teren-cu-livada-in-costesti-1`, '.property-description'],
     ['dialog', '.dialog-scroll p'],
   ];
   const samples = [];
@@ -510,7 +510,7 @@ async function compare() {
       const context = await browser.newContext({ viewport: { width: 844, height: 390 }, deviceScaleFactor: 1, isMobile: true, hasTouch: true, reducedMotion: 'reduce' });
       await context.route('**/*', route => new URL(route.request().url()).origin === origin ? route.continue() : route.abort('blockedbyclient'));
       const page = await context.newPage();
-      await page.goto(origin + '/under-the-mountain');
+      await page.goto(origin + '/oltenia-de-sub-munte');
       await settled(page);
       const header = await headerAfterScroll(page);
       await context.close();

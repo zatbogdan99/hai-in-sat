@@ -5,7 +5,7 @@ import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
  * Videoul YouTube ca simplu iframe youtube-nocookie, încărcat leneș.
  *
  * Înainte, index.html încărca sincron API-ul IFrame pe toate paginile, iar playerul ieșea fără să mai încerce
- * dacă API-ul nu era încă gata: la una din două încărcări, pe /village-of-the-month nu apărea niciun video.
+ * dacă API-ul nu era încă gata: la una din două încărcări, pe /satul-lunii nu apărea niciun video.
  * Iframe-ul nu depinde de niciun script și se încarcă abia când ajunge aproape de ecran.
  */
 @Component({

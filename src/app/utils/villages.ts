@@ -1,5 +1,5 @@
 /**
- * Satele prezentate pe /under-the-mountain, fiecare cu adresa lui (/sate/:slug). Id-ul e indexul satului în
+ * Satele prezentate pe /oltenia-de-sub-munte, fiecare cu adresa lui (/sate/:slug). Id-ul e indexul satului în
  * datele din InfoPageComponent și UnderTheMountainComponent. Aceleași adrese stau în sitemap.xml și llms.txt
  * (scripts/generate-sitemap.js are lista duplicată): păstrează-le sincronizate.
  */
@@ -25,5 +25,5 @@ export function villageBySlug(slug: string | null | undefined): Village | undefi
 
 export function villagePath(id: number): string {
   const village = VILLAGES.find(candidate => candidate.id === id);
-  return village ? `/sate/${village.slug}` : '/under-the-mountain';
+  return village ? `/sate/${village.slug}` : '/oltenia-de-sub-munte';
 }

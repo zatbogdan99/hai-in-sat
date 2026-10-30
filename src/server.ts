@@ -103,6 +103,28 @@ export function app(): express.Express {
     res.status(204).end();
   });
 
+  // Căile publice sunt în română. Adresele vechi, în engleză (Google, linkuri distribuite), duc permanent la cele noi,
+  // într-un singur pas, cu și fără slash final, cu query string-ul păstrat (?page=&size=&type= rămân în engleză).
+  const renamedPaths: Record<string, string> = {
+    '/properties': '/proprietati',
+    '/under-the-mountain': '/oltenia-de-sub-munte',
+    '/village-of-the-month': '/satul-lunii',
+    '/homes': '/gaseste-mi-locul',
+  };
+  server.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+    if (req.method !== 'GET' && req.method !== 'HEAD') {
+      return next();
+    }
+    const path = req.path.length > 1 ? req.path.replace(/\/$/, '') : req.path;
+    const property = /^\/property\/([^/]+)(?:\/([^/]+))?$/.exec(path);
+    const target = renamedPaths[path] ?? (property ? `/proprietati/${property[1]}${property[2] ? `/${property[2]}` : ''}` : undefined);
+    if (!target) {
+      return next();
+    }
+    const query = req.originalUrl.indexOf('?');
+    res.redirect(301, target + (query >= 0 ? req.originalUrl.slice(query) : ''));
+  });
+
   // Pagina „Despre noi” a fost scoasă: adresa veche (sitemap, Google, linkuri externe) duce la prima pagină,
   // unde secțiunea „Cu ce ne ocupăm” are cel mai apropiat conținut.
   server.get(['/about-us', '/about-us/'], (_req: express.Request, res: express.Response) => {
@@ -115,16 +137,16 @@ export function app(): express.Express {
     res.redirect(301, '/');
   });
 
-  // Pagina „Vezi zona” a fost scoasă: terenurile din ramura „Cumpără” sunt anunțuri în /properties,
+  // Pagina „Vezi zona” a fost scoasă: terenurile din ramura „Cumpără” sunt anunțuri în /proprietati,
   // iar „Închiriază” n-avea oferte. Adresa veche (sitemap, linkuri externe) duce la listă.
   server.get(['/see-the-area', '/see-the-area/'], (_req: express.Request, res: express.Response) => {
-    res.redirect(301, '/properties');
+    res.redirect(301, '/proprietati');
   });
 
   // /info-page arăta satul ales anterior în memorie (direct: satul lunii). Fiecare sat are acum /sate/:slug,
   // iar adresa veche duce la lista satelor.
   server.get(['/info-page', '/info-page/'], (_req: express.Request, res: express.Response) => {
-    res.redirect(301, '/under-the-mountain');
+    res.redirect(301, '/oltenia-de-sub-munte');
   });
 
   // Paginile administrative rămân accesibile, dar nu trebuie indexate.
@@ -258,7 +280,7 @@ function renderSsrServiceUnavailablePage(): string {
   <main>
     <h1>Serviciul este temporar indisponibil</h1>
     <p>Pagina proprietății nu poate fi încărcată acum. Te rugăm să revii peste puțin timp.</p>
-    <p><a href="/properties">Vezi lista de proprietăți</a></p>
+    <p><a href="/proprietati">Vezi lista de proprietăți</a></p>
   </main>
 </body>
 </html>`;

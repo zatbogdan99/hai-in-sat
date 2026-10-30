@@ -8,10 +8,10 @@
     </div>
     <div class="topbar__center">
       <nav class="nav-chips" aria-label="Meniu principal">
-        <a class="navigation-link" routerLink="/under-the-mountain" routerLinkActive="is-active" ariaCurrentWhenActive="page"><p-chip class="clickable topchip" icon="pi pi-sun" label="Oltenia de sub Munte"></p-chip></a>
-        <a class="navigation-link" routerLink="/village-of-the-month" routerLinkActive="is-active" ariaCurrentWhenActive="page"><p-chip class="clickable topchip" icon="pi pi-home" label="Sate în Oltenia de sub Munte"></p-chip></a>
-        <a class="navigation-link" routerLink="/properties" routerLinkActive="is-active" ariaCurrentWhenActive="page"><p-chip class="clickable topchip" icon="pi pi-eye" label="Proprietăți"></p-chip></a>
-        <a class="navigation-link" routerLink="/homes" routerLinkActive="is-active" ariaCurrentWhenActive="page"><p-chip class="clickable topchip" icon="pi pi-home" label="Găsește-mi locul"></p-chip></a>
+        <a class="navigation-link" routerLink="/oltenia-de-sub-munte" routerLinkActive="is-active" ariaCurrentWhenActive="page"><p-chip class="clickable topchip" icon="pi pi-sun" label="Oltenia de sub Munte"></p-chip></a>
+        <a class="navigation-link" routerLink="/satul-lunii" routerLinkActive="is-active" ariaCurrentWhenActive="page"><p-chip class="clickable topchip" icon="pi pi-home" label="Sate în Oltenia de sub Munte"></p-chip></a>
+        <a class="navigation-link" routerLink="/proprietati" routerLinkActive="is-active" ariaCurrentWhenActive="page"><p-chip class="clickable topchip" icon="pi pi-eye" label="Proprietăți"></p-chip></a>
+        <a class="navigation-link" routerLink="/gaseste-mi-locul" routerLinkActive="is-active" ariaCurrentWhenActive="page"><p-chip class="clickable topchip" icon="pi pi-home" label="Găsește-mi locul"></p-chip></a>
       </nav>
       <button #menuButton type="button" class="topbar__menu-button" aria-label="Meniu" aria-controls="meniu-mobil"
               [attr.aria-expanded]="menuOpen" (click)="mobileMenu.toggle($event)">
@@ -20,10 +20,10 @@
       <p-popover #mobileMenu ariaLabel="Meniu" [dismissable]="true" [baseZIndex]="10000" styleClass="mobile-menu-panel"
                  (onShow)="onMenuShow()" (onHide)="onMenuHide()">
         <nav id="meniu-mobil" class="mobile-menu-list" aria-label="Meniu principal" (keydown)="trapMenuFocus($event)">
-          <a class="navigation-link" routerLink="/under-the-mountain" (click)="mobileMenu.hide()"><p-chip class="clickable topchip" icon="pi pi-sun" label="Oltenia de sub Munte"></p-chip></a>
-          <a class="navigation-link" routerLink="/village-of-the-month" (click)="mobileMenu.hide()"><p-chip class="clickable topchip" icon="pi pi-home" label="Sate în Oltenia de sub Munte"></p-chip></a>
-          <a class="navigation-link" routerLink="/properties" (click)="mobileMenu.hide()"><p-chip class="clickable topchip" icon="pi pi-eye" label="Proprietăți"></p-chip></a>
-          <a class="navigation-link" routerLink="/homes" (click)="mobileMenu.hide()"><p-chip class="clickable topchip" icon="pi pi-home" label="Găsește-mi locul"></p-chip></a>
+          <a class="navigation-link" routerLink="/oltenia-de-sub-munte" (click)="mobileMenu.hide()"><p-chip class="clickable topchip" icon="pi pi-sun" label="Oltenia de sub Munte"></p-chip></a>
+          <a class="navigation-link" routerLink="/satul-lunii" (click)="mobileMenu.hide()"><p-chip class="clickable topchip" icon="pi pi-home" label="Sate în Oltenia de sub Munte"></p-chip></a>
+          <a class="navigation-link" routerLink="/proprietati" (click)="mobileMenu.hide()"><p-chip class="clickable topchip" icon="pi pi-eye" label="Proprietăți"></p-chip></a>
+          <a class="navigation-link" routerLink="/gaseste-mi-locul" (click)="mobileMenu.hide()"><p-chip class="clickable topchip" icon="pi pi-home" label="Găsește-mi locul"></p-chip></a>
         </nav>
       </p-popover>
     </div>
