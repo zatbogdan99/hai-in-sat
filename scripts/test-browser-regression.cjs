@@ -593,43 +593,6 @@ async function checkDescriptionCentering(width) {
   } finally { await context.close(); }
 }
 
-// TASK-141: pe desktop, descrierea anunțului fără video stă pe mijlocul pozei; dacă e mai înaltă, începe sus.
-async function checkDescriptionCentering(width) {
-  const context = await browser.newContext({ viewport: { width, height: 900 }, deviceScaleFactor: 1, reducedMotion: 'reduce' });
-  await context.route('**/*', route => {
-    const url = new URL(route.request().url());
-    if (url.origin === origin) return route.continue();
-    if (url.origin === apiOrigin) return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(apiResponse(url)) });
-    return route.abort('blockedbyclient');
-  });
-  const page = await context.newPage();
-  try {
-    for (const [index, kind] of [[0, 'short'], [1, 'long']]) {
-      const property = catalog[index];
-      await page.goto(`${origin}/proprietati/${property.id}/teren-de-vanzare-test`);
-      await page.waitForFunction(() => document.querySelector('.gallery-counter')?.textContent?.trim() === '1 / 3');
-      await page.waitForFunction(() => document.querySelectorAll('.content-section .thumb-strip button.thumb').length === 3);
-      await settled(page);
-      const m = await page.evaluate(() => {
-        const r = s => document.querySelector(s).getBoundingClientRect();
-        const text = r('.content-section > .property-description'), photo = r('.content-section .gallery'), thumbs = r('.content-section .thumb-strip');
-        return { textTop: text.top, textCenter: (text.top + text.bottom) / 2, textHeight: text.height, photoTop: photo.top, photoCenter: (photo.top + photo.bottom) / 2,
-          photoHeight: photo.height, gap: thumbs.top - photo.bottom, width: document.documentElement.scrollWidth, viewport: innerWidth };
-      });
-      if (kind === 'short') {
-        assert.ok(m.textHeight < m.photoHeight, `short description must be lower than the photo ${JSON.stringify(m)}`);
-        assert.ok(Math.abs(m.textCenter - m.photoCenter) <= 4, `description centre ${m.textCenter} vs photo centre ${m.photoCenter}`);
-      } else {
-        assert.ok(m.textHeight > m.photoHeight, `long description must be taller than the photo ${JSON.stringify(m)}`);
-        assert.ok(Math.abs(m.textTop - m.photoTop) <= 2, `long description top ${m.textTop} vs photo top ${m.photoTop}`);
-      }
-      assert.ok(Math.abs(m.gap - 4) <= 1, `thumbnails stay right under the photo (gap ${m.gap})`);
-      assert.equal(m.width, m.viewport, 'no horizontal scroll');
-    }
-    console.log(`PASS description-${width}: short description centred on the photo, long one starts at the photo top, thumbnails under the photo`);
-  } finally { await context.close(); }
-}
-
 // TASK-142: „Pastilă pentru suflet” se termină cu cel puțin 48 px deasupra footerului, iar video-ul încape sub antet.
 async function checkSoulSection(width, height) {
   const context = await browser.newContext({ viewport: { width, height }, deviceScaleFactor: 1, reducedMotion: 'reduce' });
@@ -683,6 +646,7 @@ async function compare() {
       await checkVillageAutoplay(viewport).catch(error => { report.failures.push({ viewport: viewport.name, suite: 'autoplay', error: String(error), stack: error.stack }); console.error(`FAIL ${viewport.name} autoplay: ${error.stack}`); });
     }
     if (!option('--viewport')) {
+      for (const [width, height] of [[1440, 789], [1920, 960]]) await checkSoulSection(width, height).catch(error => { report.failures.push({ suite: `soul-${width}`, error: String(error), stack: error.stack }); console.error(`FAIL soul ${width}x${height}: ${error.stack}`); });
       for (const width of [1280, 1440]) await checkDescriptionCentering(width).catch(error => { report.failures.push({ suite: `description-${width}`, error: String(error), stack: error.stack }); console.error(`FAIL description ${width}: ${error.stack}`); });
       for (const width of [1280, 1440]) await checkVillageLayout(width).catch(error => { report.failures.push({ suite: `village-layout-${width}`, error: String(error), stack: error.stack }); console.error(`FAIL village layout ${width}: ${error.stack}`); });
       // Telefon ținut orizontal (înălțime sub 600 px): antetul se derulează, ca pe telefon.
