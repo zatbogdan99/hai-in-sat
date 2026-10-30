@@ -36,7 +36,8 @@
             <ng-template #item let-item>
               <!-- Buton, nu img cu (click): se poate deschide din tastatură, iar focusul revine aici la închidere. -->
               <button type="button" class="gallery-open" (click)="openFullScreen(activeIndex, $event)" [attr.aria-label]="'Deschide pe tot ecranul: ' + (item.alt || data[villageId].title)">
-                <img [src]="item.itemImageSrc" [alt]="item.alt || data[villageId].title" class="gallery-image" />
+                <img [src]="item.itemImageSrc" [alt]="item.alt || data[villageId].title" class="gallery-image"
+                 [class.skeleton]="!photos.isLoaded(item.itemImageSrc)" (load)="photos.markLoaded(item.itemImageSrc)" (error)="photos.markLoaded(item.itemImageSrc)" />
               </button>
             </ng-template>
             <!-- Indicator fără buton în el: PrimeNG pune un <button> într-un tab, adică element interactiv în element interactiv. -->
@@ -71,7 +72,9 @@
       <div class="polovragi-section">
         <div class="polovragi-row">
           @if (getPolovragiSecondImage()) {
-            <img class="polovragi-image polovragi-image--float" [src]="getPolovragiSecondImage()" alt="Peisaj din zona Polovragi - Oltenia de sub Munte" />
+            <img class="polovragi-image polovragi-image--float" [src]="getPolovragiSecondImage()" alt="Peisaj din zona Polovragi - Oltenia de sub Munte"
+                 [attr.width]="photoSize(getPolovragiSecondImage())?.width" [attr.height]="photoSize(getPolovragiSecondImage())?.height"
+                 [class.skeleton]="!photos.isLoaded(getPolovragiSecondImage())" (load)="photos.markLoaded(getPolovragiSecondImage())" (error)="photos.markLoaded(getPolovragiSecondImage())" />
           }
           <div class="polovragi-left">
             <p class="text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
@@ -86,7 +89,9 @@
         <div class="polovragi-section baia-section">
           <div class="polovragi-row">
             @if (getBaiaSecondImage()) {
-              <img class="polovragi-image polovragi-image--float" [src]="getBaiaSecondImage()" alt="Peisaj din zona Baia de Fier - Oltenia de sub Munte" />
+              <img class="polovragi-image polovragi-image--float" [src]="getBaiaSecondImage()" alt="Peisaj din zona Baia de Fier - Oltenia de sub Munte"
+                 [attr.width]="photoSize(getBaiaSecondImage())?.width" [attr.height]="photoSize(getBaiaSecondImage())?.height"
+                 [class.skeleton]="!photos.isLoaded(getBaiaSecondImage())" (load)="photos.markLoaded(getBaiaSecondImage())" (error)="photos.markLoaded(getBaiaSecondImage())" />
             }
             <div class="polovragi-left">
               <p class="text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
@@ -99,7 +104,9 @@
         <div class="polovragi-section vaideeni-section">
           <div class="polovragi-row">
             @if (getVaideeniSecondImage()) {
-              <img class="polovragi-image polovragi-image--float" [src]="getVaideeniSecondImage()" alt="Peisaj din zona Vaideeni - Oltenia de sub Munte" />
+              <img class="polovragi-image polovragi-image--float" [src]="getVaideeniSecondImage()" alt="Peisaj din zona Vaideeni - Oltenia de sub Munte"
+                 [attr.width]="photoSize(getVaideeniSecondImage())?.width" [attr.height]="photoSize(getVaideeniSecondImage())?.height"
+                 [class.skeleton]="!photos.isLoaded(getVaideeniSecondImage())" (load)="photos.markLoaded(getVaideeniSecondImage())" (error)="photos.markLoaded(getVaideeniSecondImage())" />
             }
             <div class="polovragi-left">
               <p class="text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
@@ -112,7 +119,9 @@
         <div class="polovragi-section slatioara-section">
           <div class="polovragi-row">
             @if (getSlatioaraSecondImage()) {
-              <img class="polovragi-image polovragi-image--float" [src]="getSlatioaraSecondImage()" alt="Peisaj din zona Slătioara - Oltenia de sub Munte" />
+              <img class="polovragi-image polovragi-image--float" [src]="getSlatioaraSecondImage()" alt="Peisaj din zona Slătioara - Oltenia de sub Munte"
+                 [attr.width]="photoSize(getSlatioaraSecondImage())?.width" [attr.height]="photoSize(getSlatioaraSecondImage())?.height"
+                 [class.skeleton]="!photos.isLoaded(getSlatioaraSecondImage())" (load)="photos.markLoaded(getSlatioaraSecondImage())" (error)="photos.markLoaded(getSlatioaraSecondImage())" />
             }
             <div class="polovragi-left">
               <p class="text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
@@ -125,7 +134,9 @@
         <div class="polovragi-section costesti-section">
           <div class="polovragi-row">
             @if (getCostestiSecondImage()) {
-              <img class="polovragi-image polovragi-image--float" [src]="getCostestiSecondImage()" alt="Peisaj din zona Costești - Oltenia de sub Munte" />
+              <img class="polovragi-image polovragi-image--float" [src]="getCostestiSecondImage()" alt="Peisaj din zona Costești - Oltenia de sub Munte"
+                 [attr.width]="photoSize(getCostestiSecondImage())?.width" [attr.height]="photoSize(getCostestiSecondImage())?.height"
+                 [class.skeleton]="!photos.isLoaded(getCostestiSecondImage())" (load)="photos.markLoaded(getCostestiSecondImage())" (error)="photos.markLoaded(getCostestiSecondImage())" />
             }
             <div class="polovragi-left">
               <p class="text-style polovragi-paragraph">{{ data[villageId].secondDesc1 }}</p>
@@ -138,7 +149,9 @@
         <div class="polovragi-section barbatesti-section">
           <div class="polovragi-row">
             @if (getBarbatestiSecondImage()) {
-              <img class="polovragi-image polovragi-image--float" [src]="getBarbatestiSecondImage()" alt="Peisaj din zona Bărbătești - Oltenia de sub Munte" />
+              <img class="polovragi-image polovragi-image--float" [src]="getBarbatestiSecondImage()" alt="Peisaj din zona Bărbătești - Oltenia de sub Munte"
+                 [attr.width]="photoSize(getBarbatestiSecondImage())?.width" [attr.height]="photoSize(getBarbatestiSecondImage())?.height"
+                 [class.skeleton]="!photos.isLoaded(getBarbatestiSecondImage())" (load)="photos.markLoaded(getBarbatestiSecondImage())" (error)="photos.markLoaded(getBarbatestiSecondImage())" />
             }
             <div class="polovragi-left">
               <div class="header-wrap">
@@ -153,7 +166,9 @@
           <div class="horezu-section">
             <div class="horezu-row">
               @if (getHorezuSecondImage()) {
-                <img class="horezu-image horezu-image--float" [src]="getHorezuSecondImage()" alt="Ceramică tradițională Horezu - Patrimoniu UNESCO" />
+                <img class="horezu-image horezu-image--float" [src]="getHorezuSecondImage()" alt="Ceramică tradițională Horezu - Patrimoniu UNESCO"
+                 [attr.width]="photoSize(getHorezuSecondImage())?.width" [attr.height]="photoSize(getHorezuSecondImage())?.height"
+                 [class.skeleton]="!photos.isLoaded(getHorezuSecondImage())" (load)="photos.markLoaded(getHorezuSecondImage())" (error)="photos.markLoaded(getHorezuSecondImage())" />
               }
               <div class="horezu-left">
                 <h2 class="horezu-title">Ceramica Horezu</h2>
@@ -259,7 +274,8 @@
         >
         <ng-template #item let-item>
           <button type="button" class="gallery-open" (click)="openFullScreen(activeIndex, $event)" [attr.aria-label]="'Deschide pe tot ecranul: ' + (item.alt || data[villageId].title)">
-            <img [src]="item.itemImageSrc" [alt]="item.alt || data[villageId].title" class="gallery-image gallery-image--square" />
+            <img [src]="item.itemImageSrc" [alt]="item.alt || data[villageId].title" class="gallery-image gallery-image--square"
+                 [class.skeleton]="!photos.isLoaded(item.itemImageSrc)" (load)="photos.markLoaded(item.itemImageSrc)" (error)="photos.markLoaded(item.itemImageSrc)" />
           </button>
         </ng-template>
         <!-- Indicator fără buton în el: PrimeNG pune un <button> într-un tab, adică element interactiv în element interactiv. -->
@@ -347,8 +363,14 @@
 >
   <ng-template #item let-item>
     <!-- Poza încape în ecran (portretele erau tăiate jos) și se poate schimba prin glisare. -->
-    <img [src]="item.itemImageSrc" [alt]="item.alt || data[villageId].title" class="fullscreen-image" draggable="false"
-         (pointerdown)="onSwipeStart($event)" (pointerup)="onSwipeEnd($event)" (pointercancel)="onSwipeCancel()" />
+    <div class="fullscreen-item" [class.is-loading]="!photos.isLoaded(item.itemImageSrc)">
+      @if (!photos.isLoaded(item.itemImageSrc)) {
+        <span class="fullscreen-loader skeleton" aria-hidden="true"></span>
+      }
+      <img [src]="item.itemImageSrc" [alt]="item.alt || data[villageId].title" class="fullscreen-image" draggable="false"
+           (load)="photos.markLoaded(item.itemImageSrc)" (error)="photos.markLoaded(item.itemImageSrc)"
+           (pointerdown)="onSwipeStart($event)" (pointerup)="onSwipeEnd($event)" (pointercancel)="onSwipeCancel()" />
+    </div>
   </ng-template>
 </p-galleria>
 </ng-container>

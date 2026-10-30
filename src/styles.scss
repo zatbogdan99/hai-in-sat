@@ -14,6 +14,28 @@ html {
   background-color: #ffffff; /* fundal explicit alb pentru UA */
 }
 
+/* Schelet de încărcare: un dreptunghi gri peste care trece o lumină, până apare poza. Pe un <img> se vede fundalul
+   cât timp poza nu s-a descărcat; componentele scot clasa după `load` (vezi utils/image-load-tracker.ts). */
+.skeleton {
+  background-color: #e6e1d7;
+  background-image: linear-gradient(100deg, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0.6) 50%, rgba(255, 255, 255, 0) 70%);
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+  from { background-position: 150% 0; }
+  to { background-position: -50% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+    background-image: none;
+  }
+}
+
 /* Pe desktop antetul e fix (app.component.scss, ~88 px): elementul focusat cu Tab nu ajunge sub el. */
 @media only screen and (min-width: 1200px) and (min-height: 600px) {
   html {

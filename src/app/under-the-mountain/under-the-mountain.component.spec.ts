@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
 import { UnderTheMountainComponent } from './under-the-mountain.component';
+import { ImageLoadTracker } from '../utils/image-load-tracker';
 
 describe('UnderTheMountainComponent', () => {
   let component: UnderTheMountainComponent;
@@ -37,6 +38,43 @@ describe('UnderTheMountainComponent', () => {
     for (const card of cards) {
       expect(card.querySelectorAll('a, button, [role="button"]').length).toBe(1);
     }
+  });
+
+  it('shows a skeleton on every card photo until it loads, and removes it on load or error', () => {
+    // O instanță nouă, fără citirea stării din DOM: în Karma pozele dau 404 și pot fi deja „complete” din cache.
+    spyOn(ImageLoadTracker.prototype, 'syncFrom');
+    // Doar evenimentele trimise de test contează (cele reale, 404 în Karma, pot sosi oricând).
+    const markLoaded = ImageLoadTracker.prototype.markLoaded;
+    let fromTest = false;
+    spyOn(ImageLoadTracker.prototype, 'markLoaded').and.callFake(function (this: ImageLoadTracker, src) {
+      if (fromTest) {
+        markLoaded.call(this, src);
+      }
+    });
+    const send = (img: HTMLImageElement, type: 'load' | 'error') => { fromTest = true; img.dispatchEvent(new Event(type)); fromTest = false; };
+    const fresh = TestBed.createComponent(UnderTheMountainComponent);
+    fresh.detectChanges();
+    const images = Array.from(fresh.nativeElement.querySelectorAll('.discover-card__img img') as NodeListOf<HTMLImageElement>);
+    expect(images.length).toBe(7);
+    expect(images.every(img => img.classList.contains('skeleton'))).toBeTrue();
+
+    send(images[0], 'load');
+    send(images[1], 'error');
+    fresh.detectChanges();
+
+    expect(images[0].classList.contains('skeleton')).toBeFalse();
+    expect(images[1].classList.contains('skeleton')).toBeFalse();
+    expect(images[2].classList.contains('skeleton')).toBeTrue();
+    fresh.destroy();
+  });
+
+  it('marks the carousel ready only once Swiper is initialized', async () => {
+    const cards = fixture.nativeElement.querySelector('.discover__cards') as HTMLElement;
+    for (let i = 0; i < 50 && !(fixture.nativeElement.querySelector('swiper-container') as any).swiper?.initialized; i++) {
+      await new Promise(resolve => setTimeout(resolve, 20));
+    }
+    fixture.detectChanges();
+    expect(cards.classList.contains('is-ready')).toBeTrue();
   });
 
   describe('autoplay (TASK-136)', () => {

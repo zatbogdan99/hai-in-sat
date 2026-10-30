@@ -29,7 +29,7 @@
   <div class="discover__overlay"></div>
   <div class="discover__container">
     <h2 class="discover__title">Descoperă Oltenia de sub Munte</h2>
-    <div class="discover__cards"
+    <div class="discover__cards" [class.is-ready]="swiperReady()"
          (pointerenter)="onCardsPointer($event, true)" (pointerleave)="onCardsPointer($event, false)"
          (focusin)="onCardsFocus($event, true)" (focusout)="onCardsFocus($event, false)">
       <button #prevNav type="button" class="discover__nav discover-prev" aria-label="Imaginea anterioară">
@@ -42,7 +42,8 @@
         <swiper-slide *ngFor="let item of data">
           <a class="discover-card" [routerLink]="villagePath(item.id)">
             <div class="discover-card__img">
-              <img [src]="item.photo" alt="" />
+              <img [src]="item.photo" alt="" [class.skeleton]="!photos.isLoaded(item.photo)"
+                   (load)="photos.markLoaded(item.photo)" (error)="photos.markLoaded(item.photo)" />
             </div>
             <div class="discover-card__body">
               <h3>{{ item.title }}</h3>

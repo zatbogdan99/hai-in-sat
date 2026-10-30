@@ -474,6 +474,85 @@ async function checkVillageLayout(width) {
   } finally { await context.close(); }
 }
 
+// TASK-139: stările de încărcare, deterministic: pozele (și, la început, JS-ul) sunt ținute până le eliberăm.
+async function checkLoadingStates(viewport) {
+  const context = await browser.newContext({ viewport: { width: viewport.width, height: viewport.height }, deviceScaleFactor: 1, isMobile: viewport.width < 600, hasTouch: viewport.width < 600, reducedMotion: 'no-preference' });
+  const held = { images: [], scripts: [] };
+  const holding = { images: true, scripts: true };
+  await context.route('**/*', route => {
+    const url = new URL(route.request().url());
+    if (url.origin !== origin) return route.abort('blockedbyclient');
+    if (holding.images && /\.avif$/.test(url.pathname) && /assets\/(sate\/)?[a-z]+\d/.test(url.pathname)) { held.images.push(route); return; }
+    if (holding.scripts && /\.js$/.test(url.pathname)) { held.scripts.push(route); return; }
+    return route.continue();
+  });
+  const release = async kind => { holding[kind] = false; for (const route of held[kind].splice(0)) await route.continue().catch(() => {}); };
+  const page = await context.newPage();
+  const box = selector => page.locator(selector).first().evaluate(el => { const b = el.getBoundingClientRect(); return { top: b.top + scrollY, height: b.height, bottom: b.bottom + scrollY }; });
+  try {
+    // Caruselul înainte de JS: rândul final, nu listă verticală; schelet pe poze.
+    await page.goto(origin + '/oltenia-de-sub-munte', { waitUntil: 'commit' });
+    await page.locator('.discover__cards').waitFor();
+    await page.waitForTimeout(300);
+    const before = await page.evaluate(() => {
+      const cards = document.querySelector('.discover__cards').getBoundingClientRect();
+      const visible = [...document.querySelectorAll('swiper-slide')].filter(slide => { const b = slide.getBoundingClientRect(); return b.width > 0 && b.left >= cards.left - 1 && b.right <= cards.right + 1; });
+      return { height: cards.height, visible: visible.map(slide => slide.querySelector('h3').textContent.trim()), skeleton: document.querySelectorAll('.discover-card__img img.skeleton').length };
+    });
+    await release('scripts');
+    await page.waitForFunction(() => document.querySelector('swiper-container')?.swiper?.initialized);
+    await page.waitForTimeout(500);
+    const after = await page.evaluate(() => {
+      const cards = document.querySelector('.discover__cards').getBoundingClientRect();
+      const visible = [...document.querySelectorAll('swiper-slide.swiper-slide-visible')].map(slide => slide.querySelector('h3').textContent.trim());
+      return { height: cards.height, visible };
+    });
+    const expected = viewport.width > 640 ? ['Horezu', 'Polovragi', 'Baia de Fier'] : ['Polovragi'];
+    assert.deepEqual(before.visible, expected, `pre-init cards ${JSON.stringify(before)}`);
+    assert.deepEqual(after.visible, expected, `post-init cards ${JSON.stringify(after)}`);
+    assert.ok(Math.abs(before.height - after.height) <= after.height * 0.1, `carousel height pre ${before.height} / post ${after.height}`);
+    assert.equal(before.skeleton, 7, 'every card photo starts with a skeleton');
+    await release('images');
+    await page.waitForFunction(() => document.querySelectorAll('.discover-card__img img.skeleton').length === 0, null, { timeout: 30000 });
+    const animations = await page.locator('.discover-card__img img').evaluateAll(images => images.reduce((sum, img) => sum + img.getAnimations().length, 0));
+    assert.equal(animations, 0, 'no animation left behind loaded card photos');
+    console.log(`PASS ${viewport.name}: carousel row before JS ${JSON.stringify(before.visible)}, height ${Math.round(before.height)} -> ${Math.round(after.height)}, skeleton until load`);
+
+    // Pagina de sat: schelet pe galerie (și la trecerea la o poză nedescărcată), spațiu rezervat pentru poza a doua.
+    holding.images = true;
+    await page.goto(origin + '/sate/horezu', { waitUntil: 'domcontentloaded' });
+    await page.locator('.p-galleria-next-button').first().waitFor({ state: 'attached' });
+    await page.waitForTimeout(1500);
+    const gallery = viewport.width < 500 ? '.small-screen .gallery-open img' : '.large-screen .gallery-open img';
+    assert.ok(await page.locator(gallery).first().evaluate(img => img.classList.contains('skeleton')), 'gallery photo shows the skeleton while loading');
+    const nextArrow = page.locator(viewport.width < 500 ? '.small-screen .p-galleria-next-button' : '.large-screen .p-galleria-next-button').first();
+    await nextArrow.click();
+    await page.waitForTimeout(300);
+    assert.ok(await page.locator(gallery).first().evaluate(img => img.classList.contains('skeleton')), 'an unloaded next photo shows the skeleton again');
+    if (viewport.width >= 500) {
+      // Galeria pe tot ecranul, cu poza încă nedescărcată: indicatorul de încărcare e centrat pe mască.
+      await page.locator('.large-screen .gallery-open').first().click();
+      const loader = page.locator('.p-galleria-mask .fullscreen-loader').first();
+      await loader.waitFor({ state: 'visible' });
+      const centred = await loader.evaluate(el => { const b = el.getBoundingClientRect(); return Math.abs((b.left + b.right) / 2 - innerWidth / 2) < 40; });
+      assert.ok(centred, 'fullscreen loader is centred');
+      await page.keyboard.press('Escape');
+      await page.locator('.p-galleria-mask').waitFor({ state: 'detached' }).catch(() => {});
+    }
+    const nextBlock = viewport.width < 500 ? null : '.large-screen .horezu-unesco-full';
+    const reserved = nextBlock ? await box(nextBlock) : null;
+    await release('images');
+    await page.waitForFunction(selector => [...document.querySelectorAll(selector)].every(img => !img.classList.contains('skeleton')), gallery, { timeout: 30000 });
+    await page.waitForFunction(() => [...document.querySelectorAll('.horezu-image')].every(img => img.complete));
+    if (nextBlock) {
+      const loaded = await box(nextBlock);
+      assert.ok(Math.abs(loaded.top - reserved.top) <= 2, `text below the second photo moved ${reserved.top} -> ${loaded.top}`);
+    }
+    console.log(`PASS ${viewport.name}: village gallery skeleton while loading (also after next), second photo space reserved`);
+    assert.equal(await page.locator('.skeleton').count(), 0, 'no skeleton left after loading');
+  } finally { await context.close(); }
+}
+
 async function compare() {
   if (!baseline) return;
   const before = JSON.parse(fs.readFileSync(path.join(baseline,'report.json'),'utf8'));
@@ -502,6 +581,7 @@ async function compare() {
     for (const viewport of [{name:'desktop',width:1440,height:1000},{name:'mobile',width:390,height:844},{name:'small-mobile',width:320,height:740}].filter(item => !option('--viewport') || item.name === option('--viewport'))) {
       await runViewport(viewport);
       if (viewport.name !== 'small-mobile') await checkTypography(viewport).catch(error => { report.failures.push({ viewport: viewport.name, suite: 'typography', error: String(error), stack: error.stack }); console.error(`FAIL ${viewport.name} typography: ${error.stack}`); });
+      await checkLoadingStates(viewport).catch(error => { report.failures.push({ viewport: viewport.name, suite: 'loading', error: String(error), stack: error.stack }); console.error(`FAIL ${viewport.name} loading: ${error.stack}`); });
       await checkVillageAutoplay(viewport).catch(error => { report.failures.push({ viewport: viewport.name, suite: 'autoplay', error: String(error), stack: error.stack }); console.error(`FAIL ${viewport.name} autoplay: ${error.stack}`); });
     }
     if (!option('--viewport')) {

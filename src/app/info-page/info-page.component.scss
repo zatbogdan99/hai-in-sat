@@ -546,6 +546,26 @@ img {
   user-select: none;
 }
 
+/* Cât se descarcă poza mare, în locul ei stă un schelet discret, centrat pe mască (nu un ecran negru gol). */
+.fullscreen-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.is-loading {
+    width: min(80vw, 50rem);
+    height: 60vh;
+  }
+}
+
+.fullscreen-loader {
+  position: absolute;
+  inset: 0;
+  border-radius: 0.5rem;
+  opacity: 0.25;
+}
+
 /* Animația de intrare a măștii PrimeNG (forwards) suprascrie background; ea citește --p-mask-background. */
 :host ::ng-deep .village-gallery-mask {
   --p-mask-background: rgba(0, 0, 0, 0.9);

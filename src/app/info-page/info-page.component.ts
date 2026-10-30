@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, DestroyRef, HostListener, inject, Input, OnInit, PLATFORM_ID} from '@angular/core';
+import {AfterViewInit, Component, DestroyRef, ElementRef, HostListener, inject, Input, OnInit, PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {gsap, Power2} from "gsap";
@@ -14,6 +14,7 @@ import {GalleriaModule} from "primeng/galleria";
 import {SeoService} from "../service/seo.service";
 import {NotFoundComponent} from "../not-found/not-found.component";
 import {villageBySlug} from "../utils/villages";
+import {ImageLoadTracker} from "../utils/image-load-tracker";
 
 /** Distanța orizontală minimă (px) a unei glisări cu degetul care schimbă poza în galeria pe tot ecranul. */
 const SWIPE_THRESHOLD_PX = 40;
@@ -60,6 +61,9 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
 
   private destroyRef = inject(DestroyRef);
   private platformId = inject(PLATFORM_ID);
+  private host = inject(ElementRef<HTMLElement>);
+  /** Pozele galeriilor și poza din secțiunea a doua: scheletul de încărcare stă pe ele până se descarcă. */
+  readonly photos = new ImageLoadTracker();
   private route = inject(ActivatedRoute);
   private seo = inject(SeoService);
   /** Butonul care a deschis galeria pe tot ecranul: primește focusul înapoi la închidere. */
@@ -339,7 +343,22 @@ export class InfoPageComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    // animations placeholder
+    if (isPlatformBrowser(this.platformId)) {
+      this.photos.syncFrom(this.host.nativeElement);
+    }
+  }
+
+  /** Dimensiunile reale ale unei poze din galerie, ca spațiul ei să fie rezervat înainte de încărcare. */
+  photoSize(src: string | undefined): { width: number; height: number } | undefined {
+    const all = [this.horezuImages, this.costestiImages, this.slatioaraImages, this.polovragiImages,
+      this.baiaImages, this.vaideeniImages, this.barbatestiImages];
+    for (const list of all) {
+      const photo = list?.find(item => item.itemImageSrc === src);
+      if (photo?.width && photo?.height) {
+        return { width: photo.width, height: photo.height };
+      }
+    }
+    return undefined;
   }
 
   isHorezu() {

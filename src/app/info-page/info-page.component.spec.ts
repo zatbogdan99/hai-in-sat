@@ -6,6 +6,7 @@ import { RouterTestingHarness } from '@angular/router/testing';
 
 import { InfoPageComponent } from './info-page.component';
 import { PhotoService } from '../service/photo-service';
+import { ImageLoadTracker } from '../utils/image-load-tracker';
 
 describe('InfoPageComponent', () => {
   beforeEach(() => {
@@ -36,6 +37,37 @@ describe('InfoPageComponent', () => {
     const headings = Array.from(harness.routeNativeElement!.querySelectorAll('h1')).map(h => h.textContent?.trim());
     expect(headings).toEqual(['Horezu']);
     expect(harness.routeNativeElement!.querySelector('h2.horezu-title')?.textContent).toContain('Ceramica Horezu');
+  });
+
+  it('reserves the second photo space with its real size and shows a skeleton until it loads', async () => {
+    // Fără citirea stării din DOM: în Karma pozele dau 404 și pot fi deja „complete” din cache.
+    spyOn(ImageLoadTracker.prototype, 'syncFrom');
+    // Doar evenimentele trimise de test contează (cele reale, 404 în Karma, pot sosi oricând).
+    const markLoaded = ImageLoadTracker.prototype.markLoaded;
+    let fromTest = false;
+    spyOn(ImageLoadTracker.prototype, 'markLoaded').and.callFake(function (this: ImageLoadTracker, src) {
+      if (fromTest) {
+        markLoaded.call(this, src);
+      }
+    });
+    const send = (img: HTMLImageElement, type: 'load' | 'error') => { fromTest = true; img.dispatchEvent(new Event(type)); fromTest = false; };
+    const harness = await RouterTestingHarness.create();
+    await harness.navigateByUrl('/sate/horezu', InfoPageComponent);
+    harness.detectChanges();
+
+    const photo = harness.routeNativeElement!.querySelector('.horezu-image') as HTMLImageElement;
+    expect(photo.getAttribute('width')).toBe('6000');
+    expect(photo.getAttribute('height')).toBe('4000');
+    expect(photo.classList.contains('skeleton')).toBeTrue();
+    send(photo, 'load');
+    harness.detectChanges();
+    expect(photo.classList.contains('skeleton')).toBeFalse();
+
+    const gallery = harness.routeNativeElement!.querySelector('.large-screen .gallery-image') as HTMLImageElement;
+    expect(gallery.classList.contains('skeleton')).toBeTrue();
+    send(gallery, 'error');
+    harness.detectChanges();
+    expect(gallery.classList.contains('skeleton')).toBeFalse();
   });
 
   it('renders the 404 page for an unknown village', async () => {

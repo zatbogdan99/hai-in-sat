@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, AfterViewInit, ElementRef, ViewChild, OnInit } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, AfterViewInit, ElementRef, ViewChild, OnInit, signal } from '@angular/core';
 import {RouterLink} from "@angular/router";
 import {gsap} from "gsap";
 import {DataDto} from "../dto/data.dto";
@@ -8,8 +8,7 @@ import { register } from 'swiper/element/bundle';
 import { SeoService } from "../service/seo.service";
 import { LoggerService } from "../service/logger.service";
 import { villagePath } from "../utils/villages";
-
-register();
+import { ImageLoadTracker } from "../utils/image-load-tracker";
 
 @Component({
   selector: 'app-under-the-mountain',
@@ -35,6 +34,14 @@ export class UnderTheMountainComponent implements AfterViewInit, OnInit {
 
   readonly villagePath = villagePath;
 
+  /** Pozele cardurilor: scheletul de încărcare stă pe ele până se descarcă (pe internet slab durează). */
+  readonly photos = new ImageLoadTracker();
+  /**
+   * Swiper a pornit. Până atunci, cardurile stau din CSS pe un rând, ca în carusel (fără listă verticală).
+   * `swiper-container` se definește (register) abia chiar înainte de initialize(): un element definit, dar
+   * neinițializat, are shadow DOM gol și nu arată nimic, iar pe un telefon lent asta ținea până la hidratare.
+   */
+  readonly swiperReady = signal(false);
   /** Caruselul de sate derulează singur la 5 s; după o săgeată sau o glisare rămâne oprit până la o nouă intrare pe pagină. */
   private swiperEl?: HTMLElement & { swiper?: any };
   private cardsHovered = false;
@@ -44,7 +51,8 @@ export class UnderTheMountainComponent implements AfterViewInit, OnInit {
 
   constructor(
     private seo: SeoService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private host: ElementRef<HTMLElement>
   ) {
     let dataDto = new DataDto(
       1,
@@ -310,12 +318,16 @@ export class UnderTheMountainComponent implements AfterViewInit, OnInit {
       }
     };
 
-    // Assign parameters and initialize after the view is ready
-    Object.assign(swiperEl, params);
-    // Initialize on next microtask to ensure refs are painted
+    this.photos.syncFrom(this.host.nativeElement);
+    // Inițializare după ce vederea e gata; definirea elementului, parametrii și pornirea, în același pas (fără cadru gol).
     setTimeout(() => {
+      register();
+      Object.assign(swiperEl, params);
       if (typeof swiperEl.initialize === 'function') {
+        // Regulile de rând pre-init (pe telefon ascund primul card) trebuie scoase înainte ca Swiper să măsoare cardurile.
+        swiperEl.closest('.discover__cards')?.classList.add('is-ready');
         swiperEl.initialize();
+        this.swiperReady.set(true);
         this.syncSlideFocus(swiperEl, [prevEl, nextEl]);
         swiperEl.swiper?.on('slideChangeTransitionEnd', () => this.syncSlideFocus(swiperEl));
         swiperEl.swiper?.on('resize', () => this.syncSlideFocus(swiperEl));
