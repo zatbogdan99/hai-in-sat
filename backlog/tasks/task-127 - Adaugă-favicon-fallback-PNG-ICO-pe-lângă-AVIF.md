@@ -4,7 +4,7 @@ title: Adaugă favicon fallback PNG/ICO pe lângă AVIF
 status: To Do
 assignee: []
 created_date: '2026-06-12 16:18'
-updated_date: '2026-07-27'
+updated_date: '2026-11-01'
 labels:
   - seo
   - images
@@ -35,32 +35,32 @@ E un **PNG de 28×30 px, 948 bytes, redenumit `.ico`**. Consecinte: header-ul IC
 
 Ce e totusi in regula si nu se atinge:
 - `src/favicon.ico` e deja in `assets` din `angular.json` (ajunge in radacina build-ului) — verificat;
-- `app.yaml` are deja handler dedicat pentru `/favicon.ico` (liniile 36-39) — verificat.
+- `app.yaml` are deja handler dedicat pentru `/favicon.ico` (liniile 45-47) — verificat 2026-11-01.
 
 ## Cum — DECIS de owner (2026-07-27)
 
-1. Adauga `png-to-ico` in `devDependencies` (`yarn add --dev png-to-ico`; pachet mic, fara binare native). `sharp` exista deja (`^0.34.5`), dar NU stie sa scrie `.ico` — de aia e nevoie de al doilea pachet.
+1. Adauga `png-to-ico` in `devDependencies` (`yarn add --dev png-to-ico`; pachet mic, fara binare native). `sharp` exista deja (`^0.35.5`, re-verificat 2026-11-01), dar NU stie sa scrie `.ico` — de aia e nevoie de al doilea pachet.
 2. Scrie `scripts/generate-favicons.js`, care citeste **`src/assets/logo.avif`** ca sursa si produce:
    - `src/favicon.ico` — ICO real, multi-size: **16×16, 32×32, 48×48** (sharp redimensioneaza la PNG-uri in memorie, `png-to-ico` le impacheteaza);
    - `src/assets/favicon-48.png` — 48×48;
    - `src/assets/apple-touch-icon.png` — 180×180, pe fundal opac (Safari nu randeaza transparenta pe icoana de home screen).
-3. Adauga in `package.json` scriptul `"generate-favicons": "node scripts/generate-favicons.js"` si ruleaza-l o data, comitand asset-urile generate. NU-l lega de `build` — se ruleaza manual, cand se schimba logo-ul (acelasi tipar ca `generate-sitemap`).
-2. În `src/index.html` (lângă linia 173), înlocuiește declarația unică AVIF cu setul complet:
+3. Adauga in `package.json` scriptul `"generate-favicons": "node scripts/generate-favicons.js"` si ruleaza-l o data, comitand asset-urile generate. NU-l lega de `build` — se ruleaza manual, cand se schimba logo-ul (acelasi tipar ca `generate-sitemap` și `generate-village-images`).
+4. În `src/index.html` (linia 180), înlocuiește declarația unică AVIF cu setul complet:
 ```html
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="icon" type="image/png" href="assets/favicon-48.png" sizes="48x48">
 <link rel="icon" type="image/avif" href="assets/favicon.avif"><!-- progressive enhancement -->
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 ```
-3. Nimic de făcut în `app.yaml`/`angular.json` — mapările există deja (verificat).
+5. Nimic de făcut în `app.yaml`/`angular.json` — mapările există deja (verificat).
 
 ## Fișiere afectate
 
 - `scripts/generate-favicons.js` (nou)
-- `package.json` (devDependency `png-to-ico` + scriptul `generate-favicons`)
+- `package.json` (devDependency `png-to-ico` + scriptul `generate-favicons`), `package-lock.json` și `yarn.lock` (ținute sincron, vezi CLAUDE.md)
 - `src/favicon.ico` (REGENERAT — azi e un PNG deghizat)
 - `src/assets/favicon-48.png`, `src/assets/apple-touch-icon.png` (noi)
-- `src/index.html` (linia ~173 — setul complet de declaratii)
+- `src/index.html` (linia ~180 — setul complet de declaratii)
 - `angular.json`, `app.yaml` — **NU se modifica**, mapările exista deja
 
 ## Efort
@@ -78,14 +78,14 @@ NU fac parte din criteriile de acceptare — pipeline-ul se opreste la PR, fara 
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 `package.json` are `png-to-ico` in `devDependencies` si scriptul `"generate-favicons": "node scripts/generate-favicons.js"`; `yarn.lock` e regenerat prin `yarn install`
+- [ ] #1 `package.json` are `png-to-ico` in `devDependencies` si scriptul `"generate-favicons": "node scripts/generate-favicons.js"`; `package-lock.json` și `yarn.lock` sunt actualizate amândouă, iar `yarn install --frozen-lockfile --production=true` trece curat
 - [ ] #2 Exista `scripts/generate-favicons.js`, care citeste `src/assets/logo.avif` si scrie cele trei fisiere: `src/favicon.ico`, `src/assets/favicon-48.png`, `src/assets/apple-touch-icon.png`
 - [ ] #3 `src/favicon.ico` regenerat e ICO VALID si multi-size. Implementatorul a rulat scriptul si a lipit in `## Implementation Notes` iesirea acestei verificari, care trebuie sa arate `tip: 1` si marimile 16, 32, 48: `python -c "import struct; d=open('src/favicon.ico','rb').read(); r,t,n=struct.unpack('<HHH',d[:6]); print('tip:',t,'imagini:',n); [print(d[6+i*16] or 256,'x',d[7+i*16] or 256) for i in range(n)]"`
 - [ ] #4 `src/assets/apple-touch-icon.png` e 180×180 si are fundal opac (fara canal alfa transparent)
-- [ ] #5 `src/index.html` (in jurul liniei 173) declara setul complet, in aceasta ordine: `<link rel="icon" href="/favicon.ico" sizes="32x32">`, `<link rel="icon" type="image/png" href="assets/favicon-48.png" sizes="48x48">`, `<link rel="icon" type="image/avif" href="assets/favicon.avif">`, `<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">`
+- [ ] #5 `src/index.html` (in jurul liniei 180) declara setul complet, in aceasta ordine: `<link rel="icon" href="/favicon.ico" sizes="32x32">`, `<link rel="icon" type="image/png" href="assets/favicon-48.png" sizes="48x48">`, `<link rel="icon" type="image/avif" href="assets/favicon.avif">`, `<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">`
 - [ ] #6 Declaratia AVIF ramane, dar ULTIMA dintre cele de tip `icon` — progressive enhancement pentru browserele care o suporta
-- [ ] #7 `angular.json` si `app.yaml` NU sunt modificate — `src/favicon.ico` e deja in lista de `assets`, iar handler-ul `/favicon.ico` exista deja (`app.yaml` liniile 36-39)
-- [ ] #8 `npx ng test --watch=false --browsers=ChromeHeadless` trece
+- [ ] #7 `angular.json` si `app.yaml` NU sunt modificate — `src/favicon.ico` e deja in lista de `assets`, iar handler-ul `/favicon.ico` exista deja (`app.yaml` liniile 45-47)
+- [ ] #8 `npm run test:ci` și `npm run test:ssr:http` trec
 <!-- AC:END -->
 
 ## Implementation Notes
@@ -96,4 +96,5 @@ Revizuire 2026-07-27 (pregatire pentru pipeline). Descoperire care schimba task-
 DECIZIE owner: se adauga `png-to-ico` si se genereaza ICO real din `src/assets/logo.avif`, prin script reproductibil (`scripts/generate-favicons.js`). Alternativele (doar PNG-uri, sau generare manuala de catre owner) au fost respinse.
 
 AC-ul vechi #2 („favicon vizibil in tab pe Safari si Chrome — test manual") cere browsere reale → mutat in `## Verificare post-deploy (owner)`, inlocuit cu verificarea structurii binare a fisierului ICO, care e automatizabila.
+Actualizare 2026-11-01 (analiza backlog-ului față de cod): încă neimplementat. `src/favicon.ico` e tot un PNG redenumit, iar `index.html` declară doar `favicon.avif` (linia 180). Am actualizat referințele de linii, versiunea `sharp` și cerința ca ambele lockfile-uri să rămână sincron.
 <!-- SECTION:NOTES:END -->

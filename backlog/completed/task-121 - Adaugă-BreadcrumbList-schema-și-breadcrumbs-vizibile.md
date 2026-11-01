@@ -1,10 +1,10 @@
 ---
 id: TASK-121
 title: Adaugă BreadcrumbList schema și breadcrumbs vizibile
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-05-07 07:59'
-updated_date: '2026-10-03 21:51'
+updated_date: '2026-11-01'
 labels:
   - seo
   - schema
@@ -100,4 +100,11 @@ Revizuire 2026-07-27 (pregatire pentru pipeline). Ambiguitati eliminate:
 Stare reala (confirmata prin grep 2026-07-06): JSON-LD-ul `BreadcrumbList` e DEJA implementat si apelat de toate paginile publice rutate. Partea neimplementata e DOAR breadcrumb-ul VIZIBIL — de aceea AC-urile se concentreaza pe componenta noua, nu pe schema.
 
 Prioritate de execuție stabilită explicit de utilizator la 2026-10-04: TASK-132 (actualizarea dependențelor frontend/SSR) este următorul de implementat. După finalizarea lui se reia ordinea numerică începând cu TASK-121. Aceasta este o dependență de planificare, nu o cerință tehnică a breadcrumbs.
+Închis 2026-11-01 (decizie owner): partea de SEO e făcută. Toate paginile publice (homepage, /proprietati, anunț, /oltenia-de-sub-munte, /satul-lunii, /sate/:slug, /gaseste-mi-locul) emit `BreadcrumbList` JSON-LD prin `SeoService.setBreadcrumbs`, cu căile în română (TASK-143). Breadcrumb-ul vizibil în pagină nu se mai face: owner-ul a decis că nu e nevoie. AC-urile despre componenta vizibilă rămân nebifate intenționat.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Închis fără breadcrumb vizibil (decizie owner 2026-11-01): datele structurate BreadcrumbList sunt deja emise de toate paginile publice, pe căile noi în română.
+<!-- SECTION:FINAL_SUMMARY:END -->

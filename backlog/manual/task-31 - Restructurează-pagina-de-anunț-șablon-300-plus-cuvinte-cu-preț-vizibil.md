@@ -4,7 +4,7 @@ title: Restructurează pagina de anunț — șablon 300+ cuvinte cu preț vizibi
 status: To Do
 assignee: []
 created_date: '2026-06-12 16:12'
-updated_date: '2026-07-06'
+updated_date: '2026-11-01'
 labels:
   - seo
   - content
@@ -40,7 +40,7 @@ Există model complet rescris (title + meta + H1 + structură H2 + text exemplu)
 **1. Template nou `property-details` (frontend):**
 - Deasupra fold-ului: H1 descriptiv („Teren intravilan 9.600 mp — Cerna, Vâlcea"), **preț vizibil** (total + €/mp), suprafață, localitate, CTA telefon.
 - Paragraf-rezumat de 2-3 fraze (citabil, self-contained: ce, unde, cât, particularitatea).
-- Secțiuni H2: „Descrierea proprietății", „Utilități și acces", „Acte și situație juridică", „Distanțe" (oraș, drum național, atracții), „Despre satul X" (2-3 fraze + link spre pagina satului — TASK-32).
+- Secțiuni H2: „Descrierea proprietății", „Utilități și acces", „Acte și situație juridică", „Distanțe" (oraș, drum național, atracții), „Despre satul X" (2-3 fraze + link spre pagina satului, `/sate/:slug`, care există deja pentru 7 sate).
 - Hartă (embed static sau leaflet) cu locația aproximativă.
 - CTA sticky pe mobil (buton „Sună acum").
 
@@ -48,7 +48,7 @@ Există model complet rescris (title + meta + H1 + structură H2 + text exemplu)
 
 **3. Fallback inteligent:** anunțurile fără câmpurile noi încă completate afișează ce există, fără secțiuni goale.
 
-Sinergie: după acest task, meta description se generează din paragraful-rezumat (fără telefoane — TASK-118, care adaugă și strip-ul de telefon în `property-details.component.ts:~131`), iar schema primește câmpurile structurate (TASK-125). Notă tehnică: descrierea e azi randată prin `[innerHTML]="propertyDescription | phoneLink"` (`property-details.component.html:43/114`) — la refacerea template-ului, ține cont de TASK-36 (sanitizarea HTML-ului descrierii).
+Sinergie: după acest task, meta description se generează din paragraful-rezumat (fără telefoane — `stripPhones`, livrat de TASK-118 și folosit azi în `property-details.component.ts:181-182`), iar schema primește câmpurile structurate (TASK-125). Notă tehnică: descrierea e azi randată prin `[innerHTML]="propertyDescription | phoneLink"` (azi în `property-details.component.html`, ramurile cu și fără video) — la refacerea template-ului, ține cont de TASK-36 (sanitizarea HTML-ului descrierii).
 
 ## Fișiere afectate
 
@@ -73,3 +73,9 @@ L (3–5 zile cu backend + completarea retroactivă a datelor pentru inventarul 
 - [ ] #6 Meta description se generează din rezumat (120–160 caractere, fără telefon) — nu mai e trunchiată din bullet-uri
 - [ ] #7 Niciun anunț nu afișează secțiuni goale pentru date lipsă (fallback corect)
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Actualizare 2026-11-01 (analiza backlog-ului față de cod): încă neînceput; `PropertyDTO` nu are preț, suprafață sau sat. Între timp anunțurile s-au mutat la `/proprietati/:id/:slug` (TASK-143), descrierea e centrată pe poză pe desktop (TASK-141), iar paginile de sat există la `/sate/:slug` (scheletul din TASK-32), deci secțiunea „Despre satul X” are deja țintă de link. Am actualizat referințele de linii.
+<!-- SECTION:NOTES:END -->

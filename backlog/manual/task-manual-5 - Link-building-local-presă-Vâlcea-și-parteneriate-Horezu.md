@@ -4,7 +4,7 @@ title: Link building local — presă Vâlcea și parteneriate Horezu
 status: To Do
 assignee: []
 created_date: '2026-06-12 16:20'
-updated_date: '2026-06-12 16:20'
+updated_date: '2026-11-01'
 labels:
   - seo
   - backlinks
@@ -52,3 +52,9 @@ Continuu, în valuri (2-3 ore/lună outreach). Primele rezultate realiste: 1-2 l
 - [ ] #4 Anchor text-ul aparițiilor respectă regulile (brand dominant, fără exact-match agresiv)
 - [ ] #5 Evidență a tuturor link-urilor obținute (URL sursă, dată, anchor, formă domeniu) în implementation notes
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Verificat 2026-11-01: încă nefăcut (acțiune externă), fără referințe învechite. Pentru link-urile din presă și parteneriate, folosește noile URL-uri în română (de ex. `/proprietati`, `/sate/horezu`); vechile URL-uri, în engleză, fac 301, dar un link direct e mai bun.
+<!-- SECTION:NOTES:END -->

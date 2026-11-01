@@ -4,7 +4,7 @@ title: Creează Google Business Profile și citations românești
 status: To Do
 assignee: []
 created_date: '2026-06-12 16:17'
-updated_date: '2026-06-12 16:17'
+updated_date: '2026-11-01'
 labels:
   - seo
   - local
@@ -36,7 +36,7 @@ Task non-cod (extern), dar trackuit aici ca să nu se piardă. Pașii detaliați
 3. **Profiluri portaluri imobiliare cu link**: Storia.ro (profil agenție), Imobiliare.ro, OLX (cont business imobiliare) — listările existente legate de profil.
 4. **Citations RO generaliste**: Facebook Page completă (NAP în About), listafirme.ro, firme.info, paginiaurii.ro — NAP identic caracter cu caracter.
 5. **Recenzii**: după verificarea GBP, cere primele 3–5 recenzii de la clienți reali (link direct de review trimis pe WhatsApp după fiecare vizionare/tranzacție). Răspunde la fiecare recenzie.
-6. **Pe site**: după verificare, adaugă pe /contact-us link „Vezi pe Google Maps" + embed hartă GBP; adaugă URL-ul GBP în `sameAs` din RealEstateAgent (index.html).
+6. **Pe site**: după verificare, adaugă link „Vezi pe Google Maps” în fereastra Contact (dialogul din `app.component.html`, deschis din meniu; pagina `/contact-us` nu mai există din 2026-10 și face 301 spre `/`), eventual și o hartă GBP; adaugă URL-ul GBP în `sameAs` din RealEstateAgent (index.html).
 7. Documentează toate conturile/login-urile create (unde, cu ce email) în implementation notes.
 
 ## Fișiere afectate
@@ -57,6 +57,12 @@ M ca timp de lucru (3–4 ore inițial) + așteptare verificare GBP (zile–săp
 - [ ] #4 Profiluri de agenție active pe minimum 2 portaluri (Storia/Imobiliare.ro/OLX) cu link spre site și NAP corect
 - [ ] #5 Minimum 3 citations generaliste RO create (Facebook About complet, listafirme.ro, încă una) — NAP identic peste tot
 - [ ] #6 Primele 3 recenzii Google reale primite și cu răspuns
-- [ ] #7 Site-ul leagă GBP: link/embed pe /contact-us + URL-ul profilului în `sameAs` din JSON-LD RealEstateAgent
+- [ ] #7 Site-ul leagă GBP: link în fereastra Contact + URL-ul profilului în `sameAs` din JSON-LD RealEstateAgent
 - [ ] #8 Inventar al tuturor conturilor create (platformă, URL profil, email folosit) documentat în implementation notes
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Actualizare 2026-11-01: încă nefăcut (acțiune externă). Dependența TASK-118 (NAP unificat) e livrată, deci înscrierile pot începe. Pagina `/contact-us` a fost ștearsă: link-ul spre GBP merge în fereastra Contact. Pentru zona deservită (Service Area Business), folosește aceleași localități ca `areaServed` din TASK-123.
+<!-- SECTION:NOTES:END -->
