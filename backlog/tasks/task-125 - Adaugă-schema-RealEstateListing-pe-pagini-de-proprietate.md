@@ -4,7 +4,7 @@ title: Adaugă schema RealEstateListing pe pagini de proprietate
 status: To Do
 assignee: []
 created_date: '2026-05-07 07:58'
-updated_date: '2026-07-27'
+updated_date: '2026-11-01'
 labels:
   - seo
   - schema
@@ -29,24 +29,24 @@ Avantaje schema `RealEstateListing`:
 
 ## Cum
 
-SSR-ul există deja, iar schema de BAZĂ se randează deja în HTML brut (re-verificat 2026-07-06: `seo.service.ts:87-116` `setRealEstateListing`, apelat din `property-details.component.ts:136-142`). Munca ramasa in ACEST task = un singur camp, `datePosted`. `image` cu URL real depinde de TASK-3, iar `description` fara telefon e livrata de TASK-118 — niciuna nu se face aici.
+SSR-ul există deja, iar schema de BAZĂ se randează deja în HTML brut (re-verificat 2026-11-01: `seo.service.ts:101-133` `setRealEstateListing`, apelat din `property-details.component.ts:191-197`; `image` e deja `og-hai-in-sat.jpg` sau URL-ul http(s) al thumbnail-ului, iar `description` trece deja prin `stripPhones`). Munca ramasa in ACEST task = un singur camp, `datePosted`. `image` cu URL real depinde de TASK-3, iar `description` fara telefon e livrata de TASK-118 — niciuna nu se face aici.
 
 **SCOPE-UL ACESTUI TASK = DOAR FAZA A (decizie 2026-07-27).**
 
-- **Faza A — se face acum, frontend-only:** `datePosted`. Backend-ul expune DEJA `createdAt` (`Instant`) in `PropertyDTO`; frontend-ul doar nu-l are tipat in `src/app/dto/property.dto.ts` → adauga campul si foloseste-l ca `datePosted` in schema. Restul campurilor din faza A exista deja in schema generata (`url`, `name`, `description`, `address` cu `addressRegion`/`addressCountry`).
+- **Faza A — se face acum, frontend-only:** `datePosted`. Backend-ul expune DEJA `createdAt` (`Instant`, serializat ISO 8601) in `PropertyDTO` (re-verificat 2026-11-01: `PropertyDTO.java:28`, inclus și în proiecția lite din `PropertyRepository`; `/get-by-id` întoarce documentul întreg). Anunțurile vechi, salvate înainte de câmp, pot avea `createdAt` lipsă; frontend-ul doar nu-l are tipat in `src/app/dto/property.dto.ts` → adauga campul si foloseste-l ca `datePosted` in schema. Restul campurilor din faza A exista deja in schema generata (`url`, `name`, `description`, `address` cu `addressRegion`/`addressCountry`).
 
 - **Faza B — SCOASA DIN SCOPE.** `offers.price` + `priceCurrency`, `geo` (lat/lng), `floorSize`, `addressLocality` depind de campuri de model care sunt PROPRIETATEA lui **TASK-31**, iar TASK-31 a fost mutat in `backlog/manual/` (cere date reale de produs). Nu inventa aceste campuri aici si nu le adauga in backend — ar duplica un model pe care TASK-31 il defineste altfel.
 
   Cand TASK-31 va fi livrat, se deschide un task nou care doar MAPEAZA campurile lui in schema. Structura JSON de mai jos ramane in task ca referinta pentru atunci.
 
-Structură per `/property/:id/:slug`:
+Structură per `/proprietati/:id/:slug`:
 
 ```json
 {
   "@context": "https://schema.org",
   "@type": "RealEstateListing",
   "name": "Teren de vânzare în Cerna - 1500 mp",
-  "url": "https://hai-în-sat.ro/property/<uuid>/teren-de-vanzare-teren-cerna",
+  "url": "https://hai-în-sat.ro/proprietati/<uuid>/teren-de-vanzare-teren-cerna",
   "description": "<from property.description>",
   "image": ["<photo1>", "<photo2>", "..."],
   "datePosted": "<ISO 8601>",
@@ -88,8 +88,9 @@ NU fac parte din criteriile de acceptare — pipeline-ul se opreste la PR, fara 
 ## Fișiere afectate
 
 - `src/app/dto/property.dto.ts` — campul `createdAt`
-- `src/app/service/seo.service.ts` — `setRealEstateListing()` (liniile 87-116) accepta si emite `datePosted`
-- `src/app/property-details/property-details.component.ts` — apelul exista la :136-142, i se paseaza `createdAt`
+- `src/app/service/seo.service.ts` — `setRealEstateListing()` (liniile 101-133) accepta si emite `datePosted`
+- `src/app/property-details/property-details.component.ts` — apelul exista la :191-197, i se paseaza `createdAt`
+- `src/app/service/seo.service.spec.ts` / `property-details.component.spec.ts` — test pentru `datePosted` prezent și omis
 - Backend Java — **NU se atinge**. Campurile din faza B sunt proprietatea TASK-31, care e in `backlog/manual/`
 - `src/server.ts` — **NU se atinge**. Schema se randeaza deja SSR din componenta, nu e nevoie de injectare separata
 
@@ -101,14 +102,14 @@ S (2 ore, frontend-only).
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [ ] #1 `src/app/dto/property.dto.ts` are campul `createdAt` tipat (backend-ul il serializeaza deja in `PropertyDTO`, doar frontend-ul nu-l cunoaste)
-- [ ] #2 `src/app/service/seo.service.ts`, `setRealEstateListing()` (azi liniile 87-116), accepta si emite `datePosted` in JSON-LD, in format ISO 8601
-- [ ] #3 `src/app/property-details/property-details.component.ts` (apelul de la ~liniile 136-142) transmite `createdAt` ca `datePosted`
+- [ ] #2 `src/app/service/seo.service.ts`, `setRealEstateListing()` (azi liniile 101-133), accepta si emite `datePosted` in JSON-LD, in format ISO 8601
+- [ ] #3 `src/app/property-details/property-details.component.ts` (apelul de la ~liniile 191-197) transmite `createdAt` ca `datePosted`
 - [ ] #4 Campurile care lipsesc din date se OMIT complet din JSON-LD — nu se emit chei cu valori goale, `null` sau `""`. Verificabil prin lectura: constructia obiectului adauga conditionat, nu neconditionat
 - [ ] #5 `@type` ramane `RealEstateListing` (nu `Product`)
 - [ ] #6 Campurile din faza B (`offers`, `geo`, `floorSize`, `addressLocality`) NU sunt adaugate — nici in frontend, nici in backend. Repo-ul Java nu e atins de acest task
-- [ ] #7 Implementatorul a rulat protocolul SSR local (`backlog/docs/verificare-locala-ssr.md`) si a lipit in `## Implementation Notes` blocul JSON-LD extras dintr-o pagina de anunt: `curl -s http://localhost:4000/property/<id>/<slug>` → blocul contine `"@type": "RealEstateListing"` si o cheie `datePosted` cu data reala
+- [ ] #7 Implementatorul a rulat protocolul SSR local (`backlog/docs/verificare-locala-ssr.md`) si a lipit in `## Implementation Notes` blocul JSON-LD extras dintr-o pagina de anunt: `curl -s http://localhost:4000/proprietati/<id>/<slug>` → blocul contine `"@type": "RealEstateListing"` si o cheie `datePosted` cu data reala
 - [ ] #8 JSON-ul emis parseaza fara eroare (implementatorul l-a trecut printr-un parser si a lipit rezultatul)
-- [ ] #9 `npx ng test --watch=false --browsers=ChromeHeadless` trece
+- [ ] #9 `npm run test:ci` trece, cu un test nou care verifică `datePosted` când există `createdAt` și lipsa cheii când nu există
 <!-- AC:END -->
 
 ## Implementation Notes
@@ -126,4 +127,5 @@ Alte ambiguitati eliminate:
 4. AC-ul vechi #6 (description fara telefoane) e acoperit de TASK-118, care detine helperul `stripPhones` → nu se dubleaza aici.
 
 AC-ul vechi #1 era deja bifat (schema de baza se randeaza SSR din 2026-06-08) — inlocuit cu criterii pentru munca ramasa.
+Actualizare 2026-11-01 (analiza backlog-ului față de cod): încă neimplementat (`property.dto.ts` nu are `createdAt`, schema nu emite `datePosted`). Referințele de linii și căile au fost actualizate la `/proprietati/...` (TASK-143), iar comanda de test la `npm run test:ci`. Backend-ul nu cere nicio modificare.
 <!-- SECTION:NOTES:END -->

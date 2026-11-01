@@ -4,7 +4,7 @@ title: 'Verifică domeniul în GSC și Bing Webmaster, submitează sitemap'
 status: To Do
 assignee: []
 created_date: '2026-05-07 08:05'
-updated_date: '2026-06-17 15:04'
+updated_date: '2026-11-01'
 labels:
   - seo
   - monitoring
@@ -60,7 +60,7 @@ Nu necesită modificări în repo decât pentru IndexNow (opțional). Restul e c
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [ ] #1 Domeniul `xn--hai-n-sat-t5a.ro` este verificat în Google Search Console
-- [ ] #2 Sitemap submitat în GSC, status = Success, URLs discovered ≥ 22
+- [ ] #2 Sitemap submitat în GSC, status = Success, URLs discovered ≥ 28 (sitemap-ul are 28 de URL-uri la 2026-11-01)
 - [ ] #3 Domeniul este verificat și în Bing Webmaster Tools
 - [ ] #4 În GSC se văd prima dată impressions/clicks (chiar dacă valori mici la început)
 - [ ] #5 (Opțional) IndexNow API key configurat în deploy + ping trimis la primul add-property test
@@ -72,4 +72,5 @@ Nu necesită modificări în repo decât pentru IndexNow (opțional). Restul e c
 Verificare 2026-06-08: Inca valid (config in consolele Google/Bing, nu cod). Nu exista metoda notifyIndexNow in SeoService si niciun ping IndexNow in backend. Restul = actiuni externe (verificare GSC/Bing, submit sitemap).
 
 Cross-ref: complementar cu noul TASK-59 - TASK-119 = Search Console (Google/Bing Webmaster) + submit sitemap + IndexNow; TASK-59 = Google Business Profile + Bing PLACES + citations. Produse Bing diferite (Webmaster vs Places).
+Actualizare 2026-11-01: încă nefăcut (acțiune externă). Sitemap-ul are acum 28 de URL-uri, cu paginile de sat și căile în română. După deploy-ul TASK-143, în GSC e de așteptat ca vechile URL-uri, în engleză, să apară ca „Pagină cu redirecționare”. E normal.
 <!-- SECTION:NOTES:END -->

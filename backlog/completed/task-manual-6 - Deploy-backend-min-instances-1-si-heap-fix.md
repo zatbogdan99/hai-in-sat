@@ -1,9 +1,10 @@
 ---
 id: TASK-MANUAL-6
 title: 'Deploy backend min_instances:1 + heap fix (cold-start)'
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-06-29'
+updated_date: '2026-11-01'
 labels:
   - manual
   - infra
@@ -36,7 +37,19 @@ Codul lui TASK-47 (timeout + error handler SSR) e deja livrat (PR #3); asta e DO
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 `app-backend.yaml` deployat cu `min_instances: 1` (GCP Console → App Engine `hai-in-sat-api` → Instances arată ≥1 instanță mereu activă)
-- [ ] #2 `entrypoint` fără `-Xmx512m` (heap gestionat de `MaxRAMPercentage`); fără warning-uri „Exceeded soft memory limit" în Cloud Logging
-- [ ] #3 După deploy: paginile `/property/*` răspund 200 la primul request „la rece" al zilei (fără cold-start 5xx)
+- [x] #1 `app-backend.yaml` deployat cu `min_instances: 1` (GCP Console → App Engine `hai-in-sat-api` → Instances arată ≥1 instanță mereu activă)
+- [x] #2 `entrypoint` fără `-Xmx512m` (heap gestionat de `MaxRAMPercentage`); fără warning-uri „Exceeded soft memory limit" în Cloud Logging
+- [x] #3 După deploy: paginile `/property/*` răspund 200 la primul request „la rece" al zilei (fără cold-start 5xx)
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Închis 2026-11-01: owner-ul a confirmat că backend-ul e deployat cu `app-backend.yaml` din repo (`min_instances: 1`, fără `-Xmx`, heap prin `MaxRAMPercentage=75`). AC-urile sunt bifate pe baza confirmării owner-ului: din sesiunea de lucru nu am acces la consola GCP sau la Cloud Logging.
+<!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Backend deployat de owner cu min_instances: 1 și heap prin MaxRAMPercentage (confirmat 2026-11-01).
+<!-- SECTION:FINAL_SUMMARY:END -->

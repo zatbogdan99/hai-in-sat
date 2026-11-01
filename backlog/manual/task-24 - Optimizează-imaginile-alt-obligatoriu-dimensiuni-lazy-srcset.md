@@ -4,7 +4,7 @@ title: Optimizează imaginile — alt obligatoriu, dimensiuni, lazy, srcset
 status: To Do
 assignee: []
 created_date: '2026-06-12 16:15'
-updated_date: '2026-07-06'
+updated_date: '2026-11-01'
 labels:
   - seo
   - images
@@ -33,15 +33,15 @@ NU se ruleaza prin pipeline. Doua motive:
 Datele auditului 2026-06-12 (findings/visual.md + crawl/jsonld-summary.json, per pagină), RE-VERIFICATE în cod la 2026-07-06:
 - **~40% din imaginile anunțurilor fără alt text** — sursa exactă, confirmată: în `property-details.component.html`, slide-urile principale AU alt generat (`{tip}: {nume} - Imagine N`, vine din componentă), dar **thumbnail-urile stripului de navigare au `alt=""` gol** (liniile ~38, ~80, ~121). Paginile statice stau bine (100% au alt).
 - **ZERO atribute `width`/`height`** pe `<img>` în galerii/carduri (confirmat — niciun width/height/aspect-ratio în template) — CLS-ul e azi OK (0–0,09) doar datorită CSS-ului; fragil la orice schimbare;
-- **fără `loading="lazy"`/`fetchpriority` în galeria anunțului** (confirmat pe template; cardurile din `/properties` AU deja `loading="lazy"` + alt din `getImageAlt()` — properties.component.html:180-182/195-197) — toate pozele unei galerii se descarcă imediat;
+- **fără `loading="lazy"`/`fetchpriority` în galeria anunțului** (confirmat pe template; cardurile din `/proprietati` AU deja `loading="lazy"` + alt din `getImageAlt()` — properties.component.html:180-182/195-197) — toate pozele unei galerii se descarcă imediat;
 - fără `srcset`/`sizes` — mobilul descarcă imaginile de desktop.
 
-Părți care NU se ating (sunt deja bune): AVIF + `preload` pe hero-urile statice; alt-ul + lazy pe cardurile din `/properties`.
+Părți care NU se ating (sunt deja bune): AVIF + `preload` pe hero-urile statice; alt-ul + lazy pe cardurile din `/proprietati`.
 
 ## Cum
 
 1. **Alt text obligatoriu la upload**: în formularul `/add-property` (și `replace-photos`), câmp de alt text per fotografie, obligatoriu, cu placeholder-model: „teren intravilan 9.600 mp Cerna, Vâlcea — vedere spre stradă". Pentru pozele existente: completare retroactivă (14 anunțuri × ~10 poze — fezabil manual).
-2. **Componenta de galerie** (`property-details` + carduri `/properties`): adaugă `width`/`height` intrinseci (sau `aspect-ratio` CSS) pe toate `<img>`; `loading="lazy"` pe tot ce e sub fold (toate pozele galeriei except prima; prima poză = `fetchpriority="high"`).
+2. **Componenta de galerie** (`property-details` + carduri `/proprietati`): adaugă `width`/`height` intrinseci (sau `aspect-ratio` CSS) pe toate `<img>`; `loading="lazy"` pe tot ce e sub fold (toate pozele galeriei except prima; prima poză = `fetchpriority="high"`).
 3. **`srcset`/`sizes`** — depinde de variantele din TASK-3 (DECIS: endpoint de streaming din Mongo cu variante `thumb`/`medium`): `srcset` cu URL-urile celor două variante (`.../thumb/... 400w, .../medium/... 1200w`) și `sizes` corespunzător layoutului. Dacă TASK-3 nu e încă livrat, implementează restul punctelor acum și lasă srcset-ul ca sub-punct dependent.
 4. **Thumbnail-urile stripului din galerie** (alt="" azi): alt scurt derivat („{nume} — miniatura N") sau, dacă le consideri pur decorative (imaginea mare e alături), documentează alegerea `alt=""` intenționat — dar consecvent, nu implicit.
 5. **Re-verificare**: re-rulează crawler-ul de audit și compară coloanele img_missing_alt / img_lazy / wh.
@@ -72,4 +72,5 @@ M (1–2 zile cu backend pentru alt per poză; srcset după TASK-3).
 
 <!-- SECTION:NOTES:BEGIN -->
 Notă 2026-10-30 (TASK-140): pozele statice ale satelor (caruselul de pe /oltenia-de-sub-munte și galeriile de pe /sate/:slug) au acum variante redimensionate (scripts/generate-village-images.js), cu srcset/sizes și width/height reale. Partea de poze statice a satelor e rezolvată. Rămân pozele anunțurilor din API (base64), care depind de TASK-3.
+Actualizare 2026-11-01: căile au fost trecute pe `/proprietati` (TASK-143). Restul e neschimbat față de nota din 2026-10-30.
 <!-- SECTION:NOTES:END -->

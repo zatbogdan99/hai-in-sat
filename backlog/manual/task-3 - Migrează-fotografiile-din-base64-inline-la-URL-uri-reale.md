@@ -4,7 +4,7 @@ title: Migrează fotografiile din base64 inline la URL-uri reale
 status: To Do
 assignee: []
 created_date: '2026-06-12 16:06'
-updated_date: '2026-07-06'
+updated_date: '2026-11-01'
 labels:
   - seo
   - critical
@@ -30,7 +30,22 @@ NU se ruleaza prin pipeline. Motiv: pasul 4 (migrarea one-shot a celor ~14 propr
 
 **Daca vrei sa recuperezi partea de cod pentru pipeline:** taie doua task-uri noi — (a) backend: endpoint `GET /photos/{propertyId}/{photoIndex}/{varianta}/{slug}.jpg` + generarea celor 3 variante la upload + `permitAll` in SecurityConfig + DTO cu URL-uri + scriptul de migrare SCRIS si testat pe date locale; (b) frontend: `<img [src]>` + srcset, curatarea TransferState, `seo.service`. RULAREA migrarii pe prod ramane aici, in manual.
 
-**Blocheaza (nu porni aceste AC pana nu e livrat):** TASK-126 (og:image cu URL real), TASK-24 (srcset), TASK-125 (`image` in JSON-LD).
+**Blocheaza (nu porni aceste AC pana nu e livrat):** poza reală a anunțului în `og:image` și în JSON-LD `image` (TASK-126 și TASK-125 folosesc până atunci `og-hai-in-sat.jpg`), TASK-24 (srcset pentru pozele anunțurilor).
+
+## Stare 2026-11-01: ce s-a atenuat deja în frontend
+
+Simptomul cel mai grav din auditul 2026-06-12 (HTML SSR de zeci de MB) a fost atenuat fără schimbarea backend-ului. Detaliile sunt în CLAUDE.md, secțiunea „Photos”:
+- `/get-photos`, `/get-by-id` și `/get-all-properties` sunt excluse din transfer cache-ul HTTP (`app.config.ts`);
+- `PropertyApiService` pune în `TransferState` o copie ușoară: listele fără thumbnail-urile de peste 150 KB (`TRANSFER_IMAGE_LIMIT`), detaliile fără thumbnail, cu excepția anunțurilor cu video;
+- galeria anunțului se încarcă doar în browser, în loturi de câte 3;
+- pe server, `data:URI`-urile de peste 150 KB devin `assets/fara-fotografie.svg` pe carduri, iar posterul video lipsește până la hidratare;
+- `og:image` și JSON-LD `image` folosesc `og-hai-in-sat.jpg`, nu base64.
+
+Cifrele din secțiunea următoare (23,6 MB, 42,5 MB, LCP 29,6 s) sunt de dinainte de aceste atenuări și trebuie re-măsurate pe producție înainte de a decide prioritatea. Din sesiunea de lucru domeniul de producție nu e accesibil, deci măsurarea rămâne la owner. Ce NU s-a rezolvat și justifică în continuare task-ul:
+- pozele nu au URL-uri, deci nu există în Google Images;
+- share-urile de anunțuri nu arată poza imobilului;
+- fără cache HTTP pe poze: browserul descarcă base64 prin API la fiecare vizită, iar unele thumbnail-uri au câțiva MB;
+- fără `srcset`.
 
 ## De ce — fix-ul cu cel mai mare randament din tot auditul 2026-06-12
 
@@ -49,19 +64,19 @@ Dimensiuni măsurate (crawl 2026-06-12): pagini de anunț **3,7–42,5 MB HTML**
 
 ## Cum
 
-**Backend (repo `java.hai-in-sat/hai-in-sat/`, branch `master` — NU `main`; deploy `--project=hai-in-sat-api`):**
+**Backend (repo `zatbogdan99/hai-in-sat-api`, branch `master` — NU `main`; deploy `--project=hai-in-sat-api`):**
 
 > **DECIS de owner (2026-07-06): endpoint de streaming din MongoDB** (NU Google Cloud Storage). Binarul rămâne în Mongo; backend-ul îl servește ca imagine normală, cu cache agresiv.
 
-1. **Endpoint nou de servire**: `GET /photos/{propertyId}/{photoIndex}/{varianta}/{slug}.jpg` (controller nou `PhotoController` sau în `HaiInSatController.java`) — citește binarul din colecția de poze (vezi `PhotoRepository`/`PhotoDTO`) și îl scrie în răspuns ca bytes. `{varianta}` ∈ `thumb|medium|og`; `{slug}` e doar cosmetic/SEO (numele descriptiv, ex. `teren-cerna-valcea-9600mp-1.jpg`) — serverul se uită doar la id+index+variantă. **Adaugă ruta în `SecurityConfig.java` la `permitAll` pe GET** (azi doar `/get-all-properties`, `/get-by-id`, `/get-photos` sunt publice — linia ~49).
+1. **Endpoint nou de servire**: `GET /photos/{propertyId}/{photoIndex}/{varianta}/{slug}.jpg` (controller nou `PhotoController` sau în `HaiInSatController.java`) — citește binarul din colecția de poze (vezi `PhotoRepository`/`PhotoDTO`) și îl scrie în răspuns ca bytes. `{varianta}` ∈ `thumb|medium|og`; `{slug}` e doar cosmetic/SEO (numele descriptiv, ex. `teren-cerna-valcea-9600mp-1.jpg`) — serverul se uită doar la id+index+variantă. **Adaugă ruta în `SecurityConfig.java` la `permitAll` pe GET** (azi `/get-all-properties`, `/get-by-id`, `/get-photos` sunt publice pe GET — `SecurityConfig.java:49`, re-verificat 2026-11-01).
 2. **Stocare variante în Mongo**: la upload (`/save-property`, `/replace-photos`, `/add-photo`), generează și persistă ca **bytes binari (nu base64)** 3 variante per poză — thumbnail ~400 px, medium ~1200 px, og JPG 1200×630 (doar pentru prima poză/thumbnail e necesar og). `ThumbnailService` există deja pentru redimensionare — extinde-l.
 3. **Servire cu headere corecte**: `Content-Type: image/jpeg` (sau ce format alegi), `Cache-Control: public, max-age=31536000, immutable` (conținutul unei variante nu se schimbă; la înlocuirea pozelor se schimbă indexul/numărul lor, iar riscul de cache stale la scara actuală e acceptabil — dacă vrei perfect, include un hash scurt în slug). Suport pentru `HEAD` și răspuns 404 curat la poze inexistente.
 4. **DTO**: `thumbnail`/`photos` din `PropertyDTO` devin URL-uri absolute către endpoint (ex. `https://hai-in-sat-api.lm.r.appspot.com/photos/<id>/0/thumb/<slug>.jpg`); expune și `ogImageUrl`. Migrare one-shot a datelor existente: script/endpoint temporar admin care decodează base64 din Mongo → scrie variantele binare → actualizează documentele. **Atenție la memoria instanței F2 (512 MB)** la migrare — procesează poză cu poză, nu toată colecția în memorie.
 
 **Frontend:**
 5. `property-details`, `properties` (carduri), `add-property` (preview): `<img [src]="url">` + `srcset` (thumbnail/medium) în loc de data:URI.
-6. **TransferState**: verifică că răspunsurile mari nu mai cară base64; dacă rămân câmpuri grele tranzitorii, exclude-le cu `withHttpTransferCacheOptions` (filter pe URL) sau curăță DTO-ul pe server.
-7. `seo.service.ts`: `setRealEstateListing` cu `image` = URL real (TASK-125), `updatePageMeta` cu `ogImage` = `ogImageUrl` (TASK-126).
+6. **TransferState**: copia ușoară din `PropertyApiService` și pragul de 150 KB (`TRANSFER_IMAGE_LIMIT`, plus `SSR_INLINE_IMAGE_LIMIT` din `property-details`) devin inutile când pozele sunt URL-uri. Simplifică-le după migrare, nu înainte.
+7. `property-details.component.ts` (`seoImageFor`): `og:image` și JSON-LD `image` folosesc deja orice thumbnail http(s); după migrare primesc automat `ogImageUrl` în loc de `og-hai-in-sat.jpg`.
 8. După migrare: regenerare sitemap cu `<image:image>` (TASK-129 pct. 5).
 
 **Notă de migrare a datelor:** există ~14 proprietăți — migrarea one-shot e mică; scrie scriptul idempotent și păstrează backup-ul colecției înainte.
@@ -81,12 +96,18 @@ L (1–2 săptămâni cu tot cu migrare date și verificări). Deblochează: TAS
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 HTML-ul SSR al celui mai greu anunț scade sub **300 KB** (de la 42,5 MB); `/properties` sub 500 KB — verificat cu `curl -s -o NUL -w "%{size_download}"` + gzip
+- [ ] #1 HTML-ul SSR al celui mai greu anunț scade sub **300 KB** (de la 42,5 MB); `/proprietati` sub 500 KB (probabil deja adevărat după atenuările din 2026-10, de re-măsurat pe producție) — verificat cu `curl -s -o NUL -w "%{size_download}"` + gzip
 - [ ] #2 `<script id="ng-state">` NU mai conține niciun `data:image` (verificabil cu grep pe HTML-ul salvat)
 - [ ] #3 Toate `<img>` din galerii și carduri au `src`/`srcset` cu URL-uri https publice; pozele răspund 200 cu `Content-Type: image/*` și `Cache-Control` cu `max-age≥31536000`
-- [ ] #4 og:image și JSON-LD `image` pe anunțuri sunt URL-uri reale (sincronizat cu TASK-126 AC#6 și TASK-125 AC#5)
+- [ ] #4 og:image și JSON-LD `image` pe anunțuri sunt URL-urile reale ale pozelor anunțului, nu `og-hai-in-sat.jpg`
 - [ ] #5 Toate proprietățile EXISTENTE migrate (zero base64 rămas în răspunsurile API folosite de site); backup-ul datelor făcut înainte de migrare
 - [ ] #6 LCP pe pagina de anunț (mobil, lab) sub 4 s la warm — măsurat cu scriptul din `seo-audit-2026-06-12/crawl/measure.py` și comparat cu baseline-ul (7,1 s)
 - [ ] #7 Upload-ul de proprietate nouă din `/add-property` produce automat cele 3 variante + nume descriptive; fluxul admin funcționează cap-coadă
 - [ ] #8 Nicio regresie funcțională: galeria, thumbnails în listă, preview admin, regenerate-thumbnails — toate funcționale
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Actualizare 2026-11-01 (analiza backlog-ului față de cod): neînceput în backend (pozele sunt tot base64). Am adăugat secțiunea „Stare 2026-11-01” cu atenuările deja livrate în frontend (TransferState ușor, galerie doar în browser, placeholder SSR peste 150 KB, `og-hai-in-sat.jpg`). Cifrele din audit sunt de dinainte de atenuări. Am actualizat și dependențele față de TASK-125/126 (care folosesc acum imaginea JPEG generică), repo-ul backend și calea `/proprietati`.
+<!-- SECTION:NOTES:END -->

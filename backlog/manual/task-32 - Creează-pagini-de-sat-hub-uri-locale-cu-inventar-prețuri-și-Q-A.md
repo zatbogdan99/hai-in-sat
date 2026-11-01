@@ -4,7 +4,7 @@ title: Creează pagini de sat — hub-uri locale cu inventar, prețuri și Q&A
 status: To Do
 assignee: []
 created_date: '2026-06-12 16:13'
-updated_date: '2026-07-06'
+updated_date: '2026-11-01'
 labels:
   - seo
   - content
@@ -29,6 +29,21 @@ NU se ruleaza prin pipeline. Motiv: valoarea task-ului E continutul — ≥600 d
 
 **Daca vrei sa recuperezi partea de cod pentru pipeline:** taie un task de schelet — rutele `/sate` si `/sate/:slug`, componentele standalone, meta/canonical/breadcrumbs prin `SeoService`, galeria din `PhotoService` (exista deja imagini per localitate), intrarile in `STATIC_PAGES` din `generate-sitemap.js` — cu textele ca placeholder marcat clar. Scrierea continutului ramane aici.
 
+## Stare 2026-11-01: scheletul există, lipsește conținutul
+
+Partea de cod din „Dacă vrei să recuperezi partea de cod” e în mare parte livrată:
+- există `/sate/:slug` pentru 7 sate: horezu, polovragi, baia-de-fier, vaideeni, slatioara, costesti, barbatesti (`src/app/utils/villages.ts`, componenta `InfoPageComponent`);
+- fiecare pagină are title, meta description, canonical, `BreadcrumbList`, exact un `h1` cu numele satului și galerie din `PhotoService`, cu poze redimensionate (TASK-140) și schelet de încărcare (TASK-139);
+- paginile sunt în `sitemap.xml` și `llms.txt`, iar `/oltenia-de-sub-munte` are un carusel cu link real spre fiecare sat;
+- slug-ul unui sat necunoscut dă 404.
+
+Ce lipsește:
+- **conținutul:** textele de azi sunt narative (istorie, tradiții), fără inventar, prețuri, date practice sau Q&A;
+- **lista de anunțuri pe sat:** depinde de câmpul `village` din TASK-31;
+- **pagina-hub.** **Propunere (de confirmat de owner):** hub-ul să fie chiar `/oltenia-de-sub-munte`, care listează deja toate satele și e în meniu. Tabelul de prețuri pe sat s-ar adăuga acolo, în loc de o rută nouă `/sate`. Dacă se preferă `/sate`, ruta nouă trebuie adăugată și în `scripts/generate-sitemap.js` și `src/llms.txt` (vezi CLAUDE.md);
+- **Cerna:** are anunțuri, dar nu are pagină de sat;
+- **schema `Place` cu `geo`:** încă neadăugată.
+
 ## De ce — OPORTUNITATEA #1 din analiza SERP a auditului
 
 Analiza SERP backwards (findings/sxo.md): pe interogările generice („case de vânzare Vâlcea") domină portalurile (OLX/Storia/Imobiliare.ro) — nebătabile frontal. DAR pe **long-tail local** („teren de vânzare Vaideeni", „case de vânzare Baia de Fier") concurența e slabă: Storia are ~9 terenuri în Horezu, 6 case în Baia de Fier, zero conținut editorial local. O pagină-sat cu 600+ cuvinte + inventar + date practice poate intra în top 10 în 3–5 luni — exact unde agenția ARE inventar real.
@@ -39,7 +54,7 @@ Wireframe complet pentru pagina-sat ideală: în `findings/sxo.md`.
 
 ## Cum
 
-1. **Rute noi**: `/sate` (index/hub) + `/sate/:slug` pentru cele 6 localități: horezu, vaideeni, costesti, polovragi, baia-de-fier, cerna. Componente standalone + SSR meta complet (title „Case și terenuri de vânzare în {Sat} — {Județ} | Hai în Sat", canonical, breadcrumbs).
+1. **Rute** (FĂCUT pentru `/sate/:slug`, cu 7 sate: horezu, polovragi, baia-de-fier, vaideeni, slatioara, costesti, barbatesti; lipsesc hub-ul și cerna): `/sate` (index/hub, sau `/oltenia-de-sub-munte`, vezi propunerea de mai sus) + `/sate/:slug`. Componente standalone + SSR meta complet (title „Case și terenuri de vânzare în {Sat} — {Județ} | Hai în Sat", canonical, breadcrumbs).
 2. **Conținutul unei pagini-sat** (≥600 cuvinte UNICE per sat — nu template umplut cu sinonime; regula 60%+ conținut unic):
    - Intro despre sat (2-3 paragrafe: poziționare, specific, de ce să te muți acolo);
    - **Anunțurile active din sat** (filtrare după localitate — necesită câmp `village`/`locality` pe proprietate, vezi TASK-31);
@@ -54,13 +69,13 @@ Wireframe complet pentru pagina-sat ideală: în `findings/sxo.md`.
 
 ## Fișiere afectate
 
-- `src/app/app.routes.ts` + componente noi `src/app/sate/*` (convenția repo-ului: componentele stau direct în `src/app/<nume>/`)
+- `src/app/info-page/*` (componenta existentă a paginilor de sat) și `src/app/utils/villages.ts` (lista de sate); `src/app/app.routes.ts` doar dacă se adaugă `/sate`
 - Filtrarea anunțurilor pe sat: cere câmpul `village` pe proprietate — **definit de TASK-31** (nu-l re-defini aici); până există, filtrare client-side la 14 anunțuri e pragmatică (heuristic pe nume, marcat explicit ca provizoriu)
-- `scripts/generate-sitemap.js` — adaugă `/sate` + paginile de sat în `STATIC_PAGES` (liniile 14-23)
+- `scripts/generate-sitemap.js` — paginile de sat sunt deja în `STATIC_PAGES`; se adaugă doar hub-ul `/sate` (dacă se alege) și satele noi
 - `src/app/service/seo.service.ts`
 - Foto per sat: EXISTĂ deja liste statice de imagini per localitate în `src/app/service/photo-service.ts` (Horezu, Costești etc., din `assets/`) — refolosește-le pentru galeria paginii de sat
 
-Verificat 2026-07-06: afirmațiile din task despre starea curentă sunt corecte — nu există nicio rută/pagină de localitate, iar `village-of-the-month`/`info-page` nu țin loc de pagini-sat (conținut narativ, fără inventar/prețuri/Q&A).
+Verificat 2026-07-06: nu exista nicio rută de localitate. **Depășit 2026-11-01:** rutele `/sate/:slug` există (vezi „Stare 2026-11-01”); conținutul lor e încă narativ, fără inventar, prețuri sau Q&A.
 
 ## Efort
 
@@ -78,3 +93,9 @@ L (3–5 zile dezvoltare + scrierea conținutului; conținutul e partea grea —
 - [ ] #7 Conținutul NU e template duplicat: similaritate <40% între oricare două pagini-sat (diff manual pe secțiunile descriptive)
 - [ ] #8 Tabelul de prețuri are proces de actualizare definit (lunar — cine/cum, documentat în implementation notes)
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Actualizare 2026-11-01 (analiza backlog-ului față de cod): scheletul de cod e livrat pentru 7 sate (rute, SEO, sitemap, llms.txt, galerii). Rămân conținutul, lista de anunțuri pe sat (după TASK-31), hub-ul, Cerna și schema `Place`. Am adăugat propunerea ca hub-ul să fie `/oltenia-de-sub-munte`, de confirmat de owner.
+<!-- SECTION:NOTES:END -->

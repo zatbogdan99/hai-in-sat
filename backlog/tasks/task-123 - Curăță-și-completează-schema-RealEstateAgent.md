@@ -4,7 +4,7 @@ title: Curăță și completează schema RealEstateAgent
 status: To Do
 assignee: []
 created_date: '2026-05-07 07:59'
-updated_date: '2026-07-27'
+updated_date: '2026-11-01'
 labels:
   - seo
   - schema
@@ -50,26 +50,27 @@ Schema `RealEstateAgent` din `src/index.html` este 80% bună, dar are:
   "areaServed": [
     {"@type":"Place","name":"Horezu, Vâlcea","geo":{"@type":"GeoCoordinates","latitude":45.1472,"longitude":24.0033}},
     {"@type":"Place","name":"Polovragi, Gorj"},
-    {"@type":"Place","name":"Costești, Vâlcea"},
-    {"@type":"Place","name":"Vaideeni, Vâlcea"},
     {"@type":"Place","name":"Baia de Fier, Gorj"},
+    {"@type":"Place","name":"Vaideeni, Vâlcea"},
+    {"@type":"Place","name":"Slătioara, Vâlcea"},
+    {"@type":"Place","name":"Costești, Vâlcea"},
+    {"@type":"Place","name":"Bărbătești, Vâlcea"},
     {"@type":"Place","name":"Cerna, Vâlcea"},
     {"@type":"Place","name":"Oltenia de sub Munte"}
   ]
 }
 ```
 
-**DECIS (2026-07-27): se sterg AMANDOUA** — si „București", si „România". `areaServed` ramane exact lista de 7 locuri din blocul de mai sus (Horezu cu `geo`, Polovragi, Costești, Vaideeni, Baia de Fier, Cerna, Oltenia de sub Munte). Nu pastra Bucuresti „ca audienta sursa" — `areaServed` inseamna zona SERVITA, nu de unde vin cumparatorii.
+**DECIS (2026-07-27): se șterg AMÂNDOUĂ**, și „București”, și „România”. **Actualizat 2026-11-01 (decizie owner):** `areaServed` conține exact cele 9 locuri din blocul de mai sus: cele 7 sate care au pagină proprie pe site (`/sate/:slug`: Horezu cu `geo`, Polovragi, Baia de Fier, Vaideeni, Slătioara, Costești, Bărbătești), plus Cerna (are anunțuri) și Oltenia de sub Munte.
 
 Note suplimentare (verificare 2026-07-06, blocul e la `index.html:33-82`):
 - `telephone` e deja corect (`+40728140628`, linia 42) — nu-l atinge; doar aliniat cu TASK-118.
 - `sameAs` există (Facebook/Instagram/TikTok, liniile 75-79) — după TASK-MANUAL-4 (GBP) se va adăuga acolo și URL-ul profilului Google Business.
-- **Consecvența email-ului în restul site-ului**: `mailto:contact@hai-în-sat.ro` (forma IDN) apare în `contact-us.component.html:91` și în dialogul Contact din `app.component.html`. Cele două forme sunt ACELAȘI domeniu (unicode vs punycode), dar unii clienți de mail eșuează pe forma unicode. La schimbarea email-ului din schema pe forma ASCII, schimbă și `mailto:`-urile pe ASCII (textul AFIȘAT poate rămâne cu diacritice).
+- **Consecvența email-ului în restul site-ului: deja rezolvată** (verificat 2026-11-01). Toate `mailto:` de pe site folosesc forma ASCII (`links.mailto` din `app.component.ts`, fereastra Contact, dialogul „Vreau și eu!” de pe `/proprietati`). Pagina `contact-us` nu mai există.
 
 ## Fișiere afectate
 
-- `hai-in-sat/hai-in-sat/src/index.html` (bloc JSON-LD `RealEstateAgent`, liniile 33-82)
-- `src/app/contact-us/contact-us.component.html` + `src/app/app.component.html` (doar `mailto:` → forma ASCII)
+- `src/index.html` (bloc JSON-LD `RealEstateAgent`, liniile ~33-82). Doar acest fișier: partea cu `mailto:` e deja făcută.
 
 ## Efort
 
@@ -89,9 +90,9 @@ NU fac parte din criteriile de acceptare — pipeline-ul se opreste la PR, fara 
 - [ ] #1 `src/index.html`, blocul JSON-LD `RealEstateAgent` (azi liniile 33-82): `address.postalCode` = `"245800"`
 - [ ] #2 `priceRange` foloseste un format acceptat de Google — `"$$"` (azi e `"€€"`, doua caractere euro, nestandard)
 - [ ] #3 `email` din schema e in forma ASCII: `contact@xn--hai-n-sat-t5a.ro`
-- [ ] #4 Link-urile `mailto:` de pe site folosesc si ele forma ASCII: `contact-us.component.html` (azi linia ~91) si dialogul Contact din `app.component.html`. Textul AFISAT poate ramane cu diacritice — se schimba doar valoarea din `href`
-- [ ] #5 `git grep "mailto:contact@hai-" src/` returneaza 0 rezultate (nicio forma unicode ramasa intr-un `mailto:`)
-- [ ] #6 `areaServed` contine EXACT cele 7 locuri din descriere si nu mai contine nici „România", nici „București"
+- [x] #4 Link-urile `mailto:` de pe site folosesc si ele forma ASCII. Deja făcut (verificat 2026-11-01): pagina `contact-us` nu mai există, iar fereastra Contact și dialogul de pe `/proprietati` folosesc `mailto:contact@xn--hai-n-sat-t5a.ro`.
+- [x] #5 `git grep "mailto:contact@hai-" src/` returneaza 0 rezultate. Deja adevărat (verificat 2026-11-01).
+- [ ] #6 `areaServed` contine EXACT cele 9 locuri din descriere (decizie owner 2026-11-01) si nu mai contine nici „România", nici „București"
 - [ ] #7 Intrarea pentru Horezu pastreaza `geo` cu `latitude: 45.1472` si `longitude: 24.0033`
 - [ ] #8 `telephone` ramane `+40728140628` (azi linia 42 — deja corect, nu-l atinge; e aliniat cu TASK-118)
 - [ ] #9 `sameAs` ramane cu cele trei retele existente (azi liniile 75-79) — profilul Google Business se adauga abia dupa TASK-MANUAL-4, nu aici
@@ -111,4 +112,5 @@ Revizuire 2026-07-27 (pregatire pentru pipeline). Ambiguitati eliminate:
 3. Adaugat AC pe `mailto:`-uri, care in varianta veche erau doar o nota in descriere, nu un criteriu.
 
 `openingHours` ramane in afara scope-ului (scos 2026-06-28 — nu exista program bine definit).
+Actualizare 2026-11-01 (analiza backlog-ului față de cod): neimplementat încă în `index.html` (email IDN, `priceRange: "€€"`, fără `postalCode`, `areaServed` cu București și România). AC #4 și #5 (`mailto:`) erau deja îndeplinite de modificări anterioare și au fost bifate. Lista `areaServed` a fost extinsă la 9 locuri (decizie owner), cu Slătioara și Bărbătești, care au acum pagini proprii.
 <!-- SECTION:NOTES:END -->

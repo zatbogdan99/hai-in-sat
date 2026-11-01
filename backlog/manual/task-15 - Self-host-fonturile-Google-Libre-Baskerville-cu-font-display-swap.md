@@ -4,7 +4,7 @@ title: Self-host fonturile Google (Libre Baskerville) cu font-display swap
 status: To Do
 assignee: []
 created_date: '2026-06-12 16:19'
-updated_date: '2026-07-06'
+updated_date: '2026-11-01'
 labels:
   - seo
   - performance
@@ -65,3 +65,9 @@ S (1-2 ore).
 - [ ] #4 Diacriticele românești se randează corect cu fontul self-hosted (test vizual pe titluri cu ă/î/ș/ț)
 - [ ] #5 FCP pe homepage (lab) egal sau mai bun față de baseline-ul din `seo-audit-2026-06-12/crawl/playwright-metrics.json`
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Verificat 2026-11-01: încă valabil, nefăcut. `src/index.html:177-179` încarcă Libre Baskerville de la `fonts.googleapis.com` (cu `display=swap`), iar `--font-base` din `styles.scss` o folosește peste tot (TASK-137 a unificat tipografia pe ea).
+<!-- SECTION:NOTES:END -->
