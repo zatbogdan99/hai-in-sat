@@ -40,7 +40,7 @@ Partea de cod din „Dacă vrei să recuperezi partea de cod” e în mare parte
 Ce lipsește:
 - **conținutul:** textele de azi sunt narative (istorie, tradiții), fără inventar, prețuri, date practice sau Q&A;
 - **lista de anunțuri pe sat:** depinde de câmpul `village` din TASK-31;
-- **pagina-hub.** **Propunere (de confirmat de owner):** hub-ul să fie chiar `/oltenia-de-sub-munte`, care listează deja toate satele și e în meniu. Tabelul de prețuri pe sat s-ar adăuga acolo, în loc de o rută nouă `/sate`. Dacă se preferă `/sate`, ruta nouă trebuie adăugată și în `scripts/generate-sitemap.js` și `src/llms.txt` (vezi CLAUDE.md);
+- **conținutul paginii-hub.** **DECIS de owner (2026-11-01): hub-ul e `/oltenia-de-sub-munte`**, care listează deja toate satele și e în meniu. NU se creează o rută nouă `/sate`. Tabelul de prețuri pe sat și link-urile spre sate se adaugă pe `/oltenia-de-sub-munte`;
 - **Cerna:** are anunțuri, dar nu are pagină de sat;
 - **schema `Place` cu `geo`:** încă neadăugată.
 
@@ -54,24 +54,24 @@ Wireframe complet pentru pagina-sat ideală: în `findings/sxo.md`.
 
 ## Cum
 
-1. **Rute** (FĂCUT pentru `/sate/:slug`, cu 7 sate: horezu, polovragi, baia-de-fier, vaideeni, slatioara, costesti, barbatesti; lipsesc hub-ul și cerna): `/sate` (index/hub, sau `/oltenia-de-sub-munte`, vezi propunerea de mai sus) + `/sate/:slug`. Componente standalone + SSR meta complet (title „Case și terenuri de vânzare în {Sat} — {Județ} | Hai în Sat", canonical, breadcrumbs).
+1. **Rute** (FĂCUT pentru `/sate/:slug`, cu 7 sate: horezu, polovragi, baia-de-fier, vaideeni, slatioara, costesti, barbatesti; lipsește cerna). Hub-ul e `/oltenia-de-sub-munte` (decizie owner 2026-11-01), deci nu se adaugă `/sate`. Componente standalone + SSR meta complet (title „Case și terenuri de vânzare în {Sat} — {Județ} | Hai în Sat", canonical, breadcrumbs).
 2. **Conținutul unei pagini-sat** (≥600 cuvinte UNICE per sat — nu template umplut cu sinonime; regula 60%+ conținut unic):
    - Intro despre sat (2-3 paragrafe: poziționare, specific, de ce să te muți acolo);
    - **Anunțurile active din sat** (filtrare după localitate — necesită câmp `village`/`locality` pe proprietate, vezi TASK-31);
    - **Date practice**: utilități disponibile în zonă, acces (DN67 etc.), distanțe (Râmnicu Vâlcea, Tg. Jiu, Transalpina), școală/dispensar unde există;
-   - **Prețuri orientative**: interval €/mp teren intravilan/extravilan în sat + data actualizării — pe `/sate` (index) un TABEL agregat „Preț mediu pe sat în Oltenia de sub Munte (actualizat: {luna an})" — magnetul de citare AI din findings/geo.md (G4);
+   - **Prețuri orientative**: interval €/mp teren intravilan/extravilan în sat + data actualizării — pe hub-ul `/oltenia-de-sub-munte` un TABEL agregat „Preț mediu pe sat în Oltenia de sub Munte (actualizat: {luna an})" — magnetul de citare AI din findings/geo.md (G4);
    - **Q&A** (3–5 întrebări cu răspunsuri self-contained de 40–60 cuvinte: „Cât costă un teren în Vaideeni?", „Are utilități?", „Cât e până la Râmnicu Vâlcea?") — formatul extras de AI Overviews/Perplexity. FĂRĂ schema FAQPage pentru rich results (restricție Google 2023; opțional doar ca beneficiu LLM);
    - Foto din sat (există deja în `PhotoService` pentru mai multe sate!), hartă, link-uri spre anunțuri + breadcrumb.
-3. **Linking intern bidirecțional**: anunț → pagina satului („Despre Vaideeni") și pagina satului → anunțuri; homepage/footer → `/sate`. Link-uri REALE `<a href>` (TASK-120).
-4. **Sitemap**: include `/sate` + cele 6 pagini (TASK-129 va prelua automat dacă generatorul citește rutele statice — adaugă-le explicit).
+3. **Linking intern bidirecțional**: anunț → pagina satului („Despre Vaideeni") și pagina satului → anunțuri; meniu → `/oltenia-de-sub-munte` (există deja). Link-uri REALE `<a href>` (TASK-120).
+4. **Sitemap**: FĂCUT pentru hub și cele 7 pagini de sat; satele noi se adaugă explicit în `STATIC_PAGES` și `src/llms.txt`.
 5. Schema per pagină-sat: `Place` cu `geo` + `containedInPlace` (opțional, beneficiu entity), BreadcrumbList obligatoriu.
 6. Începe cu 3–4 sate unde există inventar real (Vaideeni, Baia de Fier, Polovragi, Horezu) — restul după.
 
 ## Fișiere afectate
 
-- `src/app/info-page/*` (componenta existentă a paginilor de sat) și `src/app/utils/villages.ts` (lista de sate); `src/app/app.routes.ts` doar dacă se adaugă `/sate`
+- `src/app/info-page/*` (componenta existentă a paginilor de sat), `src/app/utils/villages.ts` (lista de sate) și `src/app/under-the-mountain/*` (hub-ul `/oltenia-de-sub-munte`: tabelul de prețuri)
 - Filtrarea anunțurilor pe sat: cere câmpul `village` pe proprietate — **definit de TASK-31** (nu-l re-defini aici); până există, filtrare client-side la 14 anunțuri e pragmatică (heuristic pe nume, marcat explicit ca provizoriu)
-- `scripts/generate-sitemap.js` — paginile de sat sunt deja în `STATIC_PAGES`; se adaugă doar hub-ul `/sate` (dacă se alege) și satele noi
+- `scripts/generate-sitemap.js` și `src/llms.txt` — paginile de sat și hub-ul sunt deja listate; se adaugă doar satele noi (de ex. Cerna)
 - `src/app/service/seo.service.ts`
 - Foto per sat: EXISTĂ deja liste statice de imagini per localitate în `src/app/service/photo-service.ts` (Horezu, Costești etc., din `assets/`) — refolosește-le pentru galeria paginii de sat
 
@@ -84,11 +84,11 @@ L (3–5 zile dezvoltare + scrierea conținutului; conținutul e partea grea —
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Există `/sate` (hub cu tabelul de prețuri pe sat + data actualizării vizibilă) și minimum 4 pagini `/sate/:slug` live
+- [ ] #1 Hub-ul `/oltenia-de-sub-munte` are tabelul de prețuri pe sat, cu data actualizării vizibilă, iar minimum 4 pagini `/sate/:slug` au conținutul nou
 - [ ] #2 Fiecare pagină-sat are ≥600 cuvinte unice (verificabil cu crawler-ul de audit), title/canonical/meta description/breadcrumbs proprii și exact 1 H1 cu numele satului
 - [ ] #3 Fiecare pagină-sat listează anunțurile active din satul respectiv (cu fallback elegant „momentan nu avem anunțuri în X — vezi satele vecine" + link-uri)
 - [ ] #4 Secțiune Q&A cu minimum 3 întrebări/răspunsuri self-contained (40–60 cuvinte) per sat
-- [ ] #5 Linking intern: fiecare anunț are link `<a href>` spre pagina satului său și invers; `/sate` e linkat din navigație sau footer
+- [ ] #5 Linking intern: fiecare anunț are link `<a href>` spre pagina satului său și invers; hub-ul `/oltenia-de-sub-munte` e linkat din navigație (deja adevărat)
 - [ ] #6 Paginile sunt în sitemap cu lastmod real și răspund 200 în HTML brut SSR cu tot conținutul
 - [ ] #7 Conținutul NU e template duplicat: similaritate <40% între oricare două pagini-sat (diff manual pe secțiunile descriptive)
 - [ ] #8 Tabelul de prețuri are proces de actualizare definit (lunar — cine/cum, documentat în implementation notes)
@@ -97,5 +97,5 @@ L (3–5 zile dezvoltare + scrierea conținutului; conținutul e partea grea —
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
-Actualizare 2026-11-01 (analiza backlog-ului față de cod): scheletul de cod e livrat pentru 7 sate (rute, SEO, sitemap, llms.txt, galerii). Rămân conținutul, lista de anunțuri pe sat (după TASK-31), hub-ul, Cerna și schema `Place`. Am adăugat propunerea ca hub-ul să fie `/oltenia-de-sub-munte`, de confirmat de owner.
+Actualizare 2026-11-01 (analiza backlog-ului față de cod): scheletul de cod e livrat pentru 7 sate (rute, SEO, sitemap, llms.txt, galerii). Rămân conținutul, lista de anunțuri pe sat (după TASK-31), hub-ul, Cerna și schema `Place`. Owner-ul a decis ca hub-ul să fie `/oltenia-de-sub-munte`, fără rută nouă `/sate`; descrierea și AC #1/#5 au fost adaptate.
 <!-- SECTION:NOTES:END -->
