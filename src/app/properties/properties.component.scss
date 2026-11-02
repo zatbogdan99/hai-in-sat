@@ -1,7 +1,11 @@
 * {
   margin: 0;
-  padding: 0;
   box-sizing: border-box;
+}
+
+/* PrimeNG form fields keep their own padding: their styles can load before this file and would lose to it. */
+*:where(:not(.p-inputtext, .p-textarea)) {
+  padding: 0;
 }
 
 /* Do not override PrimeIcons font */
