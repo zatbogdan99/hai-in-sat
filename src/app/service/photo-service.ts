@@ -153,21 +153,22 @@ export class PhotoService {
     ];
   }
 
+  // A doua poză (oile) apare separat, lângă descriere; prima (casele și biserica) deschide galeria.
   private static getVaideeniData() {
     return [
-      {
-        itemImageSrc: 'assets/vaideeni1.avif',
-        width: 1140,
-        height: 670,
-        alt: 'Vaideeni',
-        title: 'Vaideeni 1'
-      },
       {
         itemImageSrc: 'assets/vaideeni2.avif',
         width: 4000,
         height: 6000,
         alt: 'Vaideeni',
         title: 'Vaideeni 2'
+      },
+      {
+        itemImageSrc: 'assets/vaideeni1.avif',
+        width: 1140,
+        height: 670,
+        alt: 'Vaideeni',
+        title: 'Vaideeni 1'
       },
       {
         itemImageSrc: 'assets/vaideeni3.avif',

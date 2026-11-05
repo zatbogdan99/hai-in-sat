@@ -153,7 +153,7 @@ export class PropertiesComponent implements OnInit {
       firstName: ['', [requiredTrimmedValidator]],
       email: ['', [Validators.email]],
       phone: ['', [Validators.pattern(/^\d+$/), Validators.minLength(10)]],
-      village: ['', [requiredTrimmedValidator]],
+      village: [''],
       propertyType: [''],
       propertyDescription: ['']
     }, {

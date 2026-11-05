@@ -42,6 +42,7 @@ fa-icon {
 }
 
 .topbar__logo {
+  height: 5rem; /* height="80" din HTML rămâne doar pentru rezervarea locului */
   padding-left: 1rem;
   padding-right: 1rem;
   cursor: pointer;
@@ -102,14 +103,16 @@ fa-icon {
   }
 }
 
-/* Mobile behavior: replace chips with menu button and vertical list */
-@media only screen and (max-width: 1199px), only screen and (max-height: 599px) {
+/* Mobile behavior: replace chips with menu button and vertical list.
+   Pragul de înălțime (540 px, la fel în styles.scss și village-of-the-month) lasă antetul de desktop și pe laptopurile
+   de 14" la 150 % (~1280×587), unde pagina e micșorată după ecran. */
+@media only screen and (max-width: 1199px), only screen and (max-height: 539px) {
   .nav-chips { display: none; }
   .topbar__menu-button { display: inline-flex; }
 }
 
 /* Desktop behavior: keep chips visible and hide the menu button */
-@media only screen and (min-width: 1200px) and (min-height: 600px) {
+@media only screen and (min-width: 1200px) and (min-height: 540px) {
   .nav-chips { display: flex; }
   .topbar__menu-button { display: none; }
 
@@ -202,7 +205,7 @@ fa-icon {
   color: #334155;
   background-color: #F4EFE5;
   border: 0;
-  border-radius: 16px;
+  border-radius: 1rem;
   padding: 0.25rem 0.75rem;
   cursor: pointer;
 
@@ -216,7 +219,7 @@ fa-icon {
   }
 }
 
-@media only screen and (max-width: 1199px), only screen and (max-height: 599px) {
+@media only screen and (max-width: 1199px), only screen and (max-height: 539px) {
   .footer-legal {
     flex-direction: column;
     align-items: center;
@@ -255,7 +258,7 @@ fa-icon {
   gap: 0.75rem 1.5rem;
 
   h2 {
-    font-size: 24px;
+    font-size: var(--fs-h3);
     margin: 0;
     flex: 1 1 12rem;
   }

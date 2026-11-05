@@ -286,12 +286,15 @@ export class UnderTheMountainComponent implements AfterViewInit, OnInit {
       return;
     }
 
+    // Spațiul dintre sate e 1rem: pe desktop crește odată cu cardurile, după scara ecranului (styles.scss).
+    const rem = typeof getComputedStyle === 'function' ? parseFloat(getComputedStyle(document.documentElement).fontSize) || 16 : 16;
+
     const params: any = {
       loop: true,
       grabCursor: true,
       centeredSlides: true,
       centeredSlidesBounds: true,
-      spaceBetween: 16,
+      spaceBetween: rem,
       initialSlide: 1,
       slidesPerView: 3,
       autoHeight: true,

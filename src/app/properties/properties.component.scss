@@ -48,7 +48,7 @@
   justify-content: center;
   text-align: center;
   padding: clamp(2rem, 6vw, 5rem) 1rem;
-  min-height: 350px;
+  min-height: 21.875rem;
   gap: 1rem;
 }
 
@@ -56,9 +56,9 @@
   background-color: #F4EFE5;
   color: #111;
   padding: 0.5rem 1.5rem;
-  border-radius: 24px;
-  font-weight: 500;
-  font-size: clamp(2rem, 6vw, 3rem);
+  border-radius: 1.5rem;
+  font-weight: 700;
+  font-size: var(--fs-h1);
   font-family: 'Libre Baskerville', serif;
 }
 
@@ -66,9 +66,10 @@
   background-color: #F4EFE5;
   color: #0b2f6b;
   padding: 1rem 1.5rem;
-  border-radius: 16px;
-  font-size: clamp(1.3rem, 2.2vw, 1.4rem);
-  max-width:800px;
+  border-radius: 1rem;
+  font-size: var(--fs-lead);
+  line-height: var(--lh-lead);
+  max-width:50rem;
   font-family: 'Libre Baskerville', serif;
 }
 
@@ -78,8 +79,7 @@
   border: none;
   padding: 0.85rem 1.75rem;
   border-radius: 999px;
-  font-size: 1.1rem;
-  box-shadow: 0 8px 16px rgba(11, 47, 107, 0.3);
+  box-shadow: 0 0.5rem 1rem rgba(11, 47, 107, 0.3);
 }
 
 :host ::ng-deep .hero-cta .p-button:hover {
@@ -118,8 +118,8 @@
       background-color: #fff;
 
       img {
-        width: 150px;
-        height: 150px;
+        width: 9.375rem;
+        height: 9.375rem;
         object-fit: cover;
         border-radius: 0.5rem;
       }
@@ -130,12 +130,14 @@
         overflow-wrap: anywhere;
 
         h2 {
-          font-size: 1.25rem;
+          font-size: var(--fs-h4);
           margin-bottom: 0.5rem;
           color: #1e1e1e;
         }
 
         p {
+          font-size: var(--text-body-size);
+          line-height: var(--text-body-line-height);
           margin-bottom: 0.75rem;
           color: #555;
         }
@@ -167,20 +169,21 @@
 
       img {
         width: 100%;
-        height: 180px;
+        height: 11.25rem;
         object-fit: cover;
         border-radius: 0.5rem;
         margin-bottom: 0.75rem;
       }
 
       h2 {
-        font-size: 1.2rem;
+        font-size: var(--fs-h4);
         margin-bottom: 0.5rem;
         color: #1e1e1e;
       }
 
       p {
-        font-size: 0.95rem;
+        font-size: var(--text-body-size);
+        line-height: var(--text-body-line-height);
         color: #666;
         margin-bottom: 1rem;
       }
@@ -196,7 +199,7 @@
 
   .property-dialog-left,
   .property-dialog-right {
-    flex: 1 1 250px;
+    flex: 1 1 15.625rem;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -204,6 +207,12 @@
 
   .property-dialog-right {
     justify-content: center;
+  }
+
+  /* Loc deasupra primului câmp pentru eticheta ridicată („Nume complet”): fără el, eticheta ieșea din zona derulabilă
+     a ferestrei și era tăiată, iar la celelalte câmpuri o primește din spațiul dintre ele. */
+  .property-dialog-left {
+    padding-top: 1.5rem; // eticheta ridicată urcă 22 px (1,375rem) deasupra câmpului
   }
 
   .p-float-label {
@@ -249,7 +258,7 @@
     gap: 0.5rem;
     margin-left: 2rem;
     color: #666;
-    font-size: 0.9rem;
+    font-size: var(--fs-small);
 
     i {
       color: #ffcc00;
@@ -285,7 +294,7 @@
 
 /* Property Filter Buttons */
 .property-filter-buttons {
-  max-width: 1200px;
+  max-width: 75rem;
   margin: 2rem auto;
   padding: 0 1rem;
   display: flex;
@@ -297,12 +306,12 @@
   text-decoration: none;
   line-height: normal;
   padding: 1rem 2rem;
-  font-size: 1.2rem;
+  font-size: var(--fs-btn);
   font-weight: bold;
   border-radius: 0.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  min-width: 250px;
+  min-width: 15.625rem;
   text-align: center;
 }
 
@@ -320,8 +329,8 @@
 }
 
 .filter-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-0.1875rem);
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
 }
 
 /* Responsive */
@@ -332,7 +341,8 @@
 
 .property-details-link {
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 700;
+  margin-top: auto; /* în grilă, „Detalii” stă jos în fiecare card, la fel pe tot rândul */
   padding-block: var(--p-button-padding-y);
   padding-inline: var(--p-button-padding-x);
 }
@@ -364,7 +374,7 @@
     color: var(--p-text-muted-color);
     text-decoration: none;
     line-height: 1;
-    font-size: 13.3333px;
+    font-size: 0.83333125rem;
     cursor: pointer;
     user-select: none;
     transition: background var(--p-transition-duration), color var(--p-transition-duration);
@@ -494,8 +504,13 @@
     width: 100%;          /* fiecare buton pe un rând, full width */
     flex: none;
     padding: 0.9rem 0.5rem;
-    font-size: 1.05rem;
   }
+}
+
+/* Când fereastra derulează (telefon ținut orizontal), câmpul focusat e adus în vedere cu loc deasupra pentru eticheta
+   lui. La deschidere PrimeNG pune focusul pe „Nume complet”: fără rezervă, eticheta rămânea ascunsă. */
+:host ::ng-deep .centered-dialog-header .p-dialog-content {
+  scroll-padding-top: 2.5rem;
 }
 
 /* Dialog field icons and footer visibility */

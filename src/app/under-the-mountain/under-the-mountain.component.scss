@@ -54,7 +54,7 @@ a {
 
 .container {
   width: 100%;
-  max-width: 900px;
+  max-width: 56.25rem;
 }
 
 section {
@@ -70,9 +70,9 @@ section {
   grid-template-columns: 1fr 1fr;
   grid-auto-rows: auto;
   background-color: #fafafa;
-  box-shadow: rgba(255, 255, 255, 0.1) 0 1px 1px 0 inset,
-      rgba(50, 50, 93, 0.25) 0px 50px 100px -20px
-      rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  box-shadow: rgba(255, 255, 255, 0.1) 0 0.0625rem 0.0625rem 0 inset,
+      rgba(50, 50, 93, 0.25) 0px 3.125rem 6.25rem -1.25rem
+      rgba(0, 0, 0, 0.3) 0px 1.875rem 3.75rem -1.875rem;
   margin-left: 0;
   margin-right: 0;
   margin-top: 0;
@@ -87,9 +87,9 @@ section {
   grid-template-columns: 1fr 1fr;
   grid-auto-rows: auto;
   background-color: #fafafa;
-  box-shadow: rgba(255, 255, 255, 0.1) 0 1px 1px 0 inset,
-  rgba(50, 50, 93, 0.25) 0px 50px 100px -20px
-  rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  box-shadow: rgba(255, 255, 255, 0.1) 0 0.0625rem 0.0625rem 0 inset,
+  rgba(50, 50, 93, 0.25) 0px 3.125rem 6.25rem -1.25rem
+  rgba(0, 0, 0, 0.3) 0px 1.875rem 3.75rem -1.875rem;
   margin-left: 0;
   margin-right: 0;
   margin-top: 0;
@@ -108,7 +108,7 @@ section {
   -webkit-text-fill-color: transparent;
   -moz-background-clip: text;
   //text-transform: capitalize;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.05rem;
   font-size: clamp(2.4375rem, 2.25rem + 0.75vw, 2rem);
   font-weight: 800;
   text-align: center;
@@ -178,9 +178,9 @@ section {
 
 .card-photo a {
   display: grid;
-  grid-template-columns: max-content 20px;
+  grid-template-columns: max-content 1.25rem;
   align-items: center;
-  column-gap: 7px;
+  column-gap: 0.4375rem;
   color: white;
   position: absolute;
   z-index: 10;
@@ -188,14 +188,14 @@ section {
   right: 8%;
   font-size: 1rem;
   font-weight: bold;
-  letter-spacing: 1px;
+  letter-spacing: 0.0625rem;
   align-self: flex-start;
   transform: translateX(0px);
   transition: transform 0.3s 0.1s ease-out;
 }
 
 .card-photo a:hover {
-  transform: translateX(5px);
+  transform: translateX(0.3125rem);
 }
 
 .card-photo svg line {
@@ -204,12 +204,12 @@ section {
 }
 
 .card-photo a:hover svg {
-  transform: translateX(5px);
+  transform: translateX(0.3125rem);
 }
 
 .card-photo svg {
-  width: 20px;
-  height: 10px;
+  width: 1.25rem;
+  height: 0.625rem;
   transform: translateX(0px);
   transition: transform 0.3s ease-out;
 }
@@ -268,7 +268,7 @@ section {
     }
 
     50% {
-      transform: translateY(20px);
+      transform: translateY(1.25rem);
     }
 
     100% {
@@ -321,7 +321,7 @@ section {
 .why__img-wrap {
   border-radius: 0.75rem;
   overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  box-shadow: 0 0.5rem 1.5rem rgba(0,0,0,0.12);
 }
 
 .why__img-wrap img {
@@ -341,20 +341,18 @@ section {
 
 .why__title {
   font-family: 'Libre Baskerville', serif;
-  font-weight: 600;
-  font-size: clamp(2.15rem, 5vw, 4rem);
-  line-height: 1.1;
+  font-weight: 700;
+  font-size: var(--fs-h1);
   text-align: center;
   margin-top: 6rem;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding: 1rem 1.5rem;
   display: inline-block;
   background: #F4EFE5;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 0.75rem;
-  -webkit-box-shadow: 7px 29px 49px 0px rgba(0, 0, 0, 0.5);
-  -moz-box-shadow: 7px 29px 49px 0px rgba(0, 0, 0, 0.5);
-  box-shadow: 7px 29px 49px 0px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0.4375rem 1.8125rem 3.0625rem 0px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0.4375rem 1.8125rem 3.0625rem 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 0.4375rem 1.8125rem 3.0625rem 0px rgba(0, 0, 0, 0.5);
   margin-inline: auto;
   justify-self: center;
 }
@@ -398,8 +396,7 @@ section {
     grid-template-columns: 1fr;
   }
   .why__title {
-    /* Make the title slightly smaller on mobile and add side padding inside the box */
-    font-size: 1.8rem;
+    /* Side padding inside the box on mobile */
     padding-left: 1rem;
     padding-right: 1rem;
     /* Reduce the vertical gap between the gallery and the title on mobile */
@@ -421,7 +418,7 @@ section {
   background-image: url('../../assets/poza_landing1.avif');
   background-size: cover;
   background-position: center;
-  padding: clamp(2rem, 6vw, 5rem) 1.25rem 4rem;
+  padding: clamp(2rem, 6vw, 4rem) 1.25rem;
 
   @media (max-width: 767px) {
     background-image: url('../../assets/poza_landing1_mobile.avif');
@@ -443,10 +440,10 @@ section {
 
 .discover__title {
   font-family: 'Libre Baskerville', serif;
-  font-weight: 600;
-  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  font-weight: 700;
+  font-size: var(--fs-h2);
   text-align: center;
-  margin: 0 0 clamp(1.5rem, 3vw, 2.5rem) 0;
+  margin: var(--trim-title-top) 0 clamp(1.5rem, 3vw, 2.5rem) 0;
 }
 
 .discover__cards {
@@ -464,7 +461,7 @@ section {
   background: #ffffff;
   border-radius: 0.75rem;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  box-shadow: 0 0.625rem 1.875rem rgba(0,0,0,0.12);
   cursor: pointer;
 }
 
@@ -478,13 +475,13 @@ section {
    3 pe ecran mare, 1 pe telefon (cel din mijloc, Polovragi, ca după inițializare). Apoi Swiper preia aranjarea. */
 .discover__cards:not(.is-ready) swiper-container {
   display: flex;
-  gap: 16px;
+  gap: 1rem;
   overflow: hidden;
 }
 
 .discover__cards:not(.is-ready) swiper-slide {
   display: block;
-  flex: 0 0 calc((100% - 32px) / 3);
+  flex: 0 0 calc((100% - 2rem) / 3);
   min-width: 0;
 }
 
@@ -504,7 +501,7 @@ section {
 .discover-card__body h3 {
   margin: 0 0 0.5rem 0;
   font-family: 'Libre Baskerville', serif;
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  font-size: var(--fs-h4);
   color: #1f1f1f;
 }
 
@@ -571,7 +568,7 @@ section {
 .feel__image {
   border-radius: 0.75rem;
   overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  box-shadow: 0 0.5rem 1.5rem rgba(0,0,0,0.12);
 }
 
 .feel__image img {
@@ -587,8 +584,7 @@ section {
 .feel__title {
   font-family: 'Libre Baskerville', serif;
   font-weight: 700;
-  font-size: clamp(2.2rem, 5vw, 4rem);
-  line-height: 1.1;
+  font-size: var(--fs-h2);
   color: #1f1f1f;
   margin: 0 0 1rem 0;
 }
@@ -601,6 +597,7 @@ section {
 }
 
 .feel__text p { margin: 0 0 var(--text-paragraph-gap) 0; }
+.feel__text p:last-child { margin-bottom: var(--trim-text-bottom); }
 
 @media (max-width: 1024px) {
   .feel__container { grid-template-columns: 1fr; }
@@ -609,17 +606,19 @@ section {
 
 @media (max-width: 640px) {
   .feel-odsm { padding: 2rem 1rem; }
-  .feel__title { font-size: 2rem; }
 }
 
 
-/* Ensure YouTube player fits in feel section */
-.feel__image #player,
-.feel__image iframe {
-  width: 100% !important;
-  height: auto !important;
-  aspect-ratio: 16 / 9;
-  display: block;
+/* Pe o singură coloană (telefon, tabletă), videoclipul are proporția lui, 16:9; cu înălțimea fixă de 400 px avea
+   benzi negre mari. Iframe-ul e în app-youtube-player, deci regula trece de încapsulare cu ::ng-deep. Pe desktop
+   rămâne cum era. */
+@media (max-width: 1024px) {
+  .feel__image ::ng-deep .youtube-frame {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
 }
 
 
@@ -629,12 +628,12 @@ section {
   top: 50%;
   transform: translateY(-50%);
   z-index: 5;
-  width: clamp(36px, 3.5vw, 44px);
-  height: clamp(36px, 3.5vw, 44px);
+  width: clamp(2.25rem, 3.5vw, 2.75rem);
+  height: clamp(2.25rem, 3.5vw, 2.75rem);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.95);
   border: 1px solid rgba(0, 0, 0, 0.12);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.12);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -643,17 +642,22 @@ section {
   transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease;
 }
 
+.discover__nav svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
 .discover__nav:hover {
   transform: translateY(-50%) scale(1.05);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 0.625rem 1.5rem rgba(0, 0, 0, 0.16);
 }
 
 .discover__nav:active {
   transform: translateY(-50%) scale(0.98);
 }
 
-.discover-prev { left: calc(-1 * clamp(8px, 1.2vw, 16px)); }
-.discover-next { right: calc(-1 * clamp(8px, 1.2vw, 16px)); }
+.discover-prev { left: calc(-1 * clamp(0.5rem, 1.2vw, 1rem)); }
+.discover-next { right: calc(-1 * clamp(0.5rem, 1.2vw, 1rem)); }
 
 @media (max-width: 640px) {
   .discover__nav {

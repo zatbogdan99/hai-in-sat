@@ -7,11 +7,45 @@
   --text-body-size: clamp(1rem, 1.6vw, 1.3rem);
   --text-body-line-height: 1.9;
   --text-paragraph-gap: 1rem;
+  /* Scara de mărimi pentru tot site-ul: fiecare fel de text are o singură mărime, pe orice pagină.
+     Valorile: pe laptopul de referință (1920 × 1080) / pe telefon. */
+  --fs-h1: clamp(2rem, 1.2rem + 2.4vw, 3rem);         /* 48 / 32 px: titlul paginii */
+  --fs-h2: clamp(1.75rem, 1.1rem + 1.9vw, 2.5rem);    /* 40 / 28 px: titlul unei secțiuni */
+  --fs-h3: clamp(1.375rem, 1rem + 1vw, 1.75rem);      /* 28 / 22 px: titlul unui card sau al unei ferestre */
+  --fs-h4: clamp(1.125rem, 1rem + 0.4vw, 1.25rem);    /* 20 / 18 px: numele din cardurile mici */
+  --fs-lead: clamp(1.125rem, 1rem + 0.6vw, 1.5rem);   /* 24 / 18 px: textul de sub un titlu mare */
+  --fs-small: clamp(0.875rem, 0.8rem + 0.25vw, 1rem); /* 16 / 14 px: note, etichete, linkuri secundare */
+  --fs-btn: clamp(1rem, 0.9rem + 0.3vw, 1.125rem);    /* 18 / 16 px: butoanele (îngroșate) */
+  --lh-title: 1.2;
+  --lh-lead: 1.5;
+  /* Centrare optică în containere. Fontul lasă spațiu gol deasupra literelor mari și sub ultimul rând (jumătate din
+     distanța dintre rânduri, plus codițele literelor). Puse pe primul / ultimul text dintr-un container, marginile de
+     mai jos îl compensează: spațiul vizibil de sus și de jos devine chiar padding-ul containerului.
+     Calcul pentru Libre Baskerville: (line-height − 1,24) / 2 + 0,2 sus, respectiv + 0,27 jos. */
+  --trim-title-top: -0.18em;  /* titlu, line-height 1.2 */
+  --trim-text-top: -0.53em;   /* paragraf sau listă, line-height 1.9 */
+  --trim-text-bottom: -0.6em; /* paragraf sau listă, line-height 1.9 */
+  --trim-lead-bottom: -0.4em; /* text de sub titlu, line-height 1.5 */
+}
+
+/* Titlurile au aceeași distanță între rânduri peste tot; componentele aleg doar mărimea din scara de mai sus. */
+h1, h2, h3, h4 {
+  line-height: var(--lh-title);
 }
 
 html {
   box-sizing: border-box;
   background-color: #ffffff; /* fundal explicit alb pentru UA */
+}
+
+/* Pe desktop, 1rem urmează mărimea ecranului: 16 px pe 1920 × 1080 (laptopul de referință), 12 px pe un MacBook Air 13"
+   (1440 × 900), 21,3 px pe un monitor QHD. Mărimile din rem păstrează astfel proporțiile față de ecran.
+   --scara-ecran vine din scriptul din index.html. Limita cu 100vw lasă unei ferestre înguste cel puțin 1280 px de
+   referință. Telefoanele și tabletele (sub 1200 px sau ecran tactil) rămân la 16 px. */
+@media only screen and (min-width: 1200px) and (pointer: fine) {
+  html {
+    font-size: min(100% * var(--scara-ecran, 1), 100vw / 80);
+  }
 }
 
 /* Schelet de încărcare: un dreptunghi gri peste care trece o lumină, până apare poza. Pe un <img> se vede fundalul
@@ -37,7 +71,7 @@ html {
 }
 
 /* Pe desktop antetul e fix (app.component.scss, ~88 px): elementul focusat cu Tab nu ajunge sub el. */
-@media only screen and (min-width: 1200px) and (min-height: 600px) {
+@media only screen and (min-width: 1200px) and (min-height: 540px) {
   html {
     scroll-padding-top: 6rem;
   }
@@ -100,12 +134,12 @@ li, span, div {
 .main {
   display: grid;
   grid-template-columns:
-    [full-start] minmax(100px, 1fr) [center-start] repeat(
+    [full-start] minmax(6.25rem, 1fr) [center-start] repeat(
       12,
-        [col-start] minmax(min-content, 120px) [col-end]
+        [col-start] minmax(min-content, 7.5rem) [col-end]
     )
-    [center-end] minmax(100px, 1fr) [full-end];
-  grid-template-rows: min-content calc(100vh - 120px) 100vh;
+    [center-end] minmax(6.25rem, 1fr) [full-end];
+  grid-template-rows: min-content calc(100vh - 7.5rem) 100vh;
 }
 
 .header {
@@ -114,7 +148,7 @@ li, span, div {
   grid-column: center-start / center-end;
   grid-row: 1 / 2;
   display: grid;
-  height: 120px;
+  height: 7.5rem;
   grid-template-columns: repeat(3, 1fr);
 }
 
@@ -124,17 +158,17 @@ li, span, div {
   list-style: none;
   display: grid;
   align-items: center;
-  grid-template-columns: repeat(auto-fit, minmax(170px, min-content));
+  grid-template-columns: repeat(auto-fit, minmax(10.625rem, min-content));
 
   &__item {
-    padding: 15px 20px;
+    padding: 0.9375rem 1.25rem;
   }
 
   &__link {
     text-transform: uppercase;
-    font-size: 13px;
+    font-size: 0.8125rem;
     font-weight: 500;
-    letter-spacing: 1.5px;
+    letter-spacing: 0.09375rem;
   }
 }
 .menu-right {
@@ -153,8 +187,8 @@ img {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(5, 1fr);
-  grid-gap: 30px;
-  padding: 30px;
+  grid-gap: 1.875rem;
+  padding: 1.875rem;
 
   .image-container {
     overflow: hidden;
@@ -176,28 +210,28 @@ img {
   top: 20%;
   display: grid;
   grid-template-rows: repeat(3, min-content);
-  grid-row-gap: 20px;
+  grid-row-gap: 1.25rem;
   grid-template-columns: repeat(6, 1fr);
-  margin-left: 20px;
+  margin-left: 1.25rem;
 
   h1.heading-1 {
     grid-row: 1 / 2;
     grid-column: 1 / 4;
-    font-size: 45px;
+    font-size: 2.8125rem;
     font-weight: 530;
   }
 
   p.paragraph {
     grid-row: 2 / 3;
     grid-column: 1 / 3;
-    font-size: 23px;
+    font-size: 1.4375rem;
   }
 
   a.btn--start {
     grid-row: 3 / -1;
     grid-column: 1 / -1;
     font-family: var(--font-base);
-    font-size: 30px;
+    font-size: 1.875rem;
   }
 }
 
@@ -235,7 +269,7 @@ img {
 @import 'swiper/css';
 
 //mobile or smaller screens
-@media only screen and (max-width: 1199px), only screen and (max-height: 599px) {
+@media only screen and (max-width: 1199px), only screen and (max-height: 539px) {
   .small-screen {
     display: block;
   }
@@ -323,4 +357,14 @@ img {
   --p-button-primary-active-background: #064e3b;
   --p-button-primary-active-border-color: #064e3b;
   --p-floatlabel-focus-color: #047857;
+  /* Toate butoanele: aceeași mărime (--fs-btn) și scris îngroșat, inclusiv cele mici („Satul Racovița”). */
+  --p-button-label-font-weight: 700;
+  --p-button-sm-font-size: var(--fs-btn);
+  --p-button-lg-font-size: var(--fs-btn);
+}
+
+/* PrimeNG scrie `.p-button { font-size: 1rem }` fix; selectorul cu elementul îl bate. */
+button.p-button,
+a.p-button {
+  font-size: var(--fs-btn);
 }

@@ -5,6 +5,19 @@
   <title>Hai în Sat – Case și terenuri de vânzare în Oltenia de sub Munte</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Scara pentru desktop (styles.scss): ecranul față de 1920 × 1080, între 2/3 și 2. Se citește din screen, nu din
+       fereastră: zoomul din browser nu schimbă screen, deci Ctrl + mărește în continuare textul. -->
+  <script>
+    (function() {
+      var de = document.documentElement;
+      function scara() {
+        var s = Math.min(screen.width / 1920, screen.height / 1080);
+        de.style.setProperty('--scara-ecran', String(Math.min(2, Math.max(2 / 3, s))));
+      }
+      scara();
+      window.addEventListener('resize', scara);
+    })();
+  </script>
   <meta name="description" content="Descoperă viața autentică din Oltenia de sub Munte. Terenuri și case în locuri unde munții întâlnesc satul, iar timpul curge mai încet.">
   <meta name="author" content="S.C. CORUXMAN IMPEX S.R.L.">
   <meta name="robots" content="index, follow">

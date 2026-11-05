@@ -236,6 +236,11 @@ export class VillageOfTheMonthComponent implements OnInit {
     }
   }
 
+  /** „Satul Olari” e filmat vertical: pe telefon fereastra lui are 9:16, nu 16:9. */
+  isVillageVideoVertical(): boolean {
+    return this.getYoutubeIdByVillage() === 'Ly4Gp7sRKBE';
+  }
+
   getMonthLabelByVillage(id: number | null): string {
     if (id === null || id === undefined) return '';
     return this.data[id]?.title ?? '';

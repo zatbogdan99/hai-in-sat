@@ -41,6 +41,42 @@ describe('PhoneLinkPipe', () => {
     expect(phoneLink!.textContent).toBe('0712345678');
   });
 
+  const linksFor = (description: string) => {
+    fixture.componentInstance.description = description;
+    fixture.detectChanges();
+    return Array.from((fixture.nativeElement as HTMLElement).querySelectorAll<HTMLAnchorElement>('.description a'));
+  };
+
+  it('links numbers written with spaces, dots, dashes, non-breaking spaces or the +40 prefix', () => {
+    const links = linksFor([
+      '<p>📞 Telefon: 0745 230 647 </p>',
+      '<p>Tel. 0745.230.647</p>',
+      '<p>Telefon: 0745-230-647</p>',
+      '<p>Telefon: +40 728 140 628</p>',
+      '<p>telefon 0040 728 140 628</p>'
+    ].join(''));
+
+    expect(links.map((a) => a.getAttribute('href'))).toEqual([
+      'tel:0745230647', 'tel:0745230647', 'tel:0745230647', 'tel:+40728140628', 'tel:+40728140628'
+    ]);
+    // Textul rămâne cum l-a scris proprietarul.
+    expect(links[0].textContent).toBe('0745 230 647');
+    expect(links[3].textContent).toBe('+40 728 140 628');
+  });
+
+  it('shows phone links in the site blue, underlined', () => {
+    const [link] = linksFor('<p>Telefon: 0763144967</p>');
+
+    expect(link.style.color).toBe('rgb(0, 91, 170)');
+    expect(link.style.textDecoration).toContain('underline');
+  });
+
+  it('does not link prices, areas or digit runs longer than a phone number', () => {
+    const links = linksFor('<p>Preț: 240000 de euro • Suprafață: 9600 mp • Telefon: 07452306471</p>');
+
+    expect(links.length).toBe(0);
+  });
+
   it('preserves the existing empty-value behavior', () => {
     fixture.componentInstance.description = '';
 

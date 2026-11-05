@@ -34,14 +34,17 @@
 }
 
 .hero-content h1 {
-  font-size: 3rem;
-  font-weight: 600;
+  font-size: var(--fs-h1);
+  font-weight: 700;
+  margin-top: var(--trim-title-top);
   margin-bottom: 0.5rem;
   font-family: 'Libre Baskerville', serif;
 }
 
 .hero-content h2 {
-  font-size: 1.5rem;
+  font-size: var(--fs-lead);
+  line-height: var(--lh-lead);
+  margin-bottom: var(--trim-lead-bottom);
   font-weight: 400;
   font-family: 'Libre Baskerville', serif;
 }
@@ -73,13 +76,57 @@ img {
   height: 100%;
   object-fit: cover;
   transform-origin: left;
-  border-radius: 10px;
+  border-radius: 0.625rem;
 }
 
 .youtube-container {
   width: 40rem;
   height: 53.5rem;
-  margin-left: 20px;
+  margin-left: 1.25rem;
+}
+
+/* „Pastilă pentru suflet” și videoclipul ei: două casete de aceeași mărime pe orice ecran. Coloanele (desktop) sau
+   rândurile (tabletă, telefon) grilei sunt egale; caseta videoclipului are cel puțin proporția lui (16:9), iar cardul
+   se întinde cât ea. */
+.soul-pair {
+  display: grid;
+  gap: 1.25rem;
+
+  > .p-card-custom,
+  > p-card,
+  > .youtube-container {
+    align-self: stretch;
+    justify-self: stretch; // cu aspect-ratio, „normal” nu întinde caseta pe lățime
+    min-width: 0;
+    width: auto;
+    height: auto;
+    margin: 0;
+  }
+
+  > .youtube-container {
+    aspect-ratio: 16 / 9;
+  }
+
+  // Iframe-ul pe rândul de text lăsa sub el spațiul literelor cu codiță (4 px) și lungea caseta peste 16:9.
+  > .youtube-container app-youtube-player,
+  > .youtube-container ::ng-deep .youtube-frame {
+    display: block;
+    height: 100%;
+  }
+
+  p-card {
+    display: block;
+    height: 100%;
+  }
+
+  ::ng-deep .p-card {
+    height: 100%;
+  }
+
+  ::ng-deep .p-card-body {
+    height: 100%;
+    justify-content: center;
+  }
 }
 
 
@@ -97,19 +144,21 @@ img {
     height: 25vh; /* Apply reduced height only on mobile */
   }
 
-  .hero-content h1 {
-    font-size: 2rem; /* Smaller font size on mobile */
-  }
-
-  .hero-content h2 {
-    font-size: 1.2rem; /* Smaller font size on mobile */
-  }
-
+  /* Fereastra are proporția videoclipului. Cu înălțimea „60%” dintr-un container fără înălțime, iframe-ul ieșea de
+     150 px (înălțimea lui implicită), turtit. Videoclipul vertical (Olari) are 9:16, cel mult 75% din ecran. */
   .youtube-container {
     width: 100%;
     height: auto;
+    aspect-ratio: 16 / 9;
     margin-left: 0;
     margin-top: 1rem;
+  }
+
+  .youtube-container--vertical {
+    aspect-ratio: 9 / 16;
+    width: min(100%, calc(75vh * 9 / 16));
+    width: min(100%, calc(75svh * 9 / 16));
+    margin-inline: auto;
   }
 
   .reveal {
@@ -159,6 +208,22 @@ img {
     width: 100%;
   }
 
+  /* Una sub alta, rânduri egale; spațiile din card mai strânse, ca textul să încapă în 16:9. */
+  .container2.soul-pair {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: 1fr;
+    gap: 1rem;
+
+    h2 {
+      margin: 0 0 0.5rem;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+
   .container3 {
     padding-top: 2rem;
     padding-left: 1rem;
@@ -186,13 +251,21 @@ img {
     height: 50rem;
   }
 
-  .reveal > div:nth-child(2) {
-    height: 53.5rem;
+  .container1 {
+    padding-inline: 1.5rem;
+  }
+
+  /* „Pastilă pentru suflet”: cardul și videoclipul unul sub altul, aceeași mărime. */
+  .soul-pair {
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: 1fr;
+    width: min(40rem, 100%);
+    margin-inline: auto;
   }
 }
 
 //desktop or larger screens
-@media only screen and (min-width: 1200px) and (min-height: 600px) {
+@media only screen and (min-width: 1200px) and (min-height: 540px) {
   .small-screen {
     display: none;
   }
@@ -205,11 +278,10 @@ img {
     height: 50rem;
   }
 
-  /* „Pastilă pentru suflet”: video-ul încape întreg pe ecran sub antetul fix (88 px), cu proporția de acum (40 × 53,5). */
-  .reveal > div:nth-child(2) {
-    --soul-video-height: min(53.5rem, calc(100vh - 88px - 4rem));
-    height: var(--soul-video-height);
-    width: calc(var(--soul-video-height) * 40 / 53.5);
+  /* „Pastilă pentru suflet”: cardul și videoclipul unul lângă altul, două coloane egale, 40rem fiecare când e loc. */
+  .soul-pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: min(81.25rem, 100%);
   }
 
   .reveal {
@@ -220,8 +292,6 @@ img {
     border-radius: 0; // Elimină colțurile rotunjite pentru containerul ce găzduiește videoclipul „Pastilă pentru suflet” pe desktop
     overflow: hidden;
     visibility: hidden;
-    padding-left: 3rem;
-    display: flex;
   }
 
   /* Înălțimea vine din conținut (cu 75vh, cardul și video-ul erau tăiate de footer pe laptop), cu același spațiu
@@ -229,6 +299,7 @@ img {
   .container1 {
     padding-top: 6rem;
     padding-bottom: 4rem;
+    padding-inline: 3rem;
     display: flex;
     justify-content: center;
     align-content: center;
@@ -278,5 +349,15 @@ img {
 }
 
 .soul-title {
-  margin-block: 1.67em;
+  margin-block: var(--trim-title-top) 0.5em;
+}
+
+/* Ultimul rând din „Pastilă pentru suflet”, fără marginea de dedesubt: textul stă la mijlocul cardului. */
+.soul-pair p {
+  margin-bottom: var(--trim-lead-bottom);
+}
+
+/* „Prezentarea satului” pe telefon: ultimul paragraf nu lasă spațiu gol în card. */
+.small-screen .text-style p:last-child {
+  margin-bottom: var(--trim-text-bottom);
 }

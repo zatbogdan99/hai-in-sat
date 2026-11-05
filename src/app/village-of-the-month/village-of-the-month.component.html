@@ -19,7 +19,7 @@
       <div class="card-info" style="flex: 1;">
         <div style="display: flex">
           <div>
-            <h2 id="card-info-title" style="font-family: 'Libre Baskerville', serif; font-size: 2.5rem;">Prezentarea satului</h2>
+            <h2 id="card-info-title" style="font-family: 'Libre Baskerville', serif; font-size: var(--fs-h3);">Prezentarea satului</h2>
           </div>
         </div>
         <div *ngIf="villageId === 0" class="text-style">
@@ -59,27 +59,27 @@
         </div>
       </div>
 
-      <div style="flex: 1; margin-left: 20px; height: 30rem;">
+      <div style="flex: 1; margin-left: 1.25rem; height: 30rem;">
         <app-youtube-player [videoId]="getYoutubeIdByVillage()" [height]="'100%'"></app-youtube-player>
       </div>
     </div>
   </section>
 
-  <div class="container1" style="padding-right: 3rem;">
-    <div class="reveal">
+  <div class="container1">
+    <div class="reveal soul-pair">
       <div class="p-card-custom">
-        <p-card [style]="{ width: '40rem', height: '32.5rem' }">
-          <h2 class="soul-title" style="font-size: 3rem; font-family: 'Libre Baskerville', serif; text-align: center">
+        <p-card>
+          <h2 class="soul-title" style="font-size: var(--fs-h3); font-family: 'Libre Baskerville', serif; text-align: center">
             Pastilă pentru suflet
           </h2>
-          <p style="text-align: center; font-size: 1.6rem">
+          <p style="text-align: center; font-size: var(--fs-lead); line-height: var(--lh-lead)">
             Trăiește prezentul!<br>
             Trecutul și viitorul n-au nicio relevanță!
           </p>
         </p-card>
       </div>
       <div class="youtube-container">
-        <app-youtube-player videoId="W10oX2mk_R8"></app-youtube-player>
+        <app-youtube-player videoId="W10oX2mk_R8" [height]="'100%'"></app-youtube-player>
       </div>
     </div>
   </div>
@@ -95,7 +95,7 @@
   <div class="container2" style="padding-left: 1rem; padding-right: 1rem;">
     <div class="reveal p-card-custom">
       <p-card>
-        <h2 style="text-align: center; font-size: 2rem; margin-bottom: 1.5rem !important;" class="m-0">
+        <h2 style="text-align: center; font-size: var(--fs-h3); margin-top: var(--trim-title-top) !important; margin-bottom: 1.5rem !important;" class="m-0">
           Prezentarea satului
         </h2>
         <div *ngIf="villageId === 0" class="text-style">
@@ -135,23 +135,23 @@
         </div>
       </p-card>
     </div>
-    <div class="youtube-container">
-      <app-youtube-player [videoId]="getYoutubeIdByVillage()"></app-youtube-player>
+    <div class="youtube-container" [class.youtube-container--vertical]="isVillageVideoVertical()">
+      <app-youtube-player [videoId]="getYoutubeIdByVillage()" [height]="'100%'"></app-youtube-player>
     </div>
   </div>
 
-  <div class="container2" style="padding-left: 1rem; padding-right: 1rem;">
+  <div class="container2 soul-pair" style="padding-left: 1rem; padding-right: 1rem;">
       <p-card>
-        <h2 style="text-align: center; font-size: 2rem;" class="m-0">
+        <h2 style="text-align: center; font-size: var(--fs-h3);" class="m-0">
           Pastilă pentru suflet
         </h2>
-        <p style="text-align: center">
+        <p style="text-align: center; font-size: var(--fs-lead); line-height: var(--lh-lead)">
           Trăiește prezentul!<br>
           Trecutul și viitorul n-au nicio relevanță!
         </p>
       </p-card>
       <div class="youtube-container">
-        <app-youtube-player videoId="W10oX2mk_R8"></app-youtube-player>
+        <app-youtube-player videoId="W10oX2mk_R8" [height]="'100%'"></app-youtube-player>
       </div>
   </div>
 </div>

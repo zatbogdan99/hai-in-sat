@@ -155,7 +155,9 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
         }
         const type = toPropertyType(prop.type);
         this.propertyName = prop.name;
-        this.propertyDescription = prop.description;
+        // Unele descrieri au Tab după „•” (copiate din Word). Cu `white-space: pre-wrap` Tab-ul se vede ca un spațiu
+        // de câteva ori mai lat decât în celelalte anunțuri; îl afișăm ca un spațiu obișnuit.
+        this.propertyDescription = prop.description?.replace(/•\t+/g, '• ') ?? prop.description;
         this.propertyKind = type;
         this.propertyVideoUrl = prop.videoUrl || null;
         this.propertyVideoPoster = this.posterFor(prop.thumbnail);

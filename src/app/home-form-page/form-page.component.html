@@ -20,14 +20,14 @@
       </div>
       <div class="form-field form-field--wide">
         <p-float-label>
-          <input style="padding: 10px; width: 100%" type="text" pInputText id="surname" formControlName="surname" autocomplete="given-name">
+          <input style="padding: 0.625rem; width: 100%" type="text" pInputText id="surname" formControlName="surname" autocomplete="given-name">
           <label for="surname">Prenume (obligatoriu)</label>
         </p-float-label>
         <small class="field-error" *ngIf="showError('surname', 'required')">Prenumele este obligatoriu.</small>
       </div>
       <div class="form-field form-field--wide">
         <p-float-label>
-          <input style="padding: 10px; width: 100%" type="tel" inputmode="numeric" pInputText id="phoneNumber" formControlName="phoneNumber" autocomplete="tel">
+          <input style="padding: 0.625rem; width: 100%" type="tel" inputmode="numeric" pInputText id="phoneNumber" formControlName="phoneNumber" autocomplete="tel">
           <label for="phoneNumber">Telefon (obligatoriu)</label>
         </p-float-label>
         <small class="field-error" *ngIf="showError('phoneNumber', 'required')">Telefonul este obligatoriu.</small>
@@ -36,7 +36,7 @@
       </div>
       <div class="form-field form-field--wide">
         <p-float-label>
-          <input style="padding: 10px; width: 100%" type="email" pInputText id="mail" formControlName="mail" autocomplete="email">
+          <input style="padding: 0.625rem; width: 100%" type="email" pInputText id="mail" formControlName="mail" autocomplete="email">
           <label for="mail">E-mail (obligatoriu)</label>
         </p-float-label>
         <small class="field-error" *ngIf="showError('mail', 'required')">Adresa de e-mail este obligatorie.</small>
@@ -123,7 +123,7 @@
 
       <div class="form-field">
         <p-float-label>
-          <textarea style="width: 15.5rem" rows="5" pInputTextarea formControlName="details" id="details_mobile"></textarea>
+          <textarea rows="5" pInputTextarea formControlName="details" id="details_mobile"></textarea>
           <label for="details_mobile">Detalii (obligatoriu)</label>
         </p-float-label>
         <small class="field-error" *ngIf="showError('details', 'required')">Spune-ne pe scurt ce cauți.</small>
@@ -145,9 +145,9 @@
         </div>
       </div>
 
-      <div style="display: flex; align-items: center; gap: 0.5rem; padding-left: 4rem; padding-right: 4rem">
+      <div class="consent-row-mobile">
         <p-checkbox [autofocus]="false" formControlName="terms" [binary]="true" inputId="terms_mobile" ariaLabelledBy="consent-text-mobile"></p-checkbox>
-        <p class="consent-text consent-mobile" id="consent-text-mobile" style="padding-left: 0.5rem"><label for="terms_mobile">Sunt de acord cu</label> <button type="button" class="link-button" (click)="openTermenii()">termenii și condițiile</button> și <button type="button" class="link-button" (click)="openPolitica()">politica de confidențialitate</button> (obligatoriu)</p>
+        <p class="consent-text consent-mobile" id="consent-text-mobile"><label for="terms_mobile">Sunt de acord cu</label> <button type="button" class="link-button" (click)="openTermenii()">termenii și condițiile</button> și <button type="button" class="link-button" (click)="openPolitica()">politica de confidențialitate</button> (obligatoriu)</p>
       </div>
       <small class="field-error field-error--consent" *ngIf="showError('terms', 'required')">Bifează acordul ca să-ți putem trimite variante.</small>
 <!--      //TODO dezactivat temporar-->

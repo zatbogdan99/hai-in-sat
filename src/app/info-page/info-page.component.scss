@@ -43,15 +43,38 @@
 .feature-card-left .p-card {
   background: #ffffff;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
+/* Centrarea pe verticală în carduri: fără marginea de sub listă, cu compensările din styles.scss; cardul întins
+   cât vecinul lui își ține conținutul la mijloc. */
 .features-title {
-  margin: 0 0 0.5rem 0;
+  margin: var(--trim-title-top) 0 0.5rem 0;
 }
 
 .features-list {
   list-style: disc;
   padding-left: 1.5rem;
+  margin-bottom: 0;
+}
+
+.features-list:first-child {
+  margin-top: 0;
+}
+
+.features-list:first-child > li:first-child {
+  margin-top: var(--trim-text-top);
+}
+
+.features-list > li:last-child {
+  margin-bottom: var(--trim-text-bottom);
+}
+
+:host ::ng-deep .feature-card .p-card-body,
+:host ::ng-deep .feature-card-left .p-card-body {
+  flex: 1 0 auto;
+  justify-content: center;
 }
 
 /* Pe o singură coloană (sub 900 px) galeria e centrată, cu lățimea maximă a coloanei de desktop. */
@@ -157,8 +180,6 @@
   .header-wrap { padding-left: 1rem; padding-right: 1rem; text-align: center; }
   .text-style { padding-left: 1rem; padding-right: 1rem; }
   .info-page-bg .title {
-    font-size: clamp(1.5rem, 7vw, 2.5rem);
-    line-height: 1.15;
     word-break: break-word;
     overflow-wrap: anywhere;
     text-align: center;
@@ -421,34 +442,18 @@ img {
   margin-bottom: 0;
 }
 
-/* Titluri din secțiunile info-page */
-.info-page-bg h1,
-.info-page-bg h2,
-.info-page-bg h3,
-.info-page-bg h4,
-.info-page-bg h5,
-.info-page-bg h6,
-.info-page-bg .title,
-.info-page-bg .features-title,
-.info-page-bg .horezu-title,
-.info-page-bg .horezu-subtitle {
-  font-size: 4rem;
-  line-height: 1.2;
+/* Titluri din secțiunile info-page: scara comună a site-ului (styles.scss). Numele satului e h1, titlurile de
+   secțiune sunt h2, „Ce găsești aici” e titlu de card. */
+.info-page-bg h1 {
+  font-size: var(--fs-h1);
 }
 
-/* Override sizes to match Horezu across all villages:
-   - Village titles (.title) = 5rem (same as "Horezu")
-   - Section titles "Ce găsești aici" (.features-title) = 2rem (same as Horezu)
-*/
-.info-page-bg .title {
-  /* redus aproximativ la jumătate față de dimensiunea anterioară */
-  font-size: 2.5rem;
-  line-height: 1.2;
+.info-page-bg h2 {
+  font-size: var(--fs-h2);
 }
 
 .info-page-bg .features-title {
-  font-size: 2rem;
-  line-height: 1.2;
+  font-size: var(--fs-h3);
 }
 
 
@@ -466,17 +471,6 @@ img {
   }
 }
 
-/* =============================================
-   Cerință nouă (doar pentru Horezu):
-   - Titlul principal „Horezu” mai mare cu 1rem
-   - Titlul „Ce găsești aici” mai mic cu 1rem
-   Baza actuală pentru titluri este 4rem, deci:
-   - .title devine 5rem în intro-card (Horezu)
-   - .features-title devine 3rem pentru secțiunea de features
-   ============================================= */
-.horezu-context .features-title {
-  font-size: 2rem;
-}
 
 /* =============================================
    Bărbătești (villageId === 7):

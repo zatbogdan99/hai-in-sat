@@ -21,7 +21,12 @@
 
   h1 {
     font-family: 'Libre Baskerville', serif;
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-size: var(--fs-h1);
+  }
+
+  p {
+    font-size: var(--text-body-size);
+    line-height: var(--text-body-line-height);
   }
 
   .status-code {
@@ -36,6 +41,8 @@
     background: #1b3a2a;
     color: #fff;
     text-decoration: none;
+    font-size: var(--fs-btn);
+    font-weight: 700;
 
     &:hover {
       text-decoration: underline;

@@ -21,8 +21,8 @@
     <ng-template pTemplate="header">
       <div style="text-align: center;">
         <!-- Fereastra se numește după acest titlu: PrimeNG trimite aria-labelledby spre id-ul lui generat. -->
-        <h2 [id]="propertyDialog.ariaLabelledBy" style="margin-bottom: 5px;">Hai să ne cunoaștem!</h2>
-        <p style="margin-top: 0; font-size: 0.9rem; color: #555;">Spune-ne despre proprietatea ta și te contactăm în cel mai scurt timp</p>
+        <h2 [id]="propertyDialog.ariaLabelledBy" style="margin-bottom: 0.3125rem; font-size: var(--fs-h3);">Hai să ne cunoaștem!</h2>
+        <p style="margin-top: 0; font-size: var(--fs-small); line-height: var(--lh-lead); color: #555;">Spune-ne despre proprietatea ta și te contactăm în cel mai scurt timp</p>
       </div>
     </ng-template>
     <div class="property-dialog-content">
@@ -80,9 +80,6 @@
               <label for="village">Localitate</label>
             </p-float-label>
           </div>
-          <small class="field-error" *ngIf="shouldShowControlError('village', 'required')">
-            Localitatea este obligatorie.
-          </small>
         </div>
 
         <div class="form-field">
@@ -121,7 +118,7 @@
       <p-divider class="dialog-divider-mobile" layout="horizontal"></p-divider>
 
       <div class="property-dialog-right">
-        <h3>Ne puteți contacta prin:</h3>
+        <h3 style="font-size: var(--fs-h4);">Ne puteți contacta prin:</h3>
         <div class="contact-info">
           <!-- Iconițele sunt decorative: numele rețelei e deja scris lângă ele. -->
           <a class="contact-item" href="https://www.instagram.com/hai.in.sat?igsh=MXh5NmFqcXhjdThtYQ%3D%3D&utm_source=qr" target="_blank" rel="noopener">

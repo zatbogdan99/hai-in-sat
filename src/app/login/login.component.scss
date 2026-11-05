@@ -15,7 +15,7 @@
 .login-card {
   background: #ffffff;
   border-radius: 1rem;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0.625rem 2.5rem rgba(0, 0, 0, 0.1);
   padding: 2.5rem;
   animation: slideIn 0.3s ease-out;
 }
@@ -23,7 +23,7 @@
 @keyframes slideIn {
   from {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(-1.25rem);
   }
   to {
     opacity: 1;
@@ -37,7 +37,7 @@
 }
 
 .login-title {
-  font-size: 2rem;
+  font-size: var(--fs-h1);
   font-weight: 700;
   color: #1b3a2a;
   margin: 0 0 0.5rem 0;
@@ -45,7 +45,8 @@
 }
 
 .login-subtitle {
-  font-size: 0.9375rem;
+  font-size: var(--fs-small);
+  line-height: var(--lh-lead);
   color: #6b7280;
   margin: 0;
 }
@@ -63,7 +64,7 @@
 }
 
 .form-label {
-  font-size: 0.875rem;
+  font-size: var(--fs-small);
   font-weight: 600;
   color: #374151;
 }
@@ -81,7 +82,7 @@
   &:focus {
     outline: none;
     border-color: #1b3a2a;
-    box-shadow: 0 0 0 3px rgba(27, 58, 42, 0.1);
+    box-shadow: 0 0 0 0.1875rem rgba(27, 58, 42, 0.1);
   }
 
   &:disabled {
@@ -104,14 +105,14 @@
   border: 1px solid #fecaca;
   border-radius: 0.5rem;
   color: #dc2626;
-  font-size: 0.875rem;
+  font-size: var(--fs-small);
   animation: shake 0.3s ease;
 }
 
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
+  25% { transform: translateX(-0.3125rem); }
+  75% { transform: translateX(0.3125rem); }
 }
 
 .error-icon {
@@ -123,8 +124,8 @@
 .submit-button {
   width: 100%;
   padding: 0.875rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: var(--fs-btn);
+  font-weight: 700;
   color: #ffffff;
   background: #1b3a2a;
   border: none;
@@ -137,7 +138,7 @@
   &:hover:not(:disabled) {
     background: #2a5740;
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(27, 58, 42, 0.3);
+    box-shadow: 0 0.25rem 0.75rem rgba(27, 58, 42, 0.3);
   }
 
   &:active:not(:disabled) {
@@ -184,7 +185,7 @@
 }
 
 .back-link {
-  font-size: 0.875rem;
+  font-size: var(--fs-small);
   color: #6b7280;
   text-decoration: none;
   transition: color 0.2s ease;
@@ -200,12 +201,7 @@
     padding: 2rem 1.5rem;
   }
 
-  .login-title {
-    font-size: 1.75rem;
-  }
-
-  .form-input,
-  .submit-button {
+  .form-input {
     font-size: 1rem;
   }
 }

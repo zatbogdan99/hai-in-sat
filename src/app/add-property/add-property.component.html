@@ -156,7 +156,7 @@
           <td>{{ property.description }}</td>
           <td>{{ property.type }}</td>
           <td>
-            <img *ngIf="property.thumbnail" [src]="property.thumbnail" alt="Thumbnail" style="max-width: 80px; max-height: 60px; border-radius: 4px;" />
+            <img *ngIf="property.thumbnail" [src]="property.thumbnail" alt="Thumbnail" style="max-width: 5rem; max-height: 3.75rem; border-radius: 0.25rem;" />
             <span *ngIf="!property.thumbnail" style="color: #999;">Lipsă</span>
           </td>
           <td class="video-cell">
@@ -258,7 +258,7 @@
       [(ngModel)]="editDescriptionValue"
       [ngModelOptions]="{ standalone: true }"
       rows="8"
-      style="width: 100%; resize: vertical; padding: 0.5rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 4px;">
+      style="width: 100%; resize: vertical; padding: 0.5rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 0.25rem;">
     </textarea>
     <div class="dialog-actions">
       <button pButton type="button" label="Salvează" class="p-button-success" (click)="saveDescription()"></button>

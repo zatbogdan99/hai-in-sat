@@ -150,15 +150,26 @@ describe('PropertiesComponent', () => {
     expect(telLink!.getAttribute('href')).toBe('tel:+40728140628');
   });
 
-  it('should require name, village and at least one contact method before submit', () => {
+  it('should require name and at least one contact method before submit, but not the village', () => {
     createComponent();
 
     component.saveProperty();
 
     expect(component.propertyForm.get('firstName')?.hasError('required')).toBeTrue();
-    expect(component.propertyForm.get('village')?.hasError('required')).toBeTrue();
+    expect(component.propertyForm.get('village')?.valid).toBeTrue();
     expect(component.propertyForm.hasError('contactRequired')).toBeTrue();
     expect(propertyContactService.sendPropertyForm).not.toHaveBeenCalled();
+  });
+
+  it('should submit without a village', () => {
+    createComponent();
+
+    component.propertyForm.patchValue({ firstName: 'Ion Popescu', phone: '0728140628' });
+
+    component.saveProperty();
+
+    expect(propertyContactService.sendPropertyForm).toHaveBeenCalled();
+    expect(propertyContactService.sendPropertyForm.calls.mostRecent().args[0].village).toBe('');
   });
 
   it('should validate phone as digits only and minimum 10 digits', () => {
