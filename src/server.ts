@@ -79,15 +79,22 @@ export function app(): express.Express {
       'Permissions-Policy': 'geolocation=(), microphone=(), camera=()',
       'Content-Security-Policy-Report-Only':
         "default-src 'self'; " +
-        "script-src 'self' 'unsafe-inline' https://www.youtube.com https://www.gstatic.com https://www.googleapis.com; " +
-        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+        // Google Tag Manager se încarcă doar după acordul din bannerul de cookies; prin el vin Google Analytics,
+        // Google Ads, Meta Pixel și TikTok Pixel (etichetele din containerul GTM-N3527C3S).
+        "script-src 'self' 'unsafe-inline' https://www.youtube.com https://www.gstatic.com https://www.googleapis.com " +
+        'https://*.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net ' +
+        'https://www.google.com https://connect.facebook.net https://*.tiktok.com; ' +
+        // Fontul Libre Baskerville e servit de pe site (assets/fonts), nu de la Google Fonts.
+        "style-src 'self' 'unsafe-inline'; " +
         // data: pentru fontul de iconițe PrimeIcons, încorporat în CSS.
-        "font-src 'self' data: https://fonts.gstatic.com; " +
+        "font-src 'self' data:; " +
         "img-src 'self' data: https:; " +
         // Videoclipurile de prezentare ale proprietăților vin din bucketul public din GCS.
         "media-src 'self' https://storage.googleapis.com; " +
-        "connect-src 'self' https://hai-in-sat-api.lm.r.appspot.com https://*.firebaseio.com https://*.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com; " +
-        'frame-src https://www.youtube.com https://www.youtube-nocookie.com; ' +
+        "connect-src 'self' https://hai-in-sat-api.lm.r.appspot.com https://*.firebaseio.com https://*.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com " +
+        'https://*.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com ' +
+        'https://www.google.com https://*.doubleclick.net https://www.facebook.com https://connect.facebook.net https://*.tiktok.com; ' +
+        'frame-src https://www.youtube.com https://www.youtube-nocookie.com https://*.googletagmanager.com https://td.doubleclick.net; ' +
         // Fără report-uri, politica Report-Only nu avea unde raporta (Safari avertiza pe fiecare pagină).
         'report-uri /csp-report;',
     });

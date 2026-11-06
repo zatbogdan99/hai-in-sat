@@ -14,7 +14,7 @@ $text-strong: #1e1e1e;
   display: inline-block;
   background: $beige;
   color: $green-dark;
-  font-size: 0.6875rem;
+  font-size: max(0.6875rem, var(--fs-min));
   letter-spacing: 0.125rem;
   text-transform: uppercase;
   padding: 0.375rem 0.875rem;
@@ -147,7 +147,7 @@ $text-strong: #1e1e1e;
   right: 0.75rem;
   background: rgba(0, 0, 0, 0.62);
   color: #fff;
-  font-size: 0.6875rem;
+  font-size: max(0.6875rem, var(--fs-min));
   letter-spacing: 0.03125rem;
   padding: 0.3125rem 0.625rem;
   border-radius: 9999px;
@@ -329,7 +329,7 @@ $text-strong: #1e1e1e;
   }
 
   .category-chip {
-    font-size: 0.6875rem;
+    font-size: max(0.6875rem, var(--fs-min));
     letter-spacing: 0.15625rem;
     padding: 0.4375rem 1rem;
     margin-bottom: 1.125rem;
@@ -414,7 +414,7 @@ $text-strong: #1e1e1e;
   .gallery-counter {
     bottom: 0.875rem;
     right: 0.875rem;
-    font-size: 0.75rem;
+    font-size: max(0.75rem, var(--fs-min));
     padding: 0.3125rem 0.75rem;
   }
 

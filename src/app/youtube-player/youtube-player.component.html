@@ -1,11 +1,25 @@
 @if (src) {
-  <iframe class="youtube-frame"
-          [src]="src"
-          [attr.width]="width"
-          [attr.height]="height"
-          [title]="title"
-          loading="lazy"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen></iframe>
+  @if (consent.video()) {
+    <iframe class="youtube-frame"
+            [src]="src"
+            [attr.width]="width"
+            [attr.height]="height"
+            [title]="title"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen></iframe>
+  } @else {
+    <div class="youtube-frame video-consent" role="group" [attr.aria-label]="title"
+         [style.--video-w]="cssSize(width)" [style.--video-h]="cssSize(height)">
+      <div class="video-consent__box">
+        <i class="pi pi-play-circle video-consent__icon" aria-hidden="true"></i>
+        <p class="video-consent__title">Videoclipul vine de pe YouTube</p>
+        <p class="video-consent__text">Ca să vezi videoclipul aici, e nevoie de acordul tău pentru cookie-urile YouTube.</p>
+        <button type="button" class="video-consent__button" (click)="consent.acceptVideo()">Accept și pornesc videoclipul</button>
+        <p class="video-consent__note">Acordul e valabil pentru toate videoclipurile de pe site și îl poți retrage oricând
+          din „Setări cookie-uri”. <a [href]="watchUrl" target="_blank" rel="noopener noreferrer">Sau deschide-l pe YouTube</a></p>
+      </div>
+    </div>
+  }
 }

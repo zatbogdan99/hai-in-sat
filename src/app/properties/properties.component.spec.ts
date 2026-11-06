@@ -161,6 +161,23 @@ describe('PropertiesComponent', () => {
     expect(propertyContactService.sendPropertyForm).not.toHaveBeenCalled();
   });
 
+  it('does not show required errors when an empty field only loses focus, but shows them after submit', () => {
+    createComponent();
+    const firstName = component.propertyForm.get('firstName')!;
+
+    // Așa se întâmplă la deschiderea ferestrei: PrimeNG pune focusul în „Nume complet”, apoi utilizatorul apasă altundeva.
+    firstName.markAsTouched();
+    component.propertyForm.get('email')!.markAsTouched();
+
+    expect(component.shouldShowControlError('firstName', 'required')).toBeFalse();
+    expect(component.shouldShowContactError()).toBeFalse();
+
+    component.saveProperty();
+
+    expect(component.shouldShowControlError('firstName', 'required')).toBeTrue();
+    expect(component.shouldShowContactError()).toBeTrue();
+  });
+
   it('should submit without a village', () => {
     createComponent();
 

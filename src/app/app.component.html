@@ -1,4 +1,6 @@
 <p-toast></p-toast>
+<!-- Primul în pagină, ca butoanele bannerului să fie primele la Tab; pe ecran stă jos (position: fixed). -->
+<app-cookie-banner (openPolicy)="showCookies()"></app-cookie-banner>
 <div class="app-shell">
   <header class="topbar">
     <div class="topbar__left">
@@ -49,6 +51,7 @@
       <button type="button" class="footer-chip" (click)="showPolitica()">Politica de confidențialitate</button>
       <button type="button" class="footer-chip" (click)="showTermenii()">Termenii și condițiile</button>
       <button type="button" class="footer-chip" (click)="showCookies()">Politica de cookies</button>
+      <button type="button" class="footer-chip" (click)="showCookieSettings()">Setări cookie-uri</button>
       <button type="button" class="footer-chip" (click)="showContact()">Contact</button>
     </div>
   </footer>
@@ -195,23 +198,69 @@
     [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
     <!-- Zona derulabilă primește focus, ca textul lung să se poată citi și din tastatură. -->
     <div class="dialog-scroll" tabindex="0" aria-label="Politica de cookies">
-        <p>
-          <b>Politica de cookies</b><br>
-          <br>Politica de cookies prezentă este aplicată tuturor utilizatorilor care accesează pagina hai-în-sat.ro.
-          <br><b><br>Ce este un cookie?</b><br>
-          <br>Cookie-urile sunt fișiere mici de text, formate din litere și numere, stocate pe dispozitivul utilizatorului prin solicitarea unui web-server către un browser, fiind complet pasive și fără capacitatea de a rula programe software sau de a accesa datele utilizatorului.
-          <br>La ce sunt folosite Cookie-urile?
-          <br>Cookie-urile îmbunătățesc experiența de navigare a utilizatorilor prin identificarea erorilor, anticiparea nevoilor pe baza produselor sau serviciilor accesate anterior și prin memorarea setărilor și preferințelor utilizatorilor, cum ar fi acceptul politicii de cookies. Aceste fișiere permit recunoașterea dispozitivului utilizatorului și prezentarea conținutului adaptat preferințelor acestuia, asigurând o navigare plăcută și suportând eforturile companiei de a oferi servicii confortabile, inclusiv preferințe de confidențialitate și publicitate relevantă. De asemenea, cookie-urile sunt utilizate pentru a genera statistici anonime agregate care ajută la îmbunătățirea structurii și conținutului paginilor web, fără a identifica personal utilizatorii.
-          <br><br><b>Durata de existență a cookie</b><br><br>
-          Utilizăm două tipuri de cookie-uri: de sesiune și persistente. Cookie-urile de sesiune sunt fișiere temporare care rămân pe dispozitivul utilizatorului până la încheierea sesiunii sau închiderea aplicației (browserului web). Cookie-urile persistente rămân pe dispozitivul utilizatorului pentru o perioadă specificată de parametrii cookie-ului sau până când sunt șterse manual de utilizator.
-          Folosim cookie-uri pentru a personaliza conținutul și anunțurile, pentru a oferi funcționalități de rețele sociale și pentru a analiza traficul. De asemenea, împărtășim informații despre utilizarea site-ului nostru cu partenerii noștri de rețele sociale, publicitate și analize, care le pot combina cu alte date furnizate de dvs. sau colectate din utilizarea serviciilor lor.
-          Cum folosește site-ul nostru cookie-urile
-          O vizită pe acest site poate include următoarele tipuri de cookie-uri:
-          <br>- Cookie-uri strict necesare pentru funcționarea site-ului
-          <br>- Cookie-uri de analiză
-          <br>- Cookie-uri pentru publicitate
-          <br>Cookie-urile și tehnologiile similare strict necesare sunt esențiale pentru funcționarea corectă a site-ului. Acestea sunt setate pe dispozitivul dumneavoastră la accesarea site-ului sau în urma anumitor acțiuni efectuate pe site. Puteți configura browser-ul pentru a bloca cookie-urile, dar în acest caz, anumite secțiuni ale site-ului nu vor funcționa corect.
-        </p>
+        <!-- Lista trebuie să rămână la zi cu etichetele din GTM-N3527C3S și cu bannerul (cookie-consent). Dacă se adaugă
+             o unealtă nouă (de exemplu Hotjar), se adaugă aici și în banner, iar CONSENT_VERSION crește. -->
+        <p>Ultima actualizare: noiembrie 2026.</p>
+        <p>Site-ul hai-în-sat.ro este administrat de S.C. CORUXMAN IMPEX S.R.L. Aici afli ce cookie-uri și tehnologii
+          asemănătoare folosim, la ce ne folosesc, cât timp rămân în browserul tău și cum îți schimbi alegerea.</p>
+
+        <h3>Ce sunt cookie-urile</h3>
+        <p>Cookie-urile sunt fișiere mici pe care un site le salvează în browserul tău. Tehnologiile asemănătoare, cum e
+          memoria browserului (localStorage sau IndexedDB), funcționează la fel, așa că le tratăm la fel.</p>
+
+        <h3>Cum alegi</h3>
+        <p>La prima vizită îți arătăm un banner. Cookie-urile necesare funcționează mereu, pentru că fără ele site-ul nu
+          poate funcționa (art. 4 alin. (6) din Legea nr. 506/2004). Pe celelalte le folosim doar cu acordul tău (art. 4
+          alin. (5) din Legea nr. 506/2004 și art. 6 alin. (1) lit. a) din GDPR). Până nu alegi, nu se încarcă nimic de
+          la Google, Meta, TikTok sau YouTube. Dacă refuzi, site-ul funcționează la fel; doar videoclipurile nu se mai
+          încarcă în pagină, dar le poți deschide pe YouTube.</p>
+        <p>Alegerea ta se păstrează 12 luni. Te întrebăm din nou după aceea sau dacă schimbăm lista de mai jos. Îți poți
+          schimba sau retrage acordul oricând, din
+          <button type="button" class="policy-link" (click)="cookies = false; showCookieSettings()">Setări cookie-uri</button>,
+          buton care există și în subsolul fiecărei pagini.</p>
+
+        <h3>1. Necesare (mereu active)</h3>
+        <ul>
+          <li><b>hai_consimtamant</b>, pus de Hai în sat: ține minte alegerea ta din banner. Durată: 12 luni.</li>
+          <li><b>firebaseLocalStorageDb</b> (memoria browserului), pus de Google Firebase pentru noi: păstrează
+            autentificarea administratorilor site-ului, doar după ce se autentifică. Durată: până la deconectare.</li>
+        </ul>
+
+        <h3>2. Statistici (doar cu acordul tău)</h3>
+        <ul>
+          <li><b>_ga</b>, pus de Google Analytics: deosebește vizitatorii între ei, fără să ne spună cine sunt. Durată: 2 ani.</li>
+          <li><b>_ga_…</b>, pus de Google Analytics: ține minte vizita în curs. Durată: 2 ani.</li>
+        </ul>
+
+        <h3>3. Marketing (doar cu acordul tău)</h3>
+        <ul>
+          <li><b>_gcl_au</b>, pus de Google Ads: arată dacă o vizită vine dintr-o reclamă de-a noastră. Durată: 90 de zile.</li>
+          <li><b>_fbp</b>, pus de Meta (Facebook, Instagram): arată dacă reclamele noastre aduc vizite. Durată: 90 de zile.</li>
+          <li><b>_fbc</b>, pus de Meta: apare doar când vii pe site dintr-o reclamă Meta. Durată: 90 de zile.</li>
+          <li><b>_ttp</b>, <b>ttcsid</b> și <b>ttcsid_…</b>, puse de TikTok: arată dacă reclamele noastre de pe TikTok
+            aduc vizite (pixelul TikTok mai poate pune, de exemplu, <b>_tt_enable_cookie</b> sau <b>ttclid</b>, când
+            vii dintr-o reclamă TikTok). Durată: 13 luni de la ultima folosire.</li>
+        </ul>
+
+        <h3>4. Videoclipuri YouTube (doar cu acordul tău)</h3>
+        <p>Videoclipurile se încarcă de pe YouTube (Google), în modul de confidențialitate avansată. După acord, YouTube
+          salvează în memoria browserului date tehnice și despre vizionare (de exemplu yt-player-caption-persistence,
+          ytidb::LAST_RESULT_ENTRY_KEY, YtIdbMeta) și primește statistici despre ce vezi. Duratele le stabilește YouTube.</p>
+
+        <h3>Datele în afara UE</h3>
+        <p>Google și Meta pot prelucra datele și în SUA. Ambele companii participă la cadrul UE–SUA pentru protecția
+          datelor (EU-U.S. Data Privacy Framework), recunoscut de Comisia Europeană.</p>
+        <p>TikTok poate transfera datele în afara Spațiului Economic European (de exemplu în SUA și Singapore) și permite
+          accesul la ele, de la distanță, și din alte țări, inclusiv China, pe baza clauzelor contractuale standard ale
+          Comisiei Europene. Detaliile sunt în politica de confidențialitate TikTok.</p>
+
+        <h3>Cum ștergi cookie-urile</h3>
+        <p>Când îți retragi acordul din „Setări cookie-uri”, ștergem cookie-urile Google Analytics, Google Ads, Meta și
+          TikTok de pe site. Datele salvate de YouTube și orice alte cookie-uri le poți șterge din setările browserului.</p>
+
+        <h3>Întrebări</h3>
+        <p>Ne poți scrie la <a [href]="links.mailto">contact&#64;hai-în-sat.ro</a>. Ai și dreptul să depui o plângere la
+          Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caracter Personal (www.dataprotection.ro).</p>
     </div>
   </p-dialog>
 

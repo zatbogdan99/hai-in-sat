@@ -228,11 +228,38 @@ fa-icon {
 }
 
 /* Ferestrele cu texte lungi: zona derulabilă se poate focaliza și derula din tastatură. */
-.dialog-scroll p {
+.dialog-scroll p,
+.dialog-scroll li {
   font-family: var(--font-base);
   font-size: var(--text-body-size);
   line-height: var(--text-body-line-height);
   margin: 0 0 var(--text-paragraph-gap) 0;
+}
+
+/* Politica de cookies: titluri pe secțiuni și liste cu cookie-urile. */
+.dialog-scroll h3 {
+  font-family: var(--font-base);
+  font-size: var(--fs-h4);
+  margin: 1.5rem 0 0.5rem;
+}
+
+.dialog-scroll ul {
+  margin: 0 0 var(--text-paragraph-gap);
+  padding-left: 1.25rem;
+}
+
+.dialog-scroll li {
+  margin-bottom: 0.25rem;
+}
+
+.policy-link {
+  font: inherit;
+  color: #047857;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .dialog-scroll {

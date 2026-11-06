@@ -1,0 +1,237 @@
+/* Stiluri globale (ViewEncapsulation.None): fereastra PrimeNG e atașată la body. Toate clasele au prefixul cc-. */
+
+/* Bara: peste antet (500), sub spinnere (1000) și ferestrele PrimeNG (1100+), ca „Politica de cookies” să se deschidă
+   deasupra ei. */
+.cc-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 900;
+  background: #fff;
+  color: #1f2937;
+  border-top: 1px solid #e7dfcf;
+  box-shadow: 0 -8px 28px rgba(15, 23, 42, 0.12);
+  font-family: var(--font-base);
+}
+
+.cc-bar__inner {
+  max-width: 88rem;
+  margin: 0 auto;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.cc-bar__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.cc-title {
+  font-size: var(--fs-h4);
+  line-height: 1.3;
+  font-weight: 700;
+  margin: 0 0 0.4rem;
+  color: #111827;
+}
+
+.cc-bar__text p,
+.cc-dialog p {
+  margin: 0;
+  font-family: var(--font-base);
+  font-size: var(--fs-small);
+  line-height: 1.6;
+  color: #334155;
+}
+
+/* Coloane egale: „Accept toate” și „Refuz toate” nu diferă nici prin lățime, oricât de lung e textul lor. */
+.cc-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.cc-dialog__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+/* „Accept toate” și „Refuz toate” au aceeași clasă: aceeași mărime, culoare și greutate. */
+.cc-btn {
+  font-family: var(--font-base);
+  font-size: var(--fs-btn);
+  font-weight: 700;
+  line-height: 1.2;
+  border-radius: 6px;
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+  white-space: nowrap;
+  border: 1px solid #047857;
+}
+
+.cc-btn--main {
+  background: #047857;
+  color: #fff;
+
+  &:hover { background: #065f46; border-color: #065f46; }
+}
+
+.cc-btn--ghost {
+  background: #fff;
+  color: #047857;
+
+  &:hover { background: #ecfdf5; }
+}
+
+.cc-btn,
+.cc-link,
+.cc-switch {
+  &:focus-visible {
+    outline: 3px solid #005baa;
+    outline-offset: 2px;
+  }
+}
+
+/* „Politica de cookies” deschide o fereastră, deci e buton, cu aspect de link. */
+.cc-link {
+  font: inherit;
+  color: #047857;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.p-dialog.cc-dialog {
+  font-family: var(--font-base);
+  max-height: min(92vh, 52rem);
+
+  .p-dialog-title {
+    font-family: var(--font-base);
+    font-size: var(--fs-h3);
+    font-weight: 700;
+    color: #111827;
+  }
+}
+
+.cc-intro {
+  margin-bottom: 1rem !important;
+}
+
+.cc-cat {
+  border: 1px solid #e7dfcf;
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.cc-cat__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.35rem;
+}
+
+.cc-cat__name {
+  font-weight: 700;
+  font-size: var(--fs-btn);
+  color: #111827;
+}
+
+.cc-cat__who {
+  display: block;
+  font-weight: 400;
+  font-size: max(0.8125rem, var(--fs-min));
+  color: #64748b;
+  margin-top: 0.1rem;
+}
+
+.cc-pill {
+  font-size: max(0.8125rem, var(--fs-min));
+  font-weight: 700;
+  color: #047857;
+  background: #ecfdf5;
+  border-radius: 999px;
+  padding: 0.25rem 0.65rem;
+  white-space: nowrap;
+}
+
+.cc-switch {
+  position: relative;
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 1.6rem;
+  border: 0;
+  border-radius: 999px;
+  /* Oprit: slate-500, contrast 4,8:1 cu fundalul alb (o componentă de interfață are nevoie de cel puțin 3:1). */
+  background: #64748b;
+  cursor: pointer;
+  transition: background-color 0.15s;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0.2rem;
+    left: 0.2rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    transition: transform 0.15s;
+  }
+
+  &[aria-checked='true'] {
+    background: #047857;
+
+    &::after { transform: translateX(1.15rem); }
+  }
+}
+
+@media (max-width: 767px) {
+  .cc-bar__inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.9rem;
+    padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom));
+  }
+
+  /* „Accept toate” și „Refuz toate” una lângă alta, la fel de late; al treilea buton dedesubt. */
+  .cc-actions,
+  .cc-dialog__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+
+  .cc-actions .cc-btn--ghost,
+  .cc-dialog__actions .cc-btn--main {
+    grid-column: 1 / -1;
+  }
+
+  .cc-btn {
+    width: 100%;
+    padding: 0.7rem 0.75rem;
+  }
+
+  .p-dialog.cc-dialog {
+    margin: 0;
+    max-height: 92vh;
+    border-radius: 16px 16px 0 0;
+  }
+}
+
+@media (max-width: 359px) {
+  .cc-actions,
+  .cc-dialog__actions {
+    grid-template-columns: 1fr;
+  }
+}

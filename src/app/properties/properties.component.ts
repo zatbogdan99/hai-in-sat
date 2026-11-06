@@ -290,18 +290,16 @@ export class PropertiesComponent implements OnInit {
       return false;
     }
 
-    return (control.touched || control.dirty) && control.hasError(errorCode);
+    // Doar după ce s-a scris în câmp sau după „Trimite” (care le marchează pe toate dirty). La deschiderea ferestrei
+    // PrimeNG pune focusul în „Nume complet”: cu touched, „Numele este obligatoriu.” apărea la primul clic în altă parte
+    // și împingea formularul în jos chiar sub mouse, așa că acel clic (de exemplu pe săgeata „Tip proprietate”) se pierdea.
+    return control.dirty && control.hasError(errorCode);
   }
 
   shouldShowContactError(): boolean {
     const emailControl = this.propertyForm.get('email');
     const phoneControl = this.propertyForm.get('phone');
-    const interacted = !!emailControl && !!phoneControl && (
-      emailControl.touched ||
-      emailControl.dirty ||
-      phoneControl.touched ||
-      phoneControl.dirty
-    );
+    const interacted = !!emailControl && !!phoneControl && (emailControl.dirty || phoneControl.dirty);
 
     return interacted && this.propertyForm.hasError('contactRequired');
   }

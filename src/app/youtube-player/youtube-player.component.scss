@@ -9,3 +9,145 @@
   outline: 3px solid #005baa;
   outline-offset: 2px;
 }
+
+/* Caseta din locul playerului, până la acordul pentru YouTube. Are aceeași mărime ca iframe-ul: valorile vin prin
+   --video-w / --video-h, iar regulile paginilor pentru .youtube-frame (16:9 pe telefon, înălțimea casetei din Satul
+   lunii) o schimbă la fel ca pe iframe. Mărimea nu depinde de text (container de tip size): în casetele mici, de
+   exemplu 16:9 pe telefon (~200 px înălțime), textul se strânge prin regulile @container de mai jos. */
+.video-consent {
+  width: var(--video-w, 100%);
+  height: var(--video-h, auto);
+  min-height: 10rem;
+  box-sizing: border-box;
+  /* Paginile pun display: block pe .youtube-frame (pentru iframe); caseta are nevoie de flex ca să centreze textul. */
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  container: video-consent / size;
+  background: #F4EFE5;
+  border-radius: 8px;
+  font-family: var(--font-base);
+  text-align: center;
+}
+
+.video-consent__box {
+  max-width: 30rem;
+  padding: 1rem 1.25rem;
+}
+
+.video-consent__icon {
+  display: block;
+  font-size: 2.5rem;
+  color: #047857;
+  margin-bottom: 0.6rem;
+}
+
+.video-consent__title {
+  margin: 0 0 0.35rem;
+  font-size: var(--fs-h4);
+  line-height: 1.3;
+  font-weight: 700;
+  color: #111827;
+}
+
+.video-consent__text {
+  margin: 0 0 0.9rem;
+  font-size: var(--fs-small);
+  line-height: 1.55;
+  color: #334155;
+}
+
+.video-consent__button {
+  font-family: var(--font-base);
+  font-size: var(--fs-btn);
+  font-weight: 700;
+  line-height: 1.2;
+  color: #fff;
+  background: #047857;
+  border: 1px solid #047857;
+  border-radius: 6px;
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+
+  &:hover {
+    background: #065f46;
+    border-color: #065f46;
+  }
+}
+
+.video-consent__note {
+  margin: 0.8rem 0 0;
+  font-size: max(0.8125rem, var(--fs-min));
+  line-height: 1.5;
+  color: #475569;
+
+  a {
+    color: #047857;
+    text-underline-offset: 2px;
+  }
+}
+
+.video-consent__button:focus-visible,
+.video-consent__note a:focus-visible {
+  outline: 3px solid #005baa;
+  outline-offset: 2px;
+}
+
+@container video-consent (max-height: 340px) {
+  .video-consent__icon {
+    display: none;
+  }
+}
+
+/* 16:9 pe telefon: fără titlu (textul spune singur ce e), cu spații mai mici. */
+@container video-consent (max-height: 250px) {
+  .video-consent__title {
+    display: none;
+  }
+
+  .video-consent__box {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .video-consent__text {
+    margin-bottom: 0.6rem;
+  }
+
+  .video-consent__button {
+    padding: 0.6rem 1rem;
+  }
+
+  .video-consent__note {
+    margin-top: 0.5rem;
+    line-height: 1.4;
+  }
+}
+
+@container video-consent (max-height: 190px) {
+  .video-consent__note {
+    font-size: var(--fs-min);
+  }
+}
+
+/* Telefoanele de 320 px (16:9 are ~160 px înălțime): litere mai mici și rânduri mai strânse, ca tot mesajul să încapă. */
+@container video-consent (max-height: 175px) {
+  .video-consent__box {
+    padding: 0.5rem;
+  }
+
+  .video-consent__text {
+    font-size: max(0.75rem, var(--fs-min));
+    line-height: 1.35;
+    margin-bottom: 0.4rem;
+  }
+
+  .video-consent__button {
+    font-size: 0.8125rem;
+    padding: 0.45rem 0.75rem;
+  }
+
+  .video-consent__note {
+    line-height: 1.3;
+    margin-top: 0.4rem;
+  }
+}

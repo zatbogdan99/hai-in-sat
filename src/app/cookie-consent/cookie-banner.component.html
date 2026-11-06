@@ -1,0 +1,66 @@
+@if (consent.bannerVisible() && !consent.settingsOpen()) {
+  <section class="cc-bar" aria-labelledby="cc-bar-title">
+    <div class="cc-bar__inner">
+      <div class="cc-bar__text">
+        <h2 id="cc-bar-title" class="cc-title">Cookie-uri pe Hai în sat</h2>
+        <p>Folosim cookie-uri necesare, ca site-ul să funcționeze. Cu acordul tău, folosim și cookie-uri Google, Meta și TikTok:
+          pentru statistici despre vizite, pentru a măsura reclamele noastre și pentru videoclipurile YouTube. Poți schimba
+          alegerea oricând, din „Setări cookie-uri”, în subsolul paginii. Detalii în
+          <button type="button" class="cc-link" (click)="openPolicy.emit()">Politica de cookies</button>.</p>
+      </div>
+      <div class="cc-actions">
+        <button type="button" class="cc-btn cc-btn--main" (click)="consent.acceptAll()">Accept toate</button>
+        <button type="button" class="cc-btn cc-btn--main" (click)="consent.refuseAll()">Refuz toate</button>
+        <button type="button" class="cc-btn cc-btn--ghost" (click)="consent.openSettings()">Aleg eu</button>
+      </div>
+    </div>
+  </section>
+}
+
+<p-dialog closeAriaLabel="Închide"
+  header="Setări cookie-uri"
+  styleClass="cc-dialog"
+  appendTo="body"
+  [modal]="true"
+  [blockScroll]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [position]="onPhone() ? 'bottom' : 'center'"
+  [style]="{ width: '44rem' }"
+  [breakpoints]="{ '767px': '100vw' }"
+  [visible]="consent.settingsOpen()"
+  (visibleChange)="closeSettings($event)">
+  <!-- La deschidere, PrimeNG mută focusul pe primul element focalizabil: primul comutator, nu un link din text. -->
+  <p class="cc-intro">Alege ce accepți. Cookie-urile necesare rămân mereu active, pentru că fără ele site-ul nu
+    funcționează. Alegerea ta se păstrează 12 luni și o poți schimba oricând.</p>
+
+  <div class="cc-cat">
+    <div class="cc-cat__head">
+      <span class="cc-cat__name">Necesare</span>
+      <span class="cc-pill">Mereu active</span>
+    </div>
+    <p>Țin minte alegerea ta de aici și autentificarea în pagina de administrare. Nu trimit date nimănui.</p>
+  </div>
+  @for (cat of categories; track cat.key) {
+    <div class="cc-cat">
+      <div class="cc-cat__head">
+        <span class="cc-cat__name" [id]="'cc-cat-' + cat.key">{{ cat.name }}<span class="cc-cat__who">{{ cat.who }}</span></span>
+        <button type="button" class="cc-switch" role="switch"
+                [attr.aria-checked]="draft()[cat.key]"
+                [attr.aria-labelledby]="'cc-cat-' + cat.key"
+                (click)="toggle(cat.key)"></button>
+      </div>
+      <p>{{ cat.text }}</p>
+    </div>
+  }
+  <p>Lista completă a cookie-urilor e în
+    <button type="button" class="cc-link" (click)="openPolicy.emit()">Politica de cookies</button>.</p>
+
+  <ng-template #footer>
+    <div class="cc-dialog__actions">
+      <button type="button" class="cc-btn cc-btn--ghost" (click)="consent.refuseAll()">Refuz toate</button>
+      <button type="button" class="cc-btn cc-btn--ghost" (click)="consent.acceptAll()">Accept toate</button>
+      <button type="button" class="cc-btn cc-btn--main" (click)="consent.saveChoice(draft())">Salvează alegerea</button>
+    </div>
+  </ng-template>
+</p-dialog>

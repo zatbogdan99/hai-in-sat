@@ -1,4 +1,4 @@
-import {Component, DestroyRef, ElementRef, inject, OnInit, ViewChild} from '@angular/core';
+import {afterNextRender, Component, DestroyRef, ElementRef, inject, OnInit, ViewChild} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
 import { faTiktok } from '@fortawesome/free-brands-svg-icons';
@@ -12,11 +12,14 @@ import {Popover} from "primeng/popover";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {Toast} from "primeng/toast";
 import { SeoService } from './service/seo.service';
+import { CookieBannerComponent } from './cookie-consent/cookie-banner.component';
+import { ConsentService } from './cookie-consent/consent.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   imports: [
+    CookieBannerComponent,
     Dialog,
     Chip,
     Popover,
@@ -54,6 +57,7 @@ export class AppComponent implements OnInit {
 
   private destroyRef = inject(DestroyRef);
   private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  private consent = inject(ConsentService);
 
   showPolitica() {
     this.politica = true;
@@ -71,7 +75,16 @@ export class AppComponent implements OnInit {
     this.contact = true;
   }
 
-  constructor(private service: DataService, private seo: SeoService) {}
+  /** „Setări cookie-uri” din subsol: alegerea se poate schimba (și retrage) oricând, la fel de ușor ca la început. */
+  showCookieSettings() {
+    this.consent.openSettings();
+  }
+
+  constructor(private service: DataService, private seo: SeoService) {
+    // Alegerea din cookie se citește abia după hidratare: HTML-ul de pe server e același pentru toți vizitatorii
+    // (cache-ul SSR), iar bannerul și videoclipurile se schimbă doar în browser.
+    afterNextRender(() => this.consent.init());
+  }
 
   resetPageIndexing(): void {
     // RouterOutlet emite activate înainte de ngOnInit al paginii noi.

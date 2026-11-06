@@ -374,7 +374,7 @@
     color: var(--p-text-muted-color);
     text-decoration: none;
     line-height: 1;
-    font-size: 0.83333125rem;
+    font-size: max(0.83333125rem, var(--fs-min));
     cursor: pointer;
     user-select: none;
     transition: background var(--p-transition-duration), color var(--p-transition-duration);
@@ -540,15 +540,15 @@
   flex: 1 1 auto;
 }
 
-:host ::ng-deep .centered-dialog-header .property-dialog-left input.ng-invalid.ng-touched,
-:host ::ng-deep .centered-dialog-header .property-dialog-left textarea.ng-invalid.ng-touched {
+:host ::ng-deep .centered-dialog-header .property-dialog-left input.ng-invalid.ng-dirty,
+:host ::ng-deep .centered-dialog-header .property-dialog-left textarea.ng-invalid.ng-dirty {
   border-color: #b42318;
 }
 
 :host ::ng-deep .centered-dialog-header .property-dialog-left .field-error {
   margin-left: 2rem;
   color: #b42318;
-  font-size: 0.85rem;
+  font-size: max(0.85rem, var(--fs-min));
   line-height: 1.3;
 }
 

@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { Auth } from '@angular/fire/auth';
 import { LoginComponent } from './login/login.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { ConsentService } from './cookie-consent/consent.service';
 
 @Component({ standalone: true, template: '<p>Pagină publică</p>' })
 class PublicTestPage {}
@@ -111,15 +112,21 @@ describe('AppComponent', () => {
     const byText = (text: string) => buttons.find(button => button.nativeElement.textContent.trim() === text)!;
 
     expect(buttons.map(button => button.nativeElement.textContent.trim())).toEqual([
-      'Politica de confidențialitate', 'Termenii și condițiile', 'Politica de cookies', 'Contact'
+      'Politica de confidențialitate', 'Termenii și condițiile', 'Politica de cookies', 'Setări cookie-uri', 'Contact'
     ]);
     byText('Politica de confidențialitate').nativeElement.click();
     byText('Contact').nativeElement.click();
+    byText('Setări cookie-uri').nativeElement.click();
     fixture.detectChanges();
 
     expect(fixture.componentInstance.politica).toBeTrue();
     expect(fixture.componentInstance.contact).toBeTrue();
+    expect(TestBed.inject(ConsentService).settingsOpen()).toBeTrue();
     expect(navigateSpy).not.toHaveBeenCalled();
+
+    // Fereastra e atașată la body: se închide, ca să nu rămână pentru testele următoare.
+    TestBed.inject(ConsentService).settingsOpen.set(false);
+    fixture.detectChanges();
   });
 
   it('shows the official phone and email in the Contact dialog', async () => {

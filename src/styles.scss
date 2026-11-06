@@ -26,6 +26,9 @@
   --trim-text-top: -0.53em;   /* paragraf sau listă, line-height 1.9 */
   --trim-text-bottom: -0.6em; /* paragraf sau listă, line-height 1.9 */
   --trim-lead-bottom: -0.4em; /* text de sub titlu, line-height 1.5 */
+  /* Cel mai mic text de pe site. Pe ecranele mai mici decât laptopul de referință, scara proporțională ducea etichetele,
+     contoarele de poze și mesajele de eroare la 8–9 px (de exemplu pe un MacBook Air 13"). Pe referință rămân la fel. */
+  --fs-min: 11px;
 }
 
 /* Titlurile au aceeași distanță între rânduri peste tot; componentele aleg doar mărimea din scara de mai sus. */
@@ -357,6 +360,8 @@ img {
   --p-button-primary-active-background: #064e3b;
   --p-button-primary-active-border-color: #064e3b;
   --p-floatlabel-focus-color: #047857;
+  /* Eticheta ridicată deasupra câmpului („Nume complet”, „Telefon (obligatoriu)”): 0.75rem, dar cel puțin --fs-min. */
+  --p-floatlabel-active-font-size: max(0.75rem, var(--fs-min));
   /* Toate butoanele: aceeași mărime (--fs-btn) și scris îngroșat, inclusiv cele mici („Satul Racovița”). */
   --p-button-label-font-weight: 700;
   --p-button-sm-font-size: var(--fs-btn);
